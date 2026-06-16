@@ -1,0 +1,282 @@
+/* Importando fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f8f9fa;
+    --cor-fundo-alt: #ffffff;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+    --cor-destaque-fundo: #eaf6ff;
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 5px solid var(--cor-destaque);
+}
+
+header h1 { 
+    font-family: 'Oswald', sans-serif; 
+    font-size: 2.2rem; 
+}
+
+header p { 
+    font-family: 'Roboto Mono', monospace; 
+    font-size: 1.1em; 
+    opacity: 0.9; 
+}
+
+.main-container { 
+    max-width: 600px; 
+    margin: 2rem auto; 
+    padding: 0 1rem; 
+}
+
+.calculator-container {
+    background: var(--cor-fundo-alt);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+.resultado-container {
+    background: var(--cor-fundo);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+h2, h3 { 
+    font-family: 'Oswald', sans-serif; 
+    color: var(--cor-primaria); 
+    margin-bottom: 1.5rem; 
+    text-align: center; 
+}
+
+.input-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 1.5rem; 
+}
+
+.input-group { 
+    margin-bottom: 1.5rem; 
+}
+
+.full-width { 
+    grid-column: 1 / -1; 
+}
+
+.input-group label { 
+    font-weight: bold; 
+    color: var(--cor-texto); 
+    display: block; 
+    margin-bottom: 0.5rem; 
+}
+
+.input-group select, .input-group input { 
+    width: 100%; 
+    padding: 0.8rem; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    font-size: 1rem; 
+    background-color: #fff; 
+    font-family: 'Roboto', sans-serif; 
+}
+
+#calcular-btn {
+    width: 100%; 
+    padding: 1rem; 
+    font-size: 1.1rem; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    border: none;
+    color: white; 
+    font-weight: bold; 
+    background-color: var(--cor-sucesso);
+    transition: transform 0.2s ease, opacity 0.2s ease; 
+    margin-top: 1rem;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 0.5rem;
+}
+
+#calcular-btn:hover { 
+    transform: scale(1.02); 
+    opacity: 0.9; 
+}
+
+.resultado-card {
+    background: var(--cor-fundo-alt);
+    border: 1px solid #eee;
+    border-radius: 8px; 
+    padding: 1.5rem; 
+    margin-top: 1.5rem;
+    opacity: 0; 
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.resultado-card-destaque {
+    background-color: var(--cor-destaque-fundo);
+    border: 2px solid var(--cor-secundaria);
+}
+
+.resultado-card h3 { 
+    margin-bottom: 1rem; 
+}
+
+.resultado-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+    gap: 1rem; 
+    text-align: center; 
+}
+
+.resultado-grid p { 
+    margin: 0; 
+    font-size: 0.85rem; 
+    color: #6c757d; 
+}
+
+.resultado-grid .valor { 
+    font-size: 1.4rem; 
+    font-weight: bold; 
+    color: var(--cor-primaria); 
+}
+
+.resultado-card-destaque .valor { 
+    font-size: 2.2rem; 
+    color: var(--cor-secundaria); 
+}
+
+.toggle-details-btn {
+    background: none; 
+    border: none; 
+    color: var(--cor-secundaria); 
+    cursor: pointer;
+    font-weight: bold; 
+    margin-top: 1rem; 
+    display: block; 
+    width: 100%; 
+    text-align: right;
+}
+
+.calculation-details {
+    max-height: 0; 
+    overflow-y: hidden; 
+    overflow-x: auto;
+    transition: max-height 0.5s ease-in-out, margin-top 0.5s ease-in-out;
+    margin-top: 0; 
+    border-top: 1px solid #eee; 
+    padding-bottom: 8px;
+}
+
+.calculation-details.visible { 
+    max-height: 200px; 
+    margin-top: 1rem; 
+    padding-top: 1rem; 
+}
+
+.calculation-details::-webkit-scrollbar { 
+    height: 6px; 
+}
+
+.calculation-details::-webkit-scrollbar-thumb { 
+    background-color: #ccc; 
+    border-radius: 3px; 
+}
+
+.erro-container {
+    margin-top: 1.5rem; 
+    padding: 1rem; 
+    background-color: #f8d7da;
+    border: 1px solid var(--cor-erro); 
+    color: var(--cor-erro);
+    border-radius: 5px; 
+    text-align: center;
+}
+
+.tooltip-container { 
+    position: relative; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 0.5rem; 
+}
+
+.info-icon {
+    display: inline-block; 
+    width: 18px; 
+    height: 18px; 
+    line-height: 18px;
+    text-align: center; 
+    border-radius: 50%; 
+    background-color: #ccc; 
+    color: white;
+    font-weight: bold; 
+    font-size: 12px; 
+    cursor: pointer;
+}
+
+.tooltip-text {
+    visibility: hidden; 
+    width: 220px; 
+    background-color: #555; 
+    color: #fff;
+    text-align: left; 
+    border-radius: 6px; 
+    padding: 8px; 
+    position: absolute;
+    z-index: 1; 
+    bottom: 125%; 
+    left: 50%; 
+    margin-left: -110px; 
+    opacity: 0;
+    transition: opacity 0.3s; 
+    font-size: 0.8rem; 
+    line-height: 1.4;
+}
+
+.tooltip-text::after {
+    content: ""; 
+    position: absolute; 
+    top: 100%; 
+    left: 50%;
+    margin-left: -5px; 
+    border-width: 5px; 
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text { 
+    visibility: visible; 
+    opacity: 1; 
+}
+
+.hidden { 
+    display: none; 
+}
+
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(10px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}

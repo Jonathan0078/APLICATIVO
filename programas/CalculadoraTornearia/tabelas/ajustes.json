@@ -1,0 +1,12 @@
+{
+  "title": "Ajustes Recomendados",
+  "headers": ["Tipo de Ajuste", "Descrição", "Exemplo"],
+  "rows": [
+    ["Deslizante", "Peças que se movem livremente", "Eixo f7 / Furo H7"],
+    ["Justo", "Peças que se encaixam com leve pressão", "Eixo h6 / Furo H7"],
+    ["Interferência", "Peças que se encaixam com pressão", "Eixo k6 / Furo H7"],
+    ["Transição", "Entre deslizante e interferência", "Eixo g6 / Furo G6"],
+    ["Especial", "Para aplicações específicas", "Eixo p6 / Furo P6"],
+    ["Carga Elevada", "Para peças sujeitas a grandes esforços", "Eixo r6 / Furo R6"]
+  ]
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGL - Buscador de Equivalentes</title>
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#003366">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Gestão de Lubrificação</h1>
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link active">Buscador</a>
+            <a href="calculadora.html" class="nav-link">Calculadora VG</a>
+            <a href="plano.html" class="nav-link">Plano de Lubrificação</a>
+            <a href="mistura.html" class="nav-link">Calculador de Mistura</a>
+            <a href="configuracoes.html" class="nav-link">Configurações</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main>
+            <section class="search-box">
+                <h2><i class="fas fa-search"></i> Buscador de Equivalentes</h2>
+                <div class="input-group">
+                    <label for="application-select">Tipo de Aplicação:</label>
+                    <select id="application-select">
+                        <option value="">-- Todas as Aplicações --</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="marca-select">Marca:</label>
+                    <select id="marca-select" disabled>
+                        <option value="">-- Primeiro selecione uma aplicação --</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="oleo-select">Nome do Produto:</label>
+                    <select id="oleo-select" disabled>
+                        <option value="">-- Primeiro selecione uma marca --</option>
+                    </select>
+                </div>
+                <button id="search-button"><i class="fas fa-sync-alt"></i> Encontrar Equivalentes</button>
+            </section>
+            <div id="results-container"></div>
+
+            <!-- [NEW] Seção da Base de Conhecimento ativada -->
+            <section class="knowledge-base-section">
+                <h2><i class="fas fa-book-open"></i> Base de Conhecimento Técnico</h2>
+                <div class="accordion">
+                    <!-- Conteúdo será preenchido pelo script.js -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="compatibility-modal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <button id="modal-close-button" class="modal-close">×</button>
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+        </div>
+    </div>
+
+    <script type="module" src="js/script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                const candidates = ['../../sw.js', '/sw.js', '/site/sw.js'];
+                for (const url of candidates) {
+                    try {
+                        const reg = await navigator.serviceWorker.register(url);
+                        console.log('Service worker registado em', url, reg);
+                        break;
+                    } catch (err) {
+                        console.warn('Falha ao registar SW em', url, err);
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

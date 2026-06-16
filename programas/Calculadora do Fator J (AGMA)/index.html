@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Fator J (AGMA) Pro</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-gears"></i> Calculadora Fator J (AGMA) Pro</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- Coluna de Entradas (Inputs) -->
+            <div id="inputs-column">
+                <!-- Card: Introdução Rápida -->
+                <div class="card">
+                    <h2><i class="fa-solid fa-info-circle"></i> Sobre o AGMA J-Factor</h2>
+                    <p>O Fator J da AGMA é utilizado para avaliar a tensão na raiz do dente de engrenagens de dentes retos e helicoidais.</p>
+                    <p><strong>Fórmula:</strong> σ<sub>b</sub> = (W<sub>t</sub> × K<sub>f</sub>) / (F × m<sub>n</sub> × J)</p>
+                </div>
+
+                <!-- Card: Parâmetros da Engrenagem -->
+                <div class="card">
+                    <h2><i class="fa-solid fa-keyboard"></i> Parâmetros da Engrenagem</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="numTeethGear">Dentes da Engrenagem (N)</label>
+                            <input type="number" id="numTeethGear" min="20" max="500" value="100" step="1">
+                            <span class="unit">dentes</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="numTeethPinion">Dentes do Pinhão (Np)</label>
+                            <input type="number" id="numTeethPinion" min="10" max="100" value="25" step="1">
+                            <span class="unit">dentes</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="module">Módulo Normal (m<sub>n</sub>)</label>
+                            <input type="number" id="module" min="0.5" max="10" value="1.0" step="0.1">
+                            <span class="unit">mm</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="pressureAngle">Ângulo de Pressão (φ<sub>n</sub>)</label>
+                            <input type="number" id="pressureAngle" min="15" max="30" value="20" step="1">
+                            <span class="unit">°</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="addendumCoeff">Coeficiente de Adendo (x)</label>
+                            <input type="number" id="addendumCoeff" min="-1" max="1" value="0.8" step="0.1">
+                            <span class="unit">adimensional</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="faceWidth">Largura da Face (F)</label>
+                            <input type="number" id="faceWidth" min="5" max="100" value="10" step="1">
+                            <span class="unit">mm</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="tangentialLoad">Carga Tangencial (W<sub>t</sub>)</label>
+                            <input type="number" id="tangentialLoad" min="100" max="100000" value="1000" step="100">
+                            <span class="unit">N</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="shaperTeeth">Ferramenta Geradora - Dentes</label>
+                            <input type="number" id="shaperTeeth" min="10" max="100" value="50" step="1">
+                            <span class="unit">dentes</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="filletRadius">Raio do Filete</label>
+                            <input type="number" id="filletRadius" min="0.1" max="5" value="0.25" step="0.05">
+                            <span class="unit">mm</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="calculateJFactor()"><i class="fa-solid fa-calculator"></i> Calcular J-Factor</button>
+                        <button class="secondary-button" onclick="resetForm()"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                    </div>
+                </div>
+
+                <!-- Card: Seleção de Abordagens -->
+                <div class="card">
+                    <h2><i class="fa-solid fa-filter"></i> Abordagens Teóricas</h2>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="approach1" checked> <strong>Abordagem #1</strong> (AGMA 908-B89)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="approach2" checked> <strong>Abordagem #2</strong> (AGMA 911-B21)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="approach3" checked> <strong>Abordagem #3</strong> (Híbrida)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna de Saídas (Outputs) -->
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> Resultado do Cálculo</h2>
+                    </div>
+                    
+                    <!-- ÁREA DE RESULTADOS PRINCIPAL -->
+                    <div id="result-display">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <p>Execute o cálculo para ver os resultados...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Parâmetros Intermediários -->
+                <div class="card" id="parameters-card" style="display:none;">
+                    <h2><i class="fa-solid fa-table"></i> Parâmetros Intermediários</h2>
+                    <div class="table-container">
+                        <table id="parametersTable">
+                            <thead>
+                                <tr>
+                                    <th>Parâmetro</th>
+                                    <th>Valor</th>
+                                    <th>Unidade</th>
+                                </tr>
+                            </thead>
+                            <tbody id="parametersTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Card: Análise de Tensão -->
+                <div class="card" id="stress-card" style="display:none;">
+                    <h2><i class="fa-solid fa-exclamation-triangle"></i> Análise de Tensão</h2>
+                    <div id="stressResults"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

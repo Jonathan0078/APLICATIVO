@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGL - Plano de Lubrificação</title>
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#003366">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Gestão de Lubrificação</h1>
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link">Buscador</a>
+            <a href="calculadora.html" class="nav-link">Calculadora VG</a>
+            <a href="plano.html" class="nav-link active">Plano de Lubrificação</a>
+            <a href="mistura.html" class="nav-link">Calculador de Mistura</a>
+            <a href="configuracoes.html" class="nav-link">Configurações</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main>
+            <section class="planner-section">
+                <h2>Plano de Lubrificação Preditivo</h2>
+                <form id="plan-form" class="planner-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="equipamento">Equipamento / TAG</label>
+                            <input type="text" id="equipamento" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="oleo-aplicado">Óleo Aplicado</label>
+                            <input type="text" id="oleo-aplicado" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="vida-util">Vida Útil do Óleo (horas)</label>
+                            <input type="number" id="vida-util" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="data-ultima-troca">Data da Última Troca</label>
+                            <input type="date" id="data-ultima-troca" required>
+                        </div>
+                    </div>
+                    <button type="submit"><i class="fas fa-plus-circle"></i> Adicionar ao Plano</button>
+                </form>
+
+                <div class="plan-table-container">
+                    <div class="table-header">
+                        <h3>Itens do Plano</h3>
+                        <button id="generate-report-btn" class="report-button"><i class="fas fa-file-pdf"></i> Gerar Relatório PDF</button>
+                    </div>
+                    <table id="plan-table">
+                        <thead>
+                            <tr>
+                                <th>Equipamento</th>
+                                <th>Óleo</th>
+                                <th>Última Troca</th>
+                                <th>Próxima Troca</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plan-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script type="module" src="js/plano.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                const candidates = ['../../sw.js', '/sw.js', '/site/sw.js'];
+                for (const url of candidates) {
+                    try {
+                        const reg = await navigator.serviceWorker.register(url);
+                        console.log('Service worker registado em', url, reg);
+                        break;
+                    } catch (err) {
+                        console.warn('Falha ao registar SW em', url, err);
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

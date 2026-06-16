@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Frequência de Relubrificação em Motores - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Scripts -->
+    <script src="js/FRMTCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-sync-alt"></i> Frequência de Relubrificação em Motores</h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> Instruções</h2>
+                    <p>Forneça os dados para calcular o intervalo de relubrificação dos rolamentos:</p>
+                    <ul>
+                        <li>Selecione a temperatura de operação.</li>
+                        <li>Selecione o nível de contaminação.</li>
+                        <li>Selecione o nível de umidade.</li>
+                        <li>Selecione o nível de vibração (ips = pol/s).</li>
+                        <li>Selecione a orientação do eixo.</li>
+                        <li>Selecione o tipo de rolamento.</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> Fatores de Correção</h2>
+                    <form name="formulario">
+                        <div class="input-group">
+                            <label for="ft">Temperatura do Rolamento</label>
+                            <select id="ft">
+                                <option selected>Selecione uma opção</option>
+                                <option value="1">menor que 65 °C</option>
+                                <option value="0.5">65 a 85 °C</option>
+                                <option value="0.2">80 a 93 °C</option>
+                                <option value="0.1">maior que 93 °C</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fc">Contaminação Sólida</label>
+                            <select id="fc">
+                                <option selected>Selecione uma opção</option>
+                                <option value="1">Leve, pó não abrasivo</option>
+                                <option value=".7">Severa, pó não abrasivo</option>
+                                <option value=".4">Leve, pó abrasivo</option>
+                                <option value=".2">Severa, pó abrasivo</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fh">Umidade</label>
+                            <select id="fh">
+                                <option selected>Selecione uma opção</option>
+                                <option value="1">menor que 80%</option>
+                                <option value=".7">80% a 90%</option>
+                                <option value=".4">Condensação ocasional</option>
+                                <option value=".1">Água ocasional na carcaça</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fv">Vibração</label>
+                            <select id="fv">
+                                <option selected>Selecione uma opção</option>
+                                <option value="1">menos de 0.2 ips</option>
+                                <option value=".6">0.2 a 0.4 ips</option>
+                                <option value=".3">maior que 0.4 ips</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fp">Posição do Eixo</label>
+                            <select id="fp">
+                                <option selected>Selecione uma opção</option>
+                                <option value="1">Horizontal</option>
+                                <option value=".5">45 graus</option>
+                                <option value=".3">Vertical</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fd">Tipo do Rolamento</label>
+                            <select id="fd">
+                                <option selected>Selecione uma opção</option>
+                                <option value="10">Rolamento de esferas</option>
+                                <option value="5">Roletes cilíndricos/agulhas</option>
+                                <option value="1">Roletes cônicos/esféricos</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="rpm">Velocidade (RPM)</label>
+                            <input id="rpm" type="number" placeholder="Ex: 1800">
+                        </div>
+                        <div class="input-group">
+                            <label for="diam">Diâmetro Interno (mm)</label>
+                            <input id="diam" type="number" placeholder="Ex: 50">
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" type="button" onclick="ValidarC()"><i class="fas fa-calculator"></i> Calcular</button>
+                            <button class="secondary-button" type="button" onclick="limpiarC()"><i class="fas fa-eraser"></i> Limpar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> Resultado</h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p>A frequência de relubrificação aparecerá aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="result-header">
+                            <span class="label">Frequência de Relubrificação</span>
+                            <span id="resultado-valor" class="designation-value">0 Horas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

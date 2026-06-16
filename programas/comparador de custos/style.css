@@ -1,0 +1,259 @@
+/* Tabela tipo planilha dos custos */
+#tabelaCustos table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  border-radius: 16px;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+  transition: box-shadow 0.3s;
+}
+#tabelaCustos table:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+#tabelaCustos th, #tabelaCustos td {
+  padding: 1em 0.7em;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1.08em;
+}
+#tabelaCustos th {
+  background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  border: none;
+}
+#tabelaCustos tr:last-child td {
+  border-bottom: none;
+}
+#tabelaCustos td {
+  color: var(--cor-texto);
+}
+#tabelaCustos tr:nth-child(even) td {
+  background: #f3f6fa;
+}
+/* Importando fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f4f8fb;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+    --cor-card: #ffffff;
+    --cor-card-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 5px solid var(--cor-destaque);
+}
+
+header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+
+.main-container {
+    max-width: 700px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+
+.calculator-container, .resultado-container, #historico-container, #simulacao-container {
+    background: var(--cor-card);
+    padding: 2.2rem 1.5rem 2rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: var(--cor-card-shadow);
+    margin-bottom: 2.2rem;
+    transition: box-shadow 0.3s;
+}
+.calculator-container:hover, .resultado-container:hover, #historico-container:hover, #simulacao-container:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+}
+
+h2, h3 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--cor-primaria);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    font-weight: bold;
+    color: var(--cor-texto);
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-bottom: 0.5rem;
+}
+
+
+.input-group input[type="number"] {
+    width: 100%;
+    padding: 0.8rem 2.5rem 0.8rem 1.1rem;
+    border: 1.5px solid #b0b8c1;
+    border-radius: 8px;
+    font-size: 1.13rem;
+    background-color: #fafdff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    transition: border 0.2s, box-shadow 0.2s;
+}
+.input-group input[type="number"]:focus {
+    border: 1.5px solid var(--cor-secundaria);
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0,90,156,0.08);
+}
+.input-group {
+    position: relative;
+}
+.input-group .ajuda-icone {
+    position: static;
+    font-size: 1.1em;
+    color: var(--cor-secundaria);
+    background: #eaf2fb;
+    border-radius: 50%;
+    padding: 2px 6px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    margin-left: 4px;
+    margin-right: 0;
+}
+.input-group .ajuda-icone:hover, .input-group .ajuda-icone:focus {
+    background: var(--cor-destaque);
+    color: var(--cor-primaria);
+}
+
+
+
+/* Padronização global de botões */
+button, .btn, #calcular-btn, #exportar-pdf, #exportar-csv, #limpar-historico-btn {
+    width: 100%;
+    padding: 1.1rem;
+    font-size: 1.13rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: bold;
+    background: linear-gradient(90deg, var(--cor-secundaria), var(--cor-primaria));
+    transition: transform 0.2s, background 0.2s, color 0.2s;
+    margin-top: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    outline: none;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+}
+button:hover, .btn:hover, #calcular-btn:hover, #exportar-pdf:hover, #exportar-csv:hover, #limpar-historico-btn:hover {
+    transform: scale(1.03);
+    background: linear-gradient(90deg, var(--cor-destaque), var(--cor-secundaria));
+    color: var(--cor-primaria);
+}
+#exportar-pdf, #exportar-csv {
+    margin-top: 1.2rem;
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+}
+#exportar-pdf:hover, #exportar-csv:hover {
+    background: linear-gradient(90deg, var(--cor-destaque), var(--cor-primaria));
+    color: var(--cor-primaria);
+}
+#limpar-historico-btn {
+    background: linear-gradient(90deg, var(--cor-erro), #b71c1c);
+    color: #fff;
+    margin-top: 0.5rem;
+}
+#limpar-historico-btn:hover {
+    background: linear-gradient(90deg, #b71c1c, var(--cor-erro));
+    color: #fff;
+}
+
+
+.resultado-container {
+    border-top: 5px solid var(--cor-sucesso);
+    text-align: left;
+    box-shadow: 0 6px 32px rgba(40,167,69,0.08);
+    margin-bottom: 2.5rem;
+    animation: fadeInCard 0.7s;
+}
+@keyframes fadeInCard {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#resultado {
+    font-size: 1.1em;
+    margin-bottom: 1.5rem;
+}
+
+#resultado strong {
+    color: var(--cor-primaria);
+}
+
+#resultado .error-message { /* Classe para mensagens de erro */
+    color: var(--cor-erro);
+    font-weight: bold;
+}
+
+#resultado .success-message { /* Classe para mensagens de sucesso */
+    color: var(--cor-sucesso);
+    font-weight: bold;
+}
+
+#resultado small {
+    display: block;
+    margin-top: 1rem;
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Estilos específicos para o gráfico */
+
+#graficoCustos {
+    margin-top: 2rem;
+    background: linear-gradient(120deg, #eaf6ff 60%, #f4f8fb 100%);
+    padding: 1.2rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,90,156,0.07);
+    border: 1.5px solid #e0eaf3;
+}

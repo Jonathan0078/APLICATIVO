@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tempo de Filtração - GreasePRO</title>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Scripts -->
+    <script src="js/TFCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-filter"></i> Tempo de Filtração e Número de Passagens</h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> Instruções</h2>
+                    <p>Forneça os dados para calcular o tempo de filtração e o número de passagens (aplicável apenas para filtração OFF-LINE):</p>
+                    <ul>
+                        <li>Nível de limpeza inicial (@ x mícron por ml).</li>
+                        <li>Nível de limpeza final (@ x mícron por ml).</li>
+                        <li>Volume do sistema (galões).</li>
+                        <li>Vazão através do filtro (gpm).</li>
+                        <li>Taxa de filtração Beta.</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> Dados de Filtração</h2>
+                    <div class="input-group">
+                        <label for="nli">Nível de Limpeza Inicial (@ x mícron/ml)</label>
+                        <input id="nli" type="number" placeholder="Ex: 5000">
+                    </div>
+                    <div class="input-group">
+                        <label for="nlf">Nível de Limpeza Final (@ x mícron/ml)</label>
+                        <input id="nlf" type="number" placeholder="Ex: 100">
+                    </div>
+                    <div class="input-group">
+                        <label for="vsg">Volume do Sistema (gal)</label>
+                        <input id="vsg" type="number" placeholder="Ex: 100">
+                    </div>
+                    <div class="input-group">
+                        <label for="tft">Vazão do Filtro (gpm)</label>
+                        <input id="tft" type="number" placeholder="Ex: 10">
+                    </div>
+                    <div class="input-group">
+                        <label for="tfb">Taxa de Filtração Beta</label>
+                        <input id="tfb" type="number" placeholder="Ex: 200">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validarC()"><i class="fas fa-calculator"></i> Calcular</button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> Limpar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> Resultados</h2>
+                    </div>
+                    
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p>Os resultados aparecerão aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="label">Tempo (minutos)</span>
+                                <span id="res1-val" class="value">0 min</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label">Nº de Passagens</span>
+                                <span id="res2-val" class="value">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+
+        // Adaptação para mostrar/esconder os resultados
+        const original_validarC = window.validarC;
+        window.validarC = function() {
+            original_validarC();
+            const res1Value = document.getElementById('res1').value;
+            const res2Value = document.getElementById('res2').value;
+            if (res1Value && res2Value) {
+                document.getElementById('result-placeholder').style.display = 'none';
+                document.getElementById('result-content').style.display = 'block';
+                document.getElementById('res1-val').textContent = res1Value + " min";
+                document.getElementById('res2-val').textContent = res2Value;
+            }
+        }
+        
+        const original_limpiarC = window.limpiarC;
+        window.limpiarC = function() {
+            original_limpiarC();
+            document.getElementById('result-placeholder').style.display = 'block';
+            document.getElementById('result-content').style.display = 'none';
+        }
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

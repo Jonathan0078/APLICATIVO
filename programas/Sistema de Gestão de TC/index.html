@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software de Inspeção de TC</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1>Sistema de Gestão de TC</h1>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#" data-page="dashboard">Página Inicial</a></li>
+                    <li><a href="#" data-page="inspecaoGeral">1. Inspeção TC em Fábrica</a></li>
+                    <li><strong>2. Planos Sistemáticos</strong></li>
+                    <li><a href="#" data-page="planoPreventivo">2.1. Plano Preventivo</a></li>
+                    <li><a href="#" data-page="roteiroVisual">2.2. Roteiro Inspeção Visual</a></li>
+                    <li><a href="#" data-page="planoSeletivo">2.3. Plano Seletivo</a></li>
+                    <li><a href="#" data-page="planoRaspadores">2.4. Plano Raspadores e TAG</a></li>
+                    <li><a href="#" data-page="planoMesaImpacto">2.5. Plano Mesa de Impacto e TAG</a></li>
+                    <li><a href="#" data-page="idRolos">2.6. PD: Identificação de Rolos</a></li>
+                    <li><a href="#" data-page="mapeamentoRoletes">2.7. Mapeamento de Roletes</a></li>
+                    <li><a href="#" data-page="diretrizesSeguranca">2.8. Diretrizes de Segurança</a></li>
+                    <li><a href="#" data-page="desviosOcultos">2.9. Desvios Ocultos</a></li>
+                    <li><a href="#" data-page="orientacoesCampo">2.10. Orientações de Campo</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="main-content">
+            <div id="notification-area"></div>
+        </main>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <script src="script.js"></script>
+</body>
+</html>

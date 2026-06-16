@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EspecCalc Rolamentos Pro</title>
+    <!-- Adicione um ícone para a aba do navegador (favicon) -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-gears"></i> EspecCalc Rolamentos Pro</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- Coluna de Entradas (Inputs) -->
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-keyboard"></i> Busca por Designação</h2>
+                    <div class="input-group autocomplete-container">
+                        <label for="bearing-spec">Digite a designação do rolamento</label>
+                        <input type="text" id="bearing-spec" placeholder="Ex: 6205-2RS, NU210, 22312 EK..." autocomplete="off">
+                        <div id="suggestions-box" class="suggestions-list"></div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" id="direct-search-btn"><i class="fa-solid fa-search"></i> Consultar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-ruler-horizontal"></i> Busca por Medidas (mm)</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="bore-diameter-search">Furo (d)</label>
+                            <input type="number" id="bore-diameter-search" placeholder="Ex: 25">
+                        </div>
+                        <div class="input-group">
+                            <label for="outer-diameter-search">Externo (D)</label>
+                            <input type="number" id="outer-diameter-search" placeholder="Ex: 52">
+                        </div>
+                        <div class="input-group">
+                            <label for="width-search">Largura (B/T)</label>
+                            <input type="number" id="width-search" placeholder="Ex: 15">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" id="advanced-search-btn"><i class="fa-solid fa-filter"></i> Filtrar</button>
+                        <button class="secondary-button" id="clear-btn"><i class="fa-solid fa-eraser"></i> Limpar Tudo</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-calculator"></i> Calculadora de Furo (ISO 15)</h2>
+                     <div class="input-group">
+                        <label for="iso-spec-input">Digite a designação (ex: 6204)</label>
+                        <input type="text" id="iso-spec-input" placeholder="Apenas para cálculo rápido do furo">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" id="iso-calculate-btn"><i class="fa-solid fa-bolt"></i> Calcular Furo</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna de Saídas (Outputs) -->
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> Resultado da Consulta</h2>
+                        <button class="icon-button" id="copy-btn" title="Copiar Designação" style="display: none;">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- ÁREA DE RESULTADOS PRINCIPAL -->
+                    <!-- Esta div será preenchida pelo seu JavaScript. -->
+                    <!-- Inicialmente, ela contém o placeholder. -->
+                    <div id="result-display">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <p>Aguardando sua consulta...</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card" id="history-card">
+                    <h2><i class="fa-solid fa-clock-rotate-left"></i> Histórico de Buscas</h2>
+                    <ul id="history-list">
+                        <li class="history-placeholder">Nenhuma busca recente.</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- CARREGAMENTO DOS SCRIPTS -->
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

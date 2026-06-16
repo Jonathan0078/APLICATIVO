@@ -1,0 +1,920 @@
+<!DOCTYPE html><html lang="pt-BR" class="__variable_e8ce0c light" style="color-scheme: light;"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style type="text/css">:root, :host {
+  --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Solid";
+  --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Regular";
+  --fa-font-light: normal 300 1em/1 "Font Awesome 6 Light";
+  --fa-font-thin: normal 100 1em/1 "Font Awesome 6 Thin";
+  --fa-font-duotone: normal 900 1em/1 "Font Awesome 6 Duotone";
+  --fa-font-sharp-solid: normal 900 1em/1 "Font Awesome 6 Sharp";
+  --fa-font-sharp-regular: normal 400 1em/1 "Font Awesome 6 Sharp";
+  --fa-font-sharp-light: normal 300 1em/1 "Font Awesome 6 Sharp";
+  --fa-font-sharp-thin: normal 100 1em/1 "Font Awesome 6 Sharp";
+  --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+}
+
+svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
+  overflow: visible;
+  box-sizing: content-box;
+}
+
+.svg-inline--fa {
+  display: var(--fa-display, inline-block);
+  height: 1em;
+  overflow: visible;
+  vertical-align: -0.125em;
+}
+.svg-inline--fa.fa-2xs {
+  vertical-align: 0.1em;
+}
+.svg-inline--fa.fa-xs {
+  vertical-align: 0em;
+}
+.svg-inline--fa.fa-sm {
+  vertical-align: -0.0714285705em;
+}
+.svg-inline--fa.fa-lg {
+  vertical-align: -0.2em;
+}
+.svg-inline--fa.fa-xl {
+  vertical-align: -0.25em;
+}
+.svg-inline--fa.fa-2xl {
+  vertical-align: -0.3125em;
+}
+.svg-inline--fa.fa-pull-left {
+  margin-right: var(--fa-pull-margin, 0.3em);
+  width: auto;
+}
+.svg-inline--fa.fa-pull-right {
+  margin-left: var(--fa-pull-margin, 0.3em);
+  width: auto;
+}
+.svg-inline--fa.fa-li {
+  width: var(--fa-li-width, 2em);
+  top: 0.25em;
+}
+.svg-inline--fa.fa-fw {
+  width: var(--fa-fw-width, 1.25em);
+}
+
+.fa-layers svg.svg-inline--fa {
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.fa-layers-counter, .fa-layers-text {
+  display: inline-block;
+  position: absolute;
+  text-align: center;
+}
+
+.fa-layers {
+  display: inline-block;
+  height: 1em;
+  position: relative;
+  text-align: center;
+  vertical-align: -0.125em;
+  width: 1em;
+}
+.fa-layers svg.svg-inline--fa {
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+}
+
+.fa-layers-text {
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+}
+
+.fa-layers-counter {
+  background-color: var(--fa-counter-background-color, #ff253a);
+  border-radius: var(--fa-counter-border-radius, 1em);
+  box-sizing: border-box;
+  color: var(--fa-inverse, #fff);
+  line-height: var(--fa-counter-line-height, 1);
+  max-width: var(--fa-counter-max-width, 5em);
+  min-width: var(--fa-counter-min-width, 1.5em);
+  overflow: hidden;
+  padding: var(--fa-counter-padding, 0.25em 0.5em);
+  right: var(--fa-right, 0);
+  text-overflow: ellipsis;
+  top: var(--fa-top, 0);
+  -webkit-transform: scale(var(--fa-counter-scale, 0.25));
+          transform: scale(var(--fa-counter-scale, 0.25));
+  -webkit-transform-origin: top right;
+          transform-origin: top right;
+}
+
+.fa-layers-bottom-right {
+  bottom: var(--fa-bottom, 0);
+  right: var(--fa-right, 0);
+  top: auto;
+  -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+          transform: scale(var(--fa-layers-scale, 0.25));
+  -webkit-transform-origin: bottom right;
+          transform-origin: bottom right;
+}
+
+.fa-layers-bottom-left {
+  bottom: var(--fa-bottom, 0);
+  left: var(--fa-left, 0);
+  right: auto;
+  top: auto;
+  -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+          transform: scale(var(--fa-layers-scale, 0.25));
+  -webkit-transform-origin: bottom left;
+          transform-origin: bottom left;
+}
+
+.fa-layers-top-right {
+  top: var(--fa-top, 0);
+  right: var(--fa-right, 0);
+  -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+          transform: scale(var(--fa-layers-scale, 0.25));
+  -webkit-transform-origin: top right;
+          transform-origin: top right;
+}
+
+.fa-layers-top-left {
+  left: var(--fa-left, 0);
+  right: auto;
+  top: var(--fa-top, 0);
+  -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+          transform: scale(var(--fa-layers-scale, 0.25));
+  -webkit-transform-origin: top left;
+          transform-origin: top left;
+}
+
+.fa-1x {
+  font-size: 1em;
+}
+
+.fa-2x {
+  font-size: 2em;
+}
+
+.fa-3x {
+  font-size: 3em;
+}
+
+.fa-4x {
+  font-size: 4em;
+}
+
+.fa-5x {
+  font-size: 5em;
+}
+
+.fa-6x {
+  font-size: 6em;
+}
+
+.fa-7x {
+  font-size: 7em;
+}
+
+.fa-8x {
+  font-size: 8em;
+}
+
+.fa-9x {
+  font-size: 9em;
+}
+
+.fa-10x {
+  font-size: 10em;
+}
+
+.fa-2xs {
+  font-size: 0.625em;
+  line-height: 0.1em;
+  vertical-align: 0.225em;
+}
+
+.fa-xs {
+  font-size: 0.75em;
+  line-height: 0.0833333337em;
+  vertical-align: 0.125em;
+}
+
+.fa-sm {
+  font-size: 0.875em;
+  line-height: 0.0714285718em;
+  vertical-align: 0.0535714295em;
+}
+
+.fa-lg {
+  font-size: 1.25em;
+  line-height: 0.05em;
+  vertical-align: -0.075em;
+}
+
+.fa-xl {
+  font-size: 1.5em;
+  line-height: 0.0416666682em;
+  vertical-align: -0.125em;
+}
+
+.fa-2xl {
+  font-size: 2em;
+  line-height: 0.03125em;
+  vertical-align: -0.1875em;
+}
+
+.fa-fw {
+  text-align: center;
+  width: 1.25em;
+}
+
+.fa-ul {
+  list-style-type: none;
+  margin-left: var(--fa-li-margin, 2.5em);
+  padding-left: 0;
+}
+.fa-ul > li {
+  position: relative;
+}
+
+.fa-li {
+  left: calc(var(--fa-li-width, 2em) * -1);
+  position: absolute;
+  text-align: center;
+  width: var(--fa-li-width, 2em);
+  line-height: inherit;
+}
+
+.fa-border {
+  border-color: var(--fa-border-color, #eee);
+  border-radius: var(--fa-border-radius, 0.1em);
+  border-style: var(--fa-border-style, solid);
+  border-width: var(--fa-border-width, 0.08em);
+  padding: var(--fa-border-padding, 0.2em 0.25em 0.15em);
+}
+
+.fa-pull-left {
+  float: left;
+  margin-right: var(--fa-pull-margin, 0.3em);
+}
+
+.fa-pull-right {
+  float: right;
+  margin-left: var(--fa-pull-margin, 0.3em);
+}
+
+.fa-beat {
+  -webkit-animation-name: fa-beat;
+          animation-name: fa-beat;
+  -webkit-animation-delay: var(--fa-animation-delay, 0s);
+          animation-delay: var(--fa-animation-delay, 0s);
+  -webkit-animation-direction: var(--fa-animation-direction, normal);
+          animation-direction: var(--fa-animation-direction, normal);
+  -webkit-animation-duration: var(--fa-animation-duration, 1s);
+          animation-duration: var(--fa-animation-duration, 1s);
+  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+          animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+          animation-timing-function: var(--fa-animation-timing, ease-in-out);
+}
+
+.fa-bounce {
+  -webkit-animation-name: fa-bounce;
+          animation-name: fa-bounce;
+  -webkit-animation-delay: var(--fa-animation-delay, 0s);
+          animation-delay: var(--fa-animation-delay, 0s);
+  -webkit-animation-direction: var(--fa-animation-direction, normal);
+          animation-direction: var(--fa-animation-direction, normal);
+  -webkit-animation-duration: var(--fa-animation-duration, 1s);
+          animation-duration: var(--fa-animation-duration, 1s);
+  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+          animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+          animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+}
+
+.fa-fade {
+  -webkit-animation-name: fa-fade;
+          animation-name: fa-fade;
+  -webkit-animation-delay: var(--fa-animation-delay, 0s);
+          animation-delay: var(--fa-animation-delay, 0s);
+  -webkit-animation-direction: var(--fa-animation-direction, normal);
+          animation-direction: var(--fa-animation-direction, normal);
+  -webkit-animation-duration: var(--fa-animation-duration, 1s);
+          animation-duration: var(--fa-animation-duration, 1s);
+  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+          animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+          animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+}
+
+.fa-beat-fade {
+  -webkit-animation-name: fa-beat-fade;
+          animation-name: fa-beat-fade;
+  -webkit-animation-delay: var(--fa-animation-delay, 0s);
+          animation-delay: var(--fa-animation-delay, 0s);
+  -webkit-animation-direction: var(--fa-animation-direction, normal);
+          animation-direction: var(--fa-animation-direction, normal);
+  -webkit-animation-duration: var(--fa-animation-duration, 1s);
+          animation-duration: var(--fa-animation-duration, 1s);
+  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+          animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+          animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+}
+
+.fa-flip {
+  -webkit-animation-name: fa-flip;
+          animation-name: fa-flip;
+  -webkit-animation-delay: var(--fa-animation-delay, 0s);
+          animation-delay: var(--fa-animation-delay, 0s);
+  -webkit-animation-direction: var(--fa-animation-direction, normal);
+          animation-direction: var(--fa-animation-direction, normal);
+  -webkit-animation-duration: var(--fa-animation-duration, 1s);
+          animation-duration: var(--fa-animation-duration, 1s);
+  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+          animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+          animation-timing-function: var(--fa-animation-timing, ease-in-out);
+}
+
+.fa-shake {
+  -webkit-animation-name: fa-shake;
+          animation-name: fa-shake;
+  -webkit-animation-delay: var(--fa-animation-delay, 0s);
+          animation-delay: var(--fa-animation-delay, 0s);
+  -webkit-animation-direction: var(--fa-animation-direction, normal);
+          animation-direction: var(--fa-animation-direction, normal);
+  -webkit-animation-duration: var(--fa-animation-duration, 1s);
+          animation-duration: var(--fa-animation-duration, 1s);
+  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+          animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+          animation-timing-function: var(--fa-animation-timing, linear);
+}
+
+.fa-spin {
+  -webkit-animation-name: fa-spin;
+          animation-name: fa-spin;
+  -webkit-animation-delay: var(--fa-animation-delay, 0s);
+          animation-delay: var(--fa-animation-delay, 0s);
+  -webkit-animation-direction: var(--fa-animation-direction, normal);
+          animation-direction: var(--fa-animation-direction, normal);
+  -webkit-animation-duration: var(--fa-animation-duration, 2s);
+          animation-duration: var(--fa-animation-duration, 2s);
+  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+          animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+          animation-timing-function: var(--fa-animation-timing, linear);
+}
+
+.fa-spin-reverse {
+  --fa-animation-direction: reverse;
+}
+
+.fa-pulse,
+.fa-spin-pulse {
+  -webkit-animation-name: fa-spin;
+          animation-name: fa-spin;
+  -webkit-animation-direction: var(--fa-animation-direction, normal);
+          animation-direction: var(--fa-animation-direction, normal);
+  -webkit-animation-duration: var(--fa-animation-duration, 1s);
+          animation-duration: var(--fa-animation-duration, 1s);
+  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+          animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  -webkit-animation-timing-function: var(--fa-animation-timing, steps(8));
+          animation-timing-function: var(--fa-animation-timing, steps(8));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fa-beat,
+.fa-bounce,
+.fa-fade,
+.fa-beat-fade,
+.fa-flip,
+.fa-pulse,
+.fa-shake,
+.fa-spin,
+.fa-spin-pulse {
+    -webkit-animation-delay: -1ms;
+            animation-delay: -1ms;
+    -webkit-animation-duration: 1ms;
+            animation-duration: 1ms;
+    -webkit-animation-iteration-count: 1;
+            animation-iteration-count: 1;
+    -webkit-transition-delay: 0s;
+            transition-delay: 0s;
+    -webkit-transition-duration: 0s;
+            transition-duration: 0s;
+  }
+}
+@-webkit-keyframes fa-beat {
+  0%, 90% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  45% {
+    -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+            transform: scale(var(--fa-beat-scale, 1.25));
+  }
+}
+@keyframes fa-beat {
+  0%, 90% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  45% {
+    -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+            transform: scale(var(--fa-beat-scale, 1.25));
+  }
+}
+@-webkit-keyframes fa-bounce {
+  0% {
+    -webkit-transform: scale(1, 1) translateY(0);
+            transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+            transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+  }
+  30% {
+    -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+            transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+  }
+  50% {
+    -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+            transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+  }
+  57% {
+    -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+            transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+  }
+  64% {
+    -webkit-transform: scale(1, 1) translateY(0);
+            transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    -webkit-transform: scale(1, 1) translateY(0);
+            transform: scale(1, 1) translateY(0);
+  }
+}
+@keyframes fa-bounce {
+  0% {
+    -webkit-transform: scale(1, 1) translateY(0);
+            transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+            transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+  }
+  30% {
+    -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+            transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+  }
+  50% {
+    -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+            transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+  }
+  57% {
+    -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+            transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+  }
+  64% {
+    -webkit-transform: scale(1, 1) translateY(0);
+            transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    -webkit-transform: scale(1, 1) translateY(0);
+            transform: scale(1, 1) translateY(0);
+  }
+}
+@-webkit-keyframes fa-fade {
+  50% {
+    opacity: var(--fa-fade-opacity, 0.4);
+  }
+}
+@keyframes fa-fade {
+  50% {
+    opacity: var(--fa-fade-opacity, 0.4);
+  }
+}
+@-webkit-keyframes fa-beat-fade {
+  0%, 100% {
+    opacity: var(--fa-beat-fade-opacity, 0.4);
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+            transform: scale(var(--fa-beat-fade-scale, 1.125));
+  }
+}
+@keyframes fa-beat-fade {
+  0%, 100% {
+    opacity: var(--fa-beat-fade-opacity, 0.4);
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+            transform: scale(var(--fa-beat-fade-scale, 1.125));
+  }
+}
+@-webkit-keyframes fa-flip {
+  50% {
+    -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+            transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+  }
+}
+@keyframes fa-flip {
+  50% {
+    -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+            transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+  }
+}
+@-webkit-keyframes fa-shake {
+  0% {
+    -webkit-transform: rotate(-15deg);
+            transform: rotate(-15deg);
+  }
+  4% {
+    -webkit-transform: rotate(15deg);
+            transform: rotate(15deg);
+  }
+  8%, 24% {
+    -webkit-transform: rotate(-18deg);
+            transform: rotate(-18deg);
+  }
+  12%, 28% {
+    -webkit-transform: rotate(18deg);
+            transform: rotate(18deg);
+  }
+  16% {
+    -webkit-transform: rotate(-22deg);
+            transform: rotate(-22deg);
+  }
+  20% {
+    -webkit-transform: rotate(22deg);
+            transform: rotate(22deg);
+  }
+  32% {
+    -webkit-transform: rotate(-12deg);
+            transform: rotate(-12deg);
+  }
+  36% {
+    -webkit-transform: rotate(12deg);
+            transform: rotate(12deg);
+  }
+  40%, 100% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+}
+@keyframes fa-shake {
+  0% {
+    -webkit-transform: rotate(-15deg);
+            transform: rotate(-15deg);
+  }
+  4% {
+    -webkit-transform: rotate(15deg);
+            transform: rotate(15deg);
+  }
+  8%, 24% {
+    -webkit-transform: rotate(-18deg);
+            transform: rotate(-18deg);
+  }
+  12%, 28% {
+    -webkit-transform: rotate(18deg);
+            transform: rotate(18deg);
+  }
+  16% {
+    -webkit-transform: rotate(-22deg);
+            transform: rotate(-22deg);
+  }
+  20% {
+    -webkit-transform: rotate(22deg);
+            transform: rotate(22deg);
+  }
+  32% {
+    -webkit-transform: rotate(-12deg);
+            transform: rotate(-12deg);
+  }
+  36% {
+    -webkit-transform: rotate(12deg);
+            transform: rotate(12deg);
+  }
+  40%, 100% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+}
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+.fa-rotate-90 {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+.fa-rotate-180 {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.fa-rotate-270 {
+  -webkit-transform: rotate(270deg);
+          transform: rotate(270deg);
+}
+
+.fa-flip-horizontal {
+  -webkit-transform: scale(-1, 1);
+          transform: scale(-1, 1);
+}
+
+.fa-flip-vertical {
+  -webkit-transform: scale(1, -1);
+          transform: scale(1, -1);
+}
+
+.fa-flip-both,
+.fa-flip-horizontal.fa-flip-vertical {
+  -webkit-transform: scale(-1, -1);
+          transform: scale(-1, -1);
+}
+
+.fa-rotate-by {
+  -webkit-transform: rotate(var(--fa-rotate-angle, none));
+          transform: rotate(var(--fa-rotate-angle, none));
+}
+
+.fa-stack {
+  display: inline-block;
+  vertical-align: middle;
+  height: 2em;
+  position: relative;
+  width: 2.5em;
+}
+
+.fa-stack-1x,
+.fa-stack-2x {
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: var(--fa-stack-z-index, auto);
+}
+
+.svg-inline--fa.fa-stack-1x {
+  height: 1em;
+  width: 1.25em;
+}
+.svg-inline--fa.fa-stack-2x {
+  height: 2em;
+  width: 2.5em;
+}
+
+.fa-inverse {
+  color: var(--fa-inverse, #fff);
+}
+
+.sr-only,
+.fa-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only-focusable:not(:focus),
+.fa-sr-only-focusable:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.svg-inline--fa .fa-primary {
+  fill: var(--fa-primary-color, currentColor);
+  opacity: var(--fa-primary-opacity, 1);
+}
+
+.svg-inline--fa .fa-secondary {
+  fill: var(--fa-secondary-color, currentColor);
+  opacity: var(--fa-secondary-opacity, 0.4);
+}
+
+.svg-inline--fa.fa-swap-opacity .fa-primary {
+  opacity: var(--fa-secondary-opacity, 0.4);
+}
+
+.svg-inline--fa.fa-swap-opacity .fa-secondary {
+  opacity: var(--fa-primary-opacity, 1);
+}
+
+.svg-inline--fa mask .fa-primary,
+.svg-inline--fa mask .fa-secondary {
+  fill: black;
+}
+
+.fad.fa-inverse,
+.fa-duotone.fa-inverse {
+  color: var(--fa-inverse, #fff);
+}</style><link rel="preload" href="/_next/static/media/e4af272ccee01ff0-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="preload" href="/_next/static/media/4f05ba3a6752a328-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="css/8c966a6cd3d54953.css" crossorigin="" data-precedence="next"><link rel="stylesheet" href="css/9f3ace3a02e0edf8.css" crossorigin="" data-precedence="next"><link rel="stylesheet" href="css/57d40f76bd625c61.css" crossorigin="" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="/_next/static/chunks/webpack-0de313821007c467.js" crossorigin=""><script src="js/fd9d1056-abdd6cc5ec0df9b1.js" async="" crossorigin=""></script><script src="js/472-52c0a223d8b294d4.js" async="" crossorigin=""></script><script src="js/main-app-892c3dff08e9cd4c.js" async="" crossorigin=""></script><script src="js/layout-522b142a43da802a.js" async=""></script><script src="js/870fdd6f-2864c4c2fdc5daab.js" async=""></script><script src="js/0e5ce63c-4bc8f4d1dbc35b88.js" async=""></script><script src="js/11-09782bfb272b7727.js" async=""></script><script src="js/629-b96c0c3dad9e4dcc.js" async=""></script><script src="js/818-e08daa83918950c0.js" async=""></script><script src="js/252-82308e38c14b5abd.js" async=""></script><script src="js/page-728a10ae6cb1b29f.js" async=""></script><link rel="preload" href="https://www.googletagmanager.com/gtag/js?id=G-R3580JHXWF" as="script"><link rel="icon" sizes="any" href="favicon.ico"><link rel="icon" sizes="48x48" href="favicon.ico"><link rel="icon" sizes="128x128" href="favicon.ico"><link rel="icon" sizes="192x192" href="favicon.ico"><meta name="google-site-verification" content="I2hN4BUvkx-VefAC63watBfKyR5LoRswbHXCZKJzT_U"><meta name="google-adsense-account" content="ca-pub-2316141632853241"><meta name="application-name" content="Hid-calc"><meta name="apple-mobile-web-app-title" content="Hid-calc"><meta property="og:site_name" content="Hid-calc"><title>Mecânica: Calculadora de Peso Teórico | Hid-calc</title><meta name="description" content="Calculadora online gratuita para cálculos de peso teórico de materiais. Calcule os principais tipos de materiais de forma simples e rápida."><meta property="og:title" content="Hid-calc: Calculadoras para engenharia"><meta property="og:description" content="Calculadoras online gratuitas. Calcule componentes hidráulicos: cilindros, motores, bombas, queda de pressão, tubulação e muito mais."><meta property="og:url" content="https://www.Hid-calc.com.br/"><meta property="og:site_name" content="Hid-calc"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Hid-calc: Calculadoras para engenharia"><meta name="twitter:description" content="Calculadoras online gratuitas. Calcule componentes hidráulicos: cilindros, motores, bombas, queda de pressão, tubulação e muito mais."><meta name="next-size-adjust"><link rel="stylesheet" href="css/css2.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Hid-calc","alternateName":"Calculadoras de Engenharia Online","url":"https://www.Hid-calc.com.br/"}</script><script src="js/polyfills-c67a75d1b6f99dc8.js" crossorigin="" nomodule=""></script><style data-emotion="css" data-s=""></style><link rel="preload" href="/_next/static/css/6dbc88453ce0d1be.css" as="style" crossorigin=""></head><body class="dark:bg-zinc-900"><script>!function(){try{var d=document.documentElement,c=d.classList;c.remove('light','dark');var e=localStorage.getItem('theme');if('system'===e||(!e&&true)){var t='(prefers-color-scheme: dark)',m=window.matchMedia(t);if(m.media!==t||m.matches){d.style.colorScheme = 'dark';c.add('dark')}else{d.style.colorScheme = 'light';c.add('light')}}else if(e){c.add(e|| '')}if(e==='light'||e==='dark')d.style.colorScheme=e}catch(e){}}()</script><div class="bg-white dark:from-transparent dark:bg-zinc-900"><div class=" fixed  top-0  left-0 z-50  bg-white  w-full  border-b  order-zinc-900/10  dark:bg-zinc-900  dark:border-zinc-300/10  dark:border-b bg-opacity-80 dark:bg-opacity-80 backdrop-blur-md "><nav class="mx-auto flex items-center justify-between max-w-7xl py-3 max-[1280px]:px-4"><div class="flex items-center align-middle"><div class="__className_4f4c7b"><a href="/"><span class="        text-zinc-900         font-extrabold         text-2xl         leading-none         mr-5         tracking-tighter         hover:text-primary/80        dark:text-white        ">Hid-calc</span></a></div><nav aria-label="Main" data-orientation="horizontal" dir="ltr" class="relative z-10 flex max-w-max flex-1 items-center justify-center"><div style="position:relative"><ul data-orientation="horizontal" class="group flex flex-1 list-none items-center justify-center space-x-1" dir="ltr"><li><button id="radix-:R2bbbbala:-trigger-radix-:Rebbbbala:" data-state="closed" aria-expanded="false" aria-controls="radix-:R2bbbbala:-content-radix-:Rebbbbala:" class="group inline-flex h-9 w-max items-center justify-center rounded-md text-sm font-semibold transition-colors hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:opacity-50 data-[active] cursor-default text-zinc-700 hover:bg-[#e9e9e9] dark:hover:bg-secondary/80 px-3 dark:text-zinc-100 group" data-radix-collection-item="">Calculadoras<!-- --> <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="relative top-[1px] ml-1 h-[14px] w-[14px] transition duration-300 group-data-[state=open]:rotate-180" aria-hidden="true"><path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></li></ul></div><div class="absolute left-0 top-full flex justify-center"></div></nav></div><div><button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-secondary-foreground h-9 w-9 border-none bg-white hover:bg-[#e9e9e9] dark:bg-zinc-900 dark:hover:bg-secondary/80" type="button" id="radix-:Rjbbbala:" aria-haspopup="menu" aria-expanded="false" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"><path d="M7.5 0C7.77614 0 8 0.223858 8 0.5V2.5C8 2.77614 7.77614 3 7.5 3C7.22386 3 7 2.77614 7 2.5V0.5C7 0.223858 7.22386 0 7.5 0ZM2.1967 2.1967C2.39196 2.00144 2.70854 2.00144 2.90381 2.1967L4.31802 3.61091C4.51328 3.80617 4.51328 4.12276 4.31802 4.31802C4.12276 4.51328 3.80617 4.51328 3.61091 4.31802L2.1967 2.90381C2.00144 2.70854 2.00144 2.39196 2.1967 2.1967ZM0.5 7C0.223858 7 0 7.22386 0 7.5C0 7.77614 0.223858 8 0.5 8H2.5C2.77614 8 3 7.77614 3 7.5C3 7.22386 2.77614 7 2.5 7H0.5ZM2.1967 12.8033C2.00144 12.608 2.00144 12.2915 2.1967 12.0962L3.61091 10.682C3.80617 10.4867 4.12276 10.4867 4.31802 10.682C4.51328 10.8772 4.51328 11.1938 4.31802 11.3891L2.90381 12.8033C2.70854 12.9986 2.39196 12.9986 2.1967 12.8033ZM12.5 7C12.2239 7 12 7.22386 12 7.5C12 7.77614 12.2239 8 12.5 8H14.5C14.7761 8 15 7.77614 15 7.5C15 7.22386 14.7761 7 14.5 7H12.5ZM10.682 4.31802C10.4867 4.12276 10.4867 3.80617 10.682 3.61091L12.0962 2.1967C12.2915 2.00144 12.608 2.00144 12.8033 2.1967C12.9986 2.39196 12.9986 2.70854 12.8033 2.90381L11.3891 4.31802C11.1938 4.51328 10.8772 4.51328 10.682 4.31802ZM8 12.5C8 12.2239 7.77614 12 7.5 12C7.22386 12 7 12.2239 7 12.5V14.5C7 14.7761 7.22386 15 7.5 15C7.77614 15 8 14.7761 8 14.5V12.5ZM10.682 10.682C10.8772 10.4867 11.1938 10.4867 11.3891 10.682L12.8033 12.0962C12.9986 12.2915 12.9986 12.608 12.8033 12.8033C12.608 12.9986 12.2915 12.9986 12.0962 12.8033L10.682 11.3891C10.4867 11.1938 10.4867 10.8772 10.682 10.682ZM5.5 7.5C5.5 6.39543 6.39543 5.5 7.5 5.5C8.60457 5.5 9.5 6.39543 9.5 7.5C9.5 8.60457 8.60457 9.5 7.5 9.5C6.39543 9.5 5.5 8.60457 5.5 7.5ZM7.5 4.5C5.84315 4.5 4.5 5.84315 4.5 7.5C4.5 9.15685 5.84315 10.5 7.5 10.5C9.15685 10.5 10.5 9.15685 10.5 7.5C10.5 5.84315 9.15685 4.5 7.5 4.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"><path d="M2.89998 0.499976C2.89998 0.279062 2.72089 0.0999756 2.49998 0.0999756C2.27906 0.0999756 2.09998 0.279062 2.09998 0.499976V1.09998H1.49998C1.27906 1.09998 1.09998 1.27906 1.09998 1.49998C1.09998 1.72089 1.27906 1.89998 1.49998 1.89998H2.09998V2.49998C2.09998 2.72089 2.27906 2.89998 2.49998 2.89998C2.72089 2.89998 2.89998 2.72089 2.89998 2.49998V1.89998H3.49998C3.72089 1.89998 3.89998 1.72089 3.89998 1.49998C3.89998 1.27906 3.72089 1.09998 3.49998 1.09998H2.89998V0.499976ZM5.89998 3.49998C5.89998 3.27906 5.72089 3.09998 5.49998 3.09998C5.27906 3.09998 5.09998 3.27906 5.09998 3.49998V4.09998H4.49998C4.27906 4.09998 4.09998 4.27906 4.09998 4.49998C4.09998 4.72089 4.27906 4.89998 4.49998 4.89998H5.09998V5.49998C5.09998 5.72089 5.27906 5.89998 5.49998 5.89998C5.72089 5.89998 5.89998 5.72089 5.89998 5.49998V4.89998H6.49998C6.72089 4.89998 6.89998 4.72089 6.89998 4.49998C6.89998 4.27906 6.72089 4.09998 6.49998 4.09998H5.89998V3.49998ZM1.89998 6.49998C1.89998 6.27906 1.72089 6.09998 1.49998 6.09998C1.27906 6.09998 1.09998 6.27906 1.09998 6.49998V7.09998H0.499976C0.279062 7.09998 0.0999756 7.27906 0.0999756 7.49998C0.0999756 7.72089 0.279062 7.89998 0.499976 7.89998H1.09998V8.49998C1.09998 8.72089 1.27906 8.89997 1.49998 8.89997C1.72089 8.89997 1.89998 8.72089 1.89998 8.49998V7.89998H2.49998C2.72089 7.89998 2.89998 7.72089 2.89998 7.49998C2.89998 7.27906 2.72089 7.09998 2.49998 7.09998H1.89998V6.49998ZM8.54406 0.98184L8.24618 0.941586C8.03275 0.917676 7.90692 1.1655 8.02936 1.34194C8.17013 1.54479 8.29981 1.75592 8.41754 1.97445C8.91878 2.90485 9.20322 3.96932 9.20322 5.10022C9.20322 8.37201 6.82247 11.0878 3.69887 11.6097C3.45736 11.65 3.20988 11.6772 2.96008 11.6906C2.74563 11.702 2.62729 11.9535 2.77721 12.1072C2.84551 12.1773 2.91535 12.2458 2.98667 12.3128L3.05883 12.3795L3.31883 12.6045L3.50684 12.7532L3.62796 12.8433L3.81491 12.9742L3.99079 13.089C4.11175 13.1651 4.23536 13.2375 4.36157 13.3059L4.62496 13.4412L4.88553 13.5607L5.18837 13.6828L5.43169 13.7686C5.56564 13.8128 5.70149 13.8529 5.83857 13.8885C5.94262 13.9155 6.04767 13.9401 6.15405 13.9622C6.27993 13.9883 6.40713 14.0109 6.53544 14.0298L6.85241 14.0685L7.11934 14.0892C7.24637 14.0965 7.37436 14.1002 7.50322 14.1002C11.1483 14.1002 14.1032 11.1453 14.1032 7.50023C14.1032 7.25044 14.0893 7.00389 14.0623 6.76131L14.0255 6.48407C13.991 6.26083 13.9453 6.04129 13.8891 5.82642C13.8213 5.56709 13.7382 5.31398 13.6409 5.06881L13.5279 4.80132L13.4507 4.63542L13.3766 4.48666C13.2178 4.17773 13.0353 3.88295 12.8312 3.60423L12.6782 3.40352L12.4793 3.16432L12.3157 2.98361L12.1961 2.85951L12.0355 2.70246L11.8134 2.50184L11.4925 2.24191L11.2483 2.06498L10.9562 1.87446L10.6346 1.68894L10.3073 1.52378L10.1938 1.47176L9.95488 1.3706L9.67791 1.2669L9.42566 1.1846L9.10075 1.09489L8.83599 1.03486L8.54406 0.98184ZM10.4032 5.30023C10.4032 4.27588 10.2002 3.29829 9.83244 2.40604C11.7623 3.28995 13.1032 5.23862 13.1032 7.50023C13.1032 10.593 10.596 13.1002 7.50322 13.1002C6.63646 13.1002 5.81597 12.9036 5.08355 12.5522C6.5419 12.0941 7.81081 11.2082 8.74322 10.0416C8.87963 10.2284 9.10028 10.3497 9.34928 10.3497C9.76349 10.3497 10.0993 10.0139 10.0993 9.59971C10.0993 9.24256 9.84965 8.94373 9.51535 8.86816C9.57741 8.75165 9.63653 8.63334 9.6926 8.51332C9.88358 8.63163 10.1088 8.69993 10.35 8.69993C11.0403 8.69993 11.6 8.14028 11.6 7.44993C11.6 6.75976 11.0406 6.20024 10.3505 6.19993C10.3853 5.90487 10.4032 5.60464 10.4032 5.30023Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><span class="sr-only">Toggle theme</span></button></div></nav></div><main class="mx-auto w-full max-w-7xl min-h-[100vh]"><div><h1 class="__className_9f0847 
+          text-5xl 
+          font-extrabold 
+          text-zinc-900 
+          dark:text-zinc-100 
+          mt-28
+          text-center 
+          p-4
+          tracking-tight
+          max-[400px]:text-4xl
+        ">Calculadora de Peso Teórico de Materiais</h1><p class=" font-normal  leading-normal m-auto  text-center  text-zinc-700  dark:text-zinc-300  max-lg:px-4 mb-14 max-w-4xl ">Calcule o peso teórico dos principais materiais comerciais. Caso não encontre a densidade desejada, clique no botão editar para entrar com um novo valor.</p><div class="flex-col items-center justify-center"><div class="
+            flex 
+            mb-20 
+            py-1 
+            min-[850px]:justify-center 
+            mx-auto 
+            ButtonGroup_customScrollbar__b0evf overflow-x-auto max-w-[850px] pb-4"><div><button class="
+                flex 
+                flex-col 
+                items-center 
+                rounded-xl 
+                border
+                hover:bg-zinc-100 
+                dark:hover:bg-zinc-800
+                hover:text-zinc-800
+                dark:hover:text-zinc-300
+                font-medium 
+                text-sm
+                leading-tight
+                px-4 
+                pt-3
+                pb-2
+                w-28
+                h-[94px]
+                max-sm:mr-1
+                mr-2
+                max-[850px]:ml-5
+                bg-white border border-zinc-600 ring-1 ring-zinc-600 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:border-zinc-300 dark:ring-zinc-300"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 31 31" class="mb-2 w-[30px]"><circle cx="15" cy="15" r="15"></circle></svg>Barra redonda</button></div><div><button class="
+                flex 
+                flex-col 
+                items-center 
+                rounded-xl 
+                border
+                hover:bg-zinc-100 
+                hover:text-zinc-800
+                dark:hover:bg-zinc-800
+                dark:hover:text-zinc-300
+                font-medium 
+                text-sm 
+                leading-tight
+                px-4 
+                pt-3
+                pb-2
+                w-28
+                max-sm:mr-1
+                mr-2
+                text-zinc-400 dark:text-zinc-500 hover:border-zinc-100 dark:hover:border-zinc-800"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 31 31" class="mb-2 w-[30px]"><rect width="30" height="30" rx="2"></rect></svg>Barra quadrada</button></div><div><button class="
+                flex 
+                flex-col 
+                items-center
+                rounded-xl 
+                border
+                hover:bg-zinc-100 
+                hover:text-zinc-800
+                dark:hover:bg-zinc-800
+                dark:hover:text-zinc-300
+                font-medium 
+                text-sm 
+                leading-tight
+                px-4 
+                pt-3
+                pb-2
+                w-28
+                h-full
+                max-sm:mr-1
+                mr-2
+                text-zinc-400 dark:text-zinc-500 hover:border-zinc-100 dark:hover:border-zinc-800"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 31 27" class="mb-2 h-[30px]"><path d="M29.423 12a2 2 0 0 1 0 2l-6.346 10.99a2 2 0 0 1-1.732 1H8.655a2 2 0 0 1-1.732-1L.577 14a2 2 0 0 1 0-2L6.923 1.01a2 2 0 0 1 1.732-1h12.69a2 2 0 0 1 1.732 1z"></path></svg>Barra sextavada</button></div><div><button class="
+                flex 
+                flex-col 
+                items-center
+                justify-between
+                rounded-xl 
+                border
+                hover:bg-zinc-100 
+                hover:text-zinc-800
+                dark:hover:bg-zinc-800
+                dark:hover:text-zinc-300
+                font-medium 
+                text-sm 
+                leading-tight
+                px-4 
+                pt-5
+                pb-2
+                w-28
+                h-full
+                max-sm:mr-1
+                mr-2
+                text-zinc-400 dark:text-zinc-500 hover:border-zinc-100 dark:hover:border-zinc-800"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 60 20" class="mb-2 w-[50px] h-[20px]"><rect width="60" height="18" rx="2"></rect></svg>Barra chata ou chapa</button></div><div><button class="
+                flex 
+                flex-col 
+                items-center 
+                rounded-xl 
+                border
+                hover:bg-zinc-100 
+                dark:hover:bg-zinc-800
+                hover:text-zinc-800
+                dark:hover:text-zinc-300
+                font-medium 
+                text-sm
+                leading-tight
+                px-4 
+                pt-3
+                pb-2
+                w-28 
+                max-sm:mr-1
+                mr-2
+                text-zinc-400 dark:text-zinc-500 hover:border-zinc-100 dark:hover:border-zinc-800"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 31 31" class="mb-2 w-[30px]"><path fill-rule="evenodd" d="M15 30c8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15C6.716 0 0 6.716 0 15c0 8.284 6.716 15 15 15m0-2.5c6.904 0 12.5-5.596 12.5-12.5S21.904 2.5 15 2.5 2.5 8.096 2.5 15 8.096 27.5 15 27.5" clip-rule="evenodd"></path></svg>Tubo redondo</button></div><div><button class="
+                flex 
+                flex-col 
+                items-center 
+                rounded-xl 
+                border
+                hover:bg-zinc-100 
+                dark:hover:bg-zinc-800
+                hover:text-zinc-800
+                dark:hover:text-zinc-300
+                font-medium 
+                text-sm
+                leading-tight
+                px-4 
+                pt-3
+                pb-2
+                w-28 
+                max-sm:mr-1
+                mr-2
+                text-zinc-400 dark:text-zinc-500 hover:border-zinc-100 dark:hover:border-zinc-800"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 30 30" class="mb-2 w-[30px]"><path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v26a2 2 0 0 0 2 2h26a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm1.5 2.5a1 1 0 0 0-1 1v23a1 1 0 0 0 1 1h23a1 1 0 0 0 1-1v-23a1 1 0 0 0-1-1z" clip-rule="evenodd"></path></svg>Tubo quadrado</button></div><div><button class="
+                flex 
+                flex-col 
+                items-center
+                justify-between
+                rounded-xl 
+                border
+                hover:bg-zinc-100 
+                hover:text-zinc-800
+                dark:hover:bg-zinc-800
+                dark:hover:text-zinc-300
+                font-medium 
+                text-sm 
+                leading-tight
+                px-4 
+                pt-5
+                pb-2
+                w-28
+                h-full
+                max-sm:mr-1
+                mr-2
+                text-zinc-400 dark:text-zinc-500 hover:border-zinc-100 dark:hover:border-zinc-800"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 60 21" class="mb-2 w-[50px] h-5"><path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h56a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm1.5 2.5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h53a1 1 0 0 0 1-1v-13a1 1 0 0 0-1-1z" clip-rule="evenodd"></path></svg>Tubo retangular</button></div></div><div class="w-full m-auto"><div class="xl:flex max-xl:max-w-[576px] max-[576px]:px-5 max-xl:m-auto mb-8 justify-between items-center"><div class="flex items-center max-xl:mb-6"><label class="mr-6 text-base font-bold text-zinc-500 dark:text-zinc-200">Material:</label><div class="my-react-select-container min-w-[250px] max-xl:w-full css-b62m3t-container" id="1756556759437"><span id="react-select-2-live-region" class="css-7pg0cj-a11yText"></span><span aria-live="polite" aria-atomic="false" aria-relevant="additions text" role="log" class="css-7pg0cj-a11yText"></span><div class="my-react-select__control css-1brp4cr-control"><div class="my-react-select__value-container my-react-select__value-container--has-value css-hlgwow"><div class="my-react-select__single-value css-mhr8sm-singleValue">Aço Carbono</div><input id="react-select-2-input" tabindex="0" inputmode="none" aria-autocomplete="list" aria-expanded="false" aria-haspopup="true" role="combobox" aria-activedescendant="" aria-readonly="true" class="css-1hac4vs-dummyInput" value=""></div><div class="my-react-select__indicators css-1wy0on6"><div class="my-react-select__indicator my-react-select__dropdown-indicator css-urkm8h-indicatorContainer" aria-hidden="true"><svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="css-8mmkcg"><path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path></svg></div></div></div></div></div><div class="flex max-xl:mb-10 items-center text-zinc-600 dark:text-zinc-200"><label class="text-base font-bold text-zinc-500 dark:text-zinc-200">Densidade:</label><span class="ml-5 w-14 text-right text-zinc-600 dark:text-zinc-200 mr-2">7,86</span>g/cm³<button class=" ml-4  w-[38px]  h-[38px]  border  hover:border-zinc-100 rounded-lg  group  hover:bg-zinc-100  transition-all  duration-300"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen" class="svg-inline--fa fa-pen text-zinc-400 group-hover:text-zinc-800 transition-all duration-300" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"></path></svg></button></div></div><div class="border max-[576px]:border-none rounded-2xl p-5 max-xl:max-w-[576px] max-xl:m-auto"><div class="xl:flex justify-between mb-10"><div class="flex items-center max-xl:mb-6"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 31 31" class="text-zinc-500 dark:text-zinc-200 mr-3 w-[30px]"><circle cx="15" cy="15" r="15"></circle></svg><label class="text-xl text-zinc-700 dark:text-zinc-200 font-semibold">Barra redonda</label></div><label class=" text-sm  font-medium  text-zinc-600 dark:text-zinc-200">Quantidade:<input class=" border  rounded  text-center font-bold text-base text-zinc-600 dark:text-zinc-300 dark:bg-zinc-900 dark:border-zinc-800 w-16 ml-5 h-8" type="text" value="1" inputmode="numeric"></label></div><div class="xl:flex justify-between"><div class="xl:flex"><div class="ml-[-1px] max-xl:mb-3 xl:mr-[5px]"><label class=" mb-1  text-sm  font-medium  text-zinc-600 dark:text-zinc-200">Diâmetro</label><div class="flex"><input class=" border  pl-2 font-bold text-base text-zinc-600 dark:text-zinc-300 dark:bg-zinc-900 dark:border-zinc-800 rounded-l  xl:w-[164px] w-full" type="text" value="" inputmode="numeric"><div class=" border  rounded-r  w-20  py-[10.5px]  leading-none  text-center  bg-zinc-200  dark:bg-zinc-800 dark:border-zinc-800">mm</div></div></div><div class="max-xl:mb-3"><label class=" mb-1  text-sm  font-medium  text-zinc-600 dark:text-zinc-200">Comprimento</label><div class="flex"><input class=" border  pl-2 font-bold text-base text-zinc-600 dark:text-zinc-300 dark:bg-zinc-900 dark:border-zinc-800 rounded-l  xl:w-[164px] w-full" type="text" value="" inputmode="numeric"><div class=" border  rounded-r  w-20  py-[10.5px]  leading-none  text-center  bg-zinc-200  dark:bg-zinc-800 dark:border-zinc-800">mm</div></div></div></div><div class="mr-[-1px]"><label class=" mb-1  text-sm  font-medium  text-zinc-600 dark:text-zinc-200">Peso total</label><div class="flex"><input class=" border  pl-2 font-bold text-base text-zinc-600 dark:text-zinc-300 dark:bg-zinc-800 rounded-l  xl:w-[164px] w-full  bg-zinc-200" disabled="" type="text" value="" inputmode="numeric"><div class=" border  rounded-r  w-20  py-[10.5px]  leading-none  text-center  bg-zinc-200  border-l-zinc-300 dark:border-l-zinc-700  dark:bg-zinc-800">kg</div></div></div></div></div></div></div></div></main><footer class="pt-20"><div class="max-w-screen-xl mx-auto max-[1280px]:px-4"><div class="mt-10 py-6 border-t border-zinc-900/10 dark:border-zinc-300/10 items-center justify-between sm:flex max-[640px]:text-center"><p class="text-sm text-zinc-600 dark:text-zinc-500">© 2025 Hid-calc. Todos os direitos reservados.</p><div class="flex items-center gap-x-6 text-zinc-400 dark:text-zinc-600 max-[640px]:mt-3 max-[640px]:justify-center"><a target="_blank" rel="noopener noreferrer" href="https://www.manutencaoarquivos.com.br/"><svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="instagram" class="svg-inline--fa fa-instagram w-6 h-6 hover:text-zinc-900 dark:hover:text-zinc-300 duration-150" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg></a><a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/jonathan-da-silva-oliveira-228732238"><svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="linkedin" class="svg-inline--fa fa-linkedin w-6 h-6 hover:text-zinc-900 dark:hover:text-zinc-300 duration-150" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path></svg></a></div></div></div></footer></div><script src="js/webpack-0de313821007c467.js" crossorigin="" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0]);self.__next_f.push([2,null])</script><script>self.__next_f.push([1,"1:HL[\"/_next/static/media/e4af272ccee01ff0-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n2:HL[\"/_next/static/css/8c966a6cd3d54953.css\",\"style\",{\"crossOrigin\":\"\"}]\n3:HL[\"/_next/static/css/9f3ace3a02e0edf8.css\",\"style\",{\"crossOrigin\":\"\"}]\n0:\"$L4\"\n"])</script><script>self.__next_f.push([1,"5:HL[\"/_next/static/media/4f05ba3a6752a328-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n6:HL[\"/_next/static/css/57d40f76bd625c61.css\",\"style\",{\"crossOrigin\":\"\"}]\n"])</script><script>self.__next_f.push([1,"7:I[3728,[],\"\"]\n9:I[9928,[],\"\"]\na:I[3994,[\"185\",\"static/chunks/app/layout-522b142a43da802a.js\"],\"\"]\nb:I[7238,[\"185\",\"static/chunks/app/layout-522b142a43da802a.js\"],\"ThemeProvider\"]\nc:I[6954,[],\"\"]\nd:I[7264,[],\"\"]\nf:I[8326,[\"676\",\"static/chunks/870fdd6f-2864c4c2fdc5daab.js\",\"310\",\"static/chunks/0e5ce63c-4bc8f4d1dbc35b88.js\",\"11\",\"static/chunks/11-09782bfb272b7727.js\",\"629\",\"static/chunks/629-b96c0c3dad9e4dcc.js\",\"818\",\"static/chunks/818-e08daa83918950c0.js\",\"252\",\"static/chunks/252-82308e38c14b5abd.js\",\"86\","])</script><script>self.__next_f.push([1,"\"static/chunks/app/mecanica/peso-teorico/page-728a10ae6cb1b29f.js\"],\"\"]\n10:I[4136,[\"676\",\"static/chunks/870fdd6f-2864c4c2fdc5daab.js\",\"310\",\"static/chunks/0e5ce63c-4bc8f4d1dbc35b88.js\",\"11\",\"static/chunks/11-09782bfb272b7727.js\",\"629\",\"static/chunks/629-b96c0c3dad9e4dcc.js\",\"818\",\"static/chunks/818-e08daa83918950c0.js\",\"252\",\"static/chunks/252-82308e38c14b5abd.js\",\"86\",\"static/chunks/app/mecanica/peso-teorico/page-728a10ae6cb1b29f.js\"],\"NavigationMenu\"]\n11:I[4136,[\"676\",\"static/chunks/870fdd6f-2864c4c2fdc5d"])</script><script>self.__next_f.push([1,"aab.js\",\"310\",\"static/chunks/0e5ce63c-4bc8f4d1dbc35b88.js\",\"11\",\"static/chunks/11-09782bfb272b7727.js\",\"629\",\"static/chunks/629-b96c0c3dad9e4dcc.js\",\"818\",\"static/chunks/818-e08daa83918950c0.js\",\"252\",\"static/chunks/252-82308e38c14b5abd.js\",\"86\",\"static/chunks/app/mecanica/peso-teorico/page-728a10ae6cb1b29f.js\"],\"NavigationMenuList\"]\n12:I[4136,[\"676\",\"static/chunks/870fdd6f-2864c4c2fdc5daab.js\",\"310\",\"static/chunks/0e5ce63c-4bc8f4d1dbc35b88.js\",\"11\",\"static/chunks/11-09782bfb272b7727.js\",\"629\",\"static/chunk"])</script><script>self.__next_f.push([1,"s/629-b96c0c3dad9e4dcc.js\",\"818\",\"static/chunks/818-e08daa83918950c0.js\",\"252\",\"static/chunks/252-82308e38c14b5abd.js\",\"86\",\"static/chunks/app/mecanica/peso-teorico/page-728a10ae6cb1b29f.js\"],\"NavigationMenuItem\"]\n13:I[4136,[\"676\",\"static/chunks/870fdd6f-2864c4c2fdc5daab.js\",\"310\",\"static/chunks/0e5ce63c-4bc8f4d1dbc35b88.js\",\"11\",\"static/chunks/11-09782bfb272b7727.js\",\"629\",\"static/chunks/629-b96c0c3dad9e4dcc.js\",\"818\",\"static/chunks/818-e08daa83918950c0.js\",\"252\",\"static/chunks/252-82308e38c14b5abd.js\",\"86"])</script><script>self.__next_f.push([1,"\",\"static/chunks/app/mecanica/peso-teorico/page-728a10ae6cb1b29f.js\"],\"NavigationMenuTrigger\"]\n14:I[4136,[\"676\",\"static/chunks/870fdd6f-2864c4c2fdc5daab.js\",\"310\",\"static/chunks/0e5ce63c-4bc8f4d1dbc35b88.js\",\"11\",\"static/chunks/11-09782bfb272b7727.js\",\"629\",\"static/chunks/629-b96c0c3dad9e4dcc.js\",\"818\",\"static/chunks/818-e08daa83918950c0.js\",\"252\",\"static/chunks/252-82308e38c14b5abd.js\",\"86\",\"static/chunks/app/mecanica/peso-teorico/page-728a10ae6cb1b29f.js\"],\"NavigationMenuContent\"]\n16:I[3741,[\"676\",\"static"])</script><script>self.__next_f.push([1,"/chunks/870fdd6f-2864c4c2fdc5daab.js\",\"310\",\"static/chunks/0e5ce63c-4bc8f4d1dbc35b88.js\",\"11\",\"static/chunks/11-09782bfb272b7727.js\",\"629\",\"static/chunks/629-b96c0c3dad9e4dcc.js\",\"818\",\"static/chunks/818-e08daa83918950c0.js\",\"252\",\"static/chunks/252-82308e38c14b5abd.js\",\"86\",\"static/chunks/app/mecanica/peso-teorico/page-728a10ae6cb1b29f.js\"],\"ModeToggle\"]\n17:I[9172,[\"676\",\"static/chunks/870fdd6f-2864c4c2fdc5daab.js\",\"310\",\"static/chunks/0e5ce63c-4bc8f4d1dbc35b88.js\",\"11\",\"static/chunks/11-09782bfb272b7727.j"])</script><script>self.__next_f.push([1,"s\",\"629\",\"static/chunks/629-b96c0c3dad9e4dcc.js\",\"818\",\"static/chunks/818-e08daa83918950c0.js\",\"252\",\"static/chunks/252-82308e38c14b5abd.js\",\"86\",\"static/chunks/app/mecanica/peso-teorico/page-728a10ae6cb1b29f.js\"],\"\"]\n15:T40b,"])</script><script>self.__next_f.push([1,"M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"])</script><script>self.__next_f.push([1,"4:[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/8c966a6cd3d54953.css\",\"precedence\":\"next\",\"crossOrigin\":\"\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/9f3ace3a02e0edf8.css\",\"precedence\":\"next\",\"crossOrigin\":\"\"}]],[\"$\",\"$L7\",null,{\"buildId\":\"SbUebh1YqgdkvUeQOWL-t\",\"assetPrefix\":\"\",\"initialCanonicalUrl\":\"/mecanica/peso-teorico\",\"initialTree\":[\"\",{\"children\":[\"mecanica\",{\"children\":[\"peso-teorico\",{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],\"initialHead\":[false,\"$L8\"],\"globalErrorComponent\":\"$9\",\"children\":[null,[\"$\",\"html\",null,{\"lang\":\"pt-BR\",\"className\":\"__variable_e8ce0c\",\"children\":[[\"$\",\"head\",null,{\"children\":[[\"$\",\"link\",null,{\"rel\":\"icon\",\"sizes\":\"any\",\"href\":\"/favicon/favicon.ico\"}],[\"$\",\"link\",null,{\"rel\":\"icon\",\"sizes\":\"48x48\",\"href\":\"/favicon/favicon.ico\"}],[\"$\",\"link\",null,{\"rel\":\"icon\",\"sizes\":\"128x128\",\"href\":\"/favicon/favicon.ico\"}],[\"$\",\"link\",null,{\"rel\":\"icon\",\"sizes\":\"192x192\",\"href\":\"/favicon/favicon.ico\"}],[\"$\",\"link\",null,{\"rel\":\"stylesheet\",\"href\":\"https://fonts.googleapis.com/css2?family=Noto+Sans+Math\u0026display=swap\"}],[\"$\",\"meta\",null,{\"name\":\"google-site-verification\",\"content\":\"I2hN4BUvkx-VefAC63watBfKyR5LoRswbHXCZKJzT_U\"}],[\"$\",\"meta\",null,{\"name\":\"google-adsense-account\",\"content\":\"ca-pub-2316141632853241\"}],[\"$\",\"meta\",null,{\"name\":\"application-name\",\"content\":\"Hid-calc\"}],[\"$\",\"meta\",null,{\"name\":\"apple-mobile-web-app-title\",\"content\":\"Hid-calc\"}],[\"$\",\"meta\",null,{\"property\":\"og:site_name\",\"content\":\"Hid-calc\"}],[\"$\",\"script\",null,{\"type\":\"application/ld+json\",\"dangerouslySetInnerHTML\":{\"__html\":\"{\\\"@context\\\":\\\"https://schema.org\\\",\\\"@type\\\":\\\"WebSite\\\",\\\"name\\\":\\\"Hid-calc\\\",\\\"alternateName\\\":\\\"Calculadoras de Engenharia Online\\\",\\\"url\\\":\\\"https://www.Hid-calc.com.br/\\\"}\"}}]]}],[\"$\",\"body\",null,{\"className\":\"dark:bg-zinc-900\",\"children\":[[[\"$\",\"$La\",null,{\"src\":\"https://www.googletagmanager.com/gtag/js?id=G-R3580JHXWF\"}],[\"$\",\"$La\",null,{\"id\":\"google-analytics\",\"children\":\"\\n          window.dataLayer = window.dataLayer || [];\\n          function gtag(){dataLayer.push(arguments);}\\n          gtag('js', new Date());\\n \\n          gtag('config', 'G-R3580JHXWF');\\n        \"}]],[\"$\",\"$Lb\",null,{\"attribute\":\"class\",\"defaultTheme\":\"system\",\"enableSystem\":true,\"disableTransitionOnChange\":true,\"children\":[\"$\",\"$Lc\",null,{\"parallelRouterKey\":\"children\",\"segmentPath\":[\"children\"],\"loading\":\"$undefined\",\"loadingStyles\":\"$undefined\",\"hasLoading\":false,\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"template\":[\"$\",\"$Ld\",null,{}],\"templateStyles\":\"$undefined\",\"notFound\":[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":\"404\"}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],\"notFoundStyles\":[],\"childProp\":{\"current\":[\"$\",\"$Lc\",null,{\"parallelRouterKey\":\"children\",\"segmentPath\":[\"children\",\"mecanica\",\"children\"],\"loading\":\"$undefined\",\"loadingStyles\":\"$undefined\",\"hasLoading\":false,\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"template\":[\"$\",\"$Ld\",null,{}],\"templateStyles\":\"$undefined\",\"notFound\":\"$undefined\",\"notFoundStyles\":\"$undefined\",\"childProp\":{\"current\":[\"$\",\"$Lc\",null,{\"parallelRouterKey\":\"children\",\"segmentPath\":[\"children\",\"mecanica\",\"children\",\"peso-teorico\",\"children\"],\"loading\":\"$undefined\",\"loadingStyles\":\"$undefined\",\"hasLoading\":false,\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"template\":[\"$\",\"$Ld\",null,{}],\"templateStyles\":\"$undefined\",\"notFound\":\"$undefined\",\"notFoundStyles\":\"$undefined\",\"childProp\":{\"current\":[\"$Le\",[\"$\",\"div\",null,{\"className\":\"bg-white dark:from-transparent dark:bg-zinc-900\",\"children\":[[\"$\",\"div\",null,{\"className\":\" fixed  top-0  left-0 z-50  bg-white  w-full  border-b  order-zinc-900/10  dark:bg-zinc-900  dark:border-zinc-300/10  dark:border-b bg-opacity-80 dark:bg-opacity-80 backdrop-blur-md \",\"children\":[\"$\",\"nav\",null,{\"className\":\"mx-auto flex items-center justify-between max-w-7xl py-3 max-[1280px]:px-4\",\"children\":[[\"$\",\"div\",null,{\"className\":\"flex items-center align-middle\",\"children\":[[\"$\",\"div\",null,{\"className\":\"__className_4f4c7b\",\"children\":[\"$\",\"$Lf\",null,{\"href\":\"/\",\"children\":[\"$\",\"span\",null,{\"className\":\"        text-zinc-900         font-extrabold         text-2xl         leading-none         mr-5         tracking-tighter         hover:text-primary/80        dark:text-white        \",\"children\":\"Hid-calc\"}]}]}],[\"$\",\"$L10\",null,{\"children\":[\"$\",\"$L11\",null,{\"children\":[\"$\",\"$L12\",null,{\"children\":[[\"$\",\"$L13\",null,{\"children\":\"Calculadoras\"}],[\"$\",\"$L14\",null,{\"children\":[\"$\",\"ul\",null,{\"className\":\"grid w-[200px] gap-3 pt-2 pl-2 pb-2.5 pr-2.5 md:w-[500px] lg:w-[300px] bg-zinc-50 dark:bg-zinc-900\",\"children\":[[\"$\",\"$Lf\",null,{\"href\":\"index.html\",\"className\":\"p-4 hover:bg-[#e9e9e9] rounded-lg dark:hover:bg-secondary/80\",\"children\":[[\"$\",\"div\",null,{\"className\":\"flex text-sm mb-2 text-zinc-900 dark:text-zinc-100\",\"children\":[[\"$\",\"svg\",null,{\"aria-hidden\":\"true\",\"focusable\":\"false\",\"data-prefix\":\"fas\",\"data-icon\":\"gear\",\"className\":\"svg-inline--fa fa-gear mr-2 h-4 w-4 text-zinc-900 dark:text-zinc-100\",\"role\":\"img\",\"xmlns\":\"http://www.w3.org/2000/svg\",\"viewBox\":\"0 0 512 512\",\"style\":{},\"children\":[\"$\",\"path\",null,{\"fill\":\"currentColor\",\"d\":\"$15\",\"style\":{}}]}],\"Mecânica\"]}],[\"$\",\"li\",null,{\"className\":\"text-sm text-zinc-500 dark:text-zinc-300\",\"children\":\"Cálculo de peso teórico\"}]]}],[\"$\",\"$Lf\",null,{\"href\":\"../getcalc-clone/index.html\",\"className\":\"p-4 hover:bg-[#e9e9e9] rounded-lg dark:hover:bg-secondary/80\",\"children\":[[\"$\",\"div\",null,{\"className\":\"flex text-sm mb-2 text-zinc-900 dark:text-zinc-100\",\"children\":[[\"$\",\"svg\",null,{\"aria-hidden\":\"true\",\"focusable\":\"false\",\"data-prefix\":\"fas\",\"data-icon\":\"droplet\",\"className\":\"svg-inline--fa fa-droplet mr-2 h-4 w-4 text-zinc-900 dark:text-zinc-100\",\"role\":\"img\",\"xmlns\":\"http://www.w3.org/2000/svg\",\"viewBox\":\"0 0 384 512\",\"style\":{},\"children\":[\"$\",\"path\",null,{\"fill\":\"currentColor\",\"d\":\"M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z\",\"style\":{}}]}],\"Hidráulica\"]}],[\"$\",\"li\",null,{\"className\":\"text-sm text-zinc-500 dark:text-zinc-300\",\"children\":\"Cálculo de componentes hidráulicos\"}]]}]]}]}]]}]}]}]]}],[\"$\",\"div\",null,{\"children\":[\"$\",\"$L16\",null,{}]}]]}]}],[\"$\",\"main\",null,{\"className\":\"mx-auto w-full max-w-7xl min-h-[100vh]\",\"children\":[\"$\",\"$L17\",null,{}]}],[\"$\",\"footer\",null,{\"className\":\"pt-20\",\"children\":[\"$\",\"div\",null,{\"className\":\"max-w-screen-xl mx-auto max-[1280px]:px-4\",\"children\":[\"$\",\"div\",null,{\"className\":\"mt-10 py-6 border-t border-zinc-900/10 dark:border-zinc-300/10 items-center justify-between sm:flex max-[640px]:text-center\",\"children\":[[\"$\",\"p\",null,{\"className\":\"text-sm text-zinc-600 dark:text-zinc-500\",\"children\":\"© 2025 Hid-calc. Todos os direitos reservados.\"}],[\"$\",\"div\",null,{\"className\":\"flex items-center gap-x-6 text-zinc-400 dark:text-zinc-600 max-[640px]:mt-3 max-[640px]:justify-center\",\"children\":[[\"$\",\"$Lf\",null,{\"href\":\"https://www.instagram.com/Hid-calc\",\"passHref\":true,\"target\":\"_blank\",\"rel\":\"noopener noreferrer\",\"children\":[\"$\",\"svg\",null,{\"aria-hidden\":\"true\",\"focusable\":\"false\",\"data-prefix\":\"fab\",\"data-icon\":\"instagram\",\"className\":\"svg-inline--fa fa-instagram w-6 h-6 hover:text-zinc-900 dark:hover:text-zinc-300 duration-150\",\"role\":\"img\",\"xmlns\":\"http://www.w3.org/2000/svg\",\"viewBox\":\"0 0 448 512\",\"style\":{},\"children\":[\"$\",\"path\",null,{\"fill\":\"currentColor\",\"d\":\"M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z\",\"style\":{}}]}]}],[\"$\",\"$Lf\",null,{\"href\":\"https://www.linkedin.com/company/Hid-calc\",\"passHref\":true,\"target\":\"_blank\",\"rel\":\"noopener noreferrer\",\"children\":[\"$\",\"svg\",null,{\"aria-hidden\":\"true\",\"focusable\":\"false\",\"data-prefix\":\"fab\",\"data-icon\":\"linkedin\",\"className\":\"svg-inline--fa fa-linkedin w-6 h-6 hover:text-zinc-900 dark:hover:text-zinc-300 duration-150\",\"role\":\"img\",\"xmlns\":\"http://www.w3.org/2000/svg\",\"viewBox\":\"0 0 448 512\",\"style\":{},\"children\":[\"$\",\"path\",null,{\"fill\":\"currentColor\",\"d\":\"M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z\",\"style\":{}}]}]}]]}]]}]}]}]]}],null],\"segment\":\"__PAGE__\"},\"styles\":[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/57d40f76bd625c61.css\",\"precedence\":\"next\",\"crossOrigin\":\"\"}]]}],\"segment\":\"peso-teorico\"},\"styles\":[]}],\"segment\":\"mecanica\"},\"styles\":[]}]}]]}]]}],null]}]]\n"])</script><script>self.__next_f.push([1,"8:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"title\",\"1\",{\"children\":\"Mecânica: Calculadora de Peso Teórico | Hid-calc\"}],[\"$\",\"meta\",\"2\",{\"name\":\"description\",\"content\":\"Calculadora online gratuita para cálculos de peso teórico de materiais. Calcule os principais tipos de materiais de forma simples e rápida.\"}],[\"$\",\"meta\",\"3\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}],[\"$\",\"meta\",\"4\",{\"property\":\"og:title\",\"content\":\"Hid-calc: Calculadoras para engenharia\"}],[\"$\",\"meta\",\"5\",{\"property\":\"og:description\",\"content\":\"Calculadoras online gratuitas. Calcule componentes hidráulicos: cilindros, motores, bombas, queda de pressão, tubulação e muito mais.\"}],[\"$\",\"meta\",\"6\",{\"property\":\"og:url\",\"content\":\"https://www.Hid-calc.com.br/\"}],[\"$\",\"meta\",\"7\",{\"property\":\"og:site_name\",\"content\":\"Hid-calc\"}],[\"$\",\"meta\",\"8\",{\"name\":\"twitter:card\",\"content\":\"summary\"}],[\"$\",\"meta\",\"9\",{\"name\":\"twitter:title\",\"content\":\"Hid-calc: Calculadoras para engenharia\"}],[\"$\",\"meta\",\"10\",{\"name\":\"twitter:description\",\"content\":\"Calculadoras online gratuitas. Calcule componentes hidráulicos: cilindros, motores, bombas, queda de pressão, tubulação e muito mais.\"}],[\"$\",\"meta\",\"11\",{\"name\":\"next-size-adjust\"}]]\n"])</script><script>self.__next_f.push([1,"e:null\n"])</script><script src="js_1" data-nscript="afterInteractive"></script><script id="google-analytics" data-nscript="afterInteractive">
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', 'G-R3580JHXWF');
+        </script><next-route-announcer style="position: absolute;"></next-route-announcer></body></html>

@@ -1,0 +1,19 @@
+{
+  "title": "Rosqueamento com Machos (Métrico)",
+  "headers": ["Rosca", "Passo (mm)", "Diâmetro do Furo (mm)", "Tipo de Macho", "Aplicação"],
+  "rows": [
+    ["M3", "0,5", "2,5", "Reto", "Manual"],
+    ["M4", "0,7", "3,3", "Reto", "Manual"],
+    ["M5", "0,8", "4,2", "Reto", "Manual"],
+    ["M6", "1,0", "5,0", "Reto", "Manual"],
+    ["M8", "1,25", "6,8", "Reto", "Manual"],
+    ["M10", "1,5", "8,5", "Reto", "Manual"],
+    ["M12", "1,75", "10,2", "Reto", "Manual"],
+    ["M16", "2,0", "14,0", "Reto", "Manual"],
+    ["M3", "0,5", "2,5", "Espiral", "Automático"],
+    ["M4", "0,7", "3,3", "Espiral", "Automático"],
+    ["M5", "0,8", "4,2", "Espiral", "Automático"],
+    ["M6", "1,0", "5,0", "Espiral", "Automático"],
+    ["M8", "1,25", "6,8", "Espiral", "Automático"]
+  ]
+}

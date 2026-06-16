@@ -1,0 +1,335 @@
+/* --- FUNDAÇÃO E IDENTIDADE VISUAL (DO SEU CÓDIGO) --- */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap');
+:root {
+    --cor-primaria: #003366; --cor-secundaria: #005a9c; --cor-destaque: #ffc107;
+    --cor-sucesso: #28a745; --cor-erro: #dc3545;
+    --cor-fundo: #f0f2f5; --cor-fundo-card: #ffffff; --cor-texto: #212529;
+    --cor-texto-claro: #ffffff; --cor-texto-suave: #6c757d; --cor-borda: #dee2e6;
+    --cor-borda-foco: #ffc107;
+    --sombra-cor: rgba(0, 0, 0, 0.08); --raio-borda: 8px;
+    --fonte-principal: 'Roboto', sans-serif; --fonte-titulo: 'Oswald', sans-serif;
+    --velocidade-transicao: 0.3s;
+}
+body.dark-theme {
+    --cor-primaria: #0d6efd; --cor-secundaria: #005a9c; --cor-fundo: #0a1929;
+    --cor-fundo-card: #112233; --cor-texto: #e9ecef; --cor-texto-suave: #8696a7;
+    --cor-borda: #334b61; --sombra-cor: rgba(0, 0, 0, 0.4);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--fonte-principal); background-color: var(--cor-fundo); color: var(--cor-texto); line-height: 1.6; transition: background-color var(--velocidade-transicao), color var(--velocidade-transicao); }
+.app-container { max-width: 500px; margin: 0 auto; padding: 1rem; }
+
+/* --- HEADER ADAPTADO --- */
+.app-header { background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria)); color: var(--cor-texto-claro); padding: 1rem 1.5rem; border-radius: var(--raio-borda); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px var(--sombra-cor); border-bottom: 4px solid var(--cor-destaque); }
+.app-header h1 { font-family: var(--fonte-titulo); font-size: 1.5rem; margin: 0; }
+.header-button { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+.theme-switcher { display: flex; align-items: center; gap: 0.75rem; }
+.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.3); transition: .4s; border-radius: 26px; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--cor-destaque); }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* --- TELAS DE NAVEGAÇÃO --- */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn 0.4s; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- MENU PRINCIPAL (GRID) E SUBMENUS --- */
+.main-menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.main-menu-card { background-color: var(--cor-fundo-card); border-radius: var(--raio-borda); padding: 1.5rem 1rem; text-align: center; cursor: pointer; transition: all var(--velocidade-transicao); box-shadow: 0 4px 6px var(--sombra-cor); border: 1px solid var(--cor-borda); }
+.main-menu-card:hover { transform: translateY(-5px); box-shadow: 0 8px 12px var(--sombra-cor); border-color: var(--cor-primaria); }
+.main-menu-card img { height: 48px; margin-bottom: 0.75rem; }
+.icon { display: inline-block; font-size: 48px; margin-bottom: 0.75rem; color: var(--cor-primaria); }
+.calc-header img { max-width: 100px; margin-bottom: 0.5rem; }
+.calc-header .icon { font-size: 72px; margin-bottom: 0.5rem; color: var(--cor-secundaria); }
+.main-menu-card .title { font-family: var(--fonte-titulo); font-size: 1.2rem; color: var(--cor-primaria); }
+.main-menu-card .subtitle { font-size: 0.9rem; color: var(--cor-texto-suave); }
+.submenu-title { font-family: var(--fonte-titulo); font-size: 1.5rem; color: var(--cor-primaria); text-align: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--cor-borda); }
+.menu-button { display: block; width: 100%; background-color: var(--cor-fundo-card); color: var(--cor-texto); border: 1px solid var(--cor-borda); border-radius: var(--raio-borda); padding: 1rem; margin-bottom: 1rem; text-align: left; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all var(--velocidade-transicao); box-shadow: 0 2px 4px var(--sombra-cor); }
+.menu-button:hover { background-color: #f1f1f1; border-color: var(--cor-primaria); }
+.dark-theme .menu-button:hover { background-color: var(--cor-fundo); }
+
+/* --- CARD DE CÁLCULO / TABELA --- */
+.calc-card { background-color: var(--cor-fundo-card); padding: 1.5rem; border-radius: var(--raio-borda); border: 1px solid var(--cor-borda); box-shadow: 0 4px 8px var(--sombra-cor); }
+.calc-header { text-align: center; margin-bottom: 1.5rem; }
+.calc-header img { max-width: 100px; margin-bottom: 0.5rem; }
+.calc-title { font-family: var(--fonte-titulo); font-size: 1.5rem; margin: 1rem 0 0 0; color: var(--cor-primaria); }
+
+/* --- FORMULÁRIOS --- */
+.input-group { margin-bottom: 1rem; }
+.input-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+.input-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--cor-borda); border-radius: 5px; background-color: var(--cor-fundo); color: var(--cor-texto); font-size: 1.1rem; transition: border-color var(--velocidade-transicao), box-shadow var(--velocidade-transicao); }
+.input-group input:disabled { background-color: #e9ecef; font-weight: bold; color: var(--cor-texto-suave); }
+.dark-theme .input-group input:disabled { background-color: #212529; }
+.input-group input:focus { outline: none; border-color: var(--cor-borda-foco); box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3); }
+.radio-group { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: center; justify-content: center; margin: 1.5rem 0; }
+.radio-group label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+.main-button { width: 100%; padding: 1rem; font-size: 1.2rem; font-weight: bold; background-color: var(--cor-sucesso); color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color var(--velocidade-transicao); margin-top: 1rem; }
+.main-button:hover { filter: brightness(1.1); }
+
+/* --- BANNERS DE RESULTADO --- */
+.result-display { margin-top: 1.5rem; background-color: var(--cor-fundo-card); border-radius: var(--raio-borda); border: 1px solid var(--cor-borda); border-left: 5px solid var(--cor-sucesso); text-align: center; padding: 1rem; }
+.result-display .label { display: block; font-size: 0.9rem; color: var(--cor-texto-suave); text-transform: uppercase; }
+.result-display .value { font-size: 2.2rem; font-weight: 700; color: var(--cor-primaria); font-family: var(--fonte-titulo); }
+
+/* --- TOASTS E BOTÃO DE COPIAR --- */
+.toast-container { position: fixed; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 9999; }
+.toast { background: rgba(0,0,0,0.85); color: #fff; padding: 10px 14px; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.3); font-weight: 500; opacity: 0; transform: translateY(10px); transition: all 0.25s ease; }
+.toast.show { opacity: 1; transform: translateY(0); }
+.copy-btn { display: inline-block; margin-left: 0.5rem; background: var(--cor-primaria); color: var(--cor-texto-claro); border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-weight: 700; }
+.copy-btn:hover { filter: brightness(1.05); }
+
+/* --- TABELAS --- */
+.table-container { overflow-x: auto; width: 100%; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--cor-borda); vertical-align: middle; }
+thead { background-color: var(--cor-fundo); }
+.dark-theme thead { background-color: #1c2e40; }
+
+/* --- ESTILOS ADICIONAIS PARA TABELAS COMPLEXAS --- */
+
+.complex-table-wrapper {
+    margin: 0 0 32px 0;
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    background: #fff;
+    padding: 24px 16px;
+}
+
+.complex-table-wrapper h4 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.2rem;
+    color: var(--cor-secundaria);
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.complex-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    background-color: var(--cor-fundo-card);
+}
+
+.complex-table th, .complex-table td {
+    border: 1px solid #d0d8e0;
+    padding: 10px 14px;
+    vertical-align: middle;
+    background: #f7fafd;
+    transition: background 0.2s;
+}
+
+.complex-table thead th {
+    background: #eaf2fb;
+    font-family: var(--fonte-principal);
+    font-weight: 700;
+    color: #1a2a3a;
+    font-size: 1.08rem;
+}
+
+.dark-theme .complex-table thead th {
+    background-color: #2c3e50;
+    color: var(--cor-texto);
+}
+
+.complex-table .group-header td {
+    background: #d6eaff;
+    color: #1a2a3a;
+    font-weight: bold;
+    font-family: var(--fonte-titulo);
+    text-align: left;
+    padding-left: 1rem;
+    font-size: 1.05rem;
+}
+
+.complex-table .subgroup-header td {
+    background: #f0f7ff;
+    font-style: italic;
+    color: #2a3a4a;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.dark-theme .complex-table .group-header td {
+    background-color: #455A64;
+}
+
+.dark-theme .complex-table .subgroup-header td {
+    background-color: #37474F;
+}
+
+
+.complex-table .material-type {
+    font-weight: bold;
+    color: #2a3a4a;
+    background: #ECEFF1;
+}
+.complex-table tr:hover td {
+    background: #eaf2fb;
+}
+
+.dark-theme .complex-table .material-type {
+     background-color: #263238;
+}
+
+.complex-table td:first-child {
+    text-align: left;
+    font-weight: 500;
+}
+
+.simple-param-table th {
+    font-size: 0.8rem;
+}
+
+.simple-param-table td {
+    font-weight: bold;
+}
+
+/* --- ESTILO PADRÃO PARA TODAS AS PLANILHAS/TABELAS --- */
+.table-container table,
+table,
+.complex-table,
+.simple-param-table {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    background: var(--cor-fundo-card);
+    font-family: var(--fonte-principal);
+    font-size: 1.05rem;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+.table-container th,
+.table-container td,
+table th,
+table td,
+.complex-table th,
+.complex-table td,
+.simple-param-table th,
+.simple-param-table td {
+    border: 1px solid #d0d8e0;
+    padding: 10px 14px;
+    vertical-align: middle;
+    background: #f7fafd;
+    transition: background 0.2s;
+}
+.table-container thead th,
+table thead th,
+.complex-table thead th,
+.simple-param-table thead th {
+    background: #eaf2fb;
+    font-family: var(--fonte-principal);
+    font-weight: 700;
+    color: #1a2a3a;
+    font-size: 1.08rem;
+}
+.table-container tr:hover td,
+table tr:hover td,
+.complex-table tr:hover td,
+.simple-param-table tr:hover td {
+    background: #eaf2fb;
+}
+.dark-theme .table-container table,
+.dark-theme table,
+.dark-theme .complex-table,
+.dark-theme .simple-param-table {
+    background-color: #263238;
+}
+.dark-theme .table-container thead th,
+.dark-theme table thead th,
+.dark-theme .complex-table thead th,
+.dark-theme .simple-param-table thead th {
+    background-color: #2c3e50;
+    color: var(--cor-texto);
+}
+.dark-theme .table-container th,
+.dark-theme .table-container td,
+.dark-theme table th,
+.dark-theme table td,
+.dark-theme .complex-table th,
+.dark-theme .complex-table td,
+.dark-theme .simple-param-table th,
+.dark-theme .simple-param-table td {
+    background-color: #37474F;
+    color: var(--cor-texto);
+}
+
+/* Layout mais largo e responsivo para PC */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    box-sizing: border-box;
+}
+
+.main-menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.main-menu-card {
+    min-width: 320px;
+    max-width: 480px;
+    height: 220px;
+    margin: 0 auto;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s;
+}
+
+@media (min-width: 900px) {
+    .app-container {
+        max-width: 1400px;
+        padding: 48px 32px;
+    }
+    .main-menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 48px;
+    }
+    .main-menu-card {
+        min-width: 400px;
+        max-width: 600px;
+        height: 260px;
+    }
+    .calc-card {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 32px;
+    }
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 700px) {
+    .app-container {
+        max-width: 100vw;
+        padding: 8px 2px;
+    }
+    .main-menu-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .main-menu-card {
+        min-width: 220px;
+        max-width: 100vw;
+        height: 160px;
+    }
+    .calc-card {
+        max-width: 100vw;
+        padding: 8px;
+    }
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Anel O-Ring</title>
+    <!-- Ligação para o ficheiro de estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i data-lucide="calculator"></i>Calculadora de Anel O-Ring</h1>
+                <div class="theme-switcher">
+                    <i data-lucide="sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i data-lucide="moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i data-lucide="settings-2"></i>Parâmetros do Anel O-Ring</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="tipoAlojamento">Tipo de Alojamento</label>
+                            <select id="tipoAlojamento">
+                                <option value="estatico">Alojamento Estático</option>
+                                <option value="dinamico">Alojamento Dinâmico</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="diametro">Diâmetro Nominal (W)</label>
+                            <select id="diametro" required>
+                                <option value="" disabled selected>Selecione o diâmetro</option>
+                                <option value="1.78">1.78 mm</option>
+                                <option value="2.62">2.62 mm</option>
+                                <option value="3.53">3.53 mm</option>
+                                <option value="5.33">5.33 mm</option>
+                                <option value="6.99">6.99 mm</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button id="calcular" class="main-button"><i data-lucide="bar-chart-2"></i>Calcular</button>
+                    </div>
+                </div>
+            </div>
+            <div id="outputs-column">
+                <div id="resultado" class="card">
+                    <div class="result-placeholder">
+                        <i data-lucide="clipboard-list"></i>
+                        <p>Os resultados da sua análise aparecerão aqui.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Biblioteca de Ícones -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Ligação para o ficheiro JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Dados principais (W, L, E, G, R2, parbank)
+        const tabelaValores = {
+            estatico: {
+                "1.78": { W: "1.78 ±0.08", L: "1.25 a 1.35", E: "0.05 a 0.13", G: 2.50, R2: "0.1 a 0.4", parbank: "3,6 (G+44%)" },
+                "2.62": { W: "2.62 ±0.08", L: "2.05 a 2.15", E: "0.05 a 0.13", G: 3.70, R2: "0.1 a 0.4", parbank: "4,403 (G+19%)" },
+                "3.53": { W: "3.53 ±0.13", L: "2.80 a 2.95", E: "0.08 a 0.16", G: 4.90, R2: "0.2 a 0.6", parbank: "5,39 (G+10%)" },
+                "5.33": { W: "5.33 ±0.13", L: "4.30 a 4.50", E: "0.08 a 0.18", G: 7.30, R2: "0.5 a 1.0", parbank: "8,03 (G+10%)" },
+                "6.99": { W: "6.99 ±0.15", L: "5.75 a 5.95", E: "0.10 a 0.20", G: 9.70, R2: "0.5 a 1.0", parbank: "10,573 (G+8%)" }
+            },
+            dinamico: {
+                "1.78": { W: "1.78 ±0.08", L: "1.40 a 1.45", E: "0.05 a 0.13", G: 2.50, R2: "0.1 a 0.4", parbank: "3,6 (G+44%)" },
+                "2.62": { W: "2.62 ±0.08", L: "2.25 a 2.30", E: "0.05 a 0.13", G: 3.70, R2: "0.1 a 0.4", parbank: "4,403 (G+19%)" },
+                "3.53": { W: "3.53 ±0.13", L: "3.05 a 3.10", E: "0.08 a 0.16", G: 4.90, R2: "0.2 a 0.6", parbank: "5,39 (G+10%)" },
+                "5.33": { W: "5.33 ±0.13", L: "4.65 a 4.75", E: "0.08 a 0.18", G: 7.30, R2: "0.5 a 1.0", parbank: "8,03 (G+10%)" },
+                "6.99": { W: "6.99 ±0.15", L: "6.00 a 6.10", E: "0.10 a 0.20", G: 9.70, R2: "0.5 a 1.0", parbank: "10,573 (G+8%)" }
+            }
+        };
+
+        const encostoDinamicoValores = {
+            "1.78": { medida: "0.36", percentual: "20%" }, "2.62": { medida: "0.39", percentual: "15%" },
+            "3.53": { medida: "0.46", percentual: "13%" }, "5.33": { medida: "0.64", percentual: "12%" },
+            "6.99": { medida: "0.91", percentual: "13%" }
+        };
+        const encostoEstaticoValores = {
+            "1.78": { medida: "0.46", percentual: "26%" }, "2.62": { medida: "0.52", percentual: "20%" },
+            "3.53": { medida: "0.64", percentual: "18%" }, "5.33": { medida: "0.96", percentual: "18%" },
+            "6.99": { medida: "1.19", percentual: "17%" }
+        };
+
+        function parseRange(rangeStr) {
+            const [minVal, maxVal] = rangeStr.split('a').map(s => parseFloat(s.trim()));
+            return [minVal, maxVal];
+        }
+
+        document.getElementById('calcular').addEventListener('click', function () {
+            const tipoAlojamento = document.getElementById('tipoAlojamento').value;
+            const diametro = document.getElementById('diametro').value;
+
+            if (!diametro) {
+                alert('Por favor, selecione um diâmetro nominal (W).');
+                return;
+            }
+
+            const dados = tabelaValores[tipoAlojamento][diametro];
+            const [eMin, eMax] = parseRange(dados.E);
+            const gpMin = (eMin / 2).toFixed(2);
+            const gpMax = (eMax / 2).toFixed(2);
+            const gpStr = `${gpMin} a ${gpMax}`;
+
+            const encostoValores = tipoAlojamento === 'dinamico' ? encostoDinamicoValores[diametro] : encostoEstaticoValores[diametro];
+
+            const resultadoHTML = `
+                <div class="result-header">
+                    <h3>Resultados para W = ${diametro} mm (${tipoAlojamento})</h3>
+                </div>
+                <div class="result-body">
+                    <div class="result-images">
+                        <div class="result-image">
+                            <img src="images/Aplicativo_calculo_canal_anel_oring_fabricadoprojeto.png" alt="Esquema do Alojamento">
+                        </div>
+                        <div class="result-image">
+                            <img src="images/Aplicativo_calculo_canal_anel_oring_fabricadoprojeto-2.png" alt="Vista Adicional do Alojamento">
+                        </div>
+                    </div>
+                    <div class="result-table-wrapper">
+                        <table>
+                            <tbody>
+                                <tr><td><span>W</span> Diâmetro da seção</td><td class="value">${dados.W} mm</td></tr>
+                                <tr><td><span>L</span> Profundidade</td><td class="value">${dados.L} mm</td></tr>
+                                <tr><td><span>G</span> Largura</td><td class="value">${dados.G} mm</td></tr>
+                                <tr><td><span>E</span> Jogo diametral</td><td class="value">${dados.E} mm</td></tr>
+                                <tr><td><span>GP</span> Folga radial (E/2)</td><td class="value">${gpStr} mm</td></tr>
+                                <tr><td><span>R1</span> Raio do canto</td><td class="value">±0.15 mm</td></tr>
+                                <tr><td><span>R2</span> Raio do alojamento</td><td class="value">${dados.R2} mm</td></tr>
+                                <tr><td><span>X</span> Acabamento (dinâmico)</td><td class="value">0.8 µm Ra</td></tr>
+                                <tr><td><span>Y</span> Acabamento (estático)</td><td class="value">1.6 µm Ra</td></tr>
+                                <tr><td>Encosto Médio</td><td class="value">${encostoValores.medida} mm</td></tr>
+                                <tr><td>Encosto % Médio</td><td class="value">${encostoValores.percentual}</td></tr>
+                                <tr><td>Anti-extrusor (Parback)</td><td class="value">${dados.parbank}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            document.getElementById('resultado').innerHTML = resultadoHTML;
+        });
+    </script>
+</body>
+</html>

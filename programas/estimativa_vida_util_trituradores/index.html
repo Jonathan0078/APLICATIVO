@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estimativa de Vida Útil de Peças de Desgaste (Trituradores)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-hammer"></i> Vida Útil Trituradores</h1>
+                <!-- Theme switcher can be added here if desired, but not essential for basic functionality -->
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column" class="card">
+                <h2><i class="fas fa-cogs"></i> Entradas</h2>
+                <div class="input-group">
+                    <label for="crusherType">Tipo de Triturador</label>
+                    <select id="crusherType">
+                        <option value="jaw">Mandíbula</option>
+                        <option value="cone">Cônico</option>
+                        <option value="impact">Impacto</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="materialHardness">Dureza do Material Processado</label>
+                    <select id="materialHardness">
+                        <option value="low">Baixa (Ex: Calcário)</option>
+                        <option value="medium">Média (Ex: Granito)</option>
+                        <option value="high">Alta (Ex: Quartzo)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="operatingHours">Horas de Operação Atuais (desde a última troca)</label>
+                    <input type="number" id="operatingHours" placeholder="Ex: 1500">
+                    <span>horas</span>
+                </div>
+                <div class="input-group">
+                    <label for="nominalLifespan">Vida Útil Nominal da Peça (horas)</label>
+                    <input type="number" id="nominalLifespan" placeholder="Ex: 2000">
+                    <span>horas</span>
+                </div>
+                <div class="input-group">
+                    <label for="dailyOperatingHours">Horas de Operação Diária (média)</label>
+                    <input type="number" id="dailyOperatingHours" placeholder="Ex: 16">
+                    <span>horas/dia</span>
+                </div>
+                <div class="button-group">
+                    <button id="calculateBtn" class="main-button"><i class="fas fa-calculator"></i> Calcular</button>
+                </div>
+            </div>
+
+            <div id="outputs-column" class="card">
+                <h2><i class="fas fa-chart-line"></i> Resultados</h2>
+                <div id="results" class="results-grid" style="display: none;">
+                    <div class="result-item">
+                        <span class="label">Vida Útil Real Estimada</span>
+                        <span id="estimatedTotalLifespan" class="value">--</span>
+                        <span class="unit">horas</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Vida Útil Restante</span>
+                        <span id="remainingLifespan" class="value">--</span>
+                        <span class="unit">horas</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Dias Restantes</span>
+                        <span id="remainingDays" class="value">--</span>
+                        <span class="unit">dias</span>
+                    </div>
+                    <div class="result-item notes-item">
+                        <span class="label">Data Estimada de Substituição</span>
+                        <span id="replacementDate" class="value">--</span>
+                        <span class="unit"></span>
+                    </div>
+                </div>
+                <div class="result-placeholder" id="resultPlaceholder">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Preencha os dados e clique em Calcular para ver os resultados.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

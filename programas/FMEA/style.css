@@ -1,0 +1,307 @@
+/* Importando fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
+
+/* Paleta de cores e variáveis do seu site */
+:root {
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+    --cor-aviso: #ffc107; /* Cor para status 'Em Andamento' */
+    --cor-concluido: #17a2b8; /* Cor para status 'Concluído' */
+    --cor-borda: #dee2e6;
+    --sombra-card: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Estilos Globais e do Body */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+/* Cabeçalho com a identidade do site */
+header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 5px solid var(--cor-destaque);
+}
+
+header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
+}
+
+header p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+/* Layout principal da aplicação */
+.container {
+    padding: 20px;
+    max-width: 1600px; /* Aumentado para acomodar novas colunas */
+    margin: 2rem auto;
+}
+
+.card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--sombra-card);
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--cor-primaria);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--cor-borda);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+/* Estilos do Formulário FMEA */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+label {
+    font-weight: bold;
+    color: var(--cor-texto);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+input[type="search"] {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.2);
+}
+
+/* Validação de formulário em tempo real */
+input.invalid {
+    border-color: var(--cor-erro);
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+}
+
+/* Seção de Reavaliação no formulário */
+.reavaliacao-section {
+    grid-column: 1 / -1; /* Ocupa a largura total */
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--cor-borda);
+}
+
+.reavaliacao-section h3 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--cor-secundaria);
+    margin-bottom: 1rem;
+}
+
+/* Estilos dos Botões */
+button, .button-primary, .button-secondary, .button-danger, .action-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+button:hover, .button-primary:hover, .button-secondary:hover, .button-danger:hover, .action-button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.7;
+}
+
+.button-primary { background-color: var(--cor-sucesso); }
+.button-secondary { background-color: var(--cor-secundaria); }
+.button-danger { background-color: var(--cor-erro); }
+
+form button[type="submit"] { margin-right: 10px; }
+
+/* Cabeçalho da Tabela e grupo de botões/busca */
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.output-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-wrapper {
+    flex-grow: 1;
+    min-width: 250px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Estilos da Tabela FMEA */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid var(--cor-borda);
+    padding: 12px 15px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap; /* Evita quebra de linha em células */
+}
+
+td {
+    white-space: normal; /* Permite quebra de linha no conteúdo das células */
+}
+
+
+th {
+    font-family: 'Oswald', sans-serif;
+    background-color: #e9ecef;
+    color: var(--cor-primaria);
+    cursor: pointer;
+    position: relative;
+    font-size: 1.1rem;
+}
+
+th:hover {
+    background-color: #ced4da;
+}
+
+th::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+    transition: all 0.2s;
+}
+
+th.sort-asc::after { border-bottom-color: var(--cor-primaria); }
+th.sort-desc::after { border-top-color: var(--cor-primaria); }
+
+tr:nth-child(even) { background-color: #f8f9fa; }
+tr:hover { background-color: #eef5ff; }
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.action-button {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+/* Codificação de Cores do RPN */
+.rpn-low { background-color: rgba(40, 167, 69, 0.1); }
+.rpn-medium { background-color: rgba(255, 193, 7, 0.15); }
+.rpn-high { background-color: rgba(220, 53, 69, 0.15); }
+.rpn-critical { background-color: rgba(220, 53, 69, 0.25); font-weight: bold; }
+
+/* Estilos de Status na Tabela */
+.status-cell {
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 90px;
+}
+.status-pendente { background-color: var(--cor-erro); }
+.status-andamento { background-color: var(--cor-aviso); color: var(--cor-texto); }
+.status-concluido { background-color: var(--cor-sucesso); }
+
+
+/* Estilos para Notificações Toast */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.toast {
+    padding: 15px 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+.toast-success { background-color: var(--cor-sucesso); }
+.toast-error { background-color: var(--cor-erro); }

@@ -1,0 +1,16 @@
+{
+  "title": "Tabela de Rugosidade Superficial",
+  "headers": ["Processo", "Símbolo", "Ra (µm)", "Descrição"],
+  "rows": [
+    ["Retificação", "", "0,1 - 0,8", "Acabamento muito fino"],
+    ["Lapeamento", "", "0,01 - 0,1", "Superfície espelhada"],
+    ["Fresamento", "", "0,8 - 3,2", "Acabamento médio"],
+    ["Torneamento", "", "0,8 - 6,3", "Acabamento comum"],
+    ["Serra", "", "6,3 - 25", "Acabamento bruto"],
+    ["Fundiçao", "", "> 25", "Superfície rugosa"],
+    ["Polimento", "", "0,05 - 0,2", "Acabamento polido"],
+    ["Eletroerosão", "", "1,6 - 6,3", "Acabamento especial"],
+    ["Microfresamento", "", "0,2 - 0,6", "Acabamento ultra fino"],
+    ["Jateamento", "", "2,5 - 10", "Superfície texturizada"]
+  ]
+}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Viscosidade do Óleo para Engrenagens - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Scripts -->
+    <script src="js/VAECtrl.js"></script>
+</head>
+<body onload="cargarListas();">
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-cogs"></i> Viscosidade do Óleo para Engrenagens</h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> Instruções</h2>
+                    <p>Forneça os dados para determinar a viscosidade adequada para a caixa de engrenagens:</p>
+                    <ul>
+                        <li>Selecione o método de lubrificação.</li>
+                        <li>Selecione o tipo de redutor.</li>
+                        <li>Selecione a potência (HP).</li>
+                        <li>Selecione a velocidade de saída (RPM).</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> Dados da Engrenagem</h2>
+                    <form id="formulario" name="formulario">
+                        <div class="input-group">
+                            <label for="TipoLubricacion">Tipo de Lubrificação</label>
+                            <select name="TipoLubricacion">
+                                <option>Salpico</option>
+                                <option>Circulação</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="TipoReduccion">Tipo de Redutor</label>
+                            <select name="TipoReduccion">
+                                <option>Redução simples &lt;10:1</option>
+                                <option>Redução Múltipla &gt;10:1</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="Potencia">Potência (HP)</label>
+                            <select name="Potencia">
+                                <option>0-1</option><option>1-5</option><option>5-10</option><option>10-20</option><option>20-30</option><option>30-50</option><option>50-75</option><option>75-100</option><option>100-1000</option><option>&gt;1000</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="Velocidad">Velocidade de Saída (RPM)</label>
+                            <select name="Velocidad">
+                                <option>0-150</option><option>150-300</option><option>300-1000</option><option>1000-2000</option><option>2000-5000</option><option>5000-10000</option>
+                            </select>
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" type="button" onclick="MostrarValor()"><i class="fas fa-calculator"></i> Calcular</button>
+                            <button class="secondary-button" type="button" onclick="limpiarC()"><i class="fas fa-eraser"></i> Limpar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> Resultado</h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p>A viscosidade correta (ISO) aparecerá aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="result-header">
+                            <span class="label">Viscosidade Correta (ISO)</span>
+                            <span id="resultado-valor" class="designation-value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+/* --- Estilização Geral com a Nova Identidade Visual --- */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
+
+:root {
+    /* Paleta de cores da nova identidade */
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+
+    /* Cores adaptadas do sistema antigo */
+    --cor-alta: var(--cor-erro);
+    --cor-media: var(--cor-destaque);
+    --cor-baixa: var(--cor-sucesso);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+/* --- Cabeçalho e Títulos --- */
+header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 5px solid var(--cor-destaque);
+    /* border-radius: 8px;  <-- REMOVIDO para que os cantos fiquem retos */
+    /* margin-bottom: 2rem; <-- REMOVIDO pois o .container já tem a margem superior */
+}
+
+header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--cor-primaria);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.8em;
+}
+
+/* --- Seção de Formulário e Resultados --- */
+.app-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    align-items: start;
+}
+
+#rime-form, #result-section {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    color: var(--cor-texto);
+    margin-bottom: 0.5rem;
+}
+
+select {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+button {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+button[type="submit"] {
+    background-color: var(--cor-sucesso);
+}
+
+button[type="reset"] {
+    background-color: var(--cor-secundaria);
+}
+
+/* --- Seção de Resultados --- */
+#result-display {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2em;
+    font-weight: 700;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+}
+
+#result-display.alta { background-color: var(--cor-alta); color: white; }
+#result-display.media { background-color: var(--cor-media); color: var(--cor-texto); } /* Texto escuro para melhor contraste com amarelo */
+#result-display.baixa { background-color: var(--cor-baixa); color: white; }
+
+#recommendation-display {
+    padding: 15px;
+    border-left: 5px solid var(--cor-primaria);
+    background-color: #eaf2f8;
+    border-radius: 5px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* --- Matriz RIME --- */
+#matrix-section {
+    margin-top: 40px;
+}
+
+#rime-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+#rime-matrix th, #rime-matrix td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+
+#rime-matrix th {
+    background-color: var(--cor-secundaria);
+    color: white;
+    font-weight: 700;
+    vertical-align: middle;
+    font-family: 'Oswald', sans-serif;
+}
+
+#rime-matrix tbody tr:nth-child(even) {
+    background-color: var(--cor-fundo);
+}
+
+#rime-matrix .criticidade-header {
+    background-color: var(--cor-primaria);
+    font-weight: bold;
+    width: 100px;
+}
+
+/* Cores das células adaptadas para a nova identidade */
+.prio-alta { background-color: var(--cor-alta); color: white; }
+.prio-media { background-color: var(--cor-media); color: var(--cor-texto); }
+.prio-baixa { background-color: var(--cor-baixa); color: white; }
+.prio-muito-baixa { background-color: #a3d9b1; color: var(--cor-texto); } /* Tom mais claro do verde sucesso */
+
+/* Destaque da célula selecionada */
+.highlight {
+    border: 4px solid var(--cor-destaque) !important;
+    transform: scale(1.15);
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #000;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    z-index: 10;
+    position: relative;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--cor-primaria);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+/* --- Responsividade (Mantida do código original) --- */
+@media (max-width: 992px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 768px) {
+    #rime-matrix {
+        font-size: 0.8em;
+    }
+    #rime-matrix th, #rime-matrix td {
+        padding: 4px;
+    }
+    header h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+    .app-layout {
+        gap: 20px;
+    }
+    #rime-form, #result-section {
+        padding: 1.5rem;
+    }
+}

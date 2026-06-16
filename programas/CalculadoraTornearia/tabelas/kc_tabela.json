@@ -1,0 +1,3 @@
+{
+  "title": "Força Específica de Corte (kc)",
+  "htmlContent": "<div class='complex-table-wrapper'><h4>Força Específica de Corte</h4><table class='complex-table'><thead><tr><th>Material</th><th>kc (N/mm²)</th></tr></thead><tbody><tr><td>Aço Carbono</td><td>2100</td></tr><tr><td>Aço Liga</td><td>2400</td></tr><tr><td>Alumínio</td><td>600</td></tr><tr><td>Bronze</td><td>900</td></tr><tr><td>Latão</td><td>700</td></tr><tr><td>Inox</td><td>2600</td></tr><tr><td>Titânio</td><td>3200</td></tr></tbody></table><br><ul><li>Valores médios, consulte o fabricante para precisão.</li></ul></div>"}

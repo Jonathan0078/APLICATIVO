@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreasePRO - Calculadoras de Lubrificação Industrial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--background-color) 0%, #e2e8f0 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Menu Hambúrguer */
+        .hamburger-menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .hamburger-menu:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 99, 235, 0.25);
+        }
+
+        /* Menu Flutuante */
+        .floating-menu {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 380px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.85); /* Cor de fundo semi-transparente CLARA */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border-color);
+            box-shadow: 2px 0 30px rgba(0, 0, 0, 0.2);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 80px 20px 20px;
+        }
+
+        .floating-menu.active {
+            left: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .calc-item {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .calc-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .calc-item-icon {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 8px;
+            text-align: center;
+            line-height: 35px;
+            color: white;
+            font-size: 0.9rem;
+            margin-right: 0.8rem;
+            vertical-align: top;
+        }
+
+        .calc-item-content {
+            display: inline-block;
+            width: calc(100% - 50px);
+            vertical-align: top;
+        }
+
+        .calc-item h4 {
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            line-height: 1.3;
+        }
+
+        .calc-item p {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        /* Conteúdo Principal */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="0%" r="100%"><stop offset="0%" stop-color="white" stop-opacity="0.1"/><stop offset="100%" stop-color="white" stop-opacity="0"/></radialGradient></defs><rect width="100" height="20" fill="url(%23a)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .header .description {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: var(--accent-color);
+            color: var(--text-color);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .features-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .footer {
+            background: var(--text-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .floating-menu {
+                width: 100%;
+                left: -100%;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Hambúrguer -->
+    <button class="hamburger-menu" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Menu Flutuante -->
+    <div class="floating-menu" id="floatingMenu">
+        <div class="menu-title">
+            <i class="fas fa-cogs"></i> Calculadoras GreasePRO
+        </div>
+
+        <a href="Calculadora2v.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-flask"></i></span>
+            <div class="calc-item-content">
+                <h4>Mistura de Óleos (2V)</h4>
+                <p>Calcule proporções ideais para mistura de dois tipos de óleo lubrificante</p>
+            </div>
+        </a>
+
+        <a href="CalculadoraDFAACP.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-chart-line"></i></span>
+            <div class="calc-item-content">
+                <h4>Degradação do Filme de Óleo (DFAACP)</h4>
+                <p>Analise a degradação do filme lubrificante e intervalos de troca</p>
+            </div>
+        </a>
+
+        <a href="CalculadoraFM.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-calculator"></i></span>
+            <div class="calc-item-content">
+                <h4>Fator de Multiplicação (FM)</h4>
+                <p>Determine fatores de correção para diferentes condições operacionais</p>
+            </div>
+        </a>
+
+        <a href="CalculadoraFRMT.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-thermometer-half"></i></span>
+            <div class="calc-item-content">
+                <h4>Fator de Rotação e Temperatura (FRMT)</h4>
+                <p>Calcule intervalos de relubrificação por velocidade e temperatura</p>
+            </div>
+        </a>
+
+        <a href="CalculadoraGq.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-weight"></i></span>
+            <div class="calc-item-content">
+                <h4>Quantidade de Graxa (Gq)</h4>
+                <p>Determine a quantidade exata de graxa para rolamentos e mancais</p>
+            </div>
+        </a>
+
+        <a href="CalculadoraH.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-clock"></i></span>
+            <div class="calc-item-content">
+                <h4>Cálculo de Horas (H)</h4>
+                <p>Converta entre unidades de tempo e pressão para manutenção preditiva</p>
+            </div>
+        </a>
+
+        <a href="CalculadoraIV.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-tint"></i></span>
+            <div class="calc-item-content">
+                <h4>Índice de Viscosidade (IV)</h4>
+                <p>Calcule o índice de viscosidade de óleos lubrificantes</p>
+            </div>
+        </a>
+
+        <a href="CalculadoraVAE.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-chart-area"></i></span>
+            <div class="calc-item-content">
+                <h4>Vida Através de Espectros (VAE)</h4>
+                <p>Estime a vida útil através de análise espectral de óleos</p>
+            </div>
+        </a>
+
+        <a href="CalculadoraVGR.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-sliders-h"></i></span>
+            <div class="calc-item-content">
+                <h4>Viscosidade Graxa Requerida (VGR)</h4>
+                <p>Determine a viscosidade ideal de graxa para aplicações específicas</p>
+            </div>
+        </a>
+
+        <a href="CalculadoraFT.html" class="calc-item" target="_blank">
+            <span class="calc-item-icon"><i class="fas fa-temperature-high"></i></span>
+            <div class="calc-item-content">
+                <h4>Fator de Temperatura (FT)</h4>
+                <p>Calcule fatores de correção baseados em temperatura</p>
+            </div>
+        </a>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <header class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-cogs"></i> GreasePRO</h1>
+            <p class="subtitle">Sistema Profissional de Calculadoras de Lubrificação Industrial</p>
+            <p class="description">
+                Conjunto completo de ferramentas avançadas para otimizar seus processos de lubrificação 
+                e manutenção preditiva. Desenvolvido com base em normas técnicas internacionais e 
+                melhores práticas da indústria.
+            </p>
+            <button class="cta-button" onclick="openMenu()">
+                <i class="fas fa-calculator"></i> Acessar Calculadoras
+            </button>
+        </div>
+    </header>
+
+    <section class="features-section">
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <h3>Padrão Industrial</h3>
+                <p>Cálculos baseados em normas técnicas internacionais e melhores práticas da indústria de lubrificação</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Interface Responsiva</h3>
+                <p>Otimizado para desktop e dispositivos móveis, acesse suas ferramentas em qualquer lugar</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Algoritmos Confiáveis</h3>
+                <p>Fórmulas testadas e validadas por profissionais experientes em lubrificação industrial</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Fácil de Usar</h3>
+                <p>Interface intuitiva desenvolvida para engenheiros, técnicos e profissionais de manutenção</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p><strong>GreasePRO - Sistema de Calculadoras de Lubrificação Industrial</strong></p>
+        <p class="copyright">&copy; 2024 Manutenção Industrial ARQUIVOS. Todos os direitos reservados.</p>
+        <p class="copyright">Desenvolvido por Jonathan da Silva Oliveira</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const floatingMenu = document.getElementById('floatingMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        function toggleMenu() {
+            floatingMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            
+            // Alterar ícone do hambúrguer
+            const icon = menuToggle.querySelector('i');
+            if (floatingMenu.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
+        }
+
+        function openMenu() {
+            if (!floatingMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        }
+
+        function closeMenu() {
+            if (floatingMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        }
+
+        // Event listeners
+        menuToggle.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', closeMenu);
+
+        // Fechar menu ao pressionar ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeMenu();
+            }
+        });
+
+        // Animação de entrada suave
+        document.addEventListener('DOMContentLoaded', function() {
+            const calcItems = document.querySelectorAll('.calc-item');
+            calcItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, index * 50);
+            });
+        });
+    </script>
+</body>
+</html>

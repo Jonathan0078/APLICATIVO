@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de FMEA Avançado</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Gerador de FMEA Avançado</h1>
+        <p>Crie, gerencie e exporte sua Análise de Modos de Falha e Efeitos.</p>
+    </header>
+
+    <div class="container">
+        <div class="form-container card">
+            <h2>Adicionar ou Editar Falha</h2>
+            <form id="fmeaForm">
+                <div class="form-grid">
+                    <!-- Seção de Análise Inicial -->
+                    <div class="form-group">
+                        <label for="itemFuncao">Item / Função do Processo:</label>
+                        <input type="text" id="itemFuncao" placeholder="Ex: Sistema de Freio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modoFalha">Modo de Falha Potencial:</label>
+                        <input type="text" id="modoFalha" placeholder="Ex: Vazamento de fluido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="efeitoFalha">Efeito Potencial da Falha:</label>
+                        <input type="text" id="efeitoFalha" placeholder="Ex: Perda de capacidade de frenagem" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="causaFalha">Causa Potencial da Falha:</label>
+                        <input type="text" id="causaFalha" placeholder="Ex: Mangueira ressecada" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="controlesAtuais">Controles Atuais (Prevenção/Detecção):</label>
+                        <input type="text" id="controlesAtuais" placeholder="Ex: Inspeção visual periódica">
+                    </div>
+                    <div class="form-group rating-group">
+                        <label for="severidade">Severidade (S) (1-10):</label>
+                        <input type="number" id="severidade" min="1" max="10" value="5" required>
+                    </div>
+                    <div class="form-group rating-group">
+                        <label for="ocorrencia">Ocorrência (O) (1-10):</label>
+                        <input type="number" id="ocorrencia" min="1" max="10" value="5" required>
+                    </div>
+                    <div class="form-group rating-group">
+                        <label for="deteccao">Detecção (D) (1-10):</label>
+                        <input type="number" id="deteccao" min="1" max="10" value="5" required>
+                    </div>
+                     <!-- Seção do Plano de Ação -->
+                    <div class="form-group">
+                        <label for="acoesRecomendadas">Ações Recomendadas:</label>
+                        <input type="text" id="acoesRecomendadas" placeholder="Ex: Substituir mangueiras a cada 2 anos">
+                    </div>
+                    <div class="form-group">
+                        <label for="responsavel">Responsável pela Ação:</label>
+                        <input type="text" id="responsavel" placeholder="Ex: Equipe de Manutenção">
+                    </div>
+                    <div class="form-group">
+                        <label for="prazo">Prazo:</label>
+                        <input type="date" id="prazo">
+                    </div>
+                     <div class="form-group">
+                        <label for="status">Status:</label>
+                        <select id="status">
+                            <option value="Pendente">Pendente</option>
+                            <option value="Em Andamento">Em Andamento</option>
+                            <option value="Concluído">Concluído</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Seção de Reavaliação (visível apenas na edição) -->
+                <div id="reavaliacao-section" class="reavaliacao-section" style="display:none;">
+                    <h3>Reavaliação Pós-Ação</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="acoesRealizadas">Ações Realizadas:</label>
+                            <input type="text" id="acoesRealizadas" placeholder="Descreva a ação que foi concluída">
+                        </div>
+                        <div class="form-group rating-group">
+                            <label for="novaSeveridade">Nova Severidade (S) (1-10):</label>
+                            <input type="number" id="novaSeveridade" min="1" max="10">
+                        </div>
+                        <div class="form-group rating-group">
+                            <label for="novaOcorrencia">Nova Ocorrência (O) (1-10):</label>
+                            <input type="number" id="novaOcorrencia" min="1" max="10">
+                        </div>
+                        <div class="form-group rating-group">
+                            <label for="novaDeteccao">Nova Detecção (D) (1-10):</label>
+                            <input type="number" id="novaDeteccao" min="1" max="10">
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="editIndex">
+                <button type="submit" class="button-primary">Salvar Linha</button>
+                <button type="button" id="cancelEditBtn" class="button-secondary" style="display:none;">Cancelar Edição</button>
+            </form>
+        </div>
+
+        <div class="fmea-output card">
+            <div class="output-header">
+                <h2>Tabela FMEA</h2>
+                <div class="output-controls">
+                     <div class="search-wrapper">
+                        <input type="search" id="searchInput" placeholder="Buscar na tabela...">
+                    </div>
+                    <div class="button-group">
+                        <button id="exportCsvBtn" class="button-secondary">Exportar CSV</button>
+                        <button id="gerarPdfBtn" class="button-secondary">Gerar PDF</button>
+                        <button id="limparDadosBtn" class="button-danger">Limpar Tudo</button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="fmeaTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="itemFuncao">Item/Função</th>
+                            <th data-sort="modoFalha">Modo de Falha</th>
+                            <th data-sort="causaFalha">Causas</th>
+                            <th data-sort="controlesAtuais">Controles Atuais</th>
+                            <th data-sort="s">S</th>
+                            <th data-sort="o">O</th>
+                            <th data-sort="d">D</th>
+                            <th data-sort="rpn">RPN</th>
+                            <th data-sort="acoesRecomendadas">Ações Recomendadas</th>
+                            <th data-sort="responsavel">Responsável</th>
+                            <th data-sort="prazo">Prazo</th>
+                            <th data-sort="status">Status</th>
+                            <th data-sort="novoRpn">Novo RPN</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Linhas serão inseridas dinamicamente aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast-container"></div>
+
+    <!-- Scripts no final para carregamento mais rápido -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

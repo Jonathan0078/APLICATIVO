@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Conversor de Temp, Pressão e Umidade - GreasePRO</title>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Scripts -->
+    <script src="js/HCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-cloud-sun-rain"></i> Conversor de Temp, Pressão e Umidade</h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> Instruções</h2>
+                    <p>Forneça os dados para os cálculos de temperatura, pressão e umidade:</p>
+                    <ul>
+                        <li>Digite o percentual de umidade relativa (%).</li>
+                        <li>Digite a temperatura (em Celsius ou Fahrenheit).</li>
+                        <li>Digite a altitude (em Metros ou Pés).</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> Dados de Entrada</h2>
+                    <div class="input-group">
+                        <label for="humedad">Umidade Relativa (%)</label>
+                        <input id="humedad" type="number" placeholder="Ex: 50">
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="temC">Temperatura (°C)</label>
+                            <input id="temC" type="number" placeholder="Ex: 25" oninput="celsiusFarenheit(this.value)" onchange="celsiusFarenheit(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="temF">Temperatura (°F)</label>
+                            <input id="temF" type="number" placeholder="Ex: 77" oninput="farenheitCelsius(this.value)" onchange="farenheitCelsius(this.value)">
+                        </div>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="metro">Altitude (m)</label>
+                            <input id="metro" type="number" placeholder="Ex: 100" oninput="metroFt(this.value)" onchange="metroFt(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="pies">Altitude (ft)</label>
+                            <input id="pies" type="number" placeholder="Ex: 328" oninput="ftMetro(this.value)" onchange="ftMetro(this.value)">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validarC()"><i class="fas fa-calculator"></i> Calcular</button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> Limpar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> Resultados</h2>
+                    </div>
+                    
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p>Os resultados aparecerão aqui.</p>
+                    </div>
+
+                    <div class="result-content results-grid" id="result-content" style="display: none;">
+                        <div class="result-item">
+                            <span class="label">Ponto de Orvalho (°C)</span>
+                            <span id="res1" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Ponto de Orvalho (°F)</span>
+                            <span id="res2" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Pressão Vapor Saturação (mb)</span>
+                            <span id="res3" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Pressão Vapor Saturação (psi)</span>
+                            <span id="res4" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Pressão Vapor Atual (mb)</span>
+                            <span id="res5" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Pressão Vapor Atual (psi)</span>
+                            <span id="res6" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Pressão na Altitude (mb)</span>
+                            <span id="res7" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Pressão na Altitude (psi)</span>
+                            <span id="res8" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Coeficiente de Pressão</span>
+                            <span id="res9" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Pressão Vapor Real (mb)</span>
+                            <span id="res11" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Pressão Vapor Real (psi)</span>
+                            <span id="res12" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Umidade Absoluta (kg/m³)</span>
+                            <span id="res13" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Umidade Absoluta (lb/ft³)</span>
+                            <span id="res14" class="value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

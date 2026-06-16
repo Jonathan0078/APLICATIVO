@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora da Lei de Ohm - Código Separado</title>
+    <!-- Tema principal (reaproveita o estilo do LMS) -->
+    <link rel="stylesheet" href="../LMS-SOFTWARE/style.css">
+    <!-- Estilos locais específicos da calculadora (mantém o visual do círculo) -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonte local usada na calculadora -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Gestão - Lei de Ohm</h1>
+    </header>
+
+    <div class="container">
+        <!-- Título da Página -->
+        <div class="text-center animate-fadeInUp" style="animation-delay: 0.1s;">
+            <h2 class="" style="margin:0; color:var(--cor-primaria); font-family: 'Oswald', sans-serif;">Calculadora da Lei de Ohm</h2>
+            <p style="color:#6c757d; margin-top:0.5rem;">Clique em uma seção do círculo para começar.</p>
+        </div>
+
+    <!-- Círculo de Ohm Interativo -->
+    <div id="ohm-wheel" class="ohm-wheel animate-fadeInUp" style="animation-delay: 0.3s;">
+            <div id="quadrant-P" class="quadrant quadrant-p" data-type="P">
+                <div class="quadrant-content"><h2>P</h2><p>(Watts)</p></div>
+            </div>
+            <div id="quadrant-V" class="quadrant quadrant-v" data-type="V">
+                <div class="quadrant-content"><h2>V</h2><p>(Volts)</p></div>
+            </div>
+            <div id="quadrant-I" class="quadrant quadrant-i" data-type="I">
+                <div class="quadrant-content"><h2>I</h2><p>(Amps)</p></div>
+            </div>
+            <div id="quadrant-R" class="quadrant quadrant-r" data-type="R">
+                <div class="quadrant-content"><h2>R</h2><p>(Ohms)</p></div>
+            </div>
+        </div>
+
+        <!-- Interface da Calculadora -->
+        <div id="calculator-interface" class="calculator-card" style="opacity:0; transform: scale(0.95); transition: all 0.28s ease; margin-top:2rem;">
+            <div id="instruction" class="instruction">
+                <p style="text-align:center; color:var(--cor-texto);">Aguardando sua seleção...</p>
+            </div>
+            <div id="calculator-content" class="hidden">
+                 <h3 id="formula-title" style="text-align:center; margin:0 0 1rem 0; color:var(--cor-primaria);"></h3>
+                 <div id="formula-buttons" class="formula-buttons"></div>
+                 <div id="input-section" class="hidden input-section">
+                    <div class="input-wrapper">
+                        <label id="label1" for="input1"></label>
+                        <span id="icon1" class="input-icon"></span>
+                        <input type="number" id="input1" class="styled-input" placeholder="Digite o valor...">
+                    </div>
+                    <div class="input-wrapper">
+                        <label id="label2" for="input2"></label>
+                        <span id="icon2" class="input-icon"></span>
+                        <input type="number" id="input2" class="styled-input" placeholder="Digite o valor...">
+                    </div>
+                </div>
+                <button id="calculate-btn" class="hidden btn-calc">Calcular</button>
+                <div id="result-container" style="margin-top:1rem; text-align:center; min-height:40px;">
+                    <p id="result" style="font-size:1.6rem; font-weight:700; color:var(--cor-secundaria);"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <!-- Link para seu arquivo JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+

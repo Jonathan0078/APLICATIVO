@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Engenharia de Selo Mecânico</title>
+    <!-- Ligação para o ficheiro de estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i data-lucide="calculator"></i>Calculadora de Selo Mecânico</h1>
+                <div class="theme-switcher">
+                    <i data-lucide="sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i data-lucide="moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i data-lucide="beaker"></i>Dados da Aplicação</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="fluido">Fluido</label>
+                            <input type="text" id="fluido" placeholder="Ex: Água">
+                        </div>
+                        <div class="input-group">
+                            <label for="temperatura">Temperatura (°C)</label>
+                            <input type="number" id="temperatura" placeholder="Ex: 80">
+                        </div>
+                        <div class="input-group">
+                            <label for="pressao">Pressão (bar)</label>
+                            <input type="number" id="pressao" placeholder="Ex: 10">
+                        </div>
+                        <div class="input-group">
+                            <label for="solidos">Sólidos Abrasivos</label>
+                            <select id="solidos">
+                                <option value="nao">Não</option>
+                                <option value="sim">Sim</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2><i data-lucide="settings-2"></i>Parâmetros do Selo</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="rpm">Rotação (RPM)</label>
+                            <input type="number" id="rpm" placeholder="Ex: 2900">
+                        </div>
+                        <div class="input-group">
+                            <label for="de">De (mm)</label>
+                            <input type="number" id="de" placeholder="Ex: 60">
+                        </div>
+                        <div class="input-group">
+                            <label for="di">Di (mm)</label>
+                            <input type="number" id="di" placeholder="Ex: 40">
+                        </div>
+                        <div class="input-group">
+                            <label for="fmola">Força da Mola (N)</label>
+                            <input type="number" id="fmola" placeholder="Ex: 100">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button id="calculateBtn" class="main-button"><i data-lucide="bar-chart-2"></i>Calcular</button>
+                    </div>
+                </div>
+            </div>
+            <div id="outputs-column">
+                <div id="results-card" class="card">
+                    <div id="results-content">
+                        <div class="result-placeholder">
+                            <i data-lucide="clipboard-list"></i>
+                            <p>Os resultados da sua análise aparecerão aqui.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Biblioteca de Ícones -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Ligação para o ficheiro JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+

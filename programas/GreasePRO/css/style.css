@@ -1,0 +1,276 @@
+/* --- FUNDAÇÃO E IDENTIDADE VISUAL --- */
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap');
+
+:root {
+    --cor-primaria: #2563eb;
+    --cor-secundaria: #3b82f6;
+    --cor-destaque: #f59e0b;
+    --cor-sucesso: #10b981;
+    --cor-erro: #ef4444;
+    
+    --cor-fundo: #f8fafc;
+    --cor-fundo-card: #ffffff;
+    --cor-texto: #1e293b;
+    --cor-texto-claro: #ffffff;
+    --cor-texto-suave: #64748b;
+    --cor-borda: #e2e8f0;
+    --cor-borda-foco: #f59e0b;
+
+    --sombra-cor: rgba(0, 0, 0, 0.08);
+    --raio-borda: 12px;
+
+    --fonte-principal: 'Segoe UI', sans-serif;
+    --fonte-titulo: 'Segoe UI', sans-serif;
+    --velocidade-transicao: 0.3s;
+}
+
+/* --- ESTILOS GERAIS E LAYOUT --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fonte-principal);
+    background: linear-gradient(135deg, var(--cor-fundo) 0%, #e2e8f0 100%);
+    color: var(--cor-texto);
+    line-height: 1.6;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* --- HEADER REFINADO --- */
+.app-header {
+    background: var(--cor-fundo-card);
+    color: var(--cor-texto);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--cor-borda);
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-content h1 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    color: var(--cor-primaria);
+}
+
+.theme-switcher { display: none; } /* Removendo o switch de tema */
+
+
+/* --- LAYOUT PRINCIPAL (GRID) --- */
+.app-main {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    width: 100%;
+}
+
+#inputs-column, #outputs-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+
+/* --- CARDS E TÍTULOS --- */
+.card {
+    background-color: var(--cor-fundo-card);
+    padding: 1.5rem;
+    border-radius: var(--raio-borda);
+    border: 1px solid var(--cor-borda);
+    box-shadow: 0 4px 12px var(--sombra-cor);
+    transition: all var(--velocidade-transicao);
+    display: flex;
+    flex-direction: column;
+}
+
+.card h2 {
+    font-family: var(--fonte-titulo);
+    color: var(--cor-primaria);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--cor-borda);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+
+/* --- FORMULÁRIOS E INPUTS --- */
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"],
+.input-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    background-color: #fff;
+    color: var(--cor-texto);
+    font-size: 1rem;
+    transition: border-color var(--velocidade-transicao), box-shadow var(--velocidade-transicao);
+}
+
+.input-group select {
+    cursor: pointer;
+}
+
+.input-group input::placeholder {
+    color: var(--cor-texto-suave);
+    opacity: 0.8;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+
+/* --- BOTÕES --- */
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.main-button, .secondary-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--velocidade-transicao);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.main-button {
+    flex-grow: 1;
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto-claro);
+    border: 1px solid var(--cor-primaria);
+}
+
+.main-button:hover {
+    background-color: var(--cor-secundaria);
+    transform: translateY(-2px);
+}
+
+.secondary-button {
+    flex-grow: 1;
+    background-color: transparent;
+    color: var(--cor-primaria);
+    border: 1px solid var(--cor-borda);
+}
+
+.secondary-button:hover {
+    background-color: var(--cor-fundo);
+    border-color: var(--cor-primaria);
+}
+
+
+/* --- RESULTADOS --- */
+#results-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--cor-borda);
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+}
+
+#results-card .card-header h2 { border: none; margin: 0; padding: 0; }
+
+.result-placeholder {
+    text-align: center;
+    padding: 2rem;
+    color: var(--cor-texto-suave);
+}
+
+.result-placeholder i { font-size: 2.5rem; margin-bottom: 1rem; display: block; color: var(--cor-borda); }
+
+.result-header {
+    background-color: var(--cor-fundo);
+    border-radius: var(--raio-borda);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    border: 1px solid var(--cor-borda);
+}
+
+.result-header .label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--cor-texto-suave);
+}
+
+.result-header .designation-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.result-item {
+    background-color: var(--cor-fundo);
+    border-radius: var(--raio-borda);
+    padding: 1rem;
+    border: 1px solid var(--cor-borda);
+}
+
+.result-item .label { font-size: 0.9rem; color: var(--cor-texto-suave); }
+.result-item .value { font-size: 1.25rem; font-weight: 700; color: var(--cor-texto); }
+
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 1024px) {
+    .app-main { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .header-content { flex-direction: column; gap: 1rem; align-items: flex-start; }
+    .app-main, .card, .app-header { padding: 1rem; }
+    .button-group { flex-direction: column; }
+    .results-grid { grid-template-columns: 1fr; }
+}

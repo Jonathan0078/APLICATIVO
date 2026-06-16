@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quantidade de Graxa para Rolamentos - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Scripts -->
+    <script src="js/GqCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-ring"></i> Quantidade de Graxa para Rolamentos</h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> Instruções</h2>
+                    <p>Forneça os dados para calcular a quantidade de graxa para relubrificação:</p>
+                    <ul>
+                        <li>Digite o diâmetro externo do rolamento.</li>
+                        <li>Digite a largura do rolamento.</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> Dados do Rolamento</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="diametro">Diâmetro (mm)</label>
+                            <input id="diametro" type="number" placeholder="Ex: 80" oninput="mmaIn(this.value)" onchange="mmaIn(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="diametroIn">Diâmetro (in)</label>
+                            <input id="diametroIn" type="number" placeholder="Ex: 3.15" oninput="inaMm(this.value)" onchange="inaMm(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="ancho">Largura (mm)</label>
+                            <input id="ancho" type="number" placeholder="Ex: 20" oninput="mmaIn2(this.value)" onchange="mmaIn2(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="anchoIn">Largura (in)</label>
+                            <input id="anchoIn" type="number" placeholder="Ex: 0.78" oninput="inaMm2(this.value)" onchange="inaMm2(this.value)">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="ValidarC()"><i class="fas fa-calculator"></i> Calcular</button>
+                        <button class="secondary-button" onclick="Limpiar()"><i class="fas fa-eraser"></i> Limpar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> Resultado</h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p>A quantidade de graxa a aplicar aparecerá aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="label">Quantidade (gramas)</span>
+                                <span id="res1-val" class="value">0 g</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label">Quantidade (onças)</span>
+                                <span id="res2-val" class="value">0 oz</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

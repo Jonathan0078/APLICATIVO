@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Projetos - Lista de Tarefas</title>
+    
+    <!-- Link para o seu ficheiro de estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Link para a biblioteca de ícones Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-tasks"></i> Gestor de Tarefas</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- 1. ADICIONAR NOVOS ITENS -->
+            <div class="card">
+                <h2><i class="fa-solid fa-plus-circle"></i> Adicionar Nova Tarefa</h2>
+                <form id="task-form">
+                    <div class="input-group">
+                        <label for="task-name">Nome da Tarefa</label>
+                        <input type="text" id="task-name" placeholder="Ex: Pesquisa de mercado" required>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="start-date">Início</label>
+                            <input type="date" id="start-date" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="end-date">Término</label>
+                            <input type="date" id="end-date" required>
+                        </div>
+                    </div>
+                    <div class="input-group" style="display: flex; align-items: center; margin-top: 1rem;">
+                        <input type="checkbox" id="is-milestone" style="height: 16px; width: 16px; margin-right: 8px;">
+                        <label for="is-milestone" style="margin-bottom: 0;">Marcar como Marco</label>
+                    </div>
+                    <div id="form-error" style="color: var(--cor-erro); margin-top: 0.5rem; height: 1rem;"></div>
+                    <div class="button-group">
+                        <button type="submit" class="main-button"><i class="fa-solid fa-plus"></i> Adicionar Tarefa</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 2. MÉTRICAS DO PROJETO -->
+            <div class="card">
+                <h2><i class="fa-solid fa-chart-simple"></i> Métricas do Projeto</h2>
+                <div id="dashboard"></div>
+            </div>
+
+            <!-- 3. LISTA DE TAREFAS -->
+            <div class="card" style="flex-grow: 1;">
+                 <div class="gantt-controls">
+                    <div class="input-group" style="margin: 0; flex-grow: 1; min-width: 200px;">
+                        <input type="text" id="filter-tasks" placeholder="Filtrar tarefas...">
+                    </div>
+                    <div class="button-group">
+                        <button id="export-pdf-button" class="secondary-button"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                        <button id="export-xlsx-button" class="secondary-button"><i class="fa-solid fa-file-excel"></i> XLSX</button>
+                        <button id="clear-button" class="secondary-button" style="color: var(--cor-erro);"><i class="fa-solid fa-trash-alt"></i> Limpar</button>
+                    </div>
+                </div>
+                <div id="gantt-chart-container">
+                    <!-- Apenas a lista de tarefas será renderizada aqui -->
+                    <div id="gantt-chart"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bibliotecas externas para funcionalidades de exportação -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    
+    <!-- Link para o seu ficheiro de JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

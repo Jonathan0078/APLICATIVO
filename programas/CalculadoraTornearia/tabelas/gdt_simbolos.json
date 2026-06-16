@@ -1,0 +1,20 @@
+{
+  "title": "Símbolos GD&T (Dimensionamento e Tolerância Geométrica)",
+  "headers": ["Símbolo", "Significado"],
+  "rows": [
+    ["⏥", "Planicidade"],
+    ["⏧", "Paralelismo"],
+    ["⏢", "Perpendicularidade"],
+    ["⏣", "Circularidade"],
+    ["⏤", "Retilineidade"],
+    ["⏦", "Concentricidade"],
+    ["⏨", "Simetria"],
+    ["⏩", "Posição"],
+    ["⏪", "Batimento total"],
+    ["⏫", "Batimento circular"],
+    ["⏬", "Perfil de linha"],
+    ["⏭", "Perfil de superfície"],
+    ["⏮", "Cilindricidade"],
+    ["⏯", "Zona de tolerância"]
+  ]
+}

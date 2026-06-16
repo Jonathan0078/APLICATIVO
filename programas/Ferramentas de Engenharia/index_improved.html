@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+    <meta name="description" content="Coleção completa de calculadoras e tabelas para engenheiros - Ferramentas de Engenharia Premium">
+    <meta name="keywords" content="engenharia, calculadoras, tabelas, ferramentas, cálculos, conversões">
+    <meta name="author" content="Simão Voloski">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Ferramentas de Engenharia">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="Ferramentas de Engenharia - Calculadoras e Tabelas">
+    <meta property="og:description" content="Coleção completa de calculadoras e tabelas para engenheiros">
+    <meta property="og:image" content="">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="">
+    <meta property="twitter:title" content="Ferramentas de Engenharia">
+    <meta property="twitter:description" content="Coleção completa de calculadoras e tabelas para engenheiros">
+    <meta property="twitter:image" content="">
+    
+    <title>Ferramentas de Engenharia - Premium</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles_improved.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Carregando Ferramentas...</h2>
+            <p>Preparando suas calculadoras de engenharia</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header Premium -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-main">
+                    <h1 class="title">
+                        <i class="fas fa-tools" aria-hidden="true"></i>
+                        <span>Ferramentas de Engenharia</span>
+                        <span class="premium-badge">Premium</span>
+                    </h1>
+                    <p class="subtitle">
+                        Coleção completa de calculadoras e tabelas para engenheiros profissionais
+                    </p>
+                </div>
+                <div class="header-controls">
+                    <button class="toggle-theme-btn" id="toggleTheme" title="Alternar tema" aria-label="Alternar entre tema claro e escuro">
+                        <i class="fas fa-moon" aria-hidden="true"></i>
+                    </button>
+                    <div class="stats-display">
+                        <div class="stat-item">
+                            <span class="stat-number" id="toolCount">0</span>
+                            <span class="stat-label">Ferramentas</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Funcionais</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Section Enhanced -->
+        <section class="search-section" aria-label="Busca de ferramentas">
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Buscar ferramenta, categoria ou descrição..." 
+                        class="search-input"
+                        autocomplete="off"
+                        spellcheck="false"
+                        aria-label="Campo de busca"
+                    >
+                    <button id="clearSearch" class="clear-btn" title="Limpar busca" aria-label="Limpar campo de busca">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+        </section>
+
+        <!-- Categories Enhanced -->
+        <section class="categories-section" aria-label="Categorias de ferramentas">
+            <div class="categories">
+                <button class="category-btn active" data-category="all" aria-pressed="true">
+                    <i class="fas fa-th-large" aria-hidden="true"></i>
+                    <span>Todas</span>
+                    <span class="category-count" id="count-all">0</span>
+                </button>
+                <button class="category-btn" data-category="materiais" aria-pressed="false">
+                    <i class="fas fa-cube" aria-hidden="true"></i>
+                    <span>Materiais</span>
+                    <span class="category-count" id="count-materiais">0</span>
+                </button>
+                <button class="category-btn" data-category="calculos" aria-pressed="false">
+                    <i class="fas fa-calculator" aria-hidden="true"></i>
+                    <span>Cálculos</span>
+                    <span class="category-count" id="count-calculos">0</span>
+                </button>
+                <button class="category-btn" data-category="tabelas" aria-pressed="false">
+                    <i class="fas fa-table" aria-hidden="true"></i>
+                    <span>Tabelas</span>
+                    <span class="category-count" id="count-tabelas">0</span>
+                </button>
+                <button class="category-btn" data-category="conversao" aria-pressed="false">
+                    <i class="fas fa-exchange-alt" aria-hidden="true"></i>
+                    <span>Conversão</span>
+                    <span class="category-count" id="count-conversao">0</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Tools Grid Enhanced -->
+        <main class="tools-section" aria-label="Lista de ferramentas">
+            <div class="tools-header">
+                <h2 class="tools-title">Ferramentas Disponíveis</h2>
+                <div class="tools-controls">
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid" title="Visualização em grade" aria-label="Visualizar em grade">
+                            <i class="fas fa-th" aria-hidden="true"></i>
+                        </button>
+                        <button class="view-btn" data-view="list" title="Visualização em lista" aria-label="Visualizar em lista">
+                            <i class="fas fa-list" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="sort-controls">
+                        <select id="sortSelect" class="sort-select" aria-label="Ordenar ferramentas">
+                            <option value="name">Nome A-Z</option>
+                            <option value="name-desc">Nome Z-A</option>
+                            <option value="category">Categoria</option>
+                            <option value="recent">Mais Recentes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tools-grid" id="toolsGrid" role="grid" aria-label="Grade de ferramentas">
+                <!-- As ferramentas serão inseridas aqui via JavaScript -->
+            </div>
+
+            <!-- No Results Enhanced -->
+            <div class="no-results" id="noResults" style="display: none;" role="status" aria-live="polite">
+                <div class="no-results-content">
+                    <i class="fas fa-search-minus" aria-hidden="true"></i>
+                    <h3>Nenhuma ferramenta encontrada</h3>
+                    <p>Tente usar termos diferentes na busca ou explore outras categorias</p>
+                    <button class="reset-filters-btn" id="resetFilters">
+                        <i class="fas fa-undo" aria-hidden="true"></i>
+                        Limpar Filtros
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Enhanced -->
+    <div class="modal" id="toolModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title-section">
+                    <h2 id="modalTitle">Título da Ferramenta</h2>
+                    <div class="modal-meta">
+                        <span class="modal-category" id="modalCategory"></span>
+                        <span class="modal-status">
+                            <i class="fas fa-check-circle" aria-hidden="true"></i>
+                            Funcional
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-controls">
+                    <button class="modal-action-btn" id="favoriteBtn" title="Adicionar aos favoritos" aria-label="Adicionar aos favoritos">
+                        <i class="far fa-heart" aria-hidden="true"></i>
+                    </button>
+                    <button class="modal-action-btn" id="shareBtn" title="Compartilhar ferramenta" aria-label="Compartilhar ferramenta">
+                        <i class="fas fa-share-alt" aria-hidden="true"></i>
+                    </button>
+                    <button class="close-btn" id="closeModal" title="Fechar modal" aria-label="Fechar modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <!-- Conteúdo específico da ferramenta será inserido aqui -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Footer Enhanced -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-info">
+                    <h3>Ferramentas de Engenharia</h3>
+                    <p>Desenvolvido por <strong>Simão Voloski</strong></p>
+                    <p class="footer-status">
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
+                        <strong>TODAS AS FERRAMENTAS FORAM FINALIZADAS E ESTÃO FUNCIONAIS!</strong>
+                    </p>
+                </div>
+                <div class="footer-stats">
+                    <div class="footer-stat">
+                        <span class="footer-stat-number" id="footerToolCount">0</span>
+                        <span class="footer-stat-label">Ferramentas</span>
+                    </div>
+                    <div class="footer-stat">
+                        <span class="footer-stat-number">5</span>
+                        <span class="footer-stat-label">Categorias</span>
+                    </div>
+                    <div class="footer-stat">
+                        <span class="footer-stat-number">100%</span>
+                        <span class="footer-stat-label">Funcionais</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ferramentas de Engenharia. Todos os direitos reservados.</p>
+                <div class="footer-links">
+                    <button class="footer-link" id="aboutBtn">Sobre</button>
+                    <button class="footer-link" id="helpBtn">Ajuda</button>
+                    <button class="footer-link" id="feedbackBtn">Feedback</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script_improved.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed');
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
+

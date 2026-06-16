@@ -1,0 +1,244 @@
+/* Importando fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+    --cor-neutra: #6c757d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 5px solid var(--cor-destaque);
+}
+
+header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
+}
+
+header p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+.main-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* --- Sections --- */
+.animation-container, .calculator-container, .resultado-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+h2, h3 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--cor-primaria);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* --- Animation Section --- */
+.animation-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.gear-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.gear {
+    width: 120px;
+    height: 120px;
+}
+
+.gear path {
+    fill: var(--cor-texto);
+}
+
+.gear-wrapper label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    color: var(--cor-primaria);
+}
+
+.rotation-indicator {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--cor-texto);
+}
+
+@keyframes rotate-cw {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotate-ccw {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+
+/* --- Calculator Section --- */
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    font-weight: bold;
+    color: var(--cor-texto);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.2);
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.button-group button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    transition: transform 0.2s ease, opacity 0.2s;
+}
+
+.button-group button:hover:not(:disabled) {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+#calcular-btn {
+    background-color: var(--cor-sucesso);
+}
+
+#calcular-btn:disabled {
+    background-color: #94dca4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#reset-btn {
+    background-color: var(--cor-neutra);
+}
+
+/* --- Results Section --- */
+.resultado-container {
+    text-align: center;
+    border-top: 5px solid var(--cor-sucesso);
+}
+
+.resultado-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.resultado-item {
+    background-color: var(--cor-fundo);
+    padding: 1rem;
+    border-radius: 6px;
+}
+
+.resultado-item h4 {
+    font-family: 'Roboto', sans-serif;
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    color: var(--cor-neutra);
+    font-weight: 400;
+}
+
+.resultado-item p {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    color: var(--cor-primaria);
+}
+
+/* --- Utility and Error --- */
+.erro-container {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #f8d7da;
+    border-left: 5px solid var(--cor-erro);
+    color: var(--cor-erro);
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* Estilos para as engrenagens mais realistas */
+.gear path {
+    fill: #555; /* Cor base para os dentes */
+}
+
+.gear circle {
+    stroke: #444;
+    stroke-width: 1px;
+}
+
+

@@ -1,0 +1,30 @@
+@import url('../../shared/base.css');
+
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    min-height: 100vh !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+main {
+    max-width: 480px !important;
+    margin: 0 auto !important;
+    padding: 1rem !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+header nav,
+.fixed.top-0,
+nav.mx-auto {
+    background: linear-gradient(135deg, var(--primary, #2563eb), var(--accent, #3b82f6)) !important;
+}
+
+header nav a,
+header nav span,
+.fixed.top-0 a,
+.fixed.top-0 span,
+nav.mx-auto a,
+nav.mx-auto span {
+    color: white !important;
+}

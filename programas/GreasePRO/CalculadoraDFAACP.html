@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fluxo de Óleo em Mancais - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Scripts -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/DFAACPCtrl.js"></script>
+    <script src="js/menu-button.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-water"></i> Fluxo de Óleo em Mancais</h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> Instruções</h2>
+                    <p>Forneça os dados para calcular a vazão de óleo em mancais planos:</p>
+                    <ul>
+                        <li>Selecione a unidade de fluxo (Galões/Gotas por minuto).</li>
+                        <li>Digite o diâmetro do eixo (polegadas).</li>
+                        <li>Digite o diâmetro do mancal (polegadas).</li>
+                        <li>Digite a carga constante (libras).</li>
+                        <li>Digite o comprimento do mancal (polegadas).</li>
+                        <li>Insira a velocidade de rotação (RPM).</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> Dados do Mancal</h2>
+                    <div class="input-group">
+                        <label for="trabajo">Unidade de Fluxo</label>
+                        <select id="trabajo">
+                            <option selected>Selecione uma opção</option>
+                            <option value="1">Galões por minuto</option>
+                            <option value="2">Gotas por minuto</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="deje">Diâmetro do Eixo (pol)</label>
+                        <input id="deje" type="number" placeholder="Ex: 2.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="dcoj">Diâmetro do Mancal (pol)</label>
+                        <input id="dcoj" type="number" placeholder="Ex: 2.505">
+                    </div>
+                    <div class="input-group">
+                        <label for="carga">Carga Constante (lb)</label>
+                        <input id="carga" type="number" placeholder="Ex: 500">
+                    </div>
+                    <div class="input-group">
+                        <label for="largo">Comprimento do Mancal (pol)</label>
+                        <input id="largo" type="number" placeholder="Ex: 3">
+                    </div>
+                    <div class="input-group">
+                        <label for="rpm">Velocidade de Rotação (RPM)</label>
+                        <input id="rpm" type="number" placeholder="Ex: 1800">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validar1v()"><i class="fas fa-calculator"></i> Calcular</button>
+                        <button class="secondary-button" onclick="Limpiar()"><i class="fas fa-eraser"></i> Limpar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> Resultado</h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p>O resultado do fluxo de óleo aparecerá aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="result-header">
+                            <span class="label">Fluxo de Óleo Calculado</span>
+                            <span id="resultado" class="designation-value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+
+        // Adaptação para mostrar/esconder os resultados
+        const original_validar1v = window.validar1v;
+        window.validar1v = function() {
+            original_validar1v();
+            const resultValue = document.getElementById('resultado').value;
+            if (resultValue) {
+                document.getElementById('result-placeholder').style.display = 'none';
+                document.getElementById('result-content').style.display = 'block';
+                document.querySelector('#result-content .designation-value').textContent = resultValue;
+            }
+        }
+
+        const original_Limpiar = window.Limpiar;
+        window.Limpiar = function() {
+            original_Limpiar();
+            document.getElementById('result-placeholder').style.display = 'block';
+            document.getElementById('result-content').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

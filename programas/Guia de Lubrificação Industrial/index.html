@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Lubrificação Industrial Pro</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-oil-can"></i> Guia de Lubrificação Pro</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- Coluna de Entradas (Inputs) -->
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-hand-pointer"></i> Compatibilidade de Graxas</h2>
+                    <div class="input-group">
+                        <label for="grease1">Graxa 1 (Espessante):</label>
+                        <select id="grease1" class="input-group">
+                            <option value="Lítio">Lítio</option>
+                            <option value="Lítio Complexo">Lítio Complexo</option>
+                            <option value="Cálcio">Cálcio</option>
+                            <option value="Cálcio Complexo">Cálcio Complexo</option>
+                            <option value="Alumínio Complexo">Alumínio Complexo</option>
+                            <option value="Poliureia">Poliureia</option>
+                            <option value="Bentonita / Sílica">Bentonita / Sílica</option>
+                            <option value="Sulfonato de Cálcio">Sulfonato de Cálcio</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="grease2">Graxa 2 (Espessante):</label>
+                        <select id="grease2" class="input-group">
+                            <option value="Lítio">Lítio</option>
+                            <option value="Lítio Complexo">Lítio Complexo</option>
+                            <option value="Cálcio">Cálcio</option>
+                            <option value="Cálcio Complexo">Cálcio Complexo</option>
+                            <option value="Alumínio Complexo">Alumínio Complexo</option>
+                            <option value="Poliureia">Poliureia</option>
+                            <option value="Bentonita / Sílica">Bentonita / Sílica</option>
+                            <option value="Sulfonato de Cálcio">Sulfonato de Cálcio</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="checkCompatibility()"><i class="fa-solid fa-check"></i> Verificar Compatibilidade</button>
+                    </div>
+                    <div id="compatibility-result-container" class="resultado-container hidden"></div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-calculator"></i> Calculadora de IV</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="visc40">Viscosidade a 40°C (cSt)</label>
+                            <input type="number" id="visc40" placeholder="Ex: 100" step="0.01" min="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label for="visc100">Viscosidade a 100°C (cSt)</label>
+                            <input type="number" id="visc100" placeholder="Ex: 12.5" step="0.01" min="0.01">
+                        </div>
+                    </div>
+                     <div class="input-group">
+                        <label for="oilName">Nome do Óleo (Opcional)</label>
+                        <input type="text" id="oilName" placeholder="Ex: Óleo Motor 5W-30">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="calculateVI()"><i class="fa-solid fa-bolt"></i> Calcular IV</button>
+                        <button class="secondary-button" onclick="addToComparison()"><i class="fa-solid fa-plus"></i> Adicionar à Comparação</button>
+                    </div>
+                     <div id="result" class="hidden"></div>
+                </div>
+            </div>
+
+            <!-- Coluna de Saídas (Outputs) -->
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> Análises Gráficas</h2>
+                    </div>
+                    <div class="tabs">
+                        <div class="tab active" onclick="showTab('viscosity', event)">Visc vs Temp</div>
+                        <div class="tab" onclick="showTab('comparison', event)">Comparação</div>
+                        <div class="tab" onclick="showTab('distribution', event)">Distribuição</div>
+                    </div>
+                    <div id="viscosity-tab" class="tab-content active">
+                        <div class="chart-container">
+                            <canvas id="viscosityChart"></canvas>
+                        </div>
+                        <div class="info-box">
+                            <strong>Interpretação:</strong> Óleos com IV mais alto (linha mais plana) mantêm viscosidade mais estável com mudanças de temperatura.
+                        </div>
+                    </div>
+                    <div id="comparison-tab" class="tab-content">
+                        <div class="chart-container">
+                            <canvas id="comparisonChart"></canvas>
+                        </div>
+                        <button class="secondary-button" onclick="clearComparison()" style="margin-top: 10px;">Limpar Comparações</button>
+                    </div>
+                    <div id="distribution-tab" class="tab-content">
+                        <div class="chart-container">
+                            <canvas id="distributionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" id="comparacao-oleos-card">
+                <h2><i class="fa-solid fa-table"></i> Comparação de Óleos</h2>
+                <div id="comparisonTableContainer">
+                    <p>Adicione óleos para comparação usando o botão "Adicionar à Comparação"</p>
+                </div>
+            </div>
+
+            <div class="card" id="guia-referencia-card">
+                <h2><i class="fa-solid fa-info-circle"></i> Guia de Referência</h2>
+                <div class="table-container">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Faixa de IV</th>
+                                <th>Classificação</th>
+                                <th>Características</th>
+                                <th>Aplicações Típicas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>120+</td>
+                                <td>Excelente</td>
+                                <td>Estabilidade térmica superior</td>
+                                <td>Óleos sintéticos premium</td>
+                            </tr>
+                            <tr>
+                                <td>90-119</td>
+                                <td>Bom</td>
+                                <td>Boa estabilidade térmica</td>
+                                <td>Óleos minerais de alta qualidade</td>
+                            </tr>
+                            <tr>
+                                <td>40-89</td>
+                                <td>Médio</td>
+                                <td>Estabilidade moderada</td>
+                                <td>Óleos convencionais</td>
+                            </tr>
+                            <tr>
+                                <td>< 40</td>
+                                <td>Baixo</td>
+                                <td>Baixa estabilidade térmica</td>
+                                <td>Óleos básicos não refinados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

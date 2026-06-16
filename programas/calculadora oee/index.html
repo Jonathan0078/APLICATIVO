@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora OEE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Calculadora de OEE</h1>
+        <p>Overall Equipment Effectiveness</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Parâmetros de Cálculo</h2>
+            <form id="oee-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="tempo-planejado">Tempo de Produção Planejado (min)</label>
+                        <input type="number" id="tempo-planejado" required value="480">
+                    </div>
+                    <div class="form-group">
+                        <label for="tempo-parada">Tempo de Parada (min)</label>
+                        <input type="number" id="tempo-parada" required value="47">
+                    </div>
+                    <div class="form-group">
+                        <label for="ciclo-ideal">Ciclo Ideal (seg/peça)</label>
+                        <input type="number" id="ciclo-ideal" required value="60">
+                    </div>
+                    <div class="form-group">
+                        <label for="pecas-produzidas">Total de Peças Produzidas</label>
+                        <input type="number" id="pecas-produzidas" required value="400">
+                    </div>
+                    <div class="form-group">
+                        <label for="pecas-defeituosas">Total de Peças Defeituosas</label>
+                        <input type="number" id="pecas-defeituosas" required value="8">
+                    </div>
+                </div>
+                <div class="button-group" style="margin-top: 2rem;">
+                    <button type="submit" class="button-primary">Calcular</button>
+                    <button type="button" id="save-btn" class="button-secondary" disabled>Salvar</button>
+                    <button type="button" id="clear-form-btn" class="button-danger">Limpar</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="results" class="card" style="display: none;">
+            <h2>Resultados</h2>
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center">
+                    <div class="chart-container">
+                        <canvas id="oeeChart"></canvas>
+                    </div>
+                    <div id="oee-interpretation" class="mt-2 fw-bold h5"></div>
+                </div>
+                <div class="col-md-8">
+                    <div class="chart-container-bar">
+                        <canvas id="componentsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="history" class="card">
+            <div class="output-header">
+                <h2>Histórico</h2>
+                <div class="output-controls">
+                    <button id="clear-history-btn" class="button-danger">Limpar Histórico</button>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>OEE</th>
+                            <th>Disponibilidade</th>
+                            <th>Performance</th>
+                            <th>Qualidade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

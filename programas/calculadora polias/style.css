@@ -1,0 +1,578 @@
+/* Importando fontes e usando variáveis de cor do seu projeto */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+/* --- GERAL E VARIÁVEIS DE TEMA (IDENTIDADE VISUAL APLICADA) --- */
+:root {
+    /* Mapeamento para sua identidade visual */
+    --cor-primaria: #003366;      /* Azul Escuro (Seu Secundário) */
+    --cor-secundaria: #005a9c;     /* Azul Médio (Seu Primário) */
+    --cor-destaque: #ffc107;      /* Amarelo/Dourado */
+    --cor-fundo: #f8f9fa;         /* Cinza bem claro */
+    --cor-texto: #212529;         /* Preto Suave */
+    --cor-sucesso: #28a745;       /* Verde */
+    --cor-erro: #dc3545;          /* Vermelho */
+    --cor-cuidado: #ffc107;       /* Amarelo para Cuidado */
+    --cor-borda: #dee2e6;        /* Cinza para bordas */
+    --cor-texto-claro: #ffffff;    /* Branco para fundos escuros */
+
+    /* Variáveis de layout e transição */
+    --sombra-cor: rgba(0, 0, 0, 0.08);
+    --raio-borda: 6px;
+    --velocidade-transicao: 0.3s;
+}
+
+/* TEMA ESCURO (DARK MODE) - Criado para ser coeso com sua identidade visual */
+.dark-theme {
+    --cor-primaria: #005a9c;       /* Mantém o azul médio para destaque */
+    --cor-secundaria: #007bff;     /* Um azul mais claro para contraste */
+    --cor-destaque: #ffc107;       /* Dourado continua sendo o destaque */
+    --cor-fundo: #0a1929;          /* Fundo azul muito escuro */
+    --cor-texto: #e9ecef;          /* Texto claro */
+    --cor-sucesso: #28a745;        /* Verde */
+    --cor-erro: #dc3545;           /* Vermelho */
+    --cor-cuidado: #ffc107;        /* Amarelo */
+    --cor-borda: #334b61;          /* Borda azul-acinzentada */
+    --cor-texto-claro: #ffffff;     /* Branco */
+
+    --sombra-cor: rgba(0, 0, 0, 0.4);
+    /* Fundo dos cards no tema escuro */
+    --background-color-light: #112233; 
+}
+
+
+body {
+    font-family: 'Roboto', sans-serif; /* FONTE PADRÃO APLICADA */
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    margin: 0;
+    transition: background-color var(--velocidade-transicao), color var(--velocidade-transicao);
+}
+
+/* --- LAYOUT PRINCIPAL --- */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    /* ESTILO DO HEADER DA SUA IDENTIDADE VISUAL APLICADO */
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: var(--cor-texto-claro);
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 12px var(--sombra-cor);
+    border-bottom: 5px solid var(--cor-destaque);
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.header-content h1 {
+    margin: 0;
+    font-family: 'Oswald', sans-serif; /* FONTE DE TÍTULO APLICADA */
+    font-size: 1.8rem;
+}
+
+.app-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#inputs-column, #outputs-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* --- CARDS --- */
+.card {
+    background-color: var(--background-color-light, #ffffff); /* Fallback para branco */
+    border-radius: var(--raio-borda);
+    border: 1px solid var(--cor-borda);
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px var(--sombra-cor);
+    transition: all var(--velocidade-transicao);
+    border-top: 4px solid var(--cor-secundaria); /* Detalhe da sua identidade */
+}
+
+.card h2 {
+    margin-top: 0;
+    font-family: 'Oswald', sans-serif; /* FONTE DE TÍTULO APLICADA */
+    font-size: 1.5rem;
+    color: var(--cor-primaria);
+    border-bottom: 2px solid var(--cor-borda);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.card h2 i {
+    margin-right: 0.5rem;
+    color: var(--cor-secundaria);
+}
+
+/* --- FORMULÁRIOS E INPUTS --- */
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--cor-secundaria);
+}
+
+.input-group input[type="number"],
+.input-group input[type="text"],
+.input-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-borda);
+    background-color: var(--background-color-light, #ffffff);
+    color: var(--cor-texto);
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color var(--velocidade-transicao), box-shadow var(--velocidade-transicao);
+}
+
+.input-group input:focus, .input-group select:focus {
+    outline: none;
+    border-color: var(--cor-destaque);
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3); /* Destaque no foco */
+}
+
+input.invalid {
+    border-color: var(--cor-erro) !important;
+}
+
+/* --- BOTÕES --- */
+.button-group, .io-button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+.button-group-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.main-button, .secondary-button, .toggle-button, .action-button, .icon-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--raio-borda);
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--velocidade-transicao);
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.main-button {
+    background-color: var(--cor-sucesso); /* Botão de ação principal verde */
+    color: var(--cor-texto-claro);
+}
+.main-button:hover {
+    filter: brightness(1.1);
+}
+
+.secondary-button {
+    background-color: transparent;
+    color: var(--cor-primaria);
+    border: 2px solid var(--cor-primaria);
+}
+.secondary-button:hover {
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto-claro);
+}
+
+.toggle-button {
+    background-color: var(--background-color-light, #ffffff);
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-borda);
+}
+.toggle-button.active {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-texto-claro);
+    border-color: var(--cor-secundaria);
+}
+
+.action-button {
+    background-color: var(--cor-destaque);
+    color: var(--cor-primaria); /* Melhor contraste com amarelo */
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: var(--cor-texto);
+    padding: 0.5rem;
+    font-size: 1.25rem;
+}
+.icon-button:hover {
+    color: var(--cor-secundaria);
+}
+
+/* --- RESULTADOS --- */
+#results-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#results-card .card-header h2 {
+    border: none;
+    margin: 0;
+}
+
+.results-grid-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+.result-item.highlight-result {
+    padding: 1rem;
+    border-radius: var(--raio-borda);
+    text-align: center;
+    background-color: var(--cor-fundo);
+}
+.result-item.highlight-result.success {
+    background-color: #e9f7ec; /* Fundo verde claro */
+    border: 1px solid var(--cor-sucesso);
+}
+.result-item.highlight-result .label {
+    font-size: 1rem;
+}
+.result-item.highlight-result .value {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    color: var(--cor-sucesso);
+}
+.dark-theme .result-item.highlight-result .value {
+    color: var(--cor-sucesso);
+}
+
+#direct-results-container > .card,
+#reverse-results-container > .card,
+#comparison-results-container > .card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+    gap: 1rem;
+}
+
+.result-item {
+    padding: 0.75rem;
+    background: var(--cor-fundo);
+    border-radius: var(--raio-borda);
+    border-left: 4px solid var(--cor-secundaria);
+}
+.result-item.warning { border-left-color: var(--cor-cuidado); }
+.result-item.danger { border-left-color: var(--cor-erro); }
+.result-item.success { border-left-color: var(--cor-sucesso); }
+
+.result-item .label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    opacity: 0.8;
+}
+.result-item .value {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* --- TABELAS --- */
+.table-container {
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--cor-borda);
+}
+thead {
+    background-color: #eaf3fa; /* Azul bem claro da sua identidade */
+}
+.dark-theme thead {
+    background-color: #112233;
+}
+
+/* --- DIAGRAMA SVG --- */
+#diagram-card {
+    background-color: var(--background-color-light, #ffffff);
+}
+
+#transmissionDiagram {
+    width: 100%;
+    height: auto;
+    min-height: 250px;
+    background: var(--cor-fundo);
+    border-radius: var(--raio-borda);
+    border: 1px solid var(--cor-borda);
+}
+
+#transmissionDiagram .pulley {
+    fill: #ccc;
+    stroke: #444;
+    stroke-width: 3px;
+    transform-origin: center;
+    /* Removido: animation: spin */
+    /* As polias agora são fixas */
+}
+
+.dark-theme #transmissionDiagram .pulley {
+    stroke: var(--cor-texto-claro);
+}
+
+#transmissionDiagram .belt {
+    fill: none;
+    stroke: #555;
+    stroke-width: 4px;
+    stroke-dasharray: 15 10;
+    animation: march 1s linear infinite; /* Animação de correia */
+}
+
+.dark-theme #transmissionDiagram .belt {
+    stroke: #888;
+}
+
+#transmissionDiagram .center-line {
+    stroke: var(--cor-erro);
+    stroke-width: 0.5px;
+    stroke-dasharray: 4 2;
+}
+
+#transmissionDiagram .diagram-text {
+    font-size: 12px;
+    fill: var(--cor-texto);
+    text-anchor: middle;
+    font-weight: bold;
+}
+
+/* --- ANIMAÇÕES --- */
+@keyframes march {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: 25; } /* 15 + 10 do dasharray */
+}
+
+/* --- THEME SWITCHER --- */
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 26px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--cor-secundaria);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+/* --- OUTROS COMPONENTES --- */
+#customModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+#customModal .modal-content {
+    background: var(--background-color-light, #ffffff);
+    padding: 2rem;
+    border-radius: var(--raio-borda);
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+#customModal .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: var(--cor-texto);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: var(--cor-erro);
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 1024px) {
+    .app-main {
+        grid-template-columns: 1fr;
+    }
+
+    .input-grid, .results-grid-main {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .header-content h1 {
+        text-align: center;
+        width: 100%;
+    }
+
+    .app-main {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+
+    .button-group, .io-button-group {
+        flex-direction: column;
+    }
+}
+
+#floating-menu-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--cor-secundaria); /* Usando a cor secundária do tema */
+    color: var(--cor-texto-claro);
+    padding: 10px 15px;
+    border-radius: var(--raio-borda);
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 2px 8px var(--sombra-cor);
+    transition: background-color var(--velocidade-transicao);
+}
+
+#floating-menu {
+    position: fixed;
+    bottom: 70px; /* Posiciona acima do botão */
+    right: 20px;
+    background-color: var(--background-color-light, #ffffff); /* Fundo adaptável ao tema */
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-borda);
+    box-shadow: 0px 0px 10px var(--sombra-cor);
+    z-index: 1000;
+    display: none; /* Inicialmente escondido */
+    padding: 0.5rem 0; /* Ajusta o padding interno */
+}
+
+#floating-menu ul {
+    list-style: none;
+    padding: 0; /* Remove padding padrão da lista */
+    margin: 0;
+}
+
+#floating-menu ul li {
+    margin-bottom: 0; /* Remove margin padrão */
+}
+
+#floating-menu ul li a {
+    text-decoration: none;
+    color: var(--cor-texto); /* Cor do texto adaptável ao tema */
+    padding: 10px 20px; /* Aumenta a área clicável */
+    display: block;
+    transition: background-color var(--velocidade-transicao), color var(--velocidade-transicao);
+}
+
+#floating-menu ul li a:hover {
+    background-color: var(--cor-fundo); /* Fundo ao passar o mouse, adaptável */
+}
+
+/* Adiciona um pouco de espaço entre os itens, se necessário */
+#floating-menu ul li:not(:last-child) {
+    border-bottom: 1px solid var(--cor-borda);
+}

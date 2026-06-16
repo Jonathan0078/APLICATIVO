@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de KPIs de Manutenção</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-chart-line"></i> Calculadora de KPIs de Manutenção</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-stopwatch"></i> MTBF (Mean Time Between Failures)</h2>
+                    <div class="input-group">
+                        <label for="mtbf-tempo-operacao">Tempo Total de Operação (horas)</label>
+                        <input type="number" id="mtbf-tempo-operacao" placeholder="Ex: 1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="mtbf-num-falhas">Número de Falhas</label>
+                        <input type="number" id="mtbf-num-falhas" placeholder="Ex: 5">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-wrench"></i> MTTR (Mean Time To Repair)</h2>
+                    <div class="input-group">
+                        <label for="mttr-tempo-manutencao">Tempo Total de Manutenção (horas)</label>
+                        <input type="number" id="mttr-tempo-manutencao" placeholder="Ex: 50">
+                    </div>
+                    <div class="input-group">
+                        <label for="mttr-num-falhas">Número de Reparos</label>
+                        <input type="number" id="mttr-num-falhas" placeholder="Ex: 5">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-thumbs-up"></i> Disponibilidade</h2>
+                    <div class="input-group">
+                        <label for="disponibilidade-mtbf">MTBF (calculado ou manual)</label>
+                        <input type="number" id="disponibilidade-mtbf" placeholder="Ex: 200">
+                    </div>
+                    <div class="input-group">
+                        <label for="disponibilidade-mttr">MTTR (calculado ou manual)</label>
+                        <input type="number" id="disponibilidade-mttr" placeholder="Ex: 10">
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="button-group">
+                        <button class="main-button" id="calculate-btn"><i class="fa-solid fa-calculator"></i> Calcular KPIs</button>
+                        <button class="secondary-button" id="clear-btn"><i class="fa-solid fa-eraser"></i> Limpar Tudo</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> Resultados</h2>
+                    </div>
+                    <div id="result-display">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <p>Aguardando o cálculo...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="history-card">
+                    <h2><i class="fa-solid fa-clock-rotate-left"></i> Histórico de Cálculos</h2>
+                    <ul id="history-list">
+                        <li class="history-placeholder">Nenhum cálculo recente.</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

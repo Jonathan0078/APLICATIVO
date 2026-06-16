@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Vazão e Perda de Carga</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-water"></i> Vazão e Perda de Carga</h1>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column" class="card">
+                <h2><i class="fas fa-cogs"></i> Entradas</h2>
+                <div class="input-group">
+                    <label for="flowRate">Vazão (Q)</label>
+                    <input type="number" id="flowRate" placeholder="Ex: 100">
+                    <span>m³/h</span>
+                </div>
+                <div class="input-group">
+                    <label for="diameter">Diâmetro Interno (D)</label>
+                    <input type="number" id="diameter" placeholder="Ex: 150">
+                    <span>mm</span>
+                </div>
+                <div class="input-group">
+                    <label for="length">Comprimento da Tubulação (L)</label>
+                    <input type="number" id="length" placeholder="Ex: 500">
+                    <span>m</span>
+                </div>
+                <div class="input-group">
+                    <label for="roughness">Rugosidade Absoluta (ε)</label>
+                    <input type="number" id="roughness" value="0.046">
+                    <span>mm</span>
+                </div>
+                <div class="input-group">
+                    <label for="viscosity">Viscosidade Cinemática (ν)</label>
+                    <input type="number" id="viscosity" value="1.004">
+                    <span>cSt</span>
+                </div>
+                <div class="button-group">
+                    <button id="calculateBtn" class="main-button"><i class="fas fa-calculator"></i> Calcular</button>
+                </div>
+            </div>
+
+            <div id="outputs-column" class="card">
+                <h2><i class="fas fa-chart-line"></i> Resultados</h2>
+                <div id="results" class="results-grid" style="display: none;">
+                    <div class="result-item">
+                        <span class="label">Velocidade</span>
+                        <span id="velocity" class="value">--</span>
+                        <span class="unit">m/s</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Perda de Carga</span>
+                        <span id="headLoss" class="value">--</span>
+                        <span class="unit">m.c.a.</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Fator de Atrito</span>
+                        <span id="frictionFactor" class="value">--</span>
+                        <span class="unit"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Nº de Reynolds</span>
+                        <span id="reynolds" class="value">--</span>
+                        <span class="unit"></span>
+                    </div>
+                </div>
+                <div class="result-placeholder" id="resultPlaceholder">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Preencha os dados e clique em Calcular para ver os resultados.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

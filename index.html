@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="app.title">Central de Ferramentas</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <main class="main-content">
+
+            <div id="home" class="screen active">
+
+                <div class="home-header">
+                    <div>
+                        <div class="home-logo">
+                            <i class="material-icons">precision_manufacturing</i>
+                        </div>
+                        <h1 data-i18n="app.title">Central de<br>Ferramentas</h1>
+                        <p data-i18n="app.subtitle">Manutenção Industrial</p>
+                        <div id="lang-selector-container" class="lang-selector-container"></div>
+                    </div>
+                    <div class="header-img"><img src="WhatsApp Image 2026-06-15 at 23.00.44.jpeg" alt="Logo"></div>
+                </div>
+
+                <div class="home-body">
+
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <span class="stat-number" id="stat-tools">36</span>
+                            <span class="stat-label" data-i18n="stat.programs">Programas</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="stat-favs">0</span>
+                            <span class="stat-label" data-i18n="stat.favorites">Favoritos</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">9</span>
+                            <span class="stat-label" data-i18n="stat.categories">Categorias</span>
+                        </div>
+                    </div>
+
+                    <section class="home-section">
+                        <div class="section-header">
+                            <h2 data-i18n="section.categories">Categorias</h2>
+                            <button class="section-link" data-i18n="section.viewall" onclick="navigateTo('programs')">Ver todas</button>
+                        </div>
+                        <div class="category-grid">
+                            <div class="cat-card" data-cat="hidraulica" onclick="navigateTo('programs')">
+                                <div class="cat-icon" style="background:linear-gradient(135deg,#0284c7,#38bdf8)"><i class="fas fa-water"></i></div>
+                                <span data-i18n="cat.hidraulica">Hidráulica</span>
+                            </div>
+                            <div class="cat-card" data-cat="lubrificacao" onclick="navigateTo('programs')">
+                                <div class="cat-icon" style="background:linear-gradient(135deg,#059669,#34d399)"><i class="fas fa-fill-drip"></i></div>
+                                <span data-i18n="cat.lubrificacao">Lubrificação</span>
+                            </div>
+                            <div class="cat-card" data-cat="rolamentos" onclick="navigateTo('programs')">
+                                <div class="cat-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)"><i class="fas fa-compact-disc"></i></div>
+                                <span data-i18n="cat.rolamentos">Rolamentos</span>
+                            </div>
+                            <div class="cat-card" data-cat="transmissao" onclick="navigateTo('programs')">
+                                <div class="cat-icon" style="background:linear-gradient(135deg,#ea580c,#fb923c)"><i class="fas fa-cogs"></i></div>
+                                <span data-i18n="cat.transmissao">Transmissão</span>
+                            </div>
+                            <div class="cat-card" data-cat="analise" onclick="navigateTo('programs')">
+                                <div class="cat-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-chart-line"></i></div>
+                                <span data-i18n="cat.analise">Análise</span>
+                            </div>
+                            <div class="cat-card" data-cat="utilitarios" onclick="navigateTo('programs')">
+                                <div class="cat-icon" style="background:linear-gradient(135deg,#6b7280,#9ca3af)"><i class="fas fa-tools"></i></div>
+                                <span data-i18n="cat.utilitarios">Utilitários</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="home-section">
+                        <div class="section-header">
+                            <h2 data-i18n="section.mostused">Mais usados</h2>
+                        </div>
+                        <div class="featured-list" id="featured-list">
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <div id="programs" class="screen">
+                <div class="programs-header">
+                    <h2 data-i18n="nav.programs">Programas</h2>
+                    <div class="search-box">
+                        <i class="material-icons">search</i>
+                        <input type="text" id="tool-search" data-i18n="search.placeholder" placeholder="Buscar ferramentas...">
+                    </div>
+                </div>
+
+                <div class="programs-body">
+                    <div class="category-section" id="favorites-section">
+                        <div class="category-header" data-category="favorites">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="category-info">
+                                <h3 data-i18n="cat.favorites">Favoritos</h3>
+                                <span class="tool-count">0 ferramentas</span>
+                            </div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools"></div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header" data-category="hidraulica">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#0284c7,#38bdf8)"><i class="fas fa-water"></i></div>
+                            <div class="category-info"><h3 data-i18n="cat.hidraulica">Hidráulica</h3><span class="tool-count">3 ferramentas</span></div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools">
+                            <a href="programas/calculadora_vazao_perda_carga/index.html" class="tool-item" data-tool-id="vazao_perda_carga">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0284c7,#38bdf8)"><i class="fas fa-water"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.vazao_perda_carga">Vazão e Perda de Carga</h4><p data-i18n="tool.vazao_perda_carga.desc">Calcule a perda de carga em tubulações</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Anel Oring/index.html" class="tool-item" data-tool-id="anel_oring">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0284c7,#38bdf8)"><i class="fas fa-water"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.anel_oring">Anel Oring</h4><p data-i18n="tool.anel_oring.desc">Calculadora de alojamento para vedação</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/hidraulica/getcalc-clone/index.html" class="tool-item" data-tool-id="hid_calc">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0284c7,#38bdf8)"><i class="fas fa-water"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.hid_calc">Hid-calc</h4><p data-i18n="tool.hid_calc.desc">Dimensionamento de cilindros</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header" data-category="mineracao">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#d97706,#fbbf24)"><i class="fas fa-gem"></i></div>
+                            <div class="category-info"><h3 data-i18n="cat.mineracao">Mineração</h3><span class="tool-count">2 ferramentas</span></div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools">
+                            <a href="programas/estimativa_vida_util_trituradores/index.html" class="tool-item" data-tool-id="vida_util_trituradores">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#d97706,#fbbf24)"><i class="fas fa-hammer"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.vida_util_trituradores">Vida Útil Trituradores</h4><p data-i18n="tool.vida_util_trituradores.desc">Estime a vida útil de peças de desgaste</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/calculadora_peneiramento/index.html" class="tool-item" data-tool-id="peneiramento">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#d97706,#fbbf24)"><i class="fas fa-filter"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.peneiramento">Peneiramento</h4><p data-i18n="tool.peneiramento.desc">Calcule eficiência e capacidade de peneiras</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header" data-category="lubrificacao">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#059669,#34d399)"><i class="fas fa-fill-drip"></i></div>
+                            <div class="category-info"><h3 data-i18n="cat.lubrificacao">Lubrificação</h3><span class="tool-count">4 ferramentas</span></div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools">
+                            <a href="programas/GreasePRO/index.html" class="tool-item" data-tool-id="calculadora_graxa">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#059669,#34d399)"><i class="fas fa-fill-drip"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.calculadora_graxa">Calculadora GreasePRO</h4><p data-i18n="tool.calculadora_graxa.desc">Calcule quantidade e frequência de graxa</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Guia de Lubrificação Industrial/index.html" class="tool-item" data-tool-id="guia_lubrificacao">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#059669,#34d399)"><i class="fas fa-book"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.guia_lubrificacao">Guia de Lubrificação</h4><p data-i18n="tool.guia_lubrificacao.desc">Guia completo de lubrificação industrial</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/LMS-SOFTWARE/index.html" class="tool-item" data-tool-id="lms_software">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#059669,#34d399)"><i class="fas fa-oil-can"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.lms_software">LMS (Offline)</h4><p data-i18n="tool.lms_software.desc">Gerencie planos de lubrificação</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/roteiro/index.html" class="tool-item" data-tool-id="roteiro_lubrificacao">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#059669,#34d399)"><i class="fas fa-oil-can"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.roteiro_lubrificacao">Roteiro de Lubrificação</h4><p data-i18n="tool.roteiro_lubrificacao.desc">Crie e gerencie rotas de lubrificação</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header" data-category="engenharia_civil">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#475569,#94a3b8)"><i class="fas fa-crosshairs"></i></div>
+                            <div class="category-info"><h3 data-i18n="cat.engenharia_civil">Engenharia Civil</h3><span class="tool-count">1 ferramenta</span></div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools">
+                            <a href="programas/Ferramentas de Engenharia/index.html" class="tool-item" data-tool-id="ferramentas_engenharia">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#475569,#94a3b8)"><i class="fas fa-drafting-compass"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.ferramentas_engenharia">Ferramentas de Engenharia</h4><p data-i18n="tool.ferramentas_engenharia.desc">Finalizado</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header" data-category="rolamentos">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)"><i class="fas fa-compact-disc"></i></div>
+                            <div class="category-info"><h3 data-i18n="cat.rolamentos">Rolamentos & Mancais</h3><span class="tool-count">4 ferramentas</span></div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools">
+                            <a href="programas/calculadora de montagem de rolamentos/index.html" class="tool-item" data-tool-id="montagem_rolamentos">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)"><i class="fas fa-wrench"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.montagem_rolamentos">Montagem de Rolamentos</h4><p data-i18n="tool.montagem_rolamentos.desc">Calcule a folga interna residual</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/calculadora_rolamentos/index.html" class="tool-item" data-tool-id="especcalc_rolamentos">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)"><i class="fas fa-cube"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.especcalc_rolamentos">EspecCalc Rolamentos</h4><p data-i18n="tool.especcalc_rolamentos.desc">Consulte banco de dados (+330)</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/selo mecanico/index.html" class="tool-item" data-tool-id="selo_mecanico">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)"><i class="fas fa-ring"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.selo_mecanico">Calculadora de Selo Mecânico</h4><p data-i18n="tool.selo_mecanico.desc">Encontre especificações de selos</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/consulta_mancais/index.html" class="tool-item" data-tool-id="doutor_mancal">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)"><i class="fas fa-search-plus"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.doutor_mancal">Doutor Mancal</h4><p data-i18n="tool.doutor_mancal.desc">Consulte e encontre o mancal ideal</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header" data-category="transmissao">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#ea580c,#fb923c)"><i class="fas fa-cogs"></i></div>
+                            <div class="category-info"><h3 data-i18n="cat.transmissao">Transmissão</h3><span class="tool-count">6 ferramentas</span></div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools">
+                            <a href="programas/relacao engrenagens/index.html" class="tool-item" data-tool-id="relacao_engrenagens">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#ea580c,#fb923c)"><i class="fas fa-cogs"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.relacao_engrenagens">Relação de Engrenagens</h4><p data-i18n="tool.relacao_engrenagens.desc">Calcule relação de transmissão e torque</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/calculadora polias/index.html" class="tool-item" data-tool-id="dimensionamento_polias">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#ea580c,#fb923c)"><i class="fas fa-circle"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.dimensionamento_polias">Dimensionamento de Polias</h4><p data-i18n="tool.dimensionamento_polias.desc">Projete sistemas de transmissão</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Calculadora do Fator J (AGMA)/index.html" class="tool-item" data-tool-id="fator_j_agma">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#ea580c,#fb923c)"><i class="fas fa-layer-group"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.fator_j_agma">Fator J AGMA</h4><p data-i18n="tool.fator_j_agma.desc">Calcule a resistência de engrenagens</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/calculadora-rpm-redutor/index.html" class="tool-item" data-tool-id="rpm_redutor">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#ea580c,#fb923c)"><i class="fas fa-tachometer-alt"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.rpm_redutor">RPM Redutor</h4><p data-i18n="tool.rpm_redutor.desc">Calcule redução de velocidade e torque</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Polias X Engrenagens/index.html" class="tool-item" data-tool-id="polias_x_engrenagens">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#ea580c,#fb923c)"><i class="fas fa-project-diagram"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.polias_x_engrenagens">Polias X Engrenagens</h4><p data-i18n="tool.polias_x_engrenagens.desc">Visualize elementos 2D e 3D</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Calculadora para Correias Transportadoras/index.html" class="tool-item" data-tool-id="correias_transportadoras">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#ea580c,#fb923c)"><i class="fas fa-ruler-horizontal"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.correias_transportadoras">Correias Transportadoras</h4><p data-i18n="tool.correias_transportadoras.desc">Calcule velocidade e comprimento</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header" data-category="usinagem">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#dc2626,#f87171)"><i class="fas fa-crosshairs"></i></div>
+                            <div class="category-info"><h3 data-i18n="cat.usinagem">Usinagem</h3><span class="tool-count">2 ferramentas</span></div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools">
+                            <a href="programas/CalculadoraTornearia/index.html" class="tool-item" data-tool-id="calculadora_tornearia">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#dc2626,#f87171)"><i class="fas fa-industry"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.calculadora_tornearia">Calculadora Tornearia</h4><p data-i18n="tool.calculadora_tornearia.desc">Calcule parâmetros de usinagem</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/torque parafusos/index.html" class="tool-item" data-tool-id="torque_parafusos">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#dc2626,#f87171)"><i class="fas fa-screwdriver"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.torque_parafusos">Torque de Parafusos</h4><p data-i18n="tool.torque_parafusos.desc">Determine o torque de aperto ideal</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header" data-category="analise">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-chart-line"></i></div>
+                            <div class="category-info"><h3 data-i18n="cat.analise">Análise & Gestão</h3><span class="tool-count">9 ferramentas</span></div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools">
+                            <a href="programas/FMEA/index.html" class="tool-item" data-tool-id="fmea">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-tasks"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.fmea">Análise FMEA</h4><p data-i18n="tool.fmea.desc">Identifique e mitigue modos de falha</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/pareto-app/index.html" class="tool-item" data-tool-id="pareto">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-chart-bar"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.pareto">Diagrama de Pareto</h4><p data-i18n="tool.pareto.desc">Identifique causas com o princípio 80/20</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/fft-calculator/index.html" class="tool-item" data-tool-id="fft">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-wave-square"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.fft">Calculadora FFT</h4><p data-i18n="tool.fft.desc">Análise de Vibração e Transformada de Fourier</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Gráfico Gantt/index.html" class="tool-item" data-tool-id="gantt">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-chart-area"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.gantt">Grafico de Gantt</h4><p data-i18n="tool.gantt.desc">teste</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/comparador de custos/index.html" class="tool-item" data-tool-id="comparador_custos">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-balance-scale"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.comparador_custos">Custos de Manutenção</h4><p data-i18n="tool.comparador_custos.desc">Avalie o impacto financeiro de estratégias</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Sistema de Gestão de TC/index.html" class="tool-item" data-tool-id="gestao_tc">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-clipboard-check"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.gestao_tc">Gestão de TC</h4><p data-i18n="tool.gestao_tc.desc">Gerencie termos de conformidade</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/RIME/index.html" class="tool-item" data-tool-id="rime">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-clipboard-list"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.rime">Software Matriz RIME</h4><p data-i18n="tool.rime.desc">Priorize a criticidade de ativos</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/calculadora_kpis_manutencao/index.html" class="tool-item" data-tool-id="kpis_manutencao">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-calculator"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.kpis_manutencao">Calculadora de KPIs</h4><p data-i18n="tool.kpis_manutencao.desc">Calcule MTBF, MTTR e Disponibilidade</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/calculadora oee/index.html" class="tool-item" data-tool-id="calculadora_oee">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4)"><i class="fas fa-calculator"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.calculadora_oee">Calculadora de OEE</h4><p data-i18n="tool.calculadora_oee.desc"></p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header" data-category="utilitarios">
+                            <div class="category-icon" style="background:linear-gradient(135deg,#6b7280,#9ca3af)"><i class="fas fa-tools"></i></div>
+                            <div class="category-info"><h3 data-i18n="cat.utilitarios">Utilitários</h3><span class="tool-count">5 ferramentas</span></div>
+                            <div class="category-arrow"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                        <div class="category-tools">
+                            <a href="programas/Calculadora_dissipacao/index.html" class="tool-item" data-tool-id="dissipacao_termica">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#6b7280,#9ca3af)"><i class="fas fa-fire"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.dissipacao_termica">Dissipação Térmica</h4><p data-i18n="tool.dissipacao_termica.desc">Estime a dissipação de calor em mancais</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Lei de OHM/index.html" class="tool-item" data-tool-id="lei_ohm">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#6b7280,#9ca3af)"><i class="fas fa-bolt"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.lei_ohm">Lei de OHM</h4><p data-i18n="tool.lei_ohm.desc">Faça calculos reais.</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Conversor de Escalas Lineares/index.html" class="tool-item" data-tool-id="conversor_escalas">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#6b7280,#9ca3af)"><i class="fas fa-sliders-h"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.conversor_escalas">Conversor de Escalas</h4><p data-i18n="tool.conversor_escalas.desc">Converta valores como 4-20mA</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/conversor de unidades/index.html" class="tool-item" data-tool-id="conversor_unidades">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#6b7280,#9ca3af)"><i class="fas fa-exchange-alt"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.conversor_unidades">Conversor de Unidades</h4><p data-i18n="tool.conversor_unidades.desc">Conversões entre SI e Imperial</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                            <a href="programas/Conversor de Milímetros para Polegadas Fracionárias/index.html" class="tool-item" data-tool-id="conversor_universal">
+                                <div class="tool-icon" style="background:linear-gradient(135deg,#6b7280,#9ca3af)"><i class="fas fa-sync-alt"></i></div>
+                                <div class="tool-info"><h4 data-i18n="tool.conversor_universal">Conversor de Milímetros para Polegadas Fracionárias</h4><p data-i18n="tool.conversor_universal.desc">Facilidade em conversão</p></div>
+                                <div class="favorite-icon"><i class="far fa-star"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" data-screen="home" data-title="Início" data-subtitle="Central de Ferramentas">
+                <i class="material-icons">home</i>
+                <span data-i18n="nav.home">Início</span>
+            </div>
+            <div class="nav-item" data-screen="programs" data-title="Programas" data-subtitle="Todas as ferramentas">
+                <i class="material-icons">apps</i>
+                <span data-i18n="nav.programs">Programas</span>
+            </div>
+        </nav>
+
+    </div>
+
+    <script src="programas/shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

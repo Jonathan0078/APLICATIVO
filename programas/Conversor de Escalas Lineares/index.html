@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Conversor Processo-Sinal-Bits</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#003366">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Processo ⇔ Sinal ⇔ Bits</h1>
+        <p>Conversor de Escalas Lineares para Automação</p>
+    </header>
+
+    <div class="main-container">
+        <div class="calculator-container">
+            
+            <h2 class="section-title">1. Configuração das Faixas</h2>
+            
+            <div class="input-group">
+                <div class="label-wrapper">
+                    <label class="group-title">Faixa de Entrada (Processo)</label>
+                    <p class="helper-text">Ex: 0 a 100 °C, 0 a 10 bar</p>
+                </div>
+                <div class="field-pair">
+                    <input type="number" id="inputLow" value="0" placeholder="Mínimo">
+                    <input type="number" id="inputHigh" value="100" placeholder="Máximo">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="label-wrapper">
+                    <label class="group-title">Faixa de Saída (Sinal)</label>
+                    <p class="helper-text">Ex: 4 a 20 mA, 0 a 10 V</p>
+                </div>
+                <div class="field-pair">
+                    <input type="number" id="outputLow" value="4" placeholder="Mínimo">
+                    <input type="number" id="outputHigh" value="20" placeholder="Máximo">
+                </div>
+            </div>
+
+            <h2 class="section-title">2. Cálculos de Conversão</h2>
+            <p class="helper-text instruction">Digite um valor em qualquer campo para calcular os outros.</p>
+
+            <div class="input-group single">
+                <div class="label-wrapper">
+                    <label for="calcInputPv">Valor do Processo</label>
+                    <p class="helper-text">A grandeza física real.</p>
+                </div>
+                <div class="conversion-row">
+                   <input type="number" id="calcInputPv" placeholder="Entrada Processo">
+                </div>
+            </div>
+
+            <div class="input-group single">
+                <div class="label-wrapper">
+                    <label for="calcInputSignal">Valor do Sinal (mA, V)</label>
+                    <p class="helper-text">O sinal elétrico correspondente.</p>
+                </div>
+                <div class="conversion-row">
+                   <input type="number" id="calcInputSignal" placeholder="Entrada Sinal">
+                </div>
+            </div>
+
+            <div class="input-group single">
+                <div class="label-wrapper">
+                    <div class="label-with-info">
+                        <label for="calcInputBits">Valor em Bits (0-65535)</label>
+                        <div class="info-container">
+                            <span class="info-icon">i</span>
+                            <div class="tooltip">
+                                Em CLPs Siemens, uma 'Word' (16 bits) é usada para representar a entrada analógica. Este valor inteiro (0 a 65535) é a forma como o controlador "lê" o sinal elétrico internamente para usar na lógica de programação.
+                            </div>
+                        </div>
+                    </div>
+                    <p class="helper-text">A representação digital no CLP.</p>
+                </div>
+                <div class="conversion-row">
+                    <input type="number" id="calcInputBits" placeholder="Entrada Bits" min="0" max="65535">
+                </div>
+            </div>
+
+            <div id="erro-container" class="erro-container hidden">
+                <p id="erro-msg"></p>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p class="copyright">&copy; MANUTENÇÃO INDUSTRIAL ARQUIVOS. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // O caminho para o sw.js deve ser absoluto a partir da raiz do domínio
+                navigator.serviceWorker.register('sw.js').then(registration => {
+                    console.log('ServiceWorker registado com sucesso para todo o site!');
+                }, err => {
+                    console.log('Registo do ServiceWorker falhou: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

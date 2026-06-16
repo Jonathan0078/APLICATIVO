@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+    <meta name="description" content="Coleção completa de calculadoras e tabelas para engenheiros - Ferramentas de Engenharia">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Ferramentas de Engenharia">
+    <title>Ferramentas de Engenharia</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <i class="fas fa-tools"></i>
+                    Ferramentas de Engenharia
+                </h1>
+                <p class="subtitle">Coleção completa de calculadoras e tabelas para engenheiros</p>
+                <button class="toggle-theme-btn" id="toggleTheme" title="Alternar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="search-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Buscar ferramenta..." class="search-input">
+                <button id="clearSearch" class="clear-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="categories">
+            <button class="category-btn active" data-category="all">
+                <i class="fas fa-th-large"></i>
+                Todas
+            </button>
+            <button class="category-btn" data-category="materiais">
+                <i class="fas fa-cube"></i>
+                Materiais
+            </button>
+            <button class="category-btn" data-category="calculos">
+                <i class="fas fa-calculator"></i>
+                Cálculos
+            </button>
+            <button class="category-btn" data-category="tabelas">
+                <i class="fas fa-table"></i>
+                Tabelas
+            </button>
+            <button class="category-btn" data-category="conversao">
+                <i class="fas fa-exchange-alt"></i>
+                Conversão
+            </button>
+        </div>
+
+        <div class="tools-grid" id="toolsGrid">
+            <!-- As ferramentas serão inseridas aqui via JavaScript -->
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3>Nenhuma ferramenta encontrada</h3>
+            <p>Tente usar termos diferentes na busca</p>
+        </div>
+    </div>
+
+    <!-- Modal para exibir detalhes da ferramenta -->
+    <div class="modal" id="toolModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="close-btn" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <!-- Conteúdo específico da ferramenta será inserido aqui -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Ferramentas de Engenharia - Desenvolvido por Jonathan Oliveira</p>
+        <p><strong>✅ TODAS AS FERRAMENTAS FORAM FINALIZADAS E ESTÃO FUNCIONAIS!</strong></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

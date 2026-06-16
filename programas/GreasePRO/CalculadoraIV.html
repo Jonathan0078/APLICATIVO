@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Índice de Viscosidade - GreasePRO</title>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Scripts -->
+    <script src="js/ViscosidadeCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-thermometer-half"></i> Índice de Viscosidade</h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> Instruções</h2>
+                    <div class="input-group">
+                        <label for="calculadora">Selecione o tipo de cálculo:</label>
+                        <select id="calculadora" onchange="validarC()">
+                            <option selected>Selecione uma opção</option>
+                            <option value="1">1. Calcular o Índice de Viscosidade (IV)</option>
+                            <option value="2">2. Calcular a Viscosidade a 100ºC</option>
+                            <option value="3">3. Calcular a Viscosidade a 40ºC</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Card de Cálculo 1 -->
+                <div class="card" id="tabla1" style="display: none;">
+                    <h2>1. Calcular Índice de Viscosidade (IV)</h2>
+                    <div class="input-group">
+                        <label for="vis40c">Viscosidade a 40°C (cSt)</label>
+                        <input id="vis40c" type="number" placeholder="Ex: 100">
+                    </div>
+                    <div class="input-group">
+                        <label for="vis100c">Viscosidade a 100°C (cSt)</label>
+                        <input id="vis100c" type="number" placeholder="Ex: 10">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validarIV()"><i class="fas fa-calculator"></i> Calcular</button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> Limpar</button>
+                    </div>
+                </div>
+
+                <!-- Card de Cálculo 2 -->
+                <div class="card" id="tabla2" style="display: none;">
+                    <h2>2. Calcular Viscosidade a 100°C</h2>
+                    <div class="input-group">
+                        <label for="inVis">Índice de Viscosidade (IV)</label>
+                        <input id="inVis" type="number" placeholder="Ex: 95">
+                    </div>
+                    <div class="input-group">
+                        <label for="visc40c">Viscosidade a 40°C (cSt)</label>
+                        <input id="visc40c" type="number" placeholder="Ex: 100">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validar100()"><i class="fas fa-calculator"></i> Calcular</button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> Limpar</button>
+                    </div>
+                </div>
+
+                <!-- Card de Cálculo 3 -->
+                <div class="card" id="tabla3" style="display: none;">
+                    <h2>3. Calcular Viscosidade a 40°C</h2>
+                    <div class="input-group">
+                        <label for="inVisc">Índice de Viscosidade (IV)</label>
+                        <input id="inVisc" type="number" placeholder="Ex: 95">
+                    </div>
+                    <div class="input-group">
+                        <label for="visco100c">Viscosidade a 100°C (cSt)</label>
+                        <input id="visco100c" type="number" placeholder="Ex: 10">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validar40()"><i class="fas fa-calculator"></i> Calcular</button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> Limpar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> Resultados</h2>
+                    </div>
+                    
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p>Os resultados aparecerão aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="result-header">
+                            <span id="result-label" class="label">Resultado</span>
+                            <span id="result-value" class="designation-value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

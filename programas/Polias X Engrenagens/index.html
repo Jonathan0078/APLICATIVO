@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Substituição de Engrenagens por Polias V</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- CABEÇALHO -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1>
+                    <i class="fa-solid fa-gears"></i>
+                    Substituição de Engrenagens por Polias V
+                </h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="app-main">
+            <!-- COLUNA DE ENTRADAS -->
+            <section id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-right-to-bracket"></i> Sistema Atual (Engrenagens)</h2>
+                    
+                    <div class="input-group">
+                        <label for="chain-type">Tipo de Corrente (Passo)</label>
+                        <select id="chain-type"></select>
+                    </div>
+
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="gear-teeth-motor">Dentes Motor (Z1)</label>
+                            <input type="number" id="gear-teeth-motor" placeholder="Ex: 20">
+                        </div>
+                        <div class="input-group">
+                            <label for="gear-teeth-driven">Dentes Movido (Z2)</label>
+                            <input type="number" id="gear-teeth-driven" placeholder="Ex: 40">
+                        </div>
+                    </div>
+                    
+                    <h2><i class="fa-solid fa-gauge-high"></i> Condições de Operação</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="motor-rpm">RPM do Motor</label>
+                            <input type="number" id="motor-rpm" placeholder="Ex: 1750">
+                        </div>
+                        <div class="input-group">
+                            <label for="motor-cv">Potência (CV)</label>
+                            <input type="number" id="motor-cv" placeholder="Ex: 10">
+                        </div>
+                    </div>
+
+                     <div class="input-group">
+                        <label for="center-distance">Distância entre Eixos (mm)</label>
+                        <input type="number" id="center-distance" placeholder="Ex: 600">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="service-factor">Fator de Serviço / Tipo de Carga</label>
+                        <select id="service-factor"></select>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="main-button" id="calculate-button">
+                            <i class="fa-solid fa-calculator"></i>
+                            Encontrar Sistema de Polias Equivalente
+                        </button>
+                        <button class="secondary-button" id="reset-button">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            Limpar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COLUNA DE RESULTADOS -->
+            <section id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-square-poll-vertical"></i> Soluções Recomendadas</h2>
+                        <div class="header-buttons">
+                            <button class="icon-button" id="export-pdf-button" title="Exportar PDF" style="display: none;">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </button>
+                            <button class="icon-button" id="export-excel-button" title="Exportar Excel" style="display: none;">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </button>
+                            <button class="icon-button" id="clear-results-button" title="Limpar Resultados">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="results-container">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-cogs"></i>
+                            <p>O sistema de polias ideal para substituir suas engrenagens aparecerá aqui.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

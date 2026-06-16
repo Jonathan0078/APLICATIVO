@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculos da Tornearia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- CABEÇALHO DINÂMICO -->
+        <header class="app-header" id="app-header">
+            <h1 id="header-title">Cálculos da Tornearia</h1>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+                <button class="header-button" id="back-button" style="display: none;" aria-label="Voltar"><i class="fas fa-arrow-left"></i></button>
+                <div class="theme-switcher" title="Alternar tema">
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle" aria-label="Alternar tema">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </header>
+
+        <!-- TELA DE MENU PRINCIPAL (GRID) -->
+        <div id="screen-main-menu" class="screen active">
+            <div class="main-menu-grid">
+                <div class="main-menu-card" data-screen="screen-params-submenu">
+                    <i class="fa-solid fa-gear icon" aria-hidden="true"></i>
+                    <div class="title">Parâmetros de Corte</div>
+                    <div class="subtitle">Cálculos</div>
+                </div>
+                <div class="main-menu-card" data-screen="screen-tables-submenu">
+                    <i class="fa-solid fa-table icon" aria-hidden="true"></i>
+                    <div class="title">Tabelas</div>
+                    <div class="subtitle">Consultas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA DE SUBMENU DE PARÂMETROS DE CORTE -->
+        <div id="screen-params-submenu" class="screen">
+            <h2 class="submenu-title">Parâmetros de Corte</h2>
+            <button class="menu-button" data-screen="screen-vc">▪ Velocidade de Corte (Vc)</button>
+            <button class="menu-button" data-screen="screen-rpm">▪ RPM (n)</button>
+            <button class="menu-button" data-screen="screen-avanco">▪ Avanço (f)</button>
+            <button class="menu-button" data-screen="screen-profundidade">▪ Profundidade de Corte (ap)</button>
+            <button class="menu-button" data-screen="screen-remocao">▪ Taxa de Remoção de Metal (Q)</button>
+            <button class="menu-button" data-screen="screen-tempo">▪ Tempo de Corte (Tc)</button>
+            <button class="menu-button" data-screen="screen-rugosidade">▪ Rugosidade Teórica (h)</button>
+            <button class="menu-button" data-screen="screen-potencia">▪ Potência de Corte (Pc)</button>
+        </div>
+
+        <!-- TELA DE SUBMENU DE TABELAS (VERSÃO COMPLETA E CORRIGIDA) -->
+        <div id="screen-tables-submenu" class="screen">
+            <h2 class="submenu-title">Parâmetros de Corte</h2>
+            <button class="menu-button" data-tablefile="tabelas/vc_tabela.json">▪ Velocidade de Corte</button>
+            <button class="menu-button" data-tablefile="tabelas/rpm_tabela.json">▪ RPM</button>
+            <button class="menu-button" data-tablefile="tabelas/recartilhamento.json">▪ Recartilhamento</button>
+            <button class="menu-button" data-tablefile="tabelas/mandrilamento.json">▪ Vel. e Avanço para Mandrilamento</button>
+            <button class="menu-button" data-tablefile="tabelas/kc_tabela.json">▪ Força Específica de Corte</button>
+            <button class="menu-button" data-tablefile="tabelas/desgastes.json">▪ Desgastes e Danos em Ferramentas</button>
+
+            <h2 class="submenu-title">Acabamento Superficial</h2>
+            <button class="menu-button" data-tablefile="tabelas/rugosidade_tabela.json">▪ Rugosidade</button>
+            <button class="menu-button" data-tablefile="tabelas/rugosidade_rep.json">▪ Representação de Rugosidade</button>
+            <button class="menu-button" data-tablefile="tabelas/gdt_simbolos.json">▪ Símbolos - GD&T</button>
+            <button class="menu-button" data-tablefile="tabelas/tolerancia_eixos.json">▪ Tolerância Dimensional - Eixos</button>
+            <button class="menu-button" data-tablefile="tabelas/tolerancia_furos.json">▪ Tolerância Dimensional - Furos</button>
+            <button class="menu-button" data-tablefile="tabelas/ajustes.json">▪ Ajustes Recomendados</button>
+            
+            <h2 class="submenu-title">Rosqueamento</h2>
+            <button class="menu-button" data-tablefile="tabelas/roscas_diametros.json">▪ Diâmetros de Furos para Roscar</button>
+            <button class="menu-button" data-tablefile="tabelas/roscas_machos.json">▪ Rosqueamento com Machos</button>
+            <button class="menu-button" data-tablefile="tabelas/roscas_cossinetes.json">▪ Cossinetes de Roscar</button>
+        </div>
+
+        <!-- TELA GENÉRICA PARA EXIBIR TABELAS -->
+        <div id="screen-table-display" class="screen">
+            <div class="calc-card" id="table-display-card"></div>
+        </div>
+
+        <!-- ======================= TELAS DE CÁLCULO INDIVIDUAIS (COMPLETAS) ======================= -->
+        <!-- O conteúdo completo de todas as 8 telas de cálculo está aqui -->
+    <div id="screen-vc" class="screen"><div class="calc-card"><div class="calc-header"><h2 class="calc-title">Velocidade de Corte</h2><i class="fa-solid fa-gauge-high icon" aria-hidden="true"></i></div><div class="radio-group" data-calculator="vc"><label><input type="radio" name="unit-vc" value="metric" checked> Métrico</label><label><input type="radio" name="unit-vc" value="imperial"> Polegadas</label></div><div class="input-group"><label>Diâmetro D <span class="unit-label">[mm]</span>:</label><input type="number" id="vc-d"></div><div class="input-group"><label>RPM:</label><input type="number" id="vc-rpm"></div><button class="main-button" data-calculator="vc">Calcular</button><div class="result-display" id="result-vc" style="display: none;"></div></div></div>
+    <div id="screen-rpm" class="screen"><div class="calc-card"><div class="calc-header"><h2 class="calc-title">RPM</h2><i class="fa-solid fa-arrows-rotate icon" aria-hidden="true"></i></div><div class="radio-group" data-calculator="rpm"><label><input type="radio" name="unit-rpm" value="metric" checked> Métrico</label><label><input type="radio" name="unit-rpm" value="imperial"> Polegadas</label></div><div class="input-group"><label>Vc <span class="vc-unit-label">[m/min]</span>:</label><input type="number" id="rpm-vc"></div><div class="input-group"><label>Diâmetro d <span class="unit-label">[mm]</span>:</label><input type="number" id="rpm-d"></div><button class="main-button" data-calculator="rpm">Calcular</button><div class="result-display" id="result-rpm" style="display: none;"></div></div></div>
+    <div id="screen-avanco" class="screen"><div class="calc-card"><div class="calc-header"><h2 class="calc-title">Avanço</h2><i class="fa-solid fa-arrow-right-long icon" aria-hidden="true"></i></div><div class="radio-group" data-calculator="avanco"><label><input type="radio" name="unit-avanco" value="metric" checked> Métrico</label><label><input type="radio" name="unit-avanco" value="imperial"> Polegadas</label></div><div class="input-group"><label>Comprimento usinado (L) <span class="unit-label">[mm]</span>:</label><input type="number" id="avanco-l"></div><div class="input-group"><label>Nº de rotações (n):</label><input type="number" id="avanco-n"></div><button class="main-button" data-calculator="avanco">Calcular</button><div class="result-display" id="result-avanco" style="display: none;"></div></div></div>
+    <div id="screen-profundidade" class="screen"><div class="calc-card"><div class="calc-header"><h2 class="calc-title">Profundidade de Corte</h2><i class="fa-solid fa-arrows-down-to-line icon" aria-hidden="true"></i></div><div class="radio-group" data-calculator="profundidade"><label><input type="radio" name="unit-profundidade" value="metric" checked> Métrico</label><label><input type="radio" name="unit-profundidade" value="imperial"> Polegadas</label></div><div class="input-group"><label>Diâmetro Maior D <span class="unit-label">[mm]</span>:</label><input type="number" id="profundidade-D"></div><div class="input-group"><label>Diâmetro Menor d <span class="unit-label">[mm]</span>:</label><input type="number" id="profundidade-d"></div><button class="main-button" data-calculator="profundidade">Calcular</button><div class="result-display" id="result-profundidade" style="display: none;"></div></div></div>
+    <div id="screen-remocao" class="screen"><div class="calc-card"><div class="calc-header"><h2 class="calc-title">Taxa de Remoção de Metal</h2><i class="fa-solid fa-industry icon" aria-hidden="true"></i></div><div class="radio-group" data-calculator="remocao"><label><input type="radio" name="unit-remocao" value="metric" checked> Métrico</label><label><input type="radio" name="unit-remocao" value="imperial"> Polegadas</label></div><div class="input-group"><label>Vc <span class="vc-unit-label">[m/min]</span>:</label><input type="number" id="remocao-vc"></div><div class="input-group"><label>Profundidade (ap) <span class="unit-label">[mm]</span>:</label><input type="number" id="remocao-ap"></div><div class="input-group"><label>Avanço (fn) <span class="feed-unit-label">[mm/rot]</span>:</label><input type="number" id="remocao-fn"></div><button class="main-button" data-calculator="remocao">Calcular</button><div class="result-display" id="result-remocao" style="display: none;"></div></div></div>
+    <div id="screen-tempo" class="screen"><div class="calc-card"><div class="calc-header"><h2 class="calc-title">Tempo de Corte</h2><i class="fa-solid fa-clock icon" aria-hidden="true"></i></div><div class="radio-group" data-calculator="tempo"><label><input type="radio" name="unit-tempo" value="metric" checked> Métrico</label><label><input type="radio" name="unit-tempo" value="imperial"> Polegadas</label></div><div class="input-group"><label>O que deseja calcular?</label><div class="radio-group" id="tempo-choice"><label><input type="radio" name="tempo-calc" value="tempo" checked> Tempo (Tc)</label><label><input type="radio" name="tempo-calc" value="comprimento"> Comprimento (L)</label><label><input type="radio" name="tempo-calc" value="rpm"> RPM (n)</label><label><input type="radio" name="tempo-calc" value="avanco"> Avanço (f)</label></div></div><div class="input-group"><label>Tempo (Tc) [min]:</label><input type="number" id="tempo-tc"></div><div class="input-group"><label>Comprimento (L) <span class="unit-label">[mm]</span>:</label><input type="number" id="tempo-l"></div><div class="input-group"><label>RPM (n):</label><input type="number" id="tempo-n"></div><div class="input-group"><label>Avanço (f) <span class="feed-unit-label">[mm/rot]</span>:</label><input type="number" id="tempo-f"></div><button class="main-button" data-calculator="tempo">Calcular</button><div class="result-display" id="result-tempo" style="display: none;"></div></div></div>
+    <div id="screen-rugosidade" class="screen"><div class="calc-card"><div class="calc-header"><h2 class="calc-title">Rugosidade Teórica</h2><i class="fa-solid fa-wave-square icon" aria-hidden="true"></i></div><div class="radio-group" data-calculator="rugosidade"><label><input type="radio" name="unit-rugosidade" value="metric" checked> Métrico</label><label><input type="radio" name="unit-rugosidade" value="imperial"> Polegadas</label></div><div class="input-group"><label>O que deseja calcular?</label><div class="radio-group" id="rugosidade-choice"><label><input type="radio" name="rugosidade-calc" value="rugosidade" checked> Rugosidade (h)</label><label><input type="radio" name="rugosidade-calc" value="avanco"> Avanço (f)</label><label><input type="radio" name="rugosidade-calc" value="raio"> Raio (Re)</label></div></div><div class="input-group"><label>Rugosidade (h) [µm]:</label><input type="number" id="rugosidade-h"></div><div class="input-group"><label>Avanço (f) <span class="feed-unit-label">[mm/rot]</span>:</label><input type="number" id="rugosidade-f"></div><div class="input-group"><label>Raio da Ponta (Re) <span class="unit-label">[mm]</span>:</label><input type="number" id="rugosidade-re"></div><button class="main-button" data-calculator="rugosidade">Calcular</button><div class="result-display" id="result-rugosidade" style="display: none;"></div></div></div>
+    <div id="screen-potencia" class="screen"><div class="calc-card"><div class="calc-header"><h2 class="calc-title">Potência de Corte</h2><i class="fa-solid fa-bolt icon" aria-hidden="true"></i></div><div class="radio-group" data-calculator="potencia"><label><input type="radio" name="unit-potencia" value="metric" checked> Métrico</label><label><input type="radio" name="unit-potencia" value="imperial"> Polegadas</label></div><div class="input-group"><label>O que deseja calcular?</label><div class="radio-group" id="potencia-choice"><label><input type="radio" name="potencia-calc" value="potencia" checked> Potência (Pc)</label><label><input type="radio" name="potencia-calc" value="vc"> Velocidade (Vc)</label></div></div><div class="input-group"><label>Potência (Pc) [kW]:</label><input type="number" id="potencia-pc"></div><div class="input-group"><label>Velocidade (Vc) <span class="vc-unit-label">[m/min]</span>:</label><input type="number" id="potencia-vc"></div><div class="input-group"><label>Profundidade (ap) <span class="unit-label">[mm]</span>:</label><input type="number" id="potencia-ap"></div><div class="input-group"><label>Avanço (fn) <span class="feed-unit-label">[mm/rot]</span>:</label><input type="number" id="potencia-fn"></div><div class="input-group"><label>Força Espec. (kc) [N/mm²]:</label><input type="number" id="potencia-kc" value="2100"></div><div class="input-group"><label>Rendimento (η):</label><input type="number" id="potencia-eta" value="0.8" step="0.1"></div><button class="main-button" data-calculator="potencia">Calcular</button><div class="result-display" id="result-potencia" style="display: none;"></div></div></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
