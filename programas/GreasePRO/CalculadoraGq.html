@@ -53,15 +53,18 @@
                 <div class="card" id="bearing-selector-card" style="display:none;">
                     <div class="card-header">
                         <h2><i class="fas fa-list"></i> <span data-i18n="grease.gq.bearing_select">Selecionar Rolamento</span></h2>
-                        <button type="button" class="close-button" onclick="toggleBearingSelector()">&times;</button>
+                        <button type="button" class="close-button" onclick="toggleBearingSelector()" aria-label="Fechar">&times;</button>
                     </div>
-                    <div class="input-grid">
-                        <div class="input-group" style="grid-column: 1 / -1;">
+                    <div class="bearing-selector-body">
+                        <div class="input-group">
                             <label for="bearingSearch" data-i18n="grease.gq.bearing_search">Buscar Rolamento</label>
-                            <input id="bearingSearch" type="text" data-i18n-placeholder="grease.gq.bearing_search" placeholder="Digite a designação..." oninput="populateBearingList(this.value)">
+                            <div class="search-input-wrapper">
+                                <i class="fas fa-search"></i>
+                                <input id="bearingSearch" type="text" data-i18n-placeholder="grease.gq.bearing_search" placeholder="Digite a designação..." oninput="populateBearingList(this.value)">
+                            </div>
                         </div>
-                        <div class="input-group" style="grid-column: 1 / -1;">
-                            <label for="bearingSelect" data-i18n="grease.gq.bearing_placeholder">Rolamento</label>
+                        <div class="input-group">
+                            <label for="bearingSelect" data-i18n="grease.gq.bearing_placeholder">Rolamentos</label>
                             <select id="bearingSelect" size="8" onchange="onBearingSelect()">
                                 <option value="" data-i18n="grease.gq.bearing_placeholder">Selecione um rolamento...</option>
                             </select>

@@ -18,7 +18,7 @@ function populateBearingList(searchTerm) {
         if (term === '' || b.designacao.toLowerCase().indexOf(term) !== -1 || b.tipo.toLowerCase().indexOf(term) !== -1) {
             var opt = document.createElement('option');
             opt.value = i;
-            opt.textContent = b.designacao + ' — Ø' + b.D + 'mm × ' + b.B + 'mm (' + b.tipo + ')';
+            opt.textContent = b.designacao + '  •  Ø' + b.D + '×' + b.B + 'mm  •  ' + b.tipo;
             select.appendChild(opt);
             found++;
         }
@@ -27,8 +27,19 @@ function populateBearingList(searchTerm) {
         var opt = document.createElement('option');
         opt.value = '';
         opt.disabled = true;
-        opt.textContent = i18n.t('grease.gq.no_bearings') || 'Nenhum rolamento encontrado';
+        opt.textContent = t('grease.gq.no_bearings', 'Nenhum rolamento encontrado');
         select.appendChild(opt);
+    }
+    // Atualizar contador de resultados
+    var label = select.previousElementSibling;
+    if (label && found > 0) {
+        var countSpan = label.querySelector('.result-count');
+        if (!countSpan) {
+            countSpan = document.createElement('span');
+            countSpan.className = 'result-count';
+            label.appendChild(countSpan);
+        }
+        countSpan.textContent = ' (' + found + ')';
     }
 }
 
@@ -38,6 +49,7 @@ function onBearingSelect() {
     var b = rolamentosDB_data[parseInt(idx)];
     document.getElementById('diametro').value = b.D;
     document.getElementById('ancho').value = b.B;
+    document.getElementById('bearingSearch').value = '';
     mmaIn(b.D);
     mmaIn2(b.B);
     toggleBearingSelector();
@@ -80,18 +92,22 @@ function inaMm2(valNum) {
 	document.getElementById("ancho").value=milil.toFixed(4);
 }
 
+function t(key, fallback) {
+    return (typeof i18n !== 'undefined' && i18n.t) ? i18n.t(key) : fallback;
+}
+
 function ValidarC(){
 	document.getElementById("diametro").value = document.getElementById("diametro").value.replace(/,/, ".");
 	document.getElementById("ancho").value = document.getElementById("ancho").value.replace(/,/, ".");
 
 	if(document.getElementById("diametro").value == "" || isNaN(document.getElementById("diametro").value)) {
-		alert(i18n.t('grease.gq.err_diameter'));
+		alert(t('grease.gq.err_diameter', 'Enter a valid diameter'));
 		document.getElementById("diametro").value ="";
 		document.getElementById("diametro").focus();
 		return false;
 	}
 	if(document.getElementById("ancho").value == "" || isNaN(document.getElementById("ancho").value)) {
-		alert(i18n.t('grease.gq.err_width'));
+		alert(t('grease.gq.err_width', 'Enter a valid width'));
 		document.getElementById("ancho").value ="";
 		document.getElementById("ancho").focus();
 		return false;
