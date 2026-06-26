@@ -1,0 +1,3 @@
+{
+  "title": "Tabela de Recartilhamento",
+  "htmlContent": "<div class='complex-table-wrapper'><h4>Parâmetros para Recartilhamento</h4><table class='complex-table'><thead><tr><th>Tipo</th><th>Material</th><th>Avanço (mm/rot)</th><th>RPM</th></tr></thead><tbody><tr><td>Fino</td><td>Aço</td><td>0,1</td><td>600</td></tr><tr><td>Médio</td><td>Alumínio</td><td>0,2</td><td>900</td></tr><tr><td>Grosso</td><td>Bronze</td><td>0,3</td><td>1200</td></tr><tr><td>Extra Fino</td><td>Latão</td><td>0,08</td><td>700</td></tr><tr><td>Especial</td><td>Inox</td><td>0,12</td><td>500</td></tr></tbody></table><br><ul><li>Utilize lubrificação para melhor acabamento.</li><li>RPM pode variar conforme diâmetro e dureza do material.</li></ul></div>"}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="grease.vae">Viscosidade do Óleo para Engrenagens - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+
+    <!-- Scripts -->
+    <script src="js/VAECtrl.js"></script>
+</head>
+<body onload="cargarListas();">
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-cogs"></i> <span data-i18n="grease.vae.title">Viscosidade do Óleo para Engrenagens</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> <span data-i18n="grease.instructions">Instruções</span></h2>
+                    <p data-i18n="grease.vae.instr">Forneça os dados para determinar a viscosidade adequada para a caixa de engrenagens:</p>
+                    <ul>
+                        <li data-i18n="grease.vae.li1">Selecione o método de lubrificação.</li>
+                        <li data-i18n="grease.vae.li2">Selecione o tipo de redutor.</li>
+                        <li data-i18n="grease.vae.li3">Selecione a potência (HP).</li>
+                        <li data-i18n="grease.vae.li4">Selecione a velocidade de saída (RPM).</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> <span data-i18n="grease.vae.gear_data">Dados da Engrenagem</span></h2>
+                    <form id="formulario" name="formulario">
+                        <div class="input-group">
+                            <label for="TipoLubricacion" data-i18n="grease.vae.lube_type">Tipo de Lubrificação</label>
+                            <select name="TipoLubricacion">
+                                <option data-i18n="grease.vae.splash">Salpico</option>
+                                <option data-i18n="grease.vae.circulation">Circulação</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="TipoReduccion" data-i18n="grease.vae.reducer_type">Tipo de Redutor</label>
+                            <select name="TipoReduccion">
+                                <option data-i18n="grease.vae.single_red">Redução simples &lt;10:1</option>
+                                <option data-i18n="grease.vae.multiple_red">Redução Múltipla &gt;10:1</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="Potencia" data-i18n="grease.vae.power_hp">Potência (HP)</label>
+                            <select name="Potencia">
+                                <option>0-1</option><option>1-5</option><option>5-10</option><option>10-20</option><option>20-30</option><option>30-50</option><option>50-75</option><option>75-100</option><option>100-1000</option><option>&gt;1000</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="Velocidad" data-i18n="grease.vae.output_speed">Velocidade de Saída (RPM)</label>
+                            <select name="Velocidad">
+                                <option>0-150</option><option>150-300</option><option>300-1000</option><option>1000-2000</option><option>2000-5000</option><option>5000-10000</option>
+                            </select>
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" type="button" onclick="MostrarValor()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                            <button class="secondary-button" type="button" onclick="limpiarC()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> <span data-i18n="result.title">Resultado</span></h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p data-i18n="grease.vae.placeholder">A viscosidade correta (ISO) aparecerá aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="result-header">
+                            <span class="label" data-i18n="grease.vae.correct_visc">Viscosidade Correta (ISO)</span>
+                            <span id="resultado-valor" class="designation-value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

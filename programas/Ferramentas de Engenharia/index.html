@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+    <meta name="description" content="Coleção completa de calculadoras e tabelas para engenheiros - Ferramentas de Engenharia">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Ferramentas de Engenharia">
+    <title data-i18n="ferreng.title">Ferramentas de Engenharia</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-tools"></i> <span data-i18n="ferreng.title">Ferramentas de Engenharia</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="search-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" data-i18n-placeholder="ferreng.search_ph" placeholder="Buscar ferramenta..." class="search-input">
+                <button id="clearSearch" class="clear-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="categories">
+            <button class="category-btn active" data-category="all" data-i18n="ferreng.all">Todas</button>
+            <button class="category-btn" data-category="materiais" data-i18n="ferreng.materials">Materiais</button>
+            <button class="category-btn" data-category="calculos" data-i18n="ferreng.calcs">Cálculos</button>
+            <button class="category-btn" data-category="tabelas" data-i18n="ferreng.tables">Tabelas</button>
+            <button class="category-btn" data-category="conversao" data-i18n="ferreng.conversion">Conversão</button>
+        </div>
+
+        <div class="tools-grid" id="toolsGrid"></div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3 data-i18n="ferreng.no_results">Nenhuma ferramenta encontrada</h3>
+            <p data-i18n="ferreng.no_results_hint">Tente usar termos diferentes na busca</p>
+        </div>
+    </div>
+
+    <div class="modal" id="toolModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="close-btn" id="closeModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p data-i18n="ferreng.footer">&copy; 2025 Ferramentas de Engenharia - Desenvolvido por Jonathan Oliveira</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle-checkbox');
+        var saved = localStorage.getItem('theme') || localStorage.getItem('engineering-tools-theme') || 'light';
+        if (saved === 'dark') {
+            document.body.classList.add('dark-theme');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            if (themeToggle) themeToggle.checked = true;
+        }
+        if (themeToggle) {
+            themeToggle.addEventListener('change', (e) => {
+                var dark = e.target.checked;
+                document.body.classList.toggle('dark-theme', dark);
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                localStorage.setItem('theme', dark ? 'dark' : 'light');
+                localStorage.setItem('engineering-tools-theme', dark ? 'dark' : 'light');
+            });
+        }
+    });
+</script>
+    <script src="../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

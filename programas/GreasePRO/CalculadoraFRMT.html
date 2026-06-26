@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="grease.frmt">Frequência de Relubrificação em Motores - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+
+    <!-- Scripts -->
+    <script src="js/FRMTCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-sync-alt"></i> <span data-i18n="grease.frmt.title">Frequência de Relubrificação em Motores</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> <span data-i18n="grease.instructions">Instruções</span></h2>
+                    <p data-i18n="grease.frmt.instr">Forneça os dados para calcular o intervalo de relubrificação dos rolamentos:</p>
+                    <ul>
+                        <li data-i18n="grease.frmt.li1">Selecione a temperatura de operação.</li>
+                        <li data-i18n="grease.frmt.li2">Selecione o nível de contaminação.</li>
+                        <li data-i18n="grease.frmt.li3">Selecione o nível de umidade.</li>
+                        <li data-i18n="grease.frmt.li4">Selecione o nível de vibração (ips = pol/s).</li>
+                        <li data-i18n="grease.frmt.li5">Selecione a orientação do eixo.</li>
+                        <li data-i18n="grease.frmt.li6">Selecione o tipo de rolamento.</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> <span data-i18n="grease.frmt.correction_factors">Fatores de Correção</span></h2>
+                    <form name="formulario">
+                        <div class="input-group">
+                            <label for="ft" data-i18n="grease.frmt.bearing_temp">Temperatura do Rolamento</label>
+                            <select id="ft">
+                                <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                                <option value="1" data-i18n="grease.frmt.temp_opt1">menor que 65 °C</option>
+                                <option value="0.5" data-i18n="grease.frmt.temp_opt2">65 a 85 °C</option>
+                                <option value="0.2" data-i18n="grease.frmt.temp_opt3">80 a 93 °C</option>
+                                <option value="0.1" data-i18n="grease.frmt.temp_opt4">maior que 93 °C</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fc" data-i18n="grease.frmt.contamination">Contaminação Sólida</label>
+                            <select id="fc">
+                                <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                                <option value="1" data-i18n="grease.frmt.cont_opt1">Leve, pó não abrasivo</option>
+                                <option value=".7" data-i18n="grease.frmt.cont_opt2">Severa, pó não abrasivo</option>
+                                <option value=".4" data-i18n="grease.frmt.cont_opt3">Leve, pó abrasivo</option>
+                                <option value=".2" data-i18n="grease.frmt.cont_opt4">Severa, pó abrasivo</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fh" data-i18n="grease.frmt.humidity">Umidade</label>
+                            <select id="fh">
+                                <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                                <option value="1" data-i18n="grease.frmt.hum_opt1">menor que 80%</option>
+                                <option value=".7" data-i18n="grease.frmt.hum_opt2">80% a 90%</option>
+                                <option value=".4" data-i18n="grease.frmt.hum_opt3">Condensação ocasional</option>
+                                <option value=".1" data-i18n="grease.frmt.hum_opt4">Água ocasional na carcaça</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fv" data-i18n="grease.frmt.vibration">Vibração</label>
+                            <select id="fv">
+                                <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                                <option value="1" data-i18n="grease.frmt.vib_opt1">menos de 0.2 ips</option>
+                                <option value=".6" data-i18n="grease.frmt.vib_opt2">0.2 a 0.4 ips</option>
+                                <option value=".3" data-i18n="grease.frmt.vib_opt3">maior que 0.4 ips</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fp" data-i18n="grease.frmt.shaft_pos">Posição do Eixo</label>
+                            <select id="fp">
+                                <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                                <option value="1" data-i18n="grease.frmt.pos_opt1">Horizontal</option>
+                                <option value=".5" data-i18n="grease.frmt.pos_opt2">45 graus</option>
+                                <option value=".3" data-i18n="grease.frmt.pos_opt3">Vertical</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fd" data-i18n="grease.frmt.bearing_type">Tipo do Rolamento</label>
+                            <select id="fd">
+                                <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                                <option value="10" data-i18n="grease.frmt.bearing_opt1">Rolamento de esferas</option>
+                                <option value="5" data-i18n="grease.frmt.bearing_opt2">Roletes cilíndricos/agulhas</option>
+                                <option value="1" data-i18n="grease.frmt.bearing_opt3">Roletes cônicos/esféricos</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="rpm" data-i18n="grease.frmt.speed">Velocidade (RPM)</label>
+                            <input id="rpm" type="number" placeholder="Ex: 1800">
+                        </div>
+                        <div class="input-group">
+                            <label for="diam" data-i18n="grease.frmt.inner_diam">Diâmetro Interno (mm)</label>
+                            <input id="diam" type="number" placeholder="Ex: 50">
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" type="button" onclick="ValidarC()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                            <button class="secondary-button" type="button" onclick="limpiarC()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> <span data-i18n="result.title">Resultado</span></h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p data-i18n="grease.frmt.placeholder">A frequência de relubrificação aparecerá aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="result-header">
+                            <span class="label" data-i18n="grease.frmt.result_label">Frequência de Relubrificação</span>
+                            <span id="resultado-valor" class="designation-value">0 Horas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="lms.config_title">SGL - Configurações Pro</title>
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#003366">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <button id="menu-toggle-btn" class="icon-button" style="color: white; font-size: 1.5rem;"><i class="fa-solid fa-bars"></i></button>
+                <h1 data-i18n="lms.header"><i class="fa-solid fa-layer-group"></i> SGL Pro</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i><label class="switch"><input type="checkbox" id="theme-toggle-checkbox"><span class="slider"></span></label><i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <div id="fullscreen-menu" class="fullscreen-menu">
+            <button id="close-menu-btn" class="icon-button close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <nav class="overlay-nav">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-search"></i> Buscador</a>
+                <a href="calculadora.html" class="nav-link"><i class="fa-solid fa-calculator"></i> Calculadora VG</a>
+                <a href="plano.html" class="nav-link"><i class="fa-solid fa-calendar-check"></i> Plano de Lubrificação</a>
+                <a href="mistura.html" class="nav-link"><i class="fa-solid fa-vial"></i> Calculador de Mistura</a>
+                <a href="configuracoes.html" class="nav-link"><i class="fa-solid fa-cogs"></i> Configurações</a>
+            </nav>
+        </div>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card settings-section">
+                    <h2><i class="fas fa-download"></i> Backup e Restauração</h2>
+                    
+                    <div style="background-color: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 0.5rem;"><i class="fas fa-download"></i> <span data-i18n="lms.export_title">Exportar Dados</span></h3>
+                        <p data-i18n="lms.export_desc" style="margin-bottom: 1rem; font-size: 0.9rem;">Crie um arquivo (.json) contendo todos os projetos e planos salvos localmente.</p>
+                        <button id="export-data-btn" class="main-button"><i class="fas fa-download"></i> Gerar Backup</button>
+                    </div>
+
+                    <div style="background-color: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 0.5rem;"><i class="fas fa-upload"></i> <span data-i18n="lms.import_title">Importar Dados</span></h3>
+                        <p data-i18n="lms.import_desc" style="margin-bottom: 1rem; font-size: 0.9rem;">Carregue um arquivo (.json) para restaurar os dados no seu navegador.</p>
+                        <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                        <button id="import-data-btn" class="secondary-button" style="width: 100%;"><i class="fas fa-folder-open"></i> Escolher Arquivo</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card danger-zone" style="border-left: 4px solid var(--cor-erro);">
+                    <h2 style="color: var(--cor-erro);"><i class="fas fa-exclamation-triangle"></i> Zona de Perigo</h2>
+                    
+                    <div style="background-color: rgba(220, 53, 69, 0.05); padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--cor-erro);">
+                        <p data-i18n="lms.danger_desc" style="margin-bottom: 1.5rem; color: var(--text);">Esta ação é irreversível. Irá apagar permanentemente todos os projetos e planos de lubrificação guardados neste dispositivo.</p>
+                        <button id="clear-data-btn" class="main-button" style="background-color: var(--cor-erro);"><i class="fas fa-trash-alt"></i> Apagar Todos os Dados</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script type="module" src="js/configuracoes.js"></script>
+    <script src="../shared/i18n.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle-btn'); const closeMenu = document.getElementById('close-menu-btn'); const fullscreenMenu = document.getElementById('fullscreen-menu');
+            if(menuToggle) { menuToggle.addEventListener('click', () => { fullscreenMenu.classList.add('active'); document.body.style.overflow = 'hidden'; }); closeMenu.addEventListener('click', () => { fullscreenMenu.classList.remove('active'); document.body.style.overflow = ''; }); }
+            document.querySelectorAll('.overlay-nav .nav-link').forEach(link => { if (link.getAttribute('href') === (window.location.pathname.split('/').pop() || 'configuracoes.html')) link.classList.add('active'); });
+            const themeToggleCb = document.getElementById('theme-toggle-checkbox');
+            if (themeToggleCb) {
+                if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-theme'); themeToggleCb.checked = true; }
+                themeToggleCb.addEventListener('change', (e) => { document.body.classList.toggle('dark-theme', e.target.checked); localStorage.setItem('theme', e.target.checked ? 'dark' : 'light'); });
+            }
+        });
+    </script>
+</body>
+</html>

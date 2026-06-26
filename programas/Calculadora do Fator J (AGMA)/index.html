@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="agma.title">Calculadora Fator J (AGMA) Pro</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-gears"></i> <span data-i18n="agma.title">Calculadora Fator J (AGMA) Pro</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-info-circle"></i> <span data-i18n="agma.about">Sobre o AGMA J-Factor</span></h2>
+                    <p data-i18n="agma.about_text">O Fator J da AGMA é utilizado para avaliar a tensão na raiz do dente de engrenagens de dentes retos e helicoidais.</p>
+                    <p data-i18n="agma.formula"><strong>Fórmula:</strong> σ<sub>b</sub> = (W<sub>t</sub> × K<sub>f</sub>) / (F × m<sub>n</sub> × J)</p>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-keyboard"></i> <span data-i18n="agma.params">Parâmetros da Engrenagem</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="numTeethGear" data-i18n="agma.gear_teeth">Dentes da Engrenagem (N)</label>
+                            <input type="number" id="numTeethGear" min="20" max="500" value="100" step="1">
+                            <span class="unit" data-i18n="agma.units_teeth">dentes</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="numTeethPinion" data-i18n="agma.pinion_teeth">Dentes do Pinhão (Np)</label>
+                            <input type="number" id="numTeethPinion" min="10" max="100" value="25" step="1">
+                            <span class="unit" data-i18n="agma.units_teeth">dentes</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="module" data-i18n="agma.normal_module">Módulo Normal (m<sub>n</sub>)</label>
+                            <input type="number" id="module" min="0.5" max="10" value="1.0" step="0.1">
+                            <span class="unit">mm</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="pressureAngle" data-i18n="agma.pressure_angle">Ângulo de Pressão (φ<sub>n</sub>)</label>
+                            <input type="number" id="pressureAngle" min="15" max="30" value="20" step="1">
+                            <span class="unit">°</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="addendumCoeff" data-i18n="agma.addendum_coeff">Coeficiente de Adendo (x)</label>
+                            <input type="number" id="addendumCoeff" min="-1" max="1" value="0.8" step="0.1">
+                            <span class="unit" data-i18n="agma.units_dimensionless">adimensional</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="faceWidth" data-i18n="agma.face_width">Largura da Face (F)</label>
+                            <input type="number" id="faceWidth" min="5" max="100" value="10" step="1">
+                            <span class="unit">mm</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="tangentialLoad" data-i18n="agma.tangential_load">Carga Tangencial (W<sub>t</sub>)</label>
+                            <input type="number" id="tangentialLoad" min="100" max="100000" value="1000" step="100">
+                            <span class="unit">N</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="shaperTeeth" data-i18n="agma.generator_teeth">Ferramenta Geradora - Dentes</label>
+                            <input type="number" id="shaperTeeth" min="10" max="100" value="50" step="1">
+                            <span class="unit" data-i18n="agma.units_teeth">dentes</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="filletRadius" data-i18n="agma.fillet_radius">Raio do Filete</label>
+                            <input type="number" id="filletRadius" min="0.1" max="5" value="0.25" step="0.05">
+                            <span class="unit">mm</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="calculateJFactor()"><i class="fa-solid fa-calculator"></i> <span data-i18n="agma.calculate_j">Calcular J-Factor</span></button>
+                        <button class="secondary-button" onclick="resetForm()"><i class="fa-solid fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-filter"></i> <span data-i18n="agma.approaches">Abordagens Teóricas</span></h2>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="approach1" checked> <span data-i18n="agma.approach1"><strong>Abordagem #1</strong> (AGMA 908-B89)</span></label>
+                        <label><input type="checkbox" id="approach2" checked> <span data-i18n="agma.approach2"><strong>Abordagem #2</strong> (AGMA 911-B21)</span></label>
+                        <label><input type="checkbox" id="approach3" checked> <span data-i18n="agma.approach3"><strong>Abordagem #3</strong> (Híbrida)</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="agma.calc_result">Resultado do Cálculo</span></h2>
+                    </div>
+                    <div id="result-display">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <p data-i18n="agma.run_calc">Execute o cálculo para ver os resultados...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="parameters-card" style="display:none;">
+                    <h2><i class="fa-solid fa-table"></i> <span data-i18n="agma.intermediate">Parâmetros Intermediários</span></h2>
+                    <div class="table-container">
+                        <table id="parametersTable">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="agma.parameter">Parâmetro</th>
+                                    <th data-i18n="agma.table_value">Valor</th>
+                                    <th data-i18n="agma.table_unit">Unidade</th>
+                                </tr>
+                            </thead>
+                            <tbody id="parametersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card" id="stress-card" style="display:none;">
+                    <h2><i class="fa-solid fa-exclamation-triangle"></i> <span data-i18n="agma.stress_analysis">Análise de Tensão</span></h2>
+                    <div id="stressResults"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

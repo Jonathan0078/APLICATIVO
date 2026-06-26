@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="cilindro_pneu.title">Cilindro Pneumático</title>
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-container">
+    <header class="app-header">
+        <div class="header-content">
+            <h1><i class="fa-solid fa-compress-arrows-alt" style="margin-right:8px"></i> <span data-i18n="cilindro_pneu.title">Cilindro Pneumático</span></h1>
+            <div class="theme-switcher">
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <h2><i class="fa-solid fa-sliders"></i> <span data-i18n="cilindro_pneu.params">Parâmetros do Cilindro</span></h2>
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="diametro" data-i18n="cilindro_pneu.diametro">Diâmetro do Pistão (mm)</label>
+                    <input type="number" id="diametro" data-i18n-placeholder="cilindro_pneu.diametro_ph" step="0.1" min="1" value="63">
+                </div>
+                <div class="input-group">
+                    <label for="haste" data-i18n="cilindro_pneu.haste">Diâmetro da Haste (mm)</label>
+                    <input type="number" id="haste" data-i18n-placeholder="cilindro_pneu.haste_ph" step="0.1" min="0" value="20">
+                </div>
+            </div>
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="pressao" data-i18n="cilindro_pneu.pressao">Pressão de Trabalho (bar)</label>
+                    <input type="number" id="pressao" data-i18n-placeholder="cilindro_pneu.pressao_ph" step="0.1" min="0.1" value="6">
+                </div>
+                <div class="input-group">
+                    <label for="curso" data-i18n="cilindro_pneu.curso">Curso (mm)</label>
+                    <input type="number" id="curso" data-i18n-placeholder="cilindro_pneu.curso_ph" step="1" min="1" value="200">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="vazao" data-i18n="cilindro_pneu.vazao">Vazão Disponível (L/min)</label>
+                <input type="number" id="vazao" data-i18n-placeholder="cilindro_pneu.vazao_ph" step="0.1" min="0" value="100">
+            </div>
+
+            <button class="btn-primary" onclick="calcular()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+        </div>
+
+        <div class="card" id="resultCard" style="display:none">
+            <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="result.title">Resultados</span></h2>
+            <div id="resultContent"></div>
+        </div>
+
+        <div class="card info-card">
+            <h3><i class="fa-solid fa-lightbulb"></i> <span data-i18n="cilindro_pneu.formulas">Fórmulas</span></h3>
+            <div class="formula-grid">
+                <div class="formula-item">
+                    <div class="formula-label" data-i18n="cilindro_pneu.formula_forca_av">Força de Avanço</div>
+                    <div class="formula-expr">F = P × A<sub>1</sub></div>
+                </div>
+                <div class="formula-item">
+                    <div class="formula-label" data-i18n="cilindro_pneu.formula_forca_ret">Força de Retorno</div>
+                    <div class="formula-expr">F = P × (A<sub>1</sub> − A<sub>2</sub>)</div>
+                </div>
+                <div class="formula-item">
+                    <div class="formula-label" data-i18n="cilindro_pneu.formula_vel">Velocidade</div>
+                    <div class="formula-expr">v = Q / A</div>
+                </div>
+                <div class="formula-item">
+                    <div class="formula-label" data-i18n="cilindro_pneu.formula_consumo">Consumo por Ciclo</div>
+                    <div class="formula-expr">V = A × L × (P + 1) / 1</div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="../shared/i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

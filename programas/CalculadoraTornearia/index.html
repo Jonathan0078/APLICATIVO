@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title data-i18n="tornearia.title">Cálculos da Tornearia</title>
+    
+    <script>function start(){}function onHasParentDirectory(){}function addRow(){}</script>
+    
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../shared/i18n.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>
+                    <button id="menuToggle" class="menu-hamburguer" aria-label="Abrir menu" data-i18n-title="tornearia.aria_menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <span data-i18n="tornearia.title">Cálculos da Tornearia</span>
+                </h1>
+                <div class="theme-switcher">
+                    <label class="switch" title="Alternar tema" data-i18n-title="greasepro.theme_toggle">
+                        <input type="checkbox" id="themeToggle" aria-label="Alternar tema claro/escuro" data-i18n-title="greasepro.theme_toggle">
+                        <span class="slider" data-i18n-title="greasepro.theme_toggle"></span>
+                    </label>
+                </div>
+            </div>
+        </header>
+
+        <div class="fullscreen-menu" id="fullscreenMenu">
+            <button class="close-btn" id="closeMenuBtn" aria-label="Fechar menu" data-i18n-title="greasepro.close_menu">&times;</button>
+            <nav class="overlay-nav" id="overlayNav">
+                <h3 data-i18n="tornearia.cut_params">Parâmetros de Corte</h3>
+                <a href="#" data-nav="vc"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="tornearia.cut_speed">Velocidade de Corte</span> (Vc)</a>
+                <a href="#" data-nav="rpm" data-i18n="tornearia.nav_rpm"><i class="fa-solid fa-arrows-rotate"></i> RPM (n)</a>
+                <a href="#" data-nav="avanco"><i class="fa-solid fa-arrow-right-long"></i> <span data-i18n="tornearia.feed">Avanço</span> (f)</a>
+                <a href="#" data-nav="profundidade"><i class="fa-solid fa-arrows-down-to-line"></i> <span data-i18n="tornearia.depth">Profundidade de Corte</span> (ap)</a>
+                <a href="#" data-nav="remocao"><i class="fa-solid fa-industry"></i> <span data-i18n="tornearia.mrr">Taxa de Remoção de Metal</span> (Q)</a>
+                <a href="#" data-nav="tempo"><i class="fa-solid fa-clock"></i> <span data-i18n="tornearia.cut_time">Tempo de Corte</span> (Tc)</a>
+                <a href="#" data-nav="rugosidade"><i class="fa-solid fa-wave-square"></i> <span data-i18n="tornearia.roughness">Rugosidade Teórica</span> (h)</a>
+                <a href="#" data-nav="potencia"><i class="fa-solid fa-bolt"></i> <span data-i18n="tornearia.cut_power">Potência de Corte</span> (Pc)</a>
+
+                <h3 data-i18n="tornearia.tables">Tabelas</h3>
+                <a href="#" data-table="tabelas/vc_tabela.json"><i class="fa-solid fa-table"></i> <span data-i18n="tornearia.cut_speed">Velocidade de Corte</span></a>
+                <a href="#" data-table="tabelas/rpm_tabela.json" data-i18n="tornearia.nav_rpm_table"><i class="fa-solid fa-table"></i> RPM</a>
+                <a href="#" data-table="tabelas/recartilhamento.json" data-i18n="tornearia.nav_recartilhamento"><i class="fa-solid fa-table"></i> Recartilhamento</a>
+                <a href="#" data-table="tabelas/mandrilamento.json" data-i18n="tornearia.nav_mandrilamento"><i class="fa-solid fa-table"></i> Vel. e Avanço para Mandrilamento</a>
+                <a href="#" data-table="tabelas/kc_tabela.json" data-i18n="tornearia.nav_forca_corte"><i class="fa-solid fa-table"></i> Força Específica de Corte</a>
+                <a href="#" data-table="tabelas/desgastes.json" data-i18n="tornearia.nav_desgastes"><i class="fa-solid fa-table"></i> Desgastes e Danos em Ferramentas</a>
+                <a href="#" data-table="tabelas/rugosidade_tabela.json" data-i18n="tornearia.nav_rugosidade"><i class="fa-solid fa-table"></i> Rugosidade</a>
+                <a href="#" data-table="tabelas/rugosidade_rep.json" data-i18n="tornearia.nav_rep_rugosidade"><i class="fa-solid fa-table"></i> Representação de Rugosidade</a>
+                <a href="#" data-table="tabelas/gdt_simbolos.json" data-i18n="tornearia.nav_gdt"><i class="fa-solid fa-table"></i> Símbolos - GD&T</a>
+                <a href="#" data-table="tabelas/tolerancia_eixos.json" data-i18n="tornearia.nav_tol_eixos"><i class="fa-solid fa-table"></i> Tolerância Dimensional - Eixos</a>
+                <a href="#" data-table="tabelas/tolerancia_furos.json" data-i18n="tornearia.nav_tol_furos"><i class="fa-solid fa-table"></i> Tolerância Dimensional - Furos</a>
+                <a href="#" data-table="tabelas/ajustes.json" data-i18n="tornearia.nav_ajustes"><i class="fa-solid fa-table"></i> Ajustes Recomendados</a>
+                <a href="#" data-table="tabelas/roscas_diametros.json" data-i18n="tornearia.nav_furos_roscar"><i class="fa-solid fa-table"></i> Diâmetros de Furos para Roscar</a>
+                <a href="#" data-table="tabelas/roscas_machos.json" data-i18n="tornearia.nav_rosqueamento"><i class="fa-solid fa-table"></i> Rosqueamento com Machos</a>
+                <a href="#" data-table="tabelas/roscas_cossinetes.json" data-i18n="tornearia.nav_cossinetes"><i class="fa-solid fa-table"></i> Cossinetes de Roscar</a>
+            </nav>
+        </div>
+
+        <main class="app-main" id="appMain">
+            <section id="inputs-column"></section>
+            <section id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="greasepro.results">Resultados</span></h2>
+                    </div>
+                    <div class="result-placeholder" id="resultPlaceholder">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span data-i18n="greasepro.select_calc">Selecione uma calculadora no menu acima para começar.</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

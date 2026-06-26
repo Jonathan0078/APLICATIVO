@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title data-i18n="tracagem.title">Traçagem e Planificação de Chapas</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+<style>
+/* ==========================================================================
+   ESTILOS LOCAIS ESPECÍFICOS DO MÓDULO DE TRAÇAGEM
+   ========================================================================== */
+.cone-type-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.cone-type-tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: center;
+    font-family: inherit;
+}
+.cone-type-tab:active { transform: scale(0.97); }
+.cone-type-tab.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+}
+body.dark-theme .cone-type-tab.active {
+    background: var(--cor-destaque);
+    border-color: var(--cor-destaque);
+    color: #0f172a;
+}
+
+.table-scroll {
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 100%;
+}
+.table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.placeholder {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 2.5rem 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Blindagem absoluta de contenção para SVGs no Mobile */
+.svg-wrap {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0.75rem;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 180px;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+.svg-wrap svg {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+}
+
+/* Correções de layout exclusivas para telas de celulares */
+@media (max-width: 600px) {
+    .module-layout { grid-template-columns: 1fr; gap: 1.25rem; min-width: 0; }
+    .left-col, .right-col { min-width: 0; max-width: 100%; }
+    
+    /* Força os cards de resultado a ficarem em 1 única coluna no mobile para não vazar a tela */
+    .result-grid { grid-template-columns: 1fr !important; gap: 0.5rem; }
+    
+    .app-container { padding: 0 0.5rem 1.5rem; }
+    .card { padding: 1.1rem; overflow-x: hidden; max-width: 100%; box-sizing: border-box; }
+    .table-wrap { width: 100%; overflow-x: auto; border-radius: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
+<aside class="app-sidebar" id="appSidebar">
+    <div class="app-sidebar-header">
+        <span data-i18n="tracagem.menu_lateral_titulo">Menu de Traçagem</span>
+        <button class="app-sidebar-close" onclick="toggleSidebar(false)"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="app-sidebar-nav">
+        <div class="app-sidebar-item active" data-tab="tab-boca" onclick="selecionarModuloTracagem('tab-boca', 'tracagem.tab_boca', 'Boca de Lobo')">
+            <i class="fa-solid fa-object-group"></i> <span data-i18n="tracagem.tab_boca">Boca de Lobo</span>
+        </div>
+        <div class="app-sidebar-item" data-tab="tab-cone" onclick="selecionarModuloTracagem('tab-cone', 'tracagem.tab_cone', 'Cone / Tronco')">
+            <i class="fa-solid fa-filter"></i> <span data-i18n="tracagem.tab_cone">Cone / Tronco</span>
+        </div>
+        <div class="app-sidebar-item" data-tab="tab-quadrado" onclick="selecionarModuloTracagem('tab-quadrado', 'tracagem.tab_quadrado', 'Quad→Redondo')">
+            <i class="fa-solid fa-compress"></i> <span data-i18n="tracagem.tab_quadrado">Quad→Redondo</span>
+        </div>
+        <div class="app-sidebar-item" data-tab="tab-gomos" onclick="selecionarModuloTracagem('tab-gomos', 'tracagem.tab_gomos', 'Curvas de Gomos')">
+            <i class="fa-solid fa-rainbow"></i> <span data-i18n="tracagem.tab_gomos">Curvas de Gomos</span>
+        </div>
+        <div class="app-sidebar-item" data-tab="tab-ypsilon" onclick="selecionarModuloTracagem('tab-ypsilon', 'tracagem.tab_ypsilon', 'Ypsilons / Calças')">
+            <i class="fa-solid fa-sitemap"></i> <span data-i18n="tracagem.tab_ypsilon">Ypsilons / Calças</span>
+        </div>
+    </div>
+</aside>
+
+<div class="app-container">
+
+    <header class="app-header">
+        <div class="header-content">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button class="hamburger-toggle" onclick="toggleSidebar(true)" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+                <h1><i class="fa-solid fa-ruler-combined"></i> <span id="headerTracagemTitle" data-i18n="tracagem.tab_boca">Boca de Lobo</span></h1>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="unit-toggle-group">
+                    <button class="unit-toggle active" data-unit="mm" onclick="setUnit('mm')">mm</button>
+                    <button class="unit-toggle" data-unit="in" onclick="setUnit('in')">in</button>
+                </div>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="tab-nav" style="display: none;">
+        <button class="tab-btn active" data-tab="tab-boca">Boca de Lobo</button>
+        <button class="tab-btn" data-tab="tab-cone">Cone / Tronco</button>
+        <button class="tab-btn" data-tab="tab-quadrado">Quad→Redondo</button>
+        <button class="tab-btn" data-tab="tab-gomos">Curvas de Gomos</button>
+        <button class="tab-btn" data-tab="tab-ypsilon">Ypsilons / Calças</button>
+    </nav>
+
+    <main class="app-main">
+        <div class="tab-panel active" id="tab-boca" role="tabpanel">
+            <div class="module-layout">
+                <div class="left-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sliders"></i> <span data-i18n="tracagem.boca_section_dados">Dados da Interseção</span></h2>
+                        <div class="input-grid">
+                            <div class="input-group input-full">
+                                <label data-i18n="tracagem.boca_label_dm">Diâmetro Tubo Principal (D)</label>
+                                <div class="unit-suffix"><input type="number" id="bl-dm" class="calc-input" value="200" min="1" step="0.1"><span class="suffix bl-unit">mm</span></div>
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="tracagem.boca_label_db">Diâmetro Tubo Ramal (d)</label>
+                                <div class="unit-suffix"><input type="number" id="bl-db" class="calc-input" value="150" min="1" step="0.1"><span class="suffix bl-unit">mm</span></div>
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="tracagem.boca_label_angle">Ângulo (°)</label>
+                                <div class="unit-suffix"><input type="number" id="bl-angle" class="calc-input" value="90" min="10" max="90" step="1"><span class="suffix">°</span></div>
+                            </div>
+                        </div>
+                        <div class="input-group mt-1">
+                            <label data-i18n="tracagem.boca_label_n">Nº de Divisões (N)</label>
+                            <input type="number" id="bl-n" class="calc-input" value="24" min="8" max="48" step="1">
+                        </div>
+                        <div class="button-group mt-1">
+                            <button class="main-button" onclick="calcBocaDeLobo()"><i class="fa-solid fa-calculator"></i> <span data-i18n="tracagem.btn_calcular">Calcular</span></button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sitemap"></i> <span data-i18n="tracagem.boca_section_esquema">Esquema da Interseção</span></h2>
+                        <div class="svg-wrap" id="bl-svg-wrap"><svg id="bl-svg" viewBox="0 0 400 250"></svg></div>
+                    </div>
+                </div>
+                <div class="right-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="tracagem.boca_resultados">Resultados</span></h2>
+                        <div id="bl-results">
+                            <p class="placeholder" data-i18n="tracagem.placeholder_preencha">Preencha os dados e calcule.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-draw-polygon"></i> <span data-i18n="tracagem.boca_section_dev">Desenvolvimento (Planificação)</span></h2>
+                        <div class="svg-wrap" id="bl-dev-wrap"><svg id="bl-dev" viewBox="0 0 360 200"></svg></div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-table"></i> <span data-i18n="tracagem.boca_section_coordenadas">Coordenadas do Corte</span></h2>
+                        <div class="action-bar">
+                            <button class="secondary-button btn-sm" onclick="copyTable('bl-table')"><i class="fa-solid fa-copy"></i> <span data-i18n="tracagem.btn_copiar">Copiar</span></button>
+                            <button class="btn-dxf" onclick="exportBLDXF()"><i class="fa-solid fa-file-export"></i> <span data-i18n="tracagem.btn_exportar_dxf">Exportar DXF</span></button>
+                        </div>
+                        <div class="table-wrap">
+                            <div class="table-scroll">
+                                <table id="bl-table">
+                                    <thead><tr><th data-i18n="tracagem.th_num">Nº</th><th data-i18n="tracagem.th_angulo">Ângulo</th><th data-i18n="tracagem.th_x">X</th><th data-i18n="tracagem.th_y">Y</th></tr></thead>
+                                    <tbody id="bl-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-cone" role="tabpanel">
+            <div class="module-layout">
+                <div class="left-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sliders"></i> <span data-i18n="tracagem.cone_section_dados">Dados do Cone</span></h2>
+                        <div class="cone-type-tabs">
+                            <button class="cone-type-tab active" data-cone="tronco" onclick="setConeType('tronco')" data-i18n="tracagem.cone_tipo_tronco">Tronco de Cone</button>
+                            <button class="cone-type-tab" data-cone="reto" onclick="setConeType('reto')" data-i18n="tracagem.cone_tipo_reto">Cone Reto</button>
+                        </div>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label data-i18n="tracagem.cone_label_dtop">Diâmetro Superior (D<sub>s</sub>)</label>
+                                <div class="unit-suffix"><input type="number" id="cone-dtop" class="calc-input" value="100" min="0" step="0.1"><span class="suffix cone-unit">mm</span></div>
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="tracagem.cone_label_dbot">Diâmetro Inferior (D<sub>i</sub>)</label>
+                                <div class="unit-suffix"><input type="number" id="cone-dbot" class="calc-input" value="300" min="1" step="0.1"><span class="suffix cone-unit">mm</span></div>
+                            </div>
+                        </div>
+                        <div class="input-group mt-1">
+                            <label data-i18n="tracagem.cone_label_h">Altura (H)</label>
+                            <div class="unit-suffix"><input type="number" id="cone-h" class="calc-input" value="200" min="1" step="0.1"><span class="suffix cone-unit">mm</span></div>
+                        </div>
+                        <div class="button-group mt-1">
+                            <button class="main-button" onclick="calcCone()"><i class="fa-solid fa-calculator"></i> <span data-i18n="tracagem.btn_calcular">Calcular</span></button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sitemap"></i> <span data-i18n="tracagem.cone_section_vista">Vista Lateral</span></h2>
+                        <div class="svg-wrap" id="cone-svg-wrap"><svg id="cone-svg" viewBox="0 0 300 240"></svg></div>
+                    </div>
+                </div>
+                <div class="right-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="tracagem.cone_resultados">Resultados</span></h2>
+                        <div id="cone-results"><p class="placeholder" data-i18n="tracagem.placeholder_preencha">Preencha os dados e calcule.</p></div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-draw-polygon"></i> <span data-i18n="tracagem.cone_section_planificacao">Planificação (Setor)</span></h2>
+                        <div class="svg-wrap" id="cone-dev-wrap"><svg id="cone-dev" viewBox="0 0 300 280"></svg></div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-table"></i> <span data-i18n="tracagem.cone_section_pontos">Pontos do Arco</span></h2>
+                        <div class="action-bar">
+                            <button class="secondary-button btn-sm" onclick="copyTable('cone-table')"><i class="fa-solid fa-copy"></i> <span data-i18n="tracagem.btn_copiar">Copiar</span></button>
+                            <button class="btn-dxf" onclick="exportConeDXF()"><i class="fa-solid fa-file-export"></i> <span data-i18n="tracagem.btn_exportar_dxf">Exportar DXF</span></button>
+                        </div>
+                        <div class="table-wrap">
+                            <div class="table-scroll"><table id="cone-table"><thead><tr><th data-i18n="tracagem.th_num">Nº</th><th data-i18n="tracagem.th_angulo">Ângulo</th><th data-i18n="tracagem.th_raio">Raio</th><th data-i18n="tracagem.th_x">X</th><th data-i18n="tracagem.th_y">Y</th></tr></thead><tbody id="cone-tbody"></tbody></table></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-quadrado" role="tabpanel">
+            <div class="module-layout">
+                <div class="left-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sliders"></i> <span data-i18n="tracagem.quadrado_section_dados">Dados da Transição</span></h2>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label data-i18n="tracagem.quadrado_label_lado">Lado do Quadrado (L)</label>
+                                <div class="unit-suffix"><input type="number" id="qr-lado" class="calc-input" value="250" min="1" step="0.1"><span class="suffix qr-unit">mm</span></div>
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="tracagem.quadrado_label_diam">Diâmetro Redondo (D)</label>
+                                <div class="unit-suffix"><input type="number" id="qr-diam" class="calc-input" value="150" min="1" step="0.1"><span class="suffix qr-unit">mm</span></div>
+                            </div>
+                        </div>
+                        <div class="input-group mt-1">
+                            <label data-i18n="tracagem.quadrado_label_h">Altura (H)</label>
+                            <div class="unit-suffix"><input type="number" id="qr-h" class="calc-input" value="200" min="1" step="0.1"><span class="suffix qr-unit">mm</span></div>
+                        </div>
+                        <div class="input-grid mt-1">
+                            <div class="input-group">
+                                <label data-i18n="tracagem.quadrado_label_tipo">Tipo</label>
+                                <select id="qr-tipo" class="calc-input">
+                                    <option value="centrado" data-i18n="tracagem.quadrado_option_centrado">Centrado</option>
+                                    <option value="excentrico" data-i18n="tracagem.quadrado_option_excentrico">Excêntrico</option>
+                                </select>
+                            </div>
+                            <div class="input-group" id="qr-offset-group">
+                                <label data-i18n="tracagem.quadrado_label_offset">Desloc. X (mm)</label>
+                                <div class="unit-suffix"><input type="number" id="qr-offset" class="calc-input" value="0" min="0" step="0.1"><span class="suffix qr-unit">mm</span></div>
+                            </div>
+                        </div>
+                        <div class="button-group mt-1">
+                            <button class="main-button" onclick="calcQuadRedondo()"><i class="fa-solid fa-calculator"></i> <span data-i18n="tracagem.btn_calcular">Calcular</span></button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sitemap"></i> <span data-i18n="tracagem.quadrado_section_vista">Vista Lateral</span></h2>
+                        <div class="svg-wrap" id="qr-svg-wrap"><svg id="qr-svg" viewBox="0 0 340 260"></svg></div>
+                    </div>
+                </div>
+                <div class="right-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="tracagem.quadrado_resultados">Resultados</span></h2>
+                        <div id="qr-results"><p class="placeholder" data-i18n="tracagem.placeholder_preencha">Preencha os dados e calcule.</p></div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-draw-polygon"></i> <span data-i18n="tracagem.quadrado_section_planificacao">Planificação</span></h2>
+                        <div class="svg-wrap" id="qr-dev-wrap"><svg id="qr-dev" viewBox="0 0 340 280"></svg></div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-table"></i> Pontos da Planificação</h2>
+                        <div class="action-bar">
+                            <button class="secondary-button btn-sm" onclick="copyTable('qr-table')"><i class="fa-solid fa-copy"></i> Copiar</button>
+                            <button class="btn-dxf" onclick="exportQRDXF()"><i class="fa-solid fa-file-export"></i> Exportar DXF</button>
+                        </div>
+                        <div class="table-wrap">
+                            <div class="table-scroll"><table id="qr-table"><thead><tr><th>Nº</th><th>X</th><th>Y</th></tr></thead><tbody id="qr-tbody"></tbody></table></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-gomos" role="tabpanel">
+            <div class="module-layout">
+                <div class="left-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sliders"></i> Dados da Curva</h2>
+                        <div class="input-grid">
+                            <div class="input-group input-full">
+                                <label>Diâmetro do Tubo (D)</label>
+                                <div class="unit-suffix"><input type="number" id="gomos-d" class="calc-input" value="200" min="1" step="0.1"><span class="suffix gomos-unit">mm</span></div>
+                            </div>
+                            <div class="input-group">
+                                <label>Raio da Curva (R)</label>
+                                <div class="unit-suffix"><input type="number" id="gomos-r" class="calc-input" value="400" min="1" step="0.1"><span class="suffix gomos-unit">mm</span></div>
+                            </div>
+                            <div class="input-group">
+                                <label>Nº de Gomos (N)</label>
+                                <input type="number" id="gomos-n" class="calc-input" value="4" min="3" max="12" step="1">
+                            </div>
+                        </div>
+                        <div class="input-group mt-1">
+                            <label>Ângulo Total (°)</label>
+                            <div class="unit-suffix"><input type="number" id="gomos-ang" class="calc-input" value="90" min="10" max="180" step="1"><span class="suffix">°</span></div>
+                        </div>
+                        <div class="button-group mt-1">
+                            <button class="main-button" onclick="calcGomos()"><i class="fa-solid fa-calculator"></i> Calcular</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sitemap"></i> Curva Segmentada</h2>
+                        <div class="svg-wrap" id="gomos-svg-wrap"><svg id="gomos-svg" viewBox="0 0 360 300"></svg></div>
+                    </div>
+                </div>
+                <div class="right-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-chart-simple"></i> Resultados</h2>
+                        <div id="gomos-results"><p class="placeholder">Preencha os dados e calcule.</p></div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-draw-polygon"></i> Planificação de 1 Gomo</h2>
+                        <div class="svg-wrap" id="gomos-dev-wrap"><svg id="gomos-dev" viewBox="0 0 340 220"></svg></div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-table"></i> Coordenadas do Corte</h2>
+                        <div class="action-bar">
+                            <button class="secondary-button btn-sm" onclick="copyTable('gomos-table')"><i class="fa-solid fa-copy"></i> Copiar</button>
+                            <button class="btn-dxf" onclick="exportGomosDXF()"><i class="fa-solid fa-file-export"></i> Exportar DXF</button>
+                        </div>
+                        <div class="table-wrap">
+                            <div class="table-scroll"><table id="gomos-table"><thead><tr><th>Nº</th><th>Ângulo</th><th>X</th><th>Y<sub>corte</sub></th></tr></thead><tbody id="gomos-tbody"></tbody></table></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-ypsilon" role="tabpanel">
+            <div class="module-layout">
+                <div class="left-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sliders"></i> Dados do Ypsilon</h2>
+                        <div class="input-grid">
+                            <div class="input-group input-full">
+                                <label>Diâmetro Principal (D)</label>
+                                <div class="unit-suffix"><input type="number" id="yps-d" class="calc-input" value="200" min="1" step="0.1"><span class="suffix yps-unit">mm</span></div>
+                            </div>
+                            <div class="input-group">
+                                <label>Diâmetro Ramos (d)</label>
+                                <div class="unit-suffix"><input type="number" id="yps-dr" class="calc-input" value="150" min="1" step="0.1"><span class="suffix yps-unit">mm</span></div>
+                            </div>
+                            <div class="input-group">
+                                <label>Ângulo entre Ramos (°)</label>
+                                <div class="unit-suffix"><input type="number" id="yps-ang" class="calc-input" value="60" min="10" max="90" step="1"><span class="suffix">°</span></div>
+                            </div>
+                        </div>
+                        <div class="button-group mt-1">
+                            <button class="main-button" onclick="calcYpsilon()"><i class="fa-solid fa-calculator"></i> Calcular</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-sitemap"></i> Esquema</h2>
+                        <div class="svg-wrap" id="yps-svg-wrap"><svg id="yps-svg" viewBox="0 0 340 280"></svg></div>
+                    </div>
+                </div>
+                <div class="right-col">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-chart-simple"></i> Resultados</h2>
+                        <div id="yps-results"><p class="placeholder">Preencha os dados e calcule.</p></div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-draw-polygon"></i> Planificação do Ramo</h2>
+                        <div class="svg-wrap" id="yps-dev-wrap"><svg id="yps-dev" viewBox="0 0 340 200"></svg></div>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-table"></i> Coordenadas</h2>
+                        <div class="action-bar">
+                            <button class="secondary-button btn-sm" onclick="copyTable('yps-table')"><i class="fa-solid fa-copy"></i> Copiar</button>
+                            <button class="btn-dxf" onclick="exportYpsDXF()"><i class="fa-solid fa-file-export"></i> Exportar DXF</button>
+                        </div>
+                        <div class="table-wrap">
+                            <div class="table-scroll"><table id="yps-table"><thead><tr><th>Nº</th><th>X</th><th>Y</th></tr></thead><tbody id="yps-tbody"></tbody></table></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div>
+
+<script src="../shared/i18n.js"></script>
+<script src="shared.js"></script>
+<script>
+// ======================== GLOBALS ========================
+var currentUnit = 'mm';
+var coneIsTronco = true;
+var blResults = null, coneResults = null, qrResults = null, gomosResults = null, ypsResults = null;
+var isDark = false;
+
+// ======================== GESTÃO DO DRAWER (MENU LATERAL) ========================
+function toggleSidebar(force) {
+    const sidebar = document.getElementById('appSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (!sidebar || !overlay) return;
+    const state = typeof force === 'boolean' ? force : !sidebar.classList.contains('active');
+    sidebar.classList.toggle('active', state);
+    overlay.classList.toggle('active', state);
+}
+
+function selecionarModuloTracagem(idTab, i18nKey, defaultTitle) {
+    document.querySelectorAll('.tab-panel').forEach(function(c) { c.classList.remove('active'); });
+    const target = document.getElementById(idTab);
+    if (target) target.classList.add('active');
+
+    document.querySelectorAll('.app-sidebar-item').forEach(function(item) {
+        item.classList.toggle('active', item.getAttribute('data-tab') === idTab);
+    });
+
+    const headerTitle = document.getElementById('headerTracagemTitle');
+    if (headerTitle) {
+        headerTitle.setAttribute('data-i18n', i18nKey);
+        headerTitle.textContent = defaultTitle;
+    }
+
+    runActiveCalc();
+    toggleSidebar(false);
+}
+
+// ======================== THEME ========================
+function initTheme() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark') {
+        document.body.classList.add('dark-theme');
+        var tt = document.getElementById('themeToggle');
+        if (tt) tt.checked = true;
+    }
+    isDark = saved === 'dark';
+}
+var themeTog = document.getElementById('themeToggle');
+if (themeTog) {
+    themeTog.addEventListener('change', function(e) {
+        if (e.target.checked) {
+            document.body.classList.add('dark-theme');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.remove('dark-theme');
+            localStorage.setItem('theme', 'light');
+        }
+        isDark = e.target.checked;
+        runActiveCalc();
+    });
+}
+
+// ======================== UNIT TOGGLE ========================
+function setUnit(unit) {
+    currentUnit = unit;
+    localStorage.setItem('calderariaUnit', unit);
+    var toggles = document.querySelectorAll('.unit-toggle');
+    for (var i = 0; i < toggles.length; i++) {
+        toggles[i].classList.toggle('active', toggles[i].getAttribute('data-unit') === unit);
+    }
+    document.querySelectorAll('.bl-unit, .cone-unit, .qr-unit, .gomos-unit, .yps-unit').forEach(function(el) {
+        el.textContent = unit;
+    });
+    runActiveCalc();
+}
+
+function getActiveTab() {
+    var activeContent = document.querySelector('.tab-panel.active');
+    return activeContent ? activeContent.id : 'tab-boca';
+}
+
+function runActiveCalc() {
+    var tab = getActiveTab();
+    if (tab === 'tab-boca') calcBocaDeLobo();
+    else if (tab === 'tab-cone') calcCone();
+    else if (tab === 'tab-quadrado') calcQuadRedondo();
+    else if (tab === 'tab-gomos') calcGomos();
+    else if (tab === 'tab-ypsilon') calcYpsilon();
+}
+
+// ======================== HELPERS ========================
+function fl(v) {
+    if (v === null || v === undefined || isNaN(v)) return '—';
+    if (currentUnit === 'in') return (v / 25.4).toFixed(3) + ' in';
+    return v.toFixed(2) + ' mm';
+}
+
+function formatArea(mm2Val) {
+    if (mm2Val === null || mm2Val === undefined || isNaN(mm2Val)) return '—';
+    if (currentUnit === 'in') {
+        var in2 = mm2Val / (25.4 * 25.4);
+        return in2.toFixed(2) + ' in²';
+    }
+    var m2 = mm2Val / 1000000;
+    if (m2 < 0.01) return mm2Val.toFixed(0) + ' mm²';
+    return m2.toFixed(3) + ' m²';
+}
+
+function deg(r) { return r * 180 / Math.PI; }
+function rad(d) { return d * Math.PI / 180; }
+
+function svgNS() { return 'http://www.w3.org/2000/svg'; }
+
+function clearSVG(id) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = '';
+}
+
+function txtColor() { return isDark ? '#e9ecef' : '#0f172a'; }
+function dimColor() { return isDark ? '#8696a7' : '#64748b'; }
+function strokeColor() { return isDark ? '#3b82f6' : '#2563eb'; }
+function fillColor() { return isDark ? 'rgba(59,130,246,0.15)' : 'rgba(37,99,235,0.08)'; }
+
+function copyTable(tableId) {
+    var table = document.getElementById(tableId);
+    if (!table) return;
+    var text = '';
+    for (var i = 0; i < table.rows.length; i++) {
+        var cells = table.rows[i].cells;
+        for (var j = 0; j < cells.length; j++) {
+            text += cells[j].textContent.trim();
+            if (j < cells.length - 1) text += '\t';
+        }
+        text += '\n';
+    }
+    navigator.clipboard.writeText(text).then(function() {
+        showToast(window.i18n.t('tracagem.msg_copiada'));
+    }).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(window.i18n.t('tracagem.msg_copiada'));
+    });
+}
+
+function showToast(msg) {
+    var existing = document.querySelector('.toast-trac');
+    if (existing) existing.remove();
+    var toast = document.createElement('div');
+    toast.className = 'toast-trac';
+    toast.textContent = msg;
+    toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:10px 20px;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:9999;font-weight:700;font-size:0.9rem;border:1px solid rgba(255,255,255,0.1);';
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.style.opacity = '0'; setTimeout(function() { toast.remove(); }, 300); }, 1500);
+}
+
+function makeDimLine(ns, x1, y1, x2, y2, color, offset) {
+    var g = document.createElementNS(ns, 'g');
+    color = color || dimColor();
+    offset = offset || 12;
+    var dx = x2 - x1, dy = y2 - y1;
+    var len = Math.sqrt(dx*dx + dy*dy);
+    if (len < 0.001) return g;
+    var nx = -dy/len * offset, ny = dx/len * offset;
+    var l1 = document.createElementNS(ns, 'line');
+    l1.setAttribute('x1', x1+nx); l1.setAttribute('y1', y1+ny);
+    l1.setAttribute('x2', x2+nx); l1.setAttribute('y2', y2+ny);
+    l1.setAttribute('stroke', color); l1.setAttribute('stroke-width', '1');
+    g.appendChild(l1);
+    var ex1 = document.createElementNS(ns, 'line');
+    ex1.setAttribute('x1', x1); ex1.setAttribute('y1', y1);
+    ex1.setAttribute('x2', x1+nx*1.5); ex1.setAttribute('y2', y1+ny*1.5);
+    ex1.setAttribute('stroke', color); ex1.setAttribute('stroke-width', '.5');
+    g.appendChild(ex1);
+    var ex2 = document.createElementNS(ns, 'line');
+    ex2.setAttribute('x1', x2); ex2.setAttribute('y1', y2);
+    ex2.setAttribute('x2', x2+nx*1.5); ex2.setAttribute('y2', y2+ny*1.5);
+    ex2.setAttribute('stroke', color); ex2.setAttribute('stroke-width', '.5');
+    g.appendChild(ex2);
+    return g;
+}
+
+// ======================== DXF EXPORT ========================
+function generateDXF(filename, lines, arcs, circles) {
+    var l = ['0','SECTION','2','HEADER','9','$ACADVER','1','AC1009','0','ENDSEC',
+             '0','SECTION','2','TABLES','0','TABLE','2','LTYPE','0','LTYPE','2','CONTINUOUS',
+             '70','64','3','','72','65','73','0','40','0.0','0','ENDTAB',
+             '0','TABLE','2','LAYER','70','2','0','LAYER','2','0','70','64','62','7','6','CONTINUOUS',
+             '0','ENDTAB','0','ENDSEC','0','SECTION','2','ENTITIES'];
+    for (var i = 0; i < lines.length; i++) {
+        var ln = lines[i];
+        l.push('0','LINE','8','0','10',ln.x1.toFixed(4),'20',ln.y1.toFixed(4),
+               '11',ln.x2.toFixed(4),'21',ln.y2.toFixed(4));
+    }
+    for (var i = 0; i < arcs.length; i++) {
+        var a = arcs[i];
+        l.push('0','ARC','8','0','10',a.cx.toFixed(4),'20',a.cy.toFixed(4),
+               '40',a.r.toFixed(4),'50',a.sa.toFixed(4),'51',a.ea.toFixed(4));
+    }
+    for (var i = 0; i < (circles||[]).length; i++) {
+        var c = circles[i];
+        l.push('0','CIRCLE','8','0','10',c.cx.toFixed(4),'20',c.cy.toFixed(4),'40',c.r.toFixed(4));
+    }
+    l.push('0','ENDSEC','0','EOF');
+    var content = l.join('\r\n');
+    var blob = new Blob([content], {type:'application/dxf'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// ======================== TAB 1: BOCA DE LOBO ========================
+function calcBocaDeLobo() {
+    var Dm = parseFloat(document.getElementById('bl-dm').value);
+    var Db = parseFloat(document.getElementById('bl-db').value);
+    var angle = parseFloat(document.getElementById('bl-angle').value);
+    var N = parseInt(document.getElementById('bl-n').value);
+
+    if (isNaN(Dm) || isNaN(Db) || isNaN(angle) || isNaN(N) || Dm <= 0 || Db <= 0 || angle < 1 || N < 4) {
+        document.getElementById('bl-results').innerHTML = '<p class="placeholder">Verifique os valores informados.</p>';
+        return;
+    }
+    if (N > 48) N = 48;
+    if (N < 8) N = 8;
+
+    var Rm = Dm / 2, Rb = Db / 2;
+    var alpha = rad(angle);
+    var cotAlpha = 1 / Math.tan(alpha);
+
+    var points = [];
+    var minY = Infinity, maxY = -Infinity;
+
+    for (var i = 0; i <= N; i++) {
+        var theta = 2 * Math.PI * i / N;
+        var x = theta * Rb;
+        var inside = Rm * Rm - Math.pow(Rb * Math.sin(theta), 2);
+        if (inside < 0) inside = 0;
+        var y = Math.sqrt(inside) - Rb * Math.cos(theta) * cotAlpha;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+        points.push({ x: x, y: y, theta: deg(theta), idx: i });
+    }
+
+    var range = maxY - minY;
+    if (range < 0.001) range = 1;
+
+    for (var i = 0; i < points.length; i++) {
+        points[i].y = points[i].y - minY;
+    }
+    maxY = maxY - minY;
+
+    var flatWidth = Math.PI * Db;
+    var totalLen = 0;
+    for (var i = 1; i < points.length; i++) {
+        var dx = points[i].x - points[i-1].x;
+        var dy = points[i].y - points[i-1].y;
+        totalLen += Math.sqrt(dx*dx + dy*dy);
+    }
+
+    blResults = { Dm: Dm, Db: Db, angle: angle, N: N, points: points, flatWidth: flatWidth, maxY: maxY, totalLen: totalLen, minY: 0 };
+
+    showBLResults();
+    drawBLSchematic();
+    drawBLDev();
+    buildBLTable();
+}
+
+function showBLResults() {
+    var r = blResults;
+    var html = '<div class="result-grid">' +
+        '<div class="result-item highlight full"><div class="label">Comprimento Total do Corte</div><div class="value">' + fl(r.totalLen) + '</div></div>' +
+        '<div class="result-item"><div class="label">D. Principal (D)</div><div class="value">' + fl(r.Dm) + '</div></div>' +
+        '<div class="result-item"><div class="label">D. Ramal (d)</div><div class="value">' + fl(r.Db) + '</div></div>' +
+        '<div class="result-item"><div class="label">Ângulo (α)</div><div class="value">' + r.angle.toFixed(1) + '°</div></div>' +
+        '<div class="result-item"><div class="label">Altura Máx. Corte</div><div class="value">' + fl(r.maxY) + '</div></div>' +
+        '<div class="result-item"><div class="label">Largura Planificada</div><div class="value">' + fl(r.flatWidth) + '</div></div>' +
+        '<div class="result-item"><div class="label">Nº de Divisões</div><div class="value">' + r.N + '</div></div>' +
+        '</div>';
+    document.getElementById('bl-results').innerHTML = html;
+}
+
+function drawBLSchematic() {
+    var svg = document.getElementById('bl-svg');
+    clearSVG('bl-svg');
+    var ns = svgNS();
+    var cy = 140;
+
+    var rMain = 70, rBranch = 55;
+    var angleRad = rad(blResults.angle);
+
+    var mainC = strokeColor();
+    var branchC = isDark ? '#60a5fa' : '#1d4ed8';
+    var dimC = dimColor();
+
+    var rect = document.createElementNS(ns, 'rect');
+    rect.setAttribute('x', '60'); rect.setAttribute('y', String(cy - rMain));
+    rect.setAttribute('width', '280'); rect.setAttribute('height', String(2 * rMain));
+    rect.setAttribute('fill', mainC); rect.setAttribute('opacity', '0.15');
+    rect.setAttribute('stroke', mainC); rect.setAttribute('stroke-width', '2');
+    svg.appendChild(rect);
+
+    var ell = document.createElementNS(ns, 'ellipse');
+    ell.setAttribute('cx', '60'); ell.setAttribute('cy', String(cy));
+    ell.setAttribute('rx', '15'); ell.setAttribute('ry', String(rMain));
+    ell.setAttribute('fill', 'none'); ell.setAttribute('stroke', mainC); ell.setAttribute('stroke-width', '2');
+    svg.appendChild(ell);
+
+    var ell2 = document.createElementNS(ns, 'ellipse');
+    ell2.setAttribute('cx', '340'); ell2.setAttribute('cy', String(cy));
+    ell2.setAttribute('rx', '15'); ell2.setAttribute('ry', String(rMain));
+    ell2.setAttribute('fill', 'none'); ell2.setAttribute('stroke', mainC); ell2.setAttribute('stroke-width', '2');
+    svg.appendChild(ell2);
+
+    var bx1 = 170, by1 = cy;
+    var bx2 = bx1 + 160 * Math.cos(angleRad);
+    var by2 = by1 - 160 * Math.sin(angleRad);
+
+    var bw = rBranch;
+    var perpX = -Math.sin(angleRad) * bw;
+    var perpY = -Math.cos(angleRad) * bw;
+
+    var br = document.createElementNS(ns, 'polygon');
+    br.setAttribute('points',
+        (bx1-perpX)+','+(by1-perpY)+' '+
+        (bx2-perpX)+','+(by2-perpY)+' '+
+        (bx2+perpX)+','+(by2+perpY)+' '+
+        (bx1+perpX)+','+(by1+perpY));
+    br.setAttribute('fill', branchC); br.setAttribute('opacity', '0.2');
+    br.setAttribute('stroke', branchC); br.setAttribute('stroke-width', '2');
+    svg.appendChild(br);
+
+    var bell = document.createElementNS(ns, 'ellipse');
+    bell.setAttribute('cx', String(bx2)); bell.setAttribute('cy', String(by2));
+    bell.setAttribute('rx', String(rBranch)); bell.setAttribute('ry', '12');
+    bell.setAttribute('fill', 'none'); bell.setAttribute('stroke', branchC); bell.setAttribute('stroke-width', '2');
+    svg.appendChild(bell);
+
+    var tD = document.createElementNS(ns, 'text');
+    tD.setAttribute('x', '200'); tD.setAttribute('y', String(cy + rMain + 20));
+    tD.setAttribute('text-anchor', 'middle'); tD.setAttribute('font-size', '11');
+    tD.setAttribute('font-weight', '700'); tD.setAttribute('fill', dimC);
+    tD.setAttribute('font-family', 'sans-serif');
+    tD.textContent = 'D = ' + fl(blResults.Dm);
+    svg.appendChild(tD);
+
+    var td = document.createElementNS(ns, 'text');
+    td.setAttribute('x', String(bx2)); td.setAttribute('y', String(by2 - rBranch - 10));
+    td.setAttribute('text-anchor', 'middle'); td.setAttribute('font-size', '11');
+    td.setAttribute('font-weight', '700'); tD.setAttribute('fill', dimC);
+    td.setAttribute('font-family', 'sans-serif');
+    td.textContent = 'd = ' + fl(blResults.Db);
+    svg.appendChild(td);
+}
+
+function drawBLDev() {
+    var svg = document.getElementById('bl-dev');
+    clearSVG('bl-dev');
+    var r = blResults;
+    if (!r) return;
+    var ns = svgNS();
+    var W = 360, H = 200;
+    var margin = 20;
+    var plotW = W - 2 * margin, plotH = H - 2 * margin;
+
+    var scaleY = plotH / (r.maxY || 1) * 0.85;
+    if (scaleY * r.maxY > plotH) scaleY = plotH / (r.maxY || 1) * 0.85;
+
+    var ox = margin, oy = H - margin;
+
+    var hl = document.createElementNS(ns, 'line');
+    hl.setAttribute('x1', String(ox)); hl.setAttribute('y1', String(oy));
+    hl.setAttribute('x2', String(ox + plotW)); hl.setAttribute('y2', String(oy));
+    hl.setAttribute('stroke', dimColor()); hl.setAttribute('stroke-width', '1');
+    svg.appendChild(hl);
+
+    var nGrid = Math.min(r.N, 24);
+    for (var i = 0; i <= nGrid; i++) {
+        var x = ox + (i / nGrid) * plotW;
+        var gl = document.createElementNS(ns, 'line');
+        gl.setAttribute('x1', String(x)); gl.setAttribute('y1', String(oy));
+        gl.setAttribute('x2', String(x)); gl.setAttribute('y2', String(oy - plotH));
+        gl.setAttribute('stroke', isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)');
+        gl.setAttribute('stroke-width', '0.5');
+        svg.appendChild(gl);
+    }
+
+    var path = '';
+    for (var i = 0; i < r.points.length; i++) {
+        var px = ox + r.points[i].x / (r.flatWidth || 1) * plotW;
+        var py = oy - r.points[i].y * scaleY;
+        path += (i === 0 ? 'M' : 'L') + px.toFixed(1) + ',' + py.toFixed(1);
+    }
+    if (r.points.length > 0) {
+        var lastPx = ox + r.points[r.points.length-1].x / (r.flatWidth || 1) * plotW;
+        path += 'L' + lastPx.toFixed(1) + ',' + oy + 'Z';
+    }
+    var curve = document.createElementNS(ns, 'path');
+    curve.setAttribute('d', path);
+    curve.setAttribute('fill', fillColor());
+    curve.setAttribute('stroke', strokeColor());
+    curve.setAttribute('stroke-width', '2');
+    svg.appendChild(curve);
+
+    var tw = document.createElementNS(ns, 'text');
+    tw.setAttribute('x', String(ox + plotW/2)); tw.setAttribute('y', String(oy + 14));
+    tw.setAttribute('text-anchor', 'middle'); tw.setAttribute('font-size', '9');
+    tw.setAttribute('fill', dimColor()); tw.setAttribute('font-family', 'sans-serif');
+    tw.textContent = 'π × d = ' + fl(r.flatWidth);
+    svg.appendChild(tw);
+}
+
+function buildBLTable() {
+    var r = blResults;
+    var tbody = document.getElementById('bl-tbody');
+    var html = '';
+    for (var i = 0; i < r.points.length; i++) {
+        var p = r.points[i];
+        html += '<tr><td><strong>' + p.idx + '</strong></td><td>' + p.theta.toFixed(1) + '°</td><td>' + fl(p.x) + '</td><td>' + fl(p.y) + '</td></tr>';
+    }
+    tbody.innerHTML = html;
+}
+
+function exportBLDXF() {
+    var r = blResults;
+    if (!r || !r.points) { showToast(window.i18n.t('tracagem.err_calcule_primeiro')); return; }
+    var lines = [];
+    for (var i = 1; i < r.points.length; i++) {
+        lines.push({ x1: r.points[i-1].x, y1: r.points[i-1].y, x2: r.points[i].x, y2: r.points[i].y });
+    }
+    generateDXF('boca_de_lobo.dxf', lines, []);
+    showToast(window.i18n.t('tracagem.msg_dxf_sucesso'));
+}
+
+// ======================== TAB 2: CONE / TRONCO ========================
+function setConeType(tipo) {
+    coneIsTronco = tipo === 'tronco';
+    document.querySelectorAll('.cone-type-tab').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-cone') === tipo);
+    });
+    var dtop = document.getElementById('cone-dtop');
+    if (dtop) {
+        if (tipo === 'reto') {
+            dtop.value = 0;
+            dtop.disabled = true;
+        } else {
+            dtop.disabled = false;
+            if (parseFloat(dtop.value) === 0) dtop.value = 100;
+        }
+    }
+    if (getActiveTab() === 'tab-cone') calcCone();
+}
+
+function calcCone() {
+    var Dtop = parseFloat(document.getElementById('cone-dtop').value);
+    var Dbot = parseFloat(document.getElementById('cone-dbot').value);
+    var H = parseFloat(document.getElementById('cone-h').value);
+
+    if (isNaN(Dbot) || Dbot <= 0 || isNaN(H) || H <= 0) {
+        document.getElementById('cone-results').innerHTML = '<p class="placeholder">Verifique os valores informados.</p>';
+        return;
+    }
+    if (isNaN(Dtop)) Dtop = 0;
+
+    var Rtop = Dtop / 2, Rbot = Dbot / 2;
+    var L = Math.sqrt((Rbot - Rtop) * (Rbot - Rtop) + H * H);
+
+    if (L < 0.001) return;
+
+    var Rbig, Rsmall, sectorAngle, chord;
+
+    if (Dtop <= 0 || !coneIsTronco) {
+        Rbig = L;
+        Rsmall = 0;
+        sectorAngle = 360 * Rbot / Rbig;
+        if (sectorAngle > 360) sectorAngle = 360;
+        chord = 2 * Rbig * Math.sin(rad(sectorAngle / 2));
+    } else {
+        if (Math.abs(Rbot - Rtop) < 0.001) {
+            Rbig = L; Rsmall = L; sectorAngle = 360 * Rbot / Rbig;
+            chord = 2 * Rbig * Math.sin(rad(sectorAngle / 2));
+        } else {
+            Rbig = L * Rbot / (Rbot - Rtop);
+            Rsmall = Rbig - L;
+            if (Rsmall < 0) Rsmall = 0;
+            sectorAngle = 360 * Rbot / Rbig;
+            if (sectorAngle > 360) sectorAngle = 360;
+            chord = 2 * Rbig * Math.sin(rad(sectorAngle / 2));
+        }
+    }
+
+    coneResults = {
+        Dtop: Dtop, Dbot: Dbot, H: H, Rtop: Rtop, Rbot: Rbot,
+        Rbig: Rbig, Rsmall: Rsmall, sectorAngle: sectorAngle,
+        chord: chord, slantHeight: L, isCone: Dtop <= 0 || !coneIsTronco
+    };
+
+    showConeResults();
+    drawConeSchematic();
+    drawConeDev();
+    buildConeTable();
+}
+
+function showConeResults() {
+    var r = coneResults;
+    var html = '<div class="result-grid">' +
+        '<div class="result-item highlight full"><div class="label">Altura Inclinada (L)</div><div class="value">' + fl(r.slantHeight) + '</div></div>' +
+        '<div class="result-item"><div class="label">Raio Maior (R)</div><div class="value">' + fl(r.Rbig) + '</div></div>' +
+        (r.isCone ? '' : '<div class="result-item"><div class="label">Raio Menor (r)</div><div class="value">' + fl(r.Rsmall) + '</div></div>') +
+        '<div class="result-item"><div class="label">Ângulo do Setor</div><div class="value">' + r.sectorAngle.toFixed(2) + '°</div></div>' +
+        '<div class="result-item"><div class="label">Corda do Setor</div><div class="value">' + fl(r.chord) + '</div></div>' +
+        '<div class="result-item"><div class="label">D. Inferior (D<sub>i</sub>)</div><div class="value">' + fl(r.Dbot) + '</div></div>' +
+        (r.isCone ? '' : '<div class="result-item"><div class="label">D. Superior (D<sub>s</sub>)</div><div class="value">' + fl(r.Dtop) + '</div></div>') +
+        '<div class="result-item"><div class="label">Altura (H)</div><div class="value">' + fl(r.H) + '</div></div>' +
+        '</div>';
+    document.getElementById('cone-results').innerHTML = html;
+}
+
+function drawConeSchematic() {
+    var svg = document.getElementById('cone-svg');
+    clearSVG('cone-svg');
+    var r = coneResults;
+    if (!r) return;
+    var ns = svgNS();
+    var cx = 150, cy = 40;
+
+    var scale = Math.min(120 / Math.max(r.Rbot, 1), 150 / (r.H || 1));
+    var hPx = r.H * scale, tPx = r.Rtop * scale, bPx = r.Rbot * scale;
+
+    var x1 = cx - tPx, x2 = cx + tPx, y1 = cy;
+    var x3 = cx - bPx, x4 = cx + bPx, y2 = cy + hPx;
+
+    var dimC = dimColor();
+
+    var poly = document.createElementNS(ns, 'polygon');
+    poly.setAttribute('points', x1+','+y1+' '+x2+','+y1+' '+x4+','+y2+' '+x3+','+y2);
+    poly.setAttribute('fill', fillColor());
+    poly.setAttribute('stroke', strokeColor());
+    poly.setAttribute('stroke-width', '2');
+    svg.appendChild(poly);
+
+    var axis = document.createElementNS(ns, 'line');
+    axis.setAttribute('x1', String(cx)); axis.setAttribute('y1', String(cy - 10));
+    axis.setAttribute('x2', String(cx)); axis.setAttribute('y2', String(y2 + 10));
+    axis.setAttribute('stroke', dimC); axis.setAttribute('stroke-width', '1');
+    axis.setAttribute('stroke-dasharray', '4,4');
+    svg.appendChild(axis);
+}
+
+function drawConeDev() {
+    var svg = document.getElementById('cone-dev');
+    clearSVG('cone-dev');
+    var r = coneResults;
+    if (!r || r.Rbig < 0.01) return;
+    var ns = svgNS();
+    var cx = 150, cy = 180;
+
+    var rb = 110, rs = rb * (r.Rsmall / r.Rbig);
+    var angRad = rad(r.sectorAngle);
+
+    var startAngle = -Math.PI/2 - angRad/2;
+
+    var path = 'M ' + cx + ',' + cy;
+    for (var i = 0; i <= 50; i++) {
+        var a = startAngle + (angRad * i / 50);
+        path += ' L ' + (cx + rb * Math.cos(a)).toFixed(1) + ',' + (cy + rb * Math.sin(a)).toFixed(1);
+    }
+    path += ' Z';
+    var sector = document.createElementNS(ns, 'path');
+    sector.setAttribute('d', path);
+    sector.setAttribute('fill', fillColor());
+    sector.setAttribute('stroke', strokeColor());
+    sector.setAttribute('stroke-width', '1.5');
+    svg.appendChild(sector);
+}
+
+function buildConeTable() {
+    var r = coneResults;
+    var tbody = document.getElementById('cone-tbody');
+    var html = '';
+    for (var i = 0; i <= 24; i++) {
+        var frac = i / 24;
+        var a = rad(r.sectorAngle * frac);
+        var px = r.Rbig * Math.cos(a - rad(r.sectorAngle/2));
+        var py = r.Rbig * Math.sin(a - rad(r.sectorAngle/2));
+        html += '<tr><td><strong>' + i + '</strong></td><td>' + (r.sectorAngle * frac).toFixed(1) + '°</td><td>' + fl(r.Rbig) + '</td><td>' + fl(px) + '</td><td>' + fl(py) + '</td></tr>';
+    }
+    tbody.innerHTML = html;
+}
+
+function exportConeDXF() {
+    var r = coneResults;
+    if (!r || r.Rbig < 0.01) { showToast(window.i18n.t('tracagem.err_calcule_primeiro')); return; }
+    var angRad = rad(r.sectorAngle);
+    var startAngle = -Math.PI/2 - angRad/2;
+    var lines = [
+        { x1: 0, y1: 0, x2: r.Rbig * Math.cos(startAngle), y2: r.Rbig * Math.sin(startAngle) },
+        { x1: 0, y1: 0, x2: r.Rbig * Math.cos(startAngle + angRad), y2: r.Rbig * Math.sin(startAngle + angRad) }
+    ];
+    var arcs = [{ cx: 0, cy: 0, r: r.Rbig, sa: deg(startAngle), ea: deg(startAngle + angRad) }];
+    if (r.Rsmall > 1) arcs.push({ cx: 0, cy: 0, r: r.Rsmall, sa: deg(startAngle), ea: deg(startAngle + angRad) });
+    generateDXF('cone_tronco.dxf', lines, arcs);
+    showToast(window.i18n.t('tracagem.msg_dxf_sucesso'));
+}
+
+// ======================== TAB 3: QUADRADO PARA REDONDO ========================
+function calcQuadRedondo() {
+    var L = parseFloat(document.getElementById('qr-lado').value);
+    var D = parseFloat(document.getElementById('qr-diam').value);
+    var H = parseFloat(document.getElementById('qr-h').value);
+    var tipo = document.getElementById('qr-tipo').value;
+    var offsetX = parseFloat(document.getElementById('qr-offset').value) || 0;
+
+    if (isNaN(L) || isNaN(D) || isNaN(H) || L <= 0 || D <= 0 || H <= 0) return;
+
+    var R = D / 2, circumference = Math.PI * D, slant = Math.sqrt(R*R + H*H);
+    var triArea = 4 * (0.5 * L * slant);
+
+    qrResults = {
+        L: L, D: D, H: H, R: R, offsetX: offsetX, tipo: tipo,
+        circumference: circumference, avgSlant: slant,
+        surfaceArea: triArea, N: 24
+    };
+
+    showQRResults();
+    drawQRSchematic();
+    drawQRDev();
+    buildQRTable();
+}
+
+function showQRResults() {
+    var r = qrResults;
+    var html = '<div class="result-grid">' +
+        '<div class="result-item highlight full"><div class="label">Área Estimada de Chapa</div><div class="value">' + formatArea(r.surfaceArea * 2) + '</div></div>' +
+        '<div class="result-item"><div class="label">Lado Quadrado (L)</div><div class="value">' + fl(r.L) + '</div></div>' +
+        '<div class="result-item"><div class="label">Diâmetro Redondo (D)</div><div class="value">' + fl(r.D) + '</div></div>' +
+        '<div class="result-item"><div class="label">Altura (H)</div><div class="value">' + fl(r.H) + '</div></div>' +
+        '<div class="result-item"><div class="label">Circunf. Redondo</div><div class="value">' + fl(r.circumference) + '</div></div>' +
+        '<div class="result-item"><div class="label">Tipo</div><div class="value">' + (r.tipo === 'centrado' ? 'Centrado' : 'Excêntrico') + '</div></div>' +
+        '</div>';
+    document.getElementById('qr-results').innerHTML = html;
+}
+
+function drawQRSchematic() {
+    var svg = document.getElementById('qr-svg');
+    clearSVG('qr-svg');
+    var r = qrResults;
+    if (!r) return;
+    var ns = svgNS();
+    var body = document.createElementNS(ns, 'polygon');
+    body.setAttribute('points', '70,50 270,50 220,190 120,190');
+    body.setAttribute('fill', fillColor());
+    body.setAttribute('stroke', strokeColor());
+    body.setAttribute('stroke-width', '2');
+    svg.appendChild(body);
+}
+
+function drawQRDev() {
+    var svg = document.getElementById('qr-dev');
+    clearSVG('qr-dev');
+    var ns = svgNS();
+    var rect = document.createElementNS(ns, 'rect');
+    rect.setAttribute('x', '40'); rect.setAttribute('y', '60');
+    rect.setAttribute('width', '260'); rect.setAttribute('height', '140');
+    rect.setAttribute('fill', fillColor()); rect.setAttribute('stroke', strokeColor()); rect.setAttribute('stroke-width', '2');
+    svg.appendChild(rect);
+}
+
+function buildQRTable() {
+    var r = qrResults;
+    var tbody = document.getElementById('qr-tbody');
+    var html = '';
+    for (var i = 0; i <= r.N; i++) {
+        html += '<tr><td><strong>' + i + '</strong></td><td>' + fl((i/r.N)*r.circumference) + '</td><td>' + fl(r.avgSlant) + '</td></tr>';
+    }
+    tbody.innerHTML = html;
+}
+
+function exportQRDXF() {
+    var r = qrResults;
+    if (!r) return;
+    var lines = [
+        { x1: 0, y1: 0, x2: r.circumference, y2: 0 },
+        { x1: r.circumference, y1: 0, x2: r.circumference, y2: r.avgSlant },
+        { x1: r.circumference, y1: r.avgSlant, x2: 0, y2: r.avgSlant },
+        { x1: 0, y1: r.avgSlant, x2: 0, y2: 0 }
+    ];
+    generateDXF('quadrado_redondo.dxf', lines, []);
+    showToast(window.i18n.t('tracagem.msg_dxf_sucesso'));
+}
+
+// ======================== TAB 4: GOMOS ========================
+function calcGomos() {
+    var D = parseFloat(document.getElementById('gomos-d').value);
+    var R = parseFloat(document.getElementById('gomos-r').value);
+    var N = parseInt(document.getElementById('gomos-n').value);
+    var Ang = parseFloat(document.getElementById('gomos-ang').value);
+
+    if (isNaN(D) || isNaN(R) || isNaN(N) || isNaN(Ang) || D <= 0 || R <= 0 || N < 2 || Ang <= 0) return;
+
+    var r = D / 2, cutAngle = Ang / (2 * (N - 1)), cutHeight = r * Math.tan(rad(cutAngle));
+    var devPts = [];
+    for (var i = 0; i <= 24; i++) {
+        var theta = 2 * Math.PI * i / 24;
+        devPts.push({ x: theta * r, y: cutHeight * Math.cos(theta), theta: deg(theta), idx: i });
+    }
+
+    gomosResults = {
+        D: D, R: R, N: N, Ang: Ang, r: r,
+        endAngle: cutAngle, midAngle: cutAngle * 2, cutAngle: cutAngle,
+        cutHeight: cutHeight, devPts: devPts, flatWidth: Math.PI * D, minY: -cutHeight
+    };
+
+    showGomosResults();
+    drawGomosSchematic();
+    drawGomosDev();
+    buildGomosTable();
+}
+
+function showGomosResults() {
+    var r = gomosResults;
+    var html = '<div class="result-grid">' +
+        '<div class="result-item highlight full"><div class="label">Ângulo por Gomo (extremidade)</div><div class="value">' + r.endAngle.toFixed(2) + '°</div></div>' +
+        '<div class="result-item highlight full"><div class="label">Ângulo por Gomo (meio)</div><div class="value">' + r.midAngle.toFixed(2) + '°</div></div>' +
+        '<div class="result-item"><div class="label">Nº Gomos</div><div class="value">' + r.N + '</div></div>' +
+        '<div class="result-item"><div class="label">Ângulo Total</div><div class="value">' + r.Ang.toFixed(1) + '°</div></div>' +
+        '<div class="result-item"><div class="label">Raio da Curva (R)</div><div class="value">' + fl(r.R) + '</div></div>' +
+        '<div class="result-item"><div class="label">D. Tubo (D)</div><div class="value">' + fl(r.D) + '</div></div>' +
+        '<div class="result-item"><div class="label">Altura de Corte</div><div class="value">' + fl(r.cutHeight) + '</div></div>' +
+        '</div>';
+    document.getElementById('gomos-results').innerHTML = html;
+}
+
+function drawGomosSchematic() {
+    var svg = document.getElementById('gomos-svg');
+    clearSVG('gomos-svg');
+    var ns = svgNS();
+    var arc = document.createElementNS(ns, 'path');
+    arc.setAttribute('d', 'M 60,240 A 140,140 0 0,1 200,100');
+    arc.setAttribute('fill', 'none'); arc.setAttribute('stroke', strokeColor()); arc.setAttribute('stroke-width', '24');
+    arc.setAttribute('opacity', '0.3');
+    svg.appendChild(arc);
+}
+
+function drawGomosDev() {
+    var svg = document.getElementById('gomos-dev');
+    clearSVG('gomos-dev');
+    var ns = svgNS();
+    var path = 'M 20,110 Q 170,30 320,110 Q 170,190 20,110 Z';
+    var curve = document.createElementNS(ns, 'path');
+    curve.setAttribute('d', path); curve.setAttribute('fill', fillColor()); curve.setAttribute('stroke', strokeColor()); curve.setAttribute('stroke-width', '2');
+    svg.appendChild(curve);
+}
+
+function buildGomosTable() {
+    var r = gomosResults;
+    var tbody = document.getElementById('gomos-tbody');
+    var html = '';
+    for (var i = 0; i < r.devPts.length; i++) {
+        var p = r.devPts[i];
+        html += '<tr><td><strong>' + p.idx + '</strong></td><td>' + p.theta.toFixed(1) + '°</td><td>' + fl(p.x) + '</td><td>' + fl(p.y - r.minY) + '</td></tr>';
+    }
+    tbody.innerHTML = html;
+}
+
+function exportGomosDXF() {
+    var r = gomosResults;
+    if (!r) return;
+    var lines = [];
+    for (var i = 1; i < r.devPts.length; i++) {
+        lines.push({ x1: r.devPts[i-1].x, y1: r.devPts[i-1].y - r.minY, x2: r.devPts[i].x, y2: r.devPts[i].y - r.minY });
+    }
+    generateDXF('gomos.dxf', lines, []);
+    showToast(window.i18n.t('tracagem.msg_dxf_sucesso'));
+}
+
+// ======================== TAB 5: YPSILONS / CALÇAS ========================
+function calcYpsilon() {
+    var D = parseFloat(document.getElementById('yps-d').value);
+    var Dr = parseFloat(document.getElementById('yps-dr').value);
+    var ang = parseFloat(document.getElementById('yps-ang').value);
+
+    if (isNaN(D) || isNaN(Dr) || isNaN(ang) || D <= 0 || Dr <= 0 || ang < 1) return;
+
+    var R = D / 2, r = Dr / 2, cotHalf = 1 / Math.tan(rad(ang/4));
+    var pts = [];
+    for (var i = 0; i <= 24; i++) {
+        var theta = 2 * Math.PI * i / 24;
+        var inside = Math.max(0, R*R - Math.pow(r * Math.sin(theta), 2));
+        pts.push({ x: theta * r, y: Math.sqrt(inside) - r * Math.cos(theta) * cotHalf, idx: i });
+    }
+
+    ypsResults = { D: D, Dr: Dr, ang: ang, flatWidth: Math.PI * Dr, totalLen: Math.PI * Dr * 1.1, pts: pts };
+    showYpsResults();
+    drawYpsSchematic();
+    drawYpsDev();
+    buildYpsTable();
+}
+
+function showYpsResults() {
+    var r = ypsResults;
+    var html = '<div class="result-grid">' +
+        '<div class="result-item highlight full"><div class="label">Comprimento do Corte</div><div class="value">' + fl(r.totalLen) + '</div></div>' +
+        '<div class="result-item"><div class="label">D. Principal (D)</div><div class="value">' + fl(r.D) + '</div></div>' +
+        '<div class="result-item"><div class="label">D. Ramos (d)</div><div class="value">' + fl(r.Dr) + '</div></div>' +
+        '<div class="result-item"><div class="label">Ângulo entre Ramos</div><div class="value">' + r.ang.toFixed(1) + '°</div></div>' +
+        '<div class="result-item"><div class="label">Largura Planificada</div><div class="value">' + fl(r.flatWidth) + '</div></div>' +
+        '</div>';
+    document.getElementById('yps-results').innerHTML = html;
+}
+
+function drawYpsSchematic() {
+    var svg = document.getElementById('yps-svg');
+    clearSVG('yps-svg');
+    var ns = svgNS();
+    var poly = document.createElementNS(ns, 'polygon');
+    poly.setAttribute('points', '140,180 200,180 200,240 140,240');
+    poly.setAttribute('fill', fillColor()); poly.setAttribute('stroke', strokeColor()); poly.setAttribute('stroke-width', '2');
+    svg.appendChild(poly);
+}
+
+function drawYpsDev() {
+    var svg = document.getElementById('yps-dev');
+    clearSVG('yps-dev');
+    var ns = svgNS();
+    var rect = document.createElementNS(ns, 'rect');
+    rect.setAttribute('x', '30'); rect.setAttribute('y', '50'); rect.setAttribute('width', '280'); rect.setAttribute('height', '100');
+    rect.setAttribute('fill', fillColor()); rect.setAttribute('stroke', strokeColor()); rect.setAttribute('stroke-width', '2');
+    svg.appendChild(rect);
+}
+
+function buildYpsTable() {
+    var r = ypsResults;
+    var tbody = document.getElementById('yps-tbody');
+    var html = '';
+    for (var i = 0; i < r.pts.length; i++) {
+        html += '<tr><td><strong>' + r.pts[i].idx + '</strong></td><td>' + fl(r.pts[i].x) + '</td><td>' + fl(r.pts[i].y) + '</td></tr>';
+    }
+    tbody.innerHTML = html;
+}
+
+function exportYpsDXF() {
+    var r = ypsResults;
+    if (!r) return;
+    var lines = [];
+    for (var i = 1; i < r.pts.length; i++) {
+        lines.push({ x1: r.pts[i-1].x, y1: r.pts[i-1].y, x2: r.pts[i].x, y2: r.pts[i].y });
+    }
+    generateDXF('ypsilon.dxf', lines, []);
+    showToast(window.i18n.t('tracagem.msg_dxf_sucesso'));
+}
+
+var qrT = document.getElementById('qr-tipo');
+if (qrT) {
+    qrT.addEventListener('change', function() {
+        var group = document.getElementById('qr-offset-group');
+        if (group) group.style.display = this.value === 'excentrico' ? 'block' : 'none';
+        runActiveCalc();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+    var savedUnit = localStorage.getItem('calderariaUnit');
+    if (savedUnit === 'in' || savedUnit === 'mm') setUnit(savedUnit);
+
+    document.querySelectorAll('.calc-input').forEach(function(inp) {
+        inp.addEventListener('input', runActiveCalc);
+    });
+
+    setConeType('tronco');
+    var qrog = document.getElementById('qr-offset-group');
+    if (qrog) qrog.style.display = 'none';
+
+    calcBocaDeLobo();
+});
+</script>
+</body>
+</html>

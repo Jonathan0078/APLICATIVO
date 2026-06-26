@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="soldagem.preaquecimento.title">Temperatura de Pré-Aquecimento</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-fire-extinguisher"></i> <span data-i18n="soldagem.preaquecimento.title">Temperatura de Pré-Aquecimento</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="theme-toggle-checkbox"><span class="slider"></span></label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-flask"></i> <span data-i18n="soldagem.preaquecimento.calc_title">Cálculo de Carbono Equivalente e Pré-Aquecimento</span></h2>
+                    <div class="input-group">
+                        <label for="tipoAco" data-i18n="soldagem.preaquecimento.tipo_aco">Tipo de Aço</label>
+                        <select id="tipoAco" onchange="presetAco()">
+                            <option value="custom" data-i18n="soldagem.preaquecimento.custom">Personalizado</option>
+                            <option value="a36" selected data-i18n="soldagem.preaquecimento.aco_a36">Aço Carbono ASTM A36</option>
+                            <option value="a572_50" data-i18n="soldagem.preaquecimento.aco_a572">Aço Ligado ASTM A572 Gr.50</option>
+                            <option value="a516_70" data-i18n="soldagem.preaquecimento.aco_a516">Aço Vaso ASME SA516 Gr.70</option>
+                            <option value="api_5l_x65" data-i18n="soldagem.preaquecimento.aco_api">Aço Tubo API 5L X65</option>
+                            <option value="abnt_300" data-i18n="soldagem.preaquecimento.aco_abnt">Aço Carbono ABNT 1020</option>
+                        </select>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="carbono" data-i18n="soldagem.preaquecimento.carbono">Carbono (%)</label>
+                            <input type="number" id="carbono" step="0.001" min="0" max="2" value="0.26">
+                        </div>
+                        <div class="input-group">
+                            <label for="manganes" data-i18n="soldagem.preaquecimento.manganes">Manganês (%)</label>
+                            <input type="number" id="manganes" step="0.001" min="0" max="5" value="1.20">
+                        </div>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="cromo" data-i18n="soldagem.preaquecimento.cromo">Cromo (%)</label>
+                            <input type="number" id="cromo" step="0.001" min="0" max="30" value="0.00">
+                        </div>
+                        <div class="input-group">
+                            <label for="molibdenio" data-i18n="soldagem.preaquecimento.molibdenio">Molibdênio (%)</label>
+                            <input type="number" id="molibdenio" step="0.001" min="0" max="5" value="0.00">
+                        </div>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="vanadio" data-i18n="soldagem.preaquecimento.vanadio">Vanádio (%)</label>
+                            <input type="number" id="vanadio" step="0.001" min="0" max="1" value="0.00">
+                        </div>
+                        <div class="input-group">
+                            <label for="cobre" data-i18n="soldagem.preaquecimento.cobre">Cobre (%)</label>
+                            <input type="number" id="cobre" step="0.001" min="0" max="5" value="0.00">
+                        </div>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="niquel" data-i18n="soldagem.preaquecimento.niquel">Níquel (%)</label>
+                            <input type="number" id="niquel" step="0.001" min="0" max="10" value="0.00">
+                        </div>
+                        <div class="input-group">
+                            <label for="espessuraChapa" data-i18n="soldagem.preaquecimento.espessura">Espessura da Chapa (mm)</label>
+                            <input type="number" id="espessuraChapa" step="1" min="1" max="300" value="25">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="hidrogenio" data-i18n="soldagem.preaquecimento.hidrogenio">Nível de Hidrogênio (ml/100g)</label>
+                        <select id="hidrogenio">
+                            <option value="5" data-i18n="soldagem.preaquecimento.h2_baixo">Baixo (ELC) — 5 ml/100g</option>
+                            <option value="10" selected data-i18n="soldagem.preaquecimento.h2_medio">Médio — 10 ml/100g</option>
+                            <option value="15" data-i18n="soldagem.preaquecimento.h2_alto">Alto — 15 ml/100g</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="calcular()"><i class="fa-solid fa-thermometer-half"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                    </div>
+                </div>
+            </div>
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="result.title">Resultados</span></h2>
+                    </div>
+                    <div id="result-container">
+                        <p class="placeholder-text" data-i18n="soldagem.preaquecimento.placeholder">Selecione o tipo de aço ou insira a composição química.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2><i class="fa-solid fa-table"></i> <span data-i18n="soldagem.preaquecimento.ref_title">Tabela de Referência — Composição de Aços Comuns</span></h2>
+                    <div class="table-container no-scroll-mobile">
+                        <table class="comparison-table responsive-table">
+                            <thead>
+                                <tr><th data-i18n="soldagem.preaquecimento.th_aco">Aço</th><th>C (%)</th><th>Mn (%)</th><th>Cr (%)</th><th>Mo (%)</th><th data-i18n="soldagem.preaquecimento.th_ce">CE (IIW)</th><th data-i18n="soldagem.preaquecimento.th_preheat">Pré-Aq.</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td data-label="Aço">ASTM A36</td><td data-label="C">0,26</td><td data-label="Mn">1,20</td><td data-label="Cr">—</td><td data-label="Mo">—</td><td data-label="CE">0,46</td><td data-label="Pré-Aq.">50-100°C</td></tr>
+                                <tr><td data-label="Aço">ASTM A572 Gr.50</td><td data-label="C">0,23</td><td data-label="Mn">1,35</td><td data-label="Cr">—</td><td data-label="Mo">—</td><td data-label="CE">0,46</td><td data-label="Pré-Aq.">50-100°C</td></tr>
+                                <tr><td data-label="Aço">SA516 Gr.70</td><td data-label="C">0,27</td><td data-label="Mn">0,85</td><td data-label="Cr">—</td><td data-label="Mo">—</td><td data-label="CE">0,41</td><td data-label="Pré-Aq.">Até 50°C</td></tr>
+                                <tr><td data-label="Aço">API 5L X65</td><td data-label="C">0,16</td><td data-label="Mn">1,65</td><td data-label="Cr">—</td><td data-label="Mo">—</td><td data-label="CE">0,43</td><td data-label="Pré-Aq.">50-100°C</td></tr>
+                                <tr><td data-label="Aço">ABNT 1020</td><td data-label="C">0,20</td><td data-label="Mn">0,45</td><td data-label="Cr">—</td><td data-label="Mo">—</td><td data-label="CE">0,28</td><td data-label="Pré-Aq.">Não necessário</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

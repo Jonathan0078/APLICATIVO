@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title data-i18n="cal52.title">Calendário de 52 Semanas</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-content">
+      <h1><i class="fa-solid fa-calendar-days"></i> <span data-i18n="cal52.title">Calendário de 52 Semanas</span></h1>
+      <div class="theme-switcher">
+        <i class="fa-solid fa-sun"></i>
+        <label class="switch"><input type="checkbox" id="themeToggle"><span class="slider"></span></label>
+        <i class="fa-solid fa-moon"></i>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="card">
+      <h2><i class="fa-solid fa-plus-circle"></i> <span data-i18n="cal52.add_title">Adicionar Equipamento / Plano</span></h2>
+      <form id="addForm" class="form-grid">
+        <div class="form-group">
+          <label for="inputTag" data-i18n="cal52.tag">TAG / Código</label>
+          <input type="text" id="inputTag" required data-i18n-placeholder="cal52.ph_tag" placeholder="Ex: RED-04">
+        </div>
+        <div class="form-group">
+          <label for="inputEquip" data-i18n="cal52.equip">Equipamento</label>
+          <input type="text" id="inputEquip" required data-i18n-placeholder="cal52.ph_equip" placeholder="Ex: Redutor da Esteira">
+        </div>
+        <div class="form-group">
+          <label for="inputEspec" data-i18n="cal52.specialty">Especialidade</label>
+            <select id="inputEspec">
+            <option value="Mecânica" data-i18n="cal52.espec_mecanica">Mecânica</option>
+            <option value="Elétrica" data-i18n="cal52.espec_eletrica">Elétrica</option>
+            <option value="Lubrificação" data-i18n="cal52.espec_lubrificacao">Lubrificação</option>
+            <option value="Instrumentação" data-i18n="cal52.espec_instrumentacao">Instrumentação</option>
+            <option value="Civil" data-i18n="cal52.espec_civil">Civil</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="inputFreq" data-i18n="cal52.frequency">Frequência</label>
+          <select id="inputFreq">
+            <option value="1" data-i18n="cal52.weekly">Semanal</option>
+            <option value="2" data-i18n="cal52.biweekly">Quinzenal</option>
+            <option value="4" selected data-i18n="cal52.monthly">Mensal</option>
+            <option value="13" data-i18n="cal52.quarterly">Trimestral</option>
+            <option value="26" data-i18n="cal52.semiannual">Semestral</option>
+            <option value="0" data-i18n="cal52.manual">Manual (sem preenchimento automático)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="inputStartWeek" data-i18n="cal52.start_week">Semana Inicial</label>
+          <input type="number" id="inputStartWeek" min="1" max="52" value="1">
+        </div>
+        <div class="form-group button-holder">
+          <button type="submit" class="main-button"><i class="fa-solid fa-plus"></i> <span data-i18n="cal52.add_btn">Adicionar</span></button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card full-width">
+      <div class="output-header">
+        <h2><i class="fa-solid fa-table"></i> <span data-i18n="cal52.grid_title">Plano Anual de Manutenção</span></h2>
+        <div class="output-controls">
+          <span class="year-label" id="yearLabel"></span>
+          <button id="exportBtn" class="secondary-button"><i class="fa-solid fa-download"></i> <span data-i18n="cal52.export">Exportar JSON</span></button>
+          <button id="importBtn" class="secondary-button"><i class="fa-solid fa-upload"></i> <span data-i18n="cal52.import">Importar JSON</span></button>
+          <input type="file" id="importFile" accept=".json" style="display:none">
+        </div>
+      </div>
+
+      <div class="legend-row">
+        <span class="legend-item"><span class="legend-swatch swatch-empty"></span> <span data-i18n="cal52.legend_inactive">Inativo</span></span>
+        <span class="legend-item"><span class="legend-swatch swatch-planned"></span> <span data-i18n="cal52.legend_planned">Planejado</span></span>
+        <span class="legend-item"><span class="legend-swatch swatch-done"></span> <span data-i18n="cal52.legend_done">Executado</span></span>
+        <span class="legend-item"><span class="legend-swatch swatch-overdue"></span> <span data-i18n="cal52.legend_overdue">Atrasado</span></span>
+        <span class="legend-item"><span class="legend-swatch swatch-current"></span> <span data-i18n="cal52.legend_current">Semana Atual</span></span>
+      </div>
+
+      <div class="grid-wrapper" id="gridWrapper">
+        <table id="mainGrid">
+          <thead id="gridHead"></thead>
+          <tbody id="gridBody"></tbody>
+        </table>
+      </div>
+
+      <div class="empty-state" id="emptyState">
+        <i class="fa-solid fa-calendar-plus"></i>
+        <p data-i18n="cal52.empty">Adicione equipamentos acima para começar o plano anual.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="../shared/i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

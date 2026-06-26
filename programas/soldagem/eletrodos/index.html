@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="soldagem.eletrodos.title">Guia de Eletrodos AWS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-bolt"></i> <span data-i18n="soldagem.eletrodos.title">Guia de Eletrodos AWS</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="theme-toggle-checkbox"><span class="slider"></span></label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-search"></i> <span data-i18n="soldagem.eletrodos.search_title">Consultar Especificação AWS</span></h2>
+                    <div class="input-group">
+                        <label for="eletrodoSelect" data-i18n="soldagem.eletrodos.select">Selecione o Eletrodo</label>
+                        <select id="eletrodoSelect" onchange="consultar()">
+                            <option value="E6010">E6010</option>
+                            <option value="E6011">E6011</option>
+                            <option value="E6013">E6013</option>
+                            <option value="E7014">E7014</option>
+                            <option value="E7018" selected>E7018</option>
+                            <option value="E7024">E7024</option>
+                            <option value="E8018-B2">E8018-B2</option>
+                            <option value="E9018-B3">E9018-B3</option>
+                            <option value="E308L">E308L</option>
+                            <option value="E308L-16">E308L-16</option>
+                            <option value="E309L">E309L</option>
+                            <option value="E309L-16">E309L-16</option>
+                            <option value="E316L">E316L</option>
+                            <option value="E316L-16">E316L-16</option>
+                            <option value="E7018-G">E7018-G</option>
+                            <option value="E11018-G">E11018-G</option>
+                            <option value="ENiCrFe-3">ENiCrFe-3 (Inconel)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="eletrodoSearch" data-i18n="soldagem.eletrodos.search">Ou digite a especificação</label>
+                        <input type="text" id="eletrodoSearch" data-i18n-placeholder="soldagem.eletrodos.ph_search" placeholder="Ex: ER70S-6, E308L" oninput="filtrarSelect()">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="consultar()"><i class="fa-solid fa-info-circle"></i> <span data-i18n="soldagem.eletrodos.consultar">Consultar</span></button>
+                    </div>
+                </div>
+            </div>
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="soldagem.eletrodos.detail_title">Detalhes do Eletrodo</span></h2>
+                    </div>
+                    <div id="result-container">
+                        <p class="placeholder-text" data-i18n="soldagem.eletrodos.placeholder">Selecione um eletrodo para ver suas especificações.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2><i class="fa-solid fa-table"></i> <span data-i18n="soldagem.eletrodos.legend_title">Legenda da Classificação AWS</span></h2>
+                    <div class="table-container no-scroll-mobile">
+                        <table class="comparison-table responsive-table">
+                            <thead>
+                                <tr><th data-i18n="soldagem.eletrodos.th_posicao">Dígito</th><th data-i18n="soldagem.eletrodos.th_significado">Significado</th><th data-i18n="soldagem.eletrodos.th_exemplo">Exemplo</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td data-label="Dígito"><strong>E</strong></td><td data-label="Significado" data-i18n="soldagem.eletrodos.leg_e">Eletrodo</td><td data-label="Exemplo">E = Eletrodo</td></tr>
+                                <tr><td data-label="Dígito"><strong>XX</strong> (60, 70, 80...)</td><td data-label="Significado" data-i18n="soldagem.eletrodos.leg_resistencia">Resistência à tração (ksi × 1000)</td><td data-label="Exemplo">70 = 70.000 psi (≈490 MPa)</td></tr>
+                                <tr><td data-label="Dígito"><strong>1°X</strong> (1, 2, 3, 4)</td><td data-label="Significado" data-i18n="soldagem.eletrodos.leg_posicao">Posição de soldagem</td><td data-label="Exemplo">1 = Todas as posições</td></tr>
+                                <tr><td data-label="Dígito"><strong>2°X</strong> (0, 1, 2...)</td><td data-label="Significado" data-i18n="soldagem.eletrodos.leg_revestimento">Tipo de revestimento e corrente</td><td data-label="Exemplo">8 = Baixo hidrogênio, CC+</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

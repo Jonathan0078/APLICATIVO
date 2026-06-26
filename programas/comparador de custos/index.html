@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="custos.title">Comparador de Custos de Manutenção</title>
+  <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-content">
+        <h1><i class="fas fa-chart-pie"></i> <span data-i18n="custos.header">Comparador de Custos</span></h1>
+        <p data-i18n="custos.desc">Corretiva vs. Preventiva</p>
+        <div class="theme-switcher">
+          <i class="fas fa-sun"></i>
+          <label class="switch">
+            <input type="checkbox" id="themeToggle">
+            <span class="slider"></span>
+          </label>
+          <i class="fas fa-moon"></i>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section id="inputs-column">
+        <div class="card">
+          <h2><i class="fas fa-database"></i> <span data-i18n="custos.data_input">Entrada de Dados</span></h2>
+          <form id="form-custos">
+            <div class="input-group">
+              <label for="custo-parada"><i class="fas fa-clock"></i> <span data-i18n="custos.downtime_cost">Custo de Parada (R$)</span> <span class="ajuda-icone" tabindex="0">?</span></label>
+              <input type="number" id="custo-parada" required placeholder="Ex: 5000" data-i18n-placeholder="custos.downtime_cost_ph">
+            </div>
+            <div class="input-group">
+              <label for="custo-pecas"><i class="fas fa-cogs"></i> <span data-i18n="custos.parts_cost">Custo de Peças (R$)</span> <span class="ajuda-icone" tabindex="0">?</span></label>
+              <input type="number" id="custo-pecas" required placeholder="Ex: 1000" data-i18n-placeholder="custos.parts_cost_ph">
+            </div>
+            <div class="input-group">
+              <label for="custo-mao-obra"><i class="fas fa-users"></i> <span data-i18n="custos.labor_cost">Custo de Mão de Obra (R$)</span> <span class="ajuda-icone" tabindex="0">?</span></label>
+              <input type="number" id="custo-mao-obra" required placeholder="Ex: 800" data-i18n-placeholder="custos.labor_cost_ph">
+            </div>
+            <div class="input-group">
+              <label for="falhas-ano"><i class="fas fa-exclamation-triangle"></i> <span data-i18n="custos.failure_freq">Frequência de Falhas por Ano</span> <span class="ajuda-icone" tabindex="0">?</span></label>
+              <input type="number" id="falhas-ano" required placeholder="Ex: 3" data-i18n-placeholder="custos.failures_ph">
+            </div>
+            <div class="input-group">
+              <label for="intervalo-prev"><i class="fas fa-calendar-check"></i> <span data-i18n="custos.prev_interval">Intervalo de Manutenção Preventiva (meses)</span> <span class="ajuda-icone" tabindex="0">?</span></label>
+              <input type="number" id="intervalo-prev" required placeholder="Ex: 6" data-i18n-placeholder="custos.interval_ph">
+            </div>
+            <div class="input-group">
+              <label for="custo-prev"><i class="fas fa-wrench"></i> <span data-i18n="custos.prev_cost">Custo da Preventiva (R$)</span> <span class="ajuda-icone" tabindex="0">?</span></label>
+              <input type="number" id="custo-prev" required placeholder="Ex: 1500" data-i18n-placeholder="custos.prev_cost_ph">
+            </div>
+            <div class="input-group">
+              <label for="inflacao"><i class="fas fa-percentage"></i> <span data-i18n="custos.inflation">Inflação Anual (%)</span> <span class="ajuda-icone" tabindex="0">?</span></label>
+              <input type="number" id="inflacao" value="0" min="0" step="0.1" placeholder="Ex: 4" data-i18n-placeholder="custos.inflation_ph">
+            </div>
+            <div class="button-group">
+              <button type="submit" class="main-button"><i class="fas fa-balance-scale"></i> <span data-i18n="custos.compare">Comparar</span></button>
+            </div>
+          </form>
+        </div>
+
+        <div id="historico-container" class="card">
+          <h2><i class="fas fa-history"></i> <span data-i18n="custos.history">Histórico de Comparações</span></h2>
+          <ul id="historico-list"></ul>
+          <button id="limpar-historico-btn" class="secondary-button" style="margin-top:0.75rem;"><i class="fas fa-trash-alt"></i> <span data-i18n="custos.clear_history">Limpar Histórico</span></button>
+        </div>
+      </section>
+
+      <section id="outputs-column">
+        <div id="resultado-container" class="card resultado-card hidden">
+          <h2><i class="fas fa-chart-bar"></i> <span data-i18n="custos.result">Resultado da Comparação</span></h2>
+          <div id="resultado"></div>
+          <canvas id="graficoCustos" width="380" height="220"></canvas>
+          <div id="tabelaCustos"></div>
+          <div class="button-group" style="margin-top:1rem;">
+            <button id="exportar-pdf" class="secondary-button"><i class="fas fa-file-pdf"></i> <span data-i18n="btn.export_pdf">Exportar PDF</span></button>
+            <button id="exportar-csv" class="secondary-button"><i class="fas fa-file-csv"></i> <span data-i18n="btn.export_csv">Exportar CSV</span></button>
+          </div>
+        </div>
+
+        <div id="simulacao-container" class="card hidden">
+          <h2><i class="fas fa-project-diagram"></i> <span data-i18n="custos.scenarios">Simulação de Cenários</span></h2>
+          <div id="simulacao-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="simulacao.js"></script>
+  <script src="historico.js"></script>
+  <script src="grafico.js"></script>
+  <script src="script.js"></script>
+  <script src="../shared/i18n.js"></script>
+</body>
+</html>

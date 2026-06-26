@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="soldagem.metais.title">Metais Dissimilares</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-link"></i> <span data-i18n="soldagem.metais.title">Metais Dissimilares</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="theme-toggle-checkbox"><span class="slider"></span></label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-project-diagram"></i> <span data-i18n="soldagem.metais.select_title">Selecionar Metais de Base</span></h2>
+                    <div class="input-group">
+                        <label for="metal1" data-i18n="soldagem.metais.metal1">Metal de Base 1</label>
+                        <select id="metal1" onchange="consultar()">
+                            <optgroup label="Aço Carbono">
+                                <option value="A36">ASTM A36 (Aço Carbono)</option>
+                                <option value="A572-50">ASTM A572 Gr.50</option>
+                                <option value="SA516-70">ASME SA516 Gr.70</option>
+                                <option value="1020">ABNT 1020</option>
+                            </optgroup>
+                            <optgroup label="Aço Inoxidável">
+                                <option value="304">AISI 304 (Inox)</option>
+                                <option value="304L">AISI 304L (Inox baixo C)</option>
+                                <option value="316">AISI 316 (Inox)</option>
+                                <option value="316L">AISI 316L (Inox baixo C)</option>
+                                <option value="410">AISI 410 (Martensítico)</option>
+                            </optgroup>
+                            <optgroup label="Aço Ligado">
+                                <option value="CrMo-1.25">1,25%Cr-0,5%Mo</option>
+                                <option value="CrMo-2.25">2,25%Cr-1%Mo</option>
+                                <option value="9Ni">9% Ni (ASTM A333)</option>
+                            </optgroup>
+                            <optgroup label="Outros">
+                                <option value="Cobre">Cobre (Cu)</option>
+                                <option value="Aluminio" selected>Alumínio (Al)</option>
+                                <option value="Inconel">Inconel 600</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="metal2" data-i18n="soldagem.metais.metal2">Metal de Base 2</label>
+                        <select id="metal2" onchange="consultar()">
+                            <optgroup label="Aço Carbono">
+                                <option value="A36" selected>ASTM A36 (Aço Carbono)</option>
+                                <option value="A572-50">ASTM A572 Gr.50</option>
+                                <option value="SA516-70">ASME SA516 Gr.70</option>
+                                <option value="1020">ABNT 1020</option>
+                            </optgroup>
+                            <optgroup label="Aço Inoxidável">
+                                <option value="304">AISI 304 (Inox)</option>
+                                <option value="304L">AISI 304L (Inox baixo C)</option>
+                                <option value="316">AISI 316 (Inox)</option>
+                                <option value="316L">AISI 316L (Inox baixo C)</option>
+                                <option value="410">AISI 410 (Martensítico)</option>
+                            </optgroup>
+                            <optgroup label="Aço Ligado">
+                                <option value="CrMo-1.25">1,25%Cr-0,5%Mo</option>
+                                <option value="CrMo-2.25">2,25%Cr-1%Mo</option>
+                                <option value="9Ni">9% Ni (ASTM A333)</option>
+                            </optgroup>
+                            <optgroup label="Outros">
+                                <option value="Cobre">Cobre (Cu)</option>
+                                <option value="Aluminio">Alumínio (Al)</option>
+                                <option value="Inconel">Inconel 600</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="consultar()"><i class="fa-solid fa-search"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                    </div>
+                </div>
+            </div>
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-flask"></i> <span data-i18n="soldagem.metais.result_title">Compatibilidade de Soldagem</span></h2>
+                    </div>
+                    <div id="result-container">
+                        <p class="placeholder-text" data-i18n="soldagem.metais.placeholder">Selecione dois metais para consultar a compatibilidade.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2><i class="fa-solid fa-info-circle"></i> <span data-i18n="soldagem.metais.tips_title">Dicas para Soldagem de Metais Dissimilares</span></h2>
+                    <div class="info-list">
+                        <div class="info-item"><i class="fa-solid fa-arrow-right"></i> <span data-i18n="soldagem.metais.tip1">Sempre utilizar metal de adição com teor de liga igual ou superior ao metal base de maior resistência.</span></div>
+                        <div class="info-item"><i class="fa-solid fa-arrow-right"></i> <span data-i18n="soldagem.metais.tip2">Para unir aço carbono ao inox, usar eletrodo E309L ou ER309L.</span></div>
+                        <div class="info-item"><i class="fa-solid fa-arrow-right"></i> <span data-i18n="soldagem.metais.tip3">Controlar a diluição para evitar trincas de solidificação.</span></div>
+                        <div class="info-item"><i class="fa-solid fa-arrow-right"></i> <span data-i18n="soldagem.metais.tip4">Em juntas dissimilares com Ni-base, usar ENiCrFe-3 ou ERNiCr-3.</span></div>
+                        <div class="info-item"><i class="fa-solid fa-arrow-right"></i> <span data-i18n="soldagem.metais.tip5">Pré-aquecimento deve considerar o metal de base com maior carbono equivalente.</span></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

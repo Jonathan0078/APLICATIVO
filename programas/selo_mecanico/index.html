@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<script>function start(){}function onHasParentDirectory(){}function addRow(){}</script>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="selo.title">Calculadora de Engenharia de Selo Mecânico</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-ring"></i> <span data-i18n="selo.title">Calculadora de Selo Mecânico</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-flask"></i> <span data-i18n="selo.app_data">Dados da Aplicação</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="fluido" data-i18n="selo.fluid">Fluido</label>
+                            <input type="text" id="fluido" placeholder="Ex: Água" data-i18n-placeholder="selo.fluid_ph">
+                        </div>
+                        <div class="input-group">
+                            <label for="temperatura" data-i18n="selo.temp">Temperatura (°C)</label>
+                            <input type="number" id="temperatura" placeholder="Ex: 80" data-i18n-placeholder="selo.temp_ph">
+                        </div>
+                        <div class="input-group">
+                            <label for="pressao" data-i18n="selo.pressure">Pressão (bar)</label>
+                            <input type="number" id="pressao" placeholder="Ex: 10" step="0.1" min="0" data-i18n-placeholder="selo.pressure_ph">
+                        </div>
+                        <div class="input-group">
+                            <label for="solidos" data-i18n="selo.abrasives">Sólidos Abrasivos</label>
+                            <select id="solidos" class="input-group">
+                                <option value="nao" data-i18n="selo.no">Não</option>
+                                <option value="sim" data-i18n="selo.yes">Sim</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-sliders"></i> <span data-i18n="selo.params">Parâmetros do Selo</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="rpm" data-i18n="selo.rotation">Rotação (RPM)</label>
+                            <input type="number" id="rpm" placeholder="Ex: 2900" min="0" data-i18n-placeholder="selo.rpm_ph">
+                        </div>
+                        <div class="input-group">
+                            <label for="de" data-i18n="selo.de">De (mm)</label>
+                            <input type="number" id="de" placeholder="Ex: 60" step="0.1" min="0" data-i18n-placeholder="selo.de_ph">
+                        </div>
+                        <div class="input-group">
+                            <label for="di" data-i18n="selo.di">Di (mm)</label>
+                            <input type="number" id="di" placeholder="Ex: 40" step="0.1" min="0" data-i18n-placeholder="selo.di_ph">
+                        </div>
+                        <div class="input-group">
+                            <label for="fmola" data-i18n="selo.spring_force">Força da Mola (N)</label>
+                            <input type="number" id="fmola" placeholder="Ex: 100" step="0.1" min="0" data-i18n-placeholder="selo.fmola_ph">
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button id="calculateBtn" class="main-button"><i class="fa-solid fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                            <button id="clearBtn" class="secondary-button" onclick="limparDados()"><i class="fa-solid fa-eraser"></i> <span data-i18n="selo.clear">Limpar</span></button>
+                    </div>
+                    
+                    <div id="error-container" class="resultado-container error hidden"></div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-clipboard-check"></i> <span data-i18n="selo.results_title">Análises Técnicas</span></h2>
+                    </div>
+                    
+                    <div id="results-content">
+                        <div class="info-box" style="text-align: center; padding: 3rem 1rem;">
+                            <i class="fa-solid fa-clipboard-list" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 1rem;"></i>
+                            <p data-i18n="selo.results_placeholder" style="color: var(--text-secondary); font-weight: 600;">Os resultados da sua análise aparecerão aqui.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="../../shared/i18n.js"></script>
+</body>
+</html>

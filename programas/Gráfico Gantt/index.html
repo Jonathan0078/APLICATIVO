@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="gantt.title">Dashboard de Projetos - Gestor de Tarefas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-tasks"></i> <span data-i18n="gantt.header">Gestor de Tarefas</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="card">
+                <h2><i class="fa-solid fa-plus-circle"></i> <span data-i18n="gantt.add_task">Adicionar Nova Tarefa</span></h2>
+                <form id="task-form">
+                    <div class="input-group">
+                        <label for="task-name" data-i18n="gantt.task_name">Nome da Tarefa</label>
+                        <input type="text" id="task-name" placeholder="Ex: Pesquisa de mercado" required data-i18n-placeholder="gantt.task_name_ph">
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="start-date" data-i18n="gantt.start">Início</label>
+                            <input type="date" id="start-date" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="end-date" data-i18n="gantt.end">Término</label>
+                            <input type="date" id="end-date" required>
+                        </div>
+                    </div>
+                    <div class="input-group" style="display: flex; align-items: center; margin-top: 1rem;">
+                        <input type="checkbox" id="is-milestone" style="height: 16px; width: 16px; margin-right: 8px;">
+                        <label for="is-milestone" style="margin-bottom: 0;" data-i18n="gantt.milestone">Marcar como Marco</label>
+                    </div>
+                    <div id="form-error" style="color: var(--cor-erro); margin-top: 0.5rem; height: 1rem;"></div>
+                    <div class="button-group">
+                        <button type="submit" class="main-button"><i class="fa-solid fa-plus"></i> <span data-i18n="gantt.add_task_btn">Adicionar Tarefa</span></button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="gantt.metrics">Métricas do Projeto</span></h2>
+                <div id="dashboard"></div>
+            </div>
+
+            <div class="card" style="flex-grow: 1;">
+                <div class="gantt-controls">
+                    <div class="input-group" style="margin: 0; flex-grow: 1; min-width: 200px;">
+                        <input type="text" id="filter-tasks" data-i18n-placeholder="gantt.filter_ph" placeholder="Filtrar tarefas...">
+                    </div>
+                    <div class="button-group">
+                        <button id="export-pdf-button" class="secondary-button"><i class="fa-solid fa-file-pdf"></i> <span data-i18n="btn.export_pdf">PDF</span></button>
+                        <button id="export-xlsx-button" class="secondary-button"><i class="fa-solid fa-file-excel"></i> <span data-i18n="gantt.export_xlsx">XLSX</span></button>
+                        <button id="clear-button" class="secondary-button" style="color: var(--cor-erro);"><i class="fa-solid fa-trash-alt"></i> <span data-i18n="gantt.clear">Limpar</span></button>
+                    </div>
+                </div>
+                <div id="gantt-chart-container">
+                    <div id="gantt-chart"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

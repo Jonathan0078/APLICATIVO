@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="grease.horas">Conversor de Temp, Pressão e Umidade - GreasePRO</title>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+
+    <!-- Scripts -->
+    <script src="js/HCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-cloud-sun-rain"></i> <span data-i18n="grease.h.title">Conversor de Temp, Pressão e Umidade</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> <span data-i18n="grease.instructions">Instruções</span></h2>
+                    <p data-i18n="grease.h.instr">Forneça os dados para os cálculos de temperatura, pressão e umidade:</p>
+                    <ul>
+                        <li data-i18n="grease.h.li1">Digite o percentual de umidade relativa (%).</li>
+                        <li data-i18n="grease.h.li2">Digite a temperatura (em Celsius ou Fahrenheit).</li>
+                        <li data-i18n="grease.h.li3">Digite a altitude (em Metros ou Pés).</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> <span data-i18n="grease.h.input_data">Dados de Entrada</span></h2>
+                    <div class="input-group">
+                        <label for="humedad" data-i18n="grease.h.humidity">Umidade Relativa (%)</label>
+                        <input id="humedad" type="number" placeholder="Ex: 50">
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="temC" data-i18n="grease.h.temp_c">Temperatura (°C)</label>
+                            <input id="temC" type="number" placeholder="Ex: 25" oninput="celsiusFarenheit(this.value)" onchange="celsiusFarenheit(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="temF" data-i18n="grease.h.temp_f">Temperatura (°F)</label>
+                            <input id="temF" type="number" placeholder="Ex: 77" oninput="farenheitCelsius(this.value)" onchange="farenheitCelsius(this.value)">
+                        </div>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="metro" data-i18n="grease.h.alt_m">Altitude (m)</label>
+                            <input id="metro" type="number" placeholder="Ex: 100" oninput="metroFt(this.value)" onchange="metroFt(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="pies" data-i18n="grease.h.alt_ft">Altitude (ft)</label>
+                            <input id="pies" type="number" placeholder="Ex: 328" oninput="ftMetro(this.value)" onchange="ftMetro(this.value)">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validarC()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> <span data-i18n="result.title">Resultados</span></h2>
+                    </div>
+                    
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p data-i18n="grease.results_placeholder">Os resultados aparecerão aqui.</p>
+                    </div>
+
+                    <div class="result-content results-grid" id="result-content" style="display: none;">
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.dew_c">Ponto de Orvalho (°C)</span>
+                            <span id="res1" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.dew_f">Ponto de Orvalho (°F)</span>
+                            <span id="res2" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.sat_vap_mb">Pressão Vapor Saturação (mb)</span>
+                            <span id="res3" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.sat_vap_psi">Pressão Vapor Saturação (psi)</span>
+                            <span id="res4" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.curr_vap_mb">Pressão Vapor Atual (mb)</span>
+                            <span id="res5" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.curr_vap_psi">Pressão Vapor Atual (psi)</span>
+                            <span id="res6" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.alt_press_mb">Pressão na Altitude (mb)</span>
+                            <span id="res7" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.alt_press_psi">Pressão na Altitude (psi)</span>
+                            <span id="res8" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.press_coeff">Coeficiente de Pressão</span>
+                            <span id="res9" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.real_vap_mb">Pressão Vapor Real (mb)</span>
+                            <span id="res11" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.real_vap_psi">Pressão Vapor Real (psi)</span>
+                            <span id="res12" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.abs_hum_kg">Umidade Absoluta (kg/m³)</span>
+                            <span id="res13" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.h.abs_hum_lb">Umidade Absoluta (lb/ft³)</span>
+                            <span id="res14" class="value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<script>function start(){}function onHasParentDirectory(){}function addRow(){}</script>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="retentor.title">Calculadora de Retentores</title>
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-cog"></i> <span data-i18n="retentor.title">Calculadora de Retentores</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="tab-params" data-i18n="retentor.params_tab">Parâmetros</button>
+                <button class="tab-btn" data-tab="tab-results" id="btn-tab-results" data-i18n="retentor.results_tab">Resultados</button>
+            </div>
+
+            <div id="tab-params" class="tab-content active">
+                <div class="calculator-container">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="standard" data-i18n="retentor.standard">Norma de Referência</label>
+                            <select id="standard">
+                                <option value="iso">ISO 6194</option>
+                                <option value="din">DIN 3760</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="medium" data-i18n="retentor.fluid">Fluido (Médio)</label>
+                            <select id="medium">
+                                <option value="mineral" data-i18n="retentor.mineral_oil">Óleo mineral</option>
+                                <option value="sintetico" data-i18n="retentor.synthetic_oil">Óleo sintético</option>
+                                <option value="graxa" data-i18n="retentor.grease">Graxa</option>
+                                <option value="agua" data-i18n="retentor.water">Água / Arrefecimento</option>
+                                <option value="quimicos" data-i18n="retentor.chemicals">Produtos químicos</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="diameter" data-i18n="retentor.shaft_dia">Diâmetro do Eixo (mm)</label>
+                            <input type="number" id="diameter" value="40" min="5" max="500" step="1">
+                        </div>
+                        <div class="input-group" id="variant-group" style="display:none">
+                            <label for="variant" data-i18n="retentor.variant">Variação (D × b)</label>
+                            <select id="variant"></select>
+                        </div>
+                        <div class="input-group">
+                            <label for="seal-type" data-i18n="retentor.seal_type">Tipo de Retentor</label>
+                            <select id="seal-type">
+                                <option value="standard" data-i18n="retentor.opt_standard">Padrão com mola</option>
+                                <option value="dust_lip" data-i18n="retentor.opt_dust_lip">Com lábio de poeira</option>
+                                <option value="springless" data-i18n="retentor.opt_springless">Sem mola</option>
+                                <option value="rubber_covered" data-i18n="retentor.opt_rubber_covered">Revestido em borracha</option>
+                                <option value="high_pressure" data-i18n="retentor.opt_high_pressure">Alta pressão (reforçado)</option>
+                                <option value="ptfe" data-i18n="retentor.opt_ptfe">PTFE (alta temp./químico)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="speed" data-i18n="retentor.speed">Velocidade (RPM)</label>
+                            <input type="number" id="speed" value="1500" min="0" step="10">
+                        </div>
+                        <div class="input-group">
+                            <label for="temp" data-i18n="retentor.temp">Temperatura (°C)</label>
+                            <input type="number" id="temp" value="80" step="5">
+                        </div>
+                        <div class="input-group">
+                            <label for="pressure" class="tooltip-container">
+                                <span data-i18n="retentor.pressure">Pressão (bar)</span>
+                                <span class="info-icon">?</span>
+                                <span class="tooltip-text">
+                                    <b data-i18n="retentor.tooltip_ref_values">Valores de referência:</b><br>
+                                    <b data-i18n="retentor.tooltip_standard">&le; 0.5: Retentor padrão (maioria dos casos).</b><br>
+                                    <b data-i18n="retentor.tooltip_special">> 0.5: Exige retentor com perfil especial (ex: lábio reforçado).</b>
+                                </span>
+                            </label>
+                            <input type="number" id="pressure" value="0.0" min="0" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="eccentricity" class="tooltip-container">
+                                <span data-i18n="retentor.eccentricity">Excentricidade (mm)</span>
+                                <span class="info-icon">?</span>
+                                <span class="tooltip-text">
+                                    <b data-i18n="retentor.ecc_tooltip_title">Valores típicos:</b><br>
+                                    <span data-i18n="retentor.ecc_tooltip_0">&le; 0.1: Alinhamento bom</span><br>
+                                    <span data-i18n="retentor.ecc_tooltip_1">0.1 - 0.3: Aceitável</span><br>
+                                    <span data-i18n="retentor.ecc_tooltip_2">&gt; 0.3: Pode exigir lábio especial</span>
+                                </span>
+                            </label>
+                            <input type="number" id="eccentricity" value="0.10" min="0" max="2" step="0.01">
+                        </div>
+                    </div>
+                    <button id="calcular-btn" class="main-button"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                </div>
+                <div id="error-message" class="erro-container hidden"></div>
+            </div>
+
+            <div id="tab-results" class="tab-content">
+                <div class="resultado-container">
+                    <div id="dims-card" class="resultado-card resultado-card-destaque"></div>
+                    <div id="seal-type-result-card" class="resultado-card"></div>
+                    <div class="resultado-card">
+                        <h3 data-i18n="retentor.housing_viz">Visualização do Alojamento</h3>
+                        <svg id="appSvg" viewBox="0 0 600 260" style="width:100%;height:auto;display:block;border-radius:8px;background:#eff6ff;margin-top:1rem;">
+                            <title data-i18n="retentor.svg_title">Ilustração do Eixo e Retentor</title>
+                            <defs>
+                                <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="var(--text-color)"/></marker>
+                            </defs>
+                            <rect x="80" y="85" width="440" height="80" fill="var(--text-color)" opacity="0.08" rx="2"/>
+                            <rect x="220" y="35" width="160" height="55" rx="3" fill="var(--border-color)"/>
+                            <rect x="245" y="35" width="110" height="55" fill="var(--secondary-color)" opacity="0.4"/>
+                            <rect x="220" y="170" width="160" height="55" rx="3" fill="var(--border-color)"/>
+                            <rect x="245" y="170" width="110" height="55" fill="var(--secondary-color)" opacity="0.4"/>
+                            <rect x="265" y="75" width="70" height="110" rx="2" fill="var(--text-color)" opacity="0.4"/>
+                            <path d="M265,75 Q265,65 275,65 L325,65 Q335,65 335,75 L335,185 Q335,195 325,195 L275,195 Q265,195 265,185 Z" fill="var(--secondary-color)" opacity="0.3" stroke="var(--secondary-color)" stroke-width="1.5" stroke-dasharray="4,2"/>
+                            <path d="M275,65 L275,75" stroke="var(--text-color)" stroke-width="1.5" opacity="0.4"/>
+                            <path d="M325,65 L325,75" stroke="var(--text-color)" stroke-width="1.5" opacity="0.4"/>
+                            <path d="M275,185 L275,195" stroke="var(--text-color)" stroke-width="1.5" opacity="0.4"/>
+                            <path d="M325,185 L325,195" stroke="var(--text-color)" stroke-width="1.5" opacity="0.4"/>
+                            <g stroke="var(--text-color)" stroke-width="1.2" opacity="0.6" marker-end="url(#arrow)">
+                                <line x1="180" y1="35" x2="180" y2="225"/>
+                                <line x1="380" y1="35" x2="380" y2="225"/>
+                            </g>
+                            <g stroke="var(--text-color)" stroke-width="1" opacity="0.45">
+                                <line x1="175" y1="35" x2="185" y2="35"/>
+                                <line x1="175" y1="225" x2="185" y2="225"/>
+                                <line x1="375" y1="35" x2="385" y2="35"/>
+                                <line x1="375" y1="225" x2="385" y2="225"/>
+                            </g>
+                            <text x="280" y="252" text-anchor="middle" id="svg-D" style="font-family:'Inter',sans-serif;font-size:15px;font-weight:700;fill:var(--text-color);">D = --</text>
+                            <g stroke="var(--primary-color)" stroke-width="1.2" opacity="0.7" marker-end="url(#arrow)">
+                                <line x1="240" y1="17" x2="240" y2="243"/>
+                                <line x1="360" y1="17" x2="360" y2="243"/>
+                            </g>
+                            <g stroke="var(--primary-color)" stroke-width="1" opacity="0.45">
+                                <line x1="235" y1="17" x2="245" y2="17"/>
+                                <line x1="235" y1="243" x2="245" y2="243"/>
+                                <line x1="355" y1="17" x2="365" y2="17"/>
+                                <line x1="355" y1="243" x2="365" y2="243"/>
+                            </g>
+                            <text x="300" y="12" text-anchor="middle" id="svg-b" style="font-family:'Inter',sans-serif;font-size:15px;font-weight:700;fill:var(--primary-color);">b = --</text>
+                            <text x="286" y="133" text-anchor="middle" id="svg-d" style="font-family:'Inter',monospace;font-size:16px;font-weight:700;fill:var(--text-color);">d = --</text>
+                            <text x="540" y="133" text-anchor="end" id="svg-series" style="font-family:'Inter',sans-serif;font-size:11px;fill:var(--text-light);"></text>
+                        </svg>
+                    </div>
+                    <div id="material-card" class="resultado-card"></div>
+                    <div id="hardness-card" class="resultado-card"></div>
+                    <div id="velocity-card" class="resultado-card"></div>
+                    <div id="eccentricity-card" class="resultado-card"></div>
+                    <div id="pressure-card" class="resultado-card"></div>
+                    <div id="finish-card" class="resultado-card"></div>
+                    <div id="tolerances-card" class="resultado-card"></div>
+                    <button id="accordion-btn" class="accordion-btn" data-i18n="retentor.theory">Ver Análise Teórica ▼</button>
+                    <div id="accordion-content" class="accordion-content">
+                        <div id="theory-card" class="resultado-card"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="../../shared/i18n.js"></script>
+</body>
+</html>

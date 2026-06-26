@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="casillas.title">Cálculo de Furação Casillas PRO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-gear"></i> <span data-i18n="casillas.header">Furação de Flanges AlCasillas PRO</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><div><i class="fa-solid fa-compass"></i> <span data-i18n="casillas.base_data">Dados Base</span></div></h2>
+                    
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label data-i18n="casillas.holes">Furos (N)</label>
+                            <input type="number" id="input-furos" class="calc-input" min="2" placeholder="Ex: 6" data-i18n-placeholder="casillas.holes_placeholder">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="casillas.pitch_dia">Ø Primitivo (mm)</label>
+                            <input type="number" id="input-diametro" class="calc-input" min="1" step="0.01" placeholder="Ex: 150" data-i18n-placeholder="casillas.pitch_dia_placeholder">
+                        </div>
+                    </div>
+
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label data-i18n="casillas.start_angle">Ângulo Inicial (°)</label>
+                            <input type="number" id="input-angulo-inicial" class="calc-input" value="0" step="1" placeholder="Ex: 0" data-i18n-placeholder="casillas.start_angle_placeholder">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="casillas.total_angle">Ângulo Total (°)</label>
+                            <input type="number" id="input-angulo-total" class="calc-input" value="360" min="1" max="360" placeholder="Ex: 360" data-i18n-placeholder="casillas.total_angle_placeholder">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><div><i class="fa-solid fa-ruler"></i> <span data-i18n="casillas.geometry">Geometria e Ferramenta</span></div></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label data-i18n="casillas.drill_dia">Ø da Broca (mm)</label>
+                            <input type="number" id="input-dfuro" class="calc-input" min="0.1" step="0.1" placeholder="Ex: 10" data-i18n-placeholder="casillas.drill_dia_placeholder">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="casillas.center_bore">Ø Furo Central (mm)</label>
+                            <input type="number" id="input-furo-central" class="calc-input" min="0" step="0.1" placeholder="Opcional" data-i18n-placeholder="casillas.optional_placeholder">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="casillas.outer_dia">Ø Externo da Peça (mm)</label>
+                        <input type="number" id="input-ext" class="calc-input" min="1" step="0.1" placeholder="Opcional" data-i18n-placeholder="casillas.optional_placeholder">
+                    </div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                
+                <div id="outputs-grid">
+                    <div class="card">
+                        <h2><div><i class="fa-solid fa-ruler-combined"></i> <span data-i18n="casillas.pitch_chord">Passo (Corda)</span></div></h2>
+                        <div class="resultado-container success">
+                            <div class="resultado-display">
+                                <span class="result-sub-text" data-i18n="casillas.chord_dist">Distância reta entre centros de furos:</span>
+                                <span class="result-main-text" id="res-corda">0,000 <span style="font-size: 1rem; font-weight: 500; color: var(--text-secondary);">mm</span></span>
+                                <div style="margin-top: 0.5rem;">
+                                    <span class="result-sub-text"><span data-i18n="casillas.angular_pitch">Passo Angular:</span> <span id="res-angulo" style="font-weight: 700; color: var(--text);">0,00°</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="alertas-container">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2><div><i class="fa-solid fa-crosshairs"></i> <span data-i18n="casillas.cad_graph">Gráfico CAD</span></div></h2>
+                        <div class="canvas-container">
+                            <canvas id="flange-canvas" width="600" height="600"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <h2>
+                        <div><i class="fa-solid fa-table-cells"></i> <span data-i18n="casillas.coordinates">Coordenadas X / Y</span></div>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline" onclick="copiarTabela()" title="Copiar Tabela" data-i18n-title="casillas.copy_table_title">
+                                <i class="fa-solid fa-copy"></i> <span data-i18n="casillas.copy">Copiar</span>
+                            </button>
+                            <button class="btn btn-primary" onclick="window.print()" title="Imprimir Ficha" data-i18n-title="casillas.print_sheet_title">
+                                <i class="fa-solid fa-print"></i> <span data-i18n="casillas.print">Imprimir</span>
+                            </button>
+                        </div>
+                    </h2>
+                    <div class="table-container">
+                        <table class="comparison-table" id="tabela-coord">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="casillas.th_do">Fazer</th>
+                                    <th data-i18n="casillas.th_num">Nº</th>
+                                    <th data-i18n="casillas.th_angle">Ângulo</th>
+                                    <th data-i18n="casillas.th_x">Eixo X (mm)</th>
+                                    <th data-i18n="casillas.th_y">Eixo Y (mm)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-coordenadas-body">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 2rem;" data-i18n="casillas.empty_table">
+                                        Insira a quantidade de furos e o diâmetro primitivo para gerar a tabela.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

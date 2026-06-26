@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="calderaria.dobra.title">Dobra e Fator K</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --surface: #fff;
+            --text: #212529;
+            --text-secondary: #6c757d;
+            --border: #dee2e6;
+            --shadow: 0 2px 8px rgba(0,0,0,0.07);
+            --primary: #2563eb;
+            --secondary: #003366;
+            --cor-destaque: #f59e0b;
+            --cor-sucesso: #28a745;
+            --cor-erro: #dc3545;
+            --accent-light: #fff3cd;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --transition: 0.3s ease;
+        }
+        body.dark-theme {
+            --bg: #0a1929;
+            --surface: #112233;
+            --text: #e9ecef;
+            --text-secondary: #8696a7;
+            --border: #334b61;
+            --shadow: 0 1px 3px rgba(0,0,0,0.4);
+            --primary: #3b82f6;
+            --accent-light: #1e3a5f;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background-color var(--transition), color var(--transition);
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+        .app-container { display: flex; flex-direction: column; min-height: 100vh; width: 100%; }
+        .app-header {
+            background: linear-gradient(145deg, #0f172a 0%, #1e3a5f 50%, #1a365d 100%);
+            color: #fff;
+            padding: 0.9rem 1rem;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            position: sticky;
+            top: 0;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .header-content h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+        }
+        .theme-switcher { display: flex; align-items: center; gap: 0.5rem; }
+        .theme-switcher i { color: rgba(255,255,255,0.8); font-size: 0.9rem; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255,255,255,0.25); transition: 0.4s; border-radius: 26px;
+        }
+        .slider::before {
+            position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
+            background-color: #fff; transition: 0.4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--cor-destaque); }
+        input:checked + .slider::before { transform: translateX(24px); }
+        .app-main {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            width: 100%;
+        }
+        .app-main > * { min-width: 0; }
+        .card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+        .card h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0 0 1.5rem 0;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        body.dark-theme .card h2 { color: var(--text); }
+        .svg-container {
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto 1.25rem;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem;
+        }
+        .svg-container svg { display: block; width: 100%; height: auto; }
+        .unit-toggle {
+            display: flex;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 3px;
+            margin-bottom: 1.25rem;
+            gap: 3px;
+            border: 1px solid var(--border);
+        }
+        .unit-toggle button {
+            flex: 1;
+            padding: 0.55rem 0.75rem;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all 0.2s;
+        }
+        .unit-toggle button.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+        .input-group { margin-bottom: 1rem; }
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+        .input-group select,
+        .input-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: var(--font);
+        }
+        .input-group select:focus,
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--cor-destaque);
+            box-shadow: 0 0 0 3px rgba(255,193,7,0.15);
+        }
+        .input-group .unit-suffix {
+            position: relative;
+        }
+        .input-group .unit-suffix input { padding-right: 3rem; }
+        .input-group .unit-suffix .suffix {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+            gap: 1rem;
+        }
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .main-button, .secondary-button {
+            padding: 0.9rem 1rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex: 1;
+            font-family: var(--font);
+        }
+        .main-button { background: var(--primary); color: #fff; }
+        .main-button:hover { opacity: 0.9; filter: brightness(1.1); }
+        .secondary-button { background: transparent; color: var(--primary); border: 2px solid var(--border); }
+        .secondary-button:hover { background: var(--bg); }
+        .reset-button { background: transparent; color: var(--cor-erro); border: 2px solid var(--border); }
+        .reset-button:hover { background: rgba(220,53,69,0.08); border-color: var(--cor-erro); }
+        .dxf-button { background: #0f172a; color: #fff; }
+        body.dark-theme .dxf-button { background: var(--accent-light); color: var(--text); }
+        .dxf-button:hover { filter: brightness(1.2); }
+        #results-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            margin: 0 0 1rem 0;
+            padding-bottom: 0.75rem;
+        }
+        #results-card .card-header h2 { border: none; margin: 0; padding: 0; }
+        .placeholder-text {
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 2.5rem 0;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+        .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .result-item {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+        .result-item .value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-top: 0.25rem;
+            word-break: break-all;
+        }
+        .result-item .unit {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        body.dark-theme .result-item .value { color: var(--cor-destaque); }
+        .result-item .label {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        .result-item.full { grid-column: 1 / -1; }
+        .result-item.highlight {
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: #fff;
+        }
+        body.dark-theme .result-item.highlight {
+            background: linear-gradient(135deg, #1e3a5f, #2563eb);
+        }
+        .result-item.highlight .value { color: #fff; }
+        .result-item.highlight .label { color: rgba(255,255,255,0.8); }
+        .result-item.highlight .unit { color: rgba(255,255,255,0.7); }
+        .k-factor-badge {
+            display: inline-block;
+            background: var(--cor-destaque);
+            color: #000;
+            padding: 0.15rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .hidden { display: none !important; }
+        .status-msg {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            margin-top: 0.75rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .status-msg.show { display: block; }
+        .status-msg.success { background: rgba(40,167,69,0.12); border-left: 4px solid var(--cor-sucesso); color: var(--cor-sucesso); }
+        .status-msg.error { background: rgba(220,53,69,0.1); border-left: 4px solid var(--cor-erro); color: var(--cor-erro); }
+
+        @media (min-width: 1024px) {
+            .app-main {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+                max-width: 1600px;
+                margin: 0 auto;
+            }
+            #inputs-column { display: flex; flex-direction: column; gap: 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .app-header { padding: 0.7rem 0.85rem; }
+            .header-content h1 { font-size: 0.9rem; }
+            .card { padding: 1rem; }
+            .card h2 { font-size: 1rem; margin-bottom: 1rem; }
+            .result-grid { grid-template-columns: 1fr; }
+            .input-grid { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column; }
+        }
+        /* Sidebar must appear above sticky header (z-index: 1000) */
+        .app-sidebar { z-index: 1100 !important; }
+        .app-sidebar-overlay { z-index: 1050 !important; }
+    </style>
+</head>
+<body>
+<div class="app-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
+<aside class="app-sidebar" id="appSidebar">
+    <div class="app-sidebar-header">
+        <span data-i18n="calderaria.dobra.title">Dobra e Fator K</span>
+        <button class="app-sidebar-close" onclick="toggleSidebar(false)"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="app-sidebar-nav">
+        <div class="app-sidebar-item active" data-section="card-linha-neutra" onclick="scrollToSection('card-linha-neutra')">
+            <i class="fa-solid fa-circle-nodes"></i> <span data-i18n="calderaria.dobra.neutral_line">Linha Neutra</span>
+        </div>
+        <div class="app-sidebar-item" data-section="card-fator-k" onclick="scrollToSection('card-fator-k')">
+            <i class="fa-solid fa-percent"></i> <span data-i18n="calderaria.dobra.kfactor_title">Calculadora de Fator K</span>
+        </div>
+        <div class="app-sidebar-item" data-section="results-card" onclick="scrollToSection('results-card')">
+            <i class="fa-solid fa-chart-simple"></i> <span data-i18n="result.title">Resultados</span>
+        </div>
+    </div>
+</aside>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                    <button class="hamburger-toggle" onclick="toggleSidebar(true)" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+                    <h1><i class="fa-solid fa-ruler"></i> <span data-i18n="calderaria.dobra.title">Dobra e Fator K</span></h1>
+                </div>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card" id="card-linha-neutra">
+                    <h2><i class="fa-solid fa-circle-nodes"></i> <span data-i18n="calderaria.dobra.neutral_line">Linha Neutra</span></h2>
+                    <div class="svg-container">
+                        <svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <marker id="arrow-end" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                                    <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+                                </marker>
+                                <marker id="arrow-start" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto-start-reverse">
+                                    <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+                                </marker>
+                            </defs>
+                            <path d="M 50,20 L 50,105 A 65,65 0 0,0 180,190 L 270,190"
+                                  fill="none" stroke="var(--text)" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M 90,20 L 90,125 A 25,25 0 0,0 150,190 L 270,190"
+                                  fill="none" stroke="var(--text)" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M 70,20 L 70,115 A 45,45 0 0,0 165,190 L 270,190"
+                                  fill="none" stroke="var(--cor-destaque)" stroke-width="2" stroke-dasharray="6,4" stroke-linecap="round"/>
+                            <line x1="50" y1="35" x2="90" y2="35" stroke="#64748b" stroke-width="1.5" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+                            <text x="70" y="30" text-anchor="middle" fill="#64748b" font-size="11" font-weight="700">T</text>
+                            <line x1="115" y1="105" x2="115" y2="140" stroke="#64748b" stroke-width="1.5" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+                            <text x="118" y="127" text-anchor="start" fill="#64748b" font-size="11" font-weight="700">R</text>
+                            <path d="M 142,88 A 50,50 0 0,0 160,108" fill="none" stroke="#64748b" stroke-width="1.5"/>
+                            <text x="148" y="90" text-anchor="middle" fill="#64748b" font-size="11" font-weight="700">A</text>
+                            <line x1="70" y1="198" x2="270" y2="198" stroke="#64748b" stroke-width="1.5" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+                            <text x="170" y="194" text-anchor="middle" fill="#64748b" font-size="11" font-weight="700">L (desenv.)</text>
+                            <circle cx="115" cy="150" r="2" fill="var(--cor-erro)"/>
+                            <text x="230" y="108" text-anchor="start" fill="var(--cor-destaque)" font-size="9" font-weight="600">linha neutra</text>
+                        </svg>
+                    </div>
+
+                    <div class="unit-toggle" id="unit-toggle">
+                        <button class="active" data-unit="mm" onclick="if(window.setUnit)window.setUnit('mm')">mm</button>
+                        <button data-unit="in" onclick="if(window.setUnit)window.setUnit('in')">in (polegadas)</button>
+                    </div>
+
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="espessura" data-i18n="calderaria.dobra.label_espessura">Espessura (T)</label>
+                            <div class="unit-suffix">
+                                <input type="number" id="espessura" placeholder="Ex: 3,0" step="0.1" min="0.1" value="3">
+                                <span class="suffix" id="unit-espessura">mm</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="raio-interno" data-i18n="calderaria.dobra.label_raio_interno">Raio Interno (R)</label>
+                            <div class="unit-suffix">
+                                <input type="number" id="raio-interno" placeholder="Ex: 5,0" step="0.1" min="0" value="5">
+                                <span class="suffix" id="unit-raio">mm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="angulo" data-i18n="calderaria.dobra.label_angulo">Ângulo de Dobra (A)</label>
+                            <div class="unit-suffix">
+                                <input type="number" id="angulo" placeholder="Ex: 90" step="1" min="1" max="180" value="90">
+                                <span class="suffix">°</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="k-fator-input">
+                                <span data-i18n="calderaria.dobra.label_fator_k">Fator K</span>
+                                <span class="k-factor-badge" id="k-badge-link" data-i18n="calderaria.dobra.badge_calculado">calculado</span>
+                            </label>
+                            <input type="number" id="k-fator-input" placeholder="Ex: 0,33" step="0.01" min="0" max="1" value="0.33">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="calculate()">
+                            <i class="fa-solid fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span>
+                        </button>
+                        <button class="secondary-button reset-button" onclick="resetForm()">
+                            <i class="fa-solid fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card" id="card-fator-k">
+                    <h2><i class="fa-solid fa-percent"></i> <span data-i18n="calderaria.dobra.kfactor_title">Calculadora de Fator K</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="k-espessura" data-i18n="calderaria.dobra.k_label_espessura">Espessura (T)</label>
+                            <div class="unit-suffix">
+                                <input type="number" id="k-espessura" placeholder="Ex: 3,0" step="0.1" min="0.1" value="3">
+                                <span class="suffix" id="unit-k-espessura">mm</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="k-raio" data-i18n="calderaria.dobra.k_label_raio">Raio de Dobra (R)</label>
+                            <div class="unit-suffix">
+                                <input type="number" id="k-raio" placeholder="Ex: 5,0" step="0.1" min="0.1" value="5">
+                                <span class="suffix" id="unit-k-raio">mm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="k-material" data-i18n="calderaria.dobra.label_material">Material</label>
+                        <select id="k-material">
+                            <option value="acocarbon" data-i18n="calderaria.dobra.material.carbon">Aço Carbono</option>
+                            <option value="inox" data-i18n="calderaria.dobra.material.inox">Inoxidável</option>
+                            <option value="aluminio" data-i18n="calderaria.dobra.material.aluminium">Alumínio</option>
+                            <option value="cobre" data-i18n="calderaria.dobra.material.copper">Cobre</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="calcKFactor()">
+                            <i class="fa-solid fa-percent"></i> <span data-i18n="calderaria.dobra.btn_calc_k">Calcular Fator K</span>
+                        </button>
+                    </div>
+                    <div class="status-msg" id="k-status-msg"></div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="result.title">Resultados</span></h2>
+                    </div>
+                    <div id="result-container">
+                        <p class="placeholder-text" data-i18n="result.placeholder">
+                            Preencha os dados e clique em Calcular para ver os resultados.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 data-i18n="calderaria.dobra.export_title"><i class="fa-solid fa-download"></i> Exportar</h2>
+                    <div class="button-group">
+                        <button class="main-button dxf-button" onclick="exportarDXF()">
+                            <i class="fa-solid fa-file-export"></i> <span data-i18n="calderaria.dobra.btn_export_dxf">Exportar DXF</span>
+                        </button>
+                        <button class="secondary-button" onclick="copyResults()">
+                            <i class="fa-solid fa-copy"></i> <span data-i18n="calderaria.dobra.btn_copy">Copiar</span>
+                        </button>
+                    </div>
+                    <div class="status-msg" id="export-status-msg"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script src="shared.js"></script>
+
+    <!-- Global sidebar/navigation functions defined BEFORE the IIFE so they
+         are always available to inline onclick handlers regardless of IIFE state -->
+    <script>
+        function toggleSidebar(force) {
+            var sidebar = document.getElementById('appSidebar');
+            var overlay = document.getElementById('sidebarOverlay');
+            if (!sidebar || !overlay) return;
+            var state = typeof force === 'boolean' ? force : !sidebar.classList.contains('active');
+            sidebar.classList.toggle('active', state);
+            overlay.classList.toggle('active', state);
+        }
+        function scrollToSection(id) {
+            var el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.querySelectorAll('.app-sidebar-item').forEach(function(item) {
+                item.classList.toggle('active', item.getAttribute('data-section') === id);
+            });
+            toggleSidebar(false);
+        }
+    </script>
+
+    <script>
+        (function () {
+            'use strict';
+
+            // --- State ---
+            let currentUnit = 'mm';
+            const CONV = 25.4;
+
+            // --- DOM refs ---
+            const $ = id => document.getElementById(id);
+            const themeCheck = $('theme-toggle-checkbox');
+            const espessura = $('espessura');
+            const raioInterno = $('raio-interno');
+            const angulo = $('angulo');
+            const kFatorInput = $('k-fator-input');
+            const unitEsp = $('unit-espessura');
+            const unitRaio = $('unit-raio');
+            const kEsp = $('k-espessura');
+            const kRaio = $('k-raio');
+            const kMaterial = $('k-material');
+            const unitKEsp = $('unit-k-espessura');
+            const unitKRai = $('unit-k-raio');
+            const resultContainer = $('result-container');
+            const kStatusMsg = $('k-status-msg');
+
+            // --- Theme ---
+            function initTheme() {
+                const saved = localStorage.getItem('theme');
+                if (saved === 'dark') {
+                    document.body.classList.add('dark-theme');
+                    if (themeCheck) themeCheck.checked = true;
+                }
+            }
+
+            function toggleTheme(e) {
+                if (e.target.checked) {
+                    document.body.classList.add('dark-theme');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-theme');
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            // --- Unit toggle ---
+            function setUnit(unit) {
+                if (unit === currentUnit) return;
+                const prev = currentUnit;
+                currentUnit = unit;
+                localStorage.setItem('calderariaUnit', unit);
+                localStorage.setItem('trig-unit', unit);
+
+                const btns = document.querySelectorAll('#unit-toggle button');
+                btns.forEach(b => b.classList.toggle('active', b.dataset.unit === unit));
+
+                const suffix = unit === 'mm' ? 'mm' : 'in';
+
+                const convertVal = (v, from, to) => {
+                    const n = parseFloat(v);
+                    if (isNaN(n) || n === 0) return v;
+                    if (from === to) return v;
+                    return from === 'mm' ? (n / CONV) : (n * CONV);
+                };
+
+                const mapIn = [espessura, raioInterno];
+                const mapOut = [unitEsp, unitRaio];
+                const mapKIn = [kEsp, kRaio];
+                const mapKOut = [unitKEsp, unitKRai];
+
+                for (let i = 0; i < mapIn.length; i++) {
+                    const converted = convertVal(mapIn[i].value, prev, unit);
+                    mapIn[i].value = typeof converted === 'number' ? Math.round(converted * 1000) / 1000 : converted;
+                    mapOut[i].textContent = suffix;
+                }
+                for (let i = 0; i < mapKIn.length; i++) {
+                    const converted = convertVal(mapKIn[i].value, prev, unit);
+                    mapKIn[i].value = typeof converted === 'number' ? Math.round(converted * 1000) / 1000 : converted;
+                    mapKOut[i].textContent = suffix;
+                }
+                calculate();
+            }
+
+            // --- K-Factor calculation ---
+            function calcKFactor() {
+                const t = parseFloat(kEsp.value);
+                const r = parseFloat(kRaio.value);
+                if (isNaN(t) || isNaN(r) || t <= 0 || r <= 0) {
+                    showStatus(kStatusMsg, window.i18n.t('calderaria.dobra.err_preencher'), 'error');
+                    return;
+                }
+
+                const rt = r / t;
+                let k;
+
+                // Use material-based base K then adjust with R/T
+                const materialK = {
+                    'acocarbon': 0.33,
+                    'inox': 0.40,
+                    'aluminio': 0.27,
+                    'cobre': 0.30
+                };
+                const baseK = materialK[kMaterial.value] || 0.33;
+
+                // Simplified R/T based K
+                if (rt < 1) {
+                    k = 0.273;
+                } else if (rt <= 4) {
+                    // Interpolate between 0.273 and 0.5 for 1 < R/T < 4
+                    k = 0.273 + (0.5 - 0.273) * ((rt - 1) / 3);
+                } else {
+                    k = 0.5;
+                }
+
+                // Blend with material factor
+                k = (k + baseK) / 2;
+
+                k = Math.round(k * 1000) / 1000;
+                kFatorInput.value = k;
+
+                showStatus(kStatusMsg, window.i18n.t('calderaria.dobra.msg_k_calc') + k.toFixed(3) + ' (R/T = ' + rt.toFixed(2) + ')', 'success');
+                calculate();
+            }
+
+            // --- Main calculation ---
+            function calculate() {
+                const tRaw = parseFloat(espessura.value);
+                const rRaw = parseFloat(raioInterno.value);
+                const a = parseFloat(angulo.value);
+                const k = parseFloat(kFatorInput.value);
+
+                if (isNaN(tRaw) || isNaN(rRaw) || isNaN(a) || isNaN(k) || tRaw <= 0 || rRaw < 0 || a <= 0) {
+                    resultContainer.innerHTML =
+                        '<p class="placeholder-text">' + window.i18n.t('calderaria.dobra.err_verificar') + '</p>';
+                    return;
+                }
+
+                if (k < 0 || k > 1) {
+                    resultContainer.innerHTML =
+                        '<p class="placeholder-text">' + window.i18n.t('calderaria.dobra.err_k_range') + '</p>';
+                    return;
+                }
+
+                // Always calculate in mm; convert inputs if currently in 'in'
+                const unit = currentUnit;
+                const t = unit === 'in' ? tRaw * CONV : tRaw;
+                const r = unit === 'in' ? rRaw * CONV : rRaw;
+
+                // Bend Allowance (result in mm)
+                const ba = (Math.PI / 180) * a * (r + k * t);
+
+                // Neutral axis position from inner surface = k * t (in mm)
+                const neutralPos = k * t;
+
+                const unitLabel = unit === 'mm' ? 'mm' : 'in';
+
+                // val(): converts mm result to display unit, with appropriate precision
+                const val = (v) => {
+                    const num = unit === 'mm' ? v : v / CONV;
+                    return num.toFixed(unit === 'in' ? 4 : 2);
+                };
+
+                const rt = r / t;
+
+                resultContainer.innerHTML =
+                    '<div class="result-grid">' +
+                    '  <div class="result-item highlight full">' +
+                    '    <div class="label">' + window.i18n.t('calderaria.dobra.label_compr_desenv') + '</div>' +
+                    '    <div class="value">' + val(ba) + '</div>' +
+                    '    <div class="unit">' + unitLabel + '</div>' +
+                    '  </div>' +
+                    '  <div class="result-item">' +
+                    '    <div class="label">' + window.i18n.t('calderaria.dobra.label_bend_allowance') + '</div>' +
+                    '    <div class="value">' + val(ba) + '</div>' +
+                    '    <div class="unit">' + unitLabel + '</div>' +
+                    '  </div>' +
+                    '  <div class="result-item">' +
+                    '    <div class="label">' + window.i18n.t('calderaria.dobra.label_pos_linha_neutra') + '</div>' +
+                    '    <div class="value">' + val(neutralPos) + '</div>' +
+                    '    <div class="unit">' + unitLabel + ' ' + window.i18n.t('calderaria.dobra.da_face_interna') + '</div>' +
+                    '  </div>' +
+                    '  <div class="result-item">' +
+                    '    <div class="label">' + window.i18n.t('calderaria.dobra.label_fator_k') + '</div>' +
+                    '    <div class="value">' + k.toFixed(3) + '</div>' +
+                    '    <div class="unit">' + window.i18n.t('calderaria.dobra.adimensional') + '</div>' +
+                    '  </div>' +
+                    '  <div class="result-item">' +
+                    '    <div class="label">' + window.i18n.t('calderaria.dobra.label_rel_rt') + '</div>' +
+                    '    <div class="value">' + rt.toFixed(2) + '</div>' +
+                    '    <div class="unit">' + window.i18n.t('calderaria.dobra.adimensional') + '</div>' +
+                    '  </div>' +
+                    '  <div class="result-item">' +
+                    '    <div class="label">' + window.i18n.t('calderaria.dobra.label_raio_linha_neutra') + '</div>' +
+                    '    <div class="value">' + val(r + k * t) + '</div>' +
+                    '    <div class="unit">' + unitLabel + '</div>' +
+                    '  </div>' +
+                    '</div>';
+            }
+
+            // --- DXF Export ---
+            function exportarDXF() {
+                const unit = currentUnit;
+                const tRaw = parseFloat(espessura.value);
+                const rRaw = parseFloat(raioInterno.value);
+                const a = parseFloat(angulo.value);
+                const k = parseFloat(kFatorInput.value);
+
+                if (isNaN(tRaw) || isNaN(rRaw) || isNaN(a) || isNaN(k) || tRaw <= 0) {
+                    const msg = $('export-status-msg');
+                    showStatus(msg, window.i18n.t('calderaria.dobra.err_calcular_primeiro'), 'error');
+                    return;
+                }
+
+                // Always calculate in mm
+                const t = unit === 'in' ? tRaw * CONV : tRaw;
+                const r = unit === 'in' ? rRaw * CONV : rRaw;
+                const ba = (Math.PI / 180) * a * (r + k * t);
+                const width = unit === 'mm' ? ba : ba / CONV;
+                const height = unit === 'mm' ? 50 : 50 / CONV;
+
+                // Use exportDXF from shared.js if available
+                if (typeof window.exportDXF === 'function') {
+                    try {
+                        const lines = [
+                            { x1: 0, y1: 0, x2: width, y2: 0 },
+                            { x1: width, y1: 0, x2: width, y2: height },
+                            { x1: width, y1: height, x2: 0, y2: height },
+                            { x1: 0, y1: height, x2: 0, y2: 0 }
+                        ];
+                        window.exportDXF('dobra_' + Date.now(), lines, []);
+                        showStatus($('export-status-msg'), window.i18n.t('calderaria.dobra.msg_dxf_sucesso'), 'success');
+                    } catch (e) {
+                        fallbackDXF(width, height);
+                    }
+                } else {
+                    fallbackDXF(width, height);
+                }
+            }
+
+            function fallbackDXF(w, h) {
+                const unit = currentUnit;
+                const layer = '0';
+                const lines = [
+                    '0', 'SECTION', '2', 'HEADER', '9', '$ACADVER', '1', 'AC1009', '0', 'ENDSEC',
+                    '0', 'SECTION', '2', 'TABLES', '0', 'TABLE', '2', 'LTYPE', '0', 'LTYPE', '2',
+                    'CONTINUOUS', '70', '64', '3', '', '72', '65', '73', '0', '40', '0.0', '0',
+                    'ENDTAB', '0', 'TABLE', '2', 'LAYER', '70', '2', '0', 'LAYER', '2', layer,
+                    '70', '64', '62', '7', '6', 'CONTINUOUS', '0', 'ENDTAB', '0', 'ENDSEC',
+                    '0', 'SECTION', '2', 'ENTITIES'
+                ];
+
+                const rectLines = [
+                    { x1: 0, y1: 0, x2: w, y2: 0 },
+                    { x1: w, y1: 0, x2: w, y2: h },
+                    { x1: w, y1: h, x2: 0, y2: h },
+                    { x1: 0, y1: h, x2: 0, y2: 0 }
+                ];
+
+                rectLines.forEach(function (l) {
+                    lines.push('0', 'LINE', '8', layer, '10', l.x1.toFixed(4), '20', l.y1.toFixed(4),
+                        '11', l.x2.toFixed(4), '21', l.y2.toFixed(4));
+                });
+
+                lines.push('0', 'ENDSEC', '0', 'EOF');
+
+                const dxfContent = lines.join('\r\n');
+                const blob = new Blob([dxfContent], { type: 'application/dxf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'dobra_' + Date.now() + '.dxf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showStatus($('export-status-msg'), window.i18n.t('calderaria.dobra.msg_dxf_sucesso'), 'success');
+            }
+
+            // --- Copy results ---
+            function copyResults() {
+                const t = parseFloat(espessura.value);
+                const r = parseFloat(raioInterno.value);
+                const a = parseFloat(angulo.value);
+                const k = parseFloat(kFatorInput.value);
+
+                if (isNaN(t) || isNaN(r) || isNaN(a) || isNaN(k)) {
+                    showStatus($('export-status-msg'), window.i18n.t('calderaria.dobra.err_calcular_primeiro'), 'error');
+                    return;
+                }
+
+                const ba = (Math.PI / 180) * a * (r + k * t);
+                const neutralPos = k * t;
+                const rt = r / t;
+
+                const text = window.i18n.t('calderaria.dobra.title') + '\n' +
+                    '================\n' +
+                    window.i18n.t('calderaria.dobra.label_espessura') + ': ' + t + ' ' + currentUnit + '\n' +
+                    window.i18n.t('calderaria.dobra.label_raio_interno') + ': ' + r + ' ' + currentUnit + '\n' +
+                    window.i18n.t('calderaria.dobra.label_angulo') + ': ' + a + '°\n' +
+                    window.i18n.t('calderaria.dobra.label_fator_k') + ': ' + k.toFixed(3) + '\n' +
+                    window.i18n.t('calderaria.dobra.label_rel_rt') + ': ' + rt.toFixed(2) + '\n' +
+                    window.i18n.t('calderaria.dobra.label_compr_desenv') + ': ' + ba.toFixed(2) + ' ' + currentUnit + '\n' +
+                    window.i18n.t('calderaria.dobra.label_bend_allowance') + ': ' + ba.toFixed(2) + ' ' + currentUnit + '\n' +
+                    window.i18n.t('calderaria.dobra.label_pos_linha_neutra') + ': ' + neutralPos.toFixed(2) + ' ' + currentUnit + ' (da face interna)\n' +
+                    window.i18n.t('calderaria.dobra.label_raio_linha_neutra') + ': ' + (r + k * t).toFixed(2) + ' ' + currentUnit;
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function () {
+                        showStatus($('export-status-msg'), window.i18n.t('calderaria.dobra.msg_copiado'), 'success');
+                    }).catch(function () {
+                        fallbackCopy(text);
+                    });
+                } else {
+                    fallbackCopy(text);
+                }
+            }
+
+            function fallbackCopy(text) {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    document.execCommand('copy');
+                    showStatus($('export-status-msg'), window.i18n.t('calderaria.dobra.msg_copiado'), 'success');
+                } catch (e) {
+                    showStatus($('export-status-msg'), window.i18n.t('calderaria.dobra.err_copiar'), 'error');
+                }
+                document.body.removeChild(ta);
+            }
+
+            // --- Reset ---
+            function resetForm() {
+                espessura.value = '';
+                raioInterno.value = '';
+                angulo.value = '90';
+                kFatorInput.value = '0.33';
+                kEsp.value = '';
+                kRaio.value = '';
+                kMaterial.value = 'acocarbon';
+                resultContainer.innerHTML =
+                    '<p class="placeholder-text">' + window.i18n.t('result.placeholder') + '</p>';
+                kStatusMsg.className = 'status-msg';
+                kStatusMsg.style.display = 'none';
+                const exportMsg = $('export-status-msg');
+                exportMsg.className = 'status-msg';
+                exportMsg.style.display = 'none';
+            }
+
+            // --- Helpers ---
+            function showStatus(el, msg, type) {
+                el.textContent = msg;
+                el.className = 'status-msg show ' + (type || '');
+                el.style.display = 'block';
+                setTimeout(function () {
+                    el.style.display = 'none';
+                    el.className = 'status-msg';
+                }, 4000);
+            }
+
+            // --- Init ---
+            function init() {
+                initTheme();
+                if (themeCheck) themeCheck.addEventListener('change', toggleTheme);
+
+                const savedUnit = localStorage.getItem('calderariaUnit') || localStorage.getItem('trig-unit');
+                if (savedUnit === 'in' || savedUnit === 'mm') {
+                    currentUnit = savedUnit;
+                    document.querySelectorAll('#unit-toggle button').forEach(function(b) {
+                        b.classList.toggle('active', b.dataset.unit === savedUnit);
+                    });
+                    if (unitEsp) unitEsp.textContent = savedUnit;
+                    if (unitRaio) unitRaio.textContent = savedUnit;
+                    if (unitKEsp) unitKEsp.textContent = savedUnit;
+                    if (unitKRai) unitKRai.textContent = savedUnit;
+                }
+
+                document.querySelectorAll('#unit-toggle button').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        setUnit(this.dataset.unit);
+                    });
+                });
+
+                // Recalculate on Enter in any input
+                var inputs = document.querySelectorAll('#inputs-column input');
+                inputs.forEach(function (inp) {
+                    inp.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter') calculate();
+                    });
+                });
+
+                // Copy k-fator to main form on calc
+                kFatorInput.addEventListener('change', calculate);
+            }
+
+            // Expose to global scope
+            window.calculate = calculate;
+            window.calcKFactor = calcKFactor;
+            window.exportarDXF = exportarDXF;
+            window.copyResults = copyResults;
+            window.resetForm = resetForm;
+            window.setUnit = setUnit;
+
+            document.addEventListener('DOMContentLoaded', init);
+            if (document.readyState !== 'loading') init();
+        })();
+    </script>
+</body>
+</html>

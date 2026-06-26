@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="fmea.title">Gerador de FMEA Avançado</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-shield-halved"></i> <span data-i18n="fmea.title">Gerador de FMEA Avançado</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="card full-width">
+                <h2><i class="fa-solid fa-pen-to-square"></i> <span data-i18n="fmea.add_edit">Adicionar ou Editar Falha</span></h2>
+                <form id="fmeaForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="itemFuncao" data-i18n="fmea.item_function">Item / Função do Processo:</label>
+                            <input type="text" id="itemFuncao" placeholder="Ex: Sistema de Freio" required data-i18n-placeholder="fmea.item_function_ph">
+                        </div>
+                        <div class="form-group">
+                            <label for="modoFalha" data-i18n="fmea.failure_mode">Modo de Falha Potencial:</label>
+                            <input type="text" id="modoFalha" placeholder="Ex: Vazamento de fluido" required data-i18n-placeholder="fmea.failure_mode_ph">
+                        </div>
+                        <div class="form-group">
+                            <label for="efeitoFalha" data-i18n="fmea.failure_effect">Efeito Potencial da Falha:</label>
+                            <input type="text" id="efeitoFalha" placeholder="Ex: Perda de capacidade de frenagem" required data-i18n-placeholder="fmea.failure_effect_ph">
+                        </div>
+                        <div class="form-group">
+                            <label for="causaFalha" data-i18n="fmea.failure_cause">Causa Potencial da Falha:</label>
+                            <input type="text" id="causaFalha" placeholder="Ex: Mangueira ressecada" required data-i18n-placeholder="fmea.failure_cause_ph">
+                        </div>
+                        <div class="form-group">
+                            <label for="controlesAtuais" data-i18n="fmea.current_controls">Controles Atuais:</label>
+                            <input type="text" id="controlesAtuais" placeholder="Ex: Inspeção visual periódica" data-i18n-placeholder="fmea.current_controls_ph">
+                        </div>
+                        <div class="form-group rating-group">
+                            <label for="severidade" data-i18n="fmea.severity">Severidade (S) (1-10):
+                                <button type="button" class="info-btn" data-criteria-tab="severidade" title="Ver critérios"><i class="fa-solid fa-circle-info"></i></button>
+                            </label>
+                            <select id="severidade" class="rating-select" required></select>
+                        </div>
+                        <div class="form-group rating-group">
+                            <label for="ocorrencia" data-i18n="fmea.occurrence">Ocorrência (O) (1-10):
+                                <button type="button" class="info-btn" data-criteria-tab="ocorrencia" title="Ver critérios"><i class="fa-solid fa-circle-info"></i></button>
+                            </label>
+                            <select id="ocorrencia" class="rating-select" required></select>
+                        </div>
+                        <div class="form-group rating-group">
+                            <label for="deteccao" data-i18n="fmea.detection">Detecção (D) (1-10):
+                                <button type="button" class="info-btn" data-criteria-tab="deteccao" title="Ver critérios"><i class="fa-solid fa-circle-info"></i></button>
+                            </label>
+                            <select id="deteccao" class="rating-select" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="acoesRecomendadas" data-i18n="fmea.recommended_actions">Ações Recomendadas:</label>
+                            <input type="text" id="acoesRecomendadas" placeholder="Ex: Substituir mangueiras a cada 2 anos" data-i18n-placeholder="fmea.recommended_actions_ph">
+                        </div>
+                        <div class="form-group">
+                            <label for="responsavel" data-i18n="fmea.responsible">Responsável:</label>
+                            <input type="text" id="responsavel" placeholder="Ex: Equipe de Manutenção" data-i18n-placeholder="fmea.responsible_ph">
+                        </div>
+                        <div class="form-group">
+                            <label for="prazo" data-i18n="fmea.deadline">Prazo:</label>
+                            <input type="date" id="prazo">
+                        </div>
+                        <div class="form-group">
+                            <label for="status" data-i18n="fmea.status">Status:</label>
+                            <select id="status">
+                                <option value="Pendente" data-i18n="fmea.pending">Pendente</option>
+                                <option value="Em Andamento" data-i18n="fmea.in_progress">Em Andamento</option>
+                                <option value="Concluído" data-i18n="fmea.completed">Concluído</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="reavaliacao-section" class="reavaliacao-section" style="display:none;">
+                        <h3 data-i18n="fmea.reassessment"><i class="fa-solid fa-rotate"></i> Reavaliação Pós-Ação</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="acoesRealizadas" data-i18n="fmea.actions_taken">Ações Realizadas:</label>
+                                <input type="text" id="acoesRealizadas" placeholder="Descreva a ação que foi concluída" data-i18n-placeholder="fmea.actions_taken_ph">
+                            </div>
+                            <div class="form-group rating-group">
+                                <label for="novaSeveridade" data-i18n="fmea.new_severity">Nova Severidade (S):</label>
+                                <select id="novaSeveridade" class="rating-select"></select>
+                            </div>
+                            <div class="form-group rating-group">
+                                <label for="novaOcorrencia" data-i18n="fmea.new_occurrence">Nova Ocorrência (O):</label>
+                                <select id="novaOcorrencia" class="rating-select"></select>
+                            </div>
+                            <div class="form-group rating-group">
+                                <label for="novaDeteccao" data-i18n="fmea.new_detection">Nova Detecção (D):</label>
+                                <select id="novaDeteccao" class="rating-select"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="editIndex">
+                    <div class="button-group" style="margin-top: 1rem;">
+                        <button type="submit" class="main-button"><i class="fa-solid fa-floppy-disk"></i> <span data-i18n="fmea.save_row">Salvar Linha</span></button>
+                        <button type="button" id="cancelEditBtn" class="secondary-button" style="display:none;"><i class="fa-solid fa-xmark"></i> <span data-i18n="fmea.cancel_edit">Cancelar Edição</span></button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card full-width">
+                <div class="output-header">
+                    <h2><i class="fa-solid fa-table-list"></i> <span data-i18n="fmea.table">Tabela FMEA</span></h2>
+                    <div class="output-controls">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchInput" data-i18n-placeholder="fmea.search_ph" placeholder="Buscar na tabela...">
+                        </div>
+                        <div class="button-group-inline">
+                            <button id="exportCsvBtn" class="secondary-button"><i class="fa-solid fa-file-csv"></i> <span data-i18n="btn.export_csv">CSV</span></button>
+                            <button id="gerarPdfBtn" class="secondary-button"><i class="fa-solid fa-file-pdf"></i> <span data-i18n="btn.export_pdf">PDF</span></button>
+                            <button id="limparDadosBtn" class="danger-button"><i class="fa-solid fa-trash"></i> <span data-i18n="fmea.clear_all">Limpar</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table id="fmeaTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="itemFuncao" data-i18n="fmea.item_function_col">Item/Função</th>
+                                <th data-sort="modoFalha" data-i18n="fmea.failure_mode_col">Modo de Falha</th>
+                                <th data-sort="causaFalha" data-i18n="fmea.causes_col">Causas</th>
+                                <th data-sort="controlesAtuais" data-i18n="fmea.controls_col">Controles</th>
+                                <th data-sort="s">S</th>
+                                <th data-sort="o">O</th>
+                                <th data-sort="d">D</th>
+                                <th data-sort="rpn">RPN</th>
+                                <th data-sort="acoesRecomendadas" data-i18n="fmea.actions_col">Ações</th>
+                                <th data-sort="responsavel" data-i18n="fmea.responsible_col">Responsável</th>
+                                <th data-sort="prazo" data-i18n="fmea.deadline_col">Prazo</th>
+                                <th data-sort="status" data-i18n="fmea.status_col">Status</th>
+                                <th data-sort="novoRpn">Novo RPN</th>
+                                <th data-i18n="fmea.actions_th">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="criteriaModal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="fmea.criteria_title">Critérios de Avaliação S-O-D</span></h3>
+                <button type="button" id="closeCriteriaModal" class="modal-close" title="Fechar"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-tabs">
+                <button type="button" class="tab-btn active" data-tab="severidade" data-i18n="fmea.severity_short">Severidade</button>
+                <button type="button" class="tab-btn" data-tab="ocorrencia" data-i18n="fmea.occurrence_short">Ocorrência</button>
+                <button type="button" class="tab-btn" data-tab="deteccao" data-i18n="fmea.detection_short">Detecção</button>
+            </div>
+            <div class="modal-body">
+                <table class="criteria-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="fmea.note_col">Nota</th>
+                            <th data-i18n="fmea.criterion_col">Critério</th>
+                        </tr>
+                    </thead>
+                    <tbody id="criteriaTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="script.js"></script>
+    <script src="../shared/i18n.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle-checkbox');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.checked = true;
+            }
+            themeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark-theme');
+                localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+            });
+        });
+    </script>
+</body>
+</html>

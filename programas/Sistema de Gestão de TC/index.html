@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="tc.title">Software de Inspeção de TC</title>
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1 data-i18n="tc.header"><i class="fas fa-clipboard-list"></i> Sistema de Gestão de TC</h1>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title"><i class="fas fa-tasks"></i> <span data-i18n="tc.menu_title">Menu de Gestão</span></h2>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" data-page="dashboard" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-tachometer-alt"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.dashboard">Página Inicial</h4>
+                            <p data-i18n="tc.dashboard_desc">Visão geral e estatísticas.</p>
+                        </div>
+                    </a></li>
+                    <li><a href="#" data-page="inspecaoGeral" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-industry"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.factory_inspection">1. Inspeção TC em Fábrica</h4>
+                            <p data-i18n="tc.factory_inspection_desc">Registre inspeções gerais de fábrica.</p>
+                        </div>
+                    </a></li>
+                    <li><strong class="menu-section-title" data-i18n="tc.systematic_plans">2. Planos Sistemáticos</strong></li>
+                    <li><a href="#" data-page="planoPreventivo" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-calendar-check"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.preventive_plan">2.1. Plano Preventivo</h4>
+                            <p data-i18n="tc.preventive_plan_desc">Crie planos de manutenção preventiva.</p>
+                        </div>
+                    </a></li>
+                    <li><a href="#" data-page="roteiroVisual" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-clipboard-list"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.visual_inspection">2.2. Roteiro Inspeção Visual</h4>
+                            <p data-i18n="tc.visual_inspection_desc">Acesse o checklist para inspeções.</p>
+                        </div>
+                    </a></li>
+                    <li><a href="#" data-page="planoSeletivo" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-tasks"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.selective_plan">2.3. Plano Seletivo</h4>
+                            <p data-i18n="tc.selective_plan_desc">Elabore planos para componentes.</p>
+                        </div>
+                    </a></li>
+                    <li><a href="#" data-page="planoRaspadores" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-tools"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.scrapers_plan">2.4. Plano Raspadores e TAG</h4>
+                            <p data-i18n="tc.scrapers_plan_desc">Gere planos e TAGs para raspadores.</p>
+                        </div>
+                    </a></li>
+                    <li><a href="#" data-page="planoMesaImpacto" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-dolly-flatbed"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.impact_table">2.5. Plano Mesa de Impacto e TAG</h4>
+                            <p data-i18n="tc.impact_table_desc">Gere planos e TAGs para mesas de impacto.</p>
+                        </div>
+                    </a></li>
+                    <li><a href="#" data-page="idRolos" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-tag"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.roller_id">2.6. PD: Identificação de Rolos</h4>
+                            <p data-i18n="tc.roller_id_desc">Cadastre e identifique rolos por posição.</p>
+                        </div>
+                    </a></li>
+                    <li><a href="#" data-page="mapeamentoRoletes" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-map-marked-alt"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.roller_mapping">2.7. Mapeamento de Roletes</h4>
+                            <p data-i18n="tc.roller_mapping_desc">Visualize e atualize o status dos roletes.</p>
+                        </div>
+                    </a></li>
+                    <li><strong class="menu-section-title" data-i18n="tc.guidelines">3. Diretrizes e Orientações</strong></li>
+                    <li><a href="#" data-page="diretrizesSeguranca" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-hard-hat"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.safety_guidelines">3.1. Diretrizes de Segurança</h4>
+                            <p data-i18n="tc.safety_guidelines_desc">Consulte as regras de ouro de segurança.</p>
+                        </div>
+                    </a></li>
+                    <li><a href="#" data-page="desviosOcultos" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-eye-slash"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.hidden_deviations">3.2. Desvios Ocultos</h4>
+                            <p data-i18n="tc.hidden_deviations_desc">Aprenda a identificar falhas não-visíveis.</p>
+                        </div>
+                    </a></li>
+                    <li><a href="#" data-page="orientacoesCampo" class="menu-item">
+                        <span class="menu-item-icon"><i class="fas fa-compass"></i></span>
+                        <div class="menu-item-content">
+                            <h4 data-i18n="tc.field_guidance">3.3. Orientações de Campo</h4>
+                            <p data-i18n="tc.field_guidance_desc">Guia para inspeções eficazes e seguras.</p>
+                        </div>
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="main-content">
+            <div id="notification-area"></div>
+        </main>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <script src="script.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

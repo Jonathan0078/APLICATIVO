@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="calderaria.trigonometria.title">Trigonometria Dinâmica</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <style>
+        :root {
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --accent: #3b82f6;
+            --accent-light: #eff6ff;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body.dark-theme {
+            --bg: #0a1929;
+            --surface: #112233;
+            --text: #e9ecef;
+            --text-secondary: #8696a7;
+            --border: #334b61;
+            --accent-light: #1e3a5f;
+            --shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100dvh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .app-container {
+            max-width: 520px;
+            margin: 0 auto;
+            background: var(--bg);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s;
+        }
+
+        .app-header {
+            background: linear-gradient(145deg, #0f172a 0%, #1e3a5f 50%, #1a365d 100%);
+            color: white;
+            padding: 1rem 1.25rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+        }
+
+        .header-content h1 i { color: #60a5fa; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+        }
+
+        .theme-switcher {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+        }
+
+        .theme-switcher i { font-size: .8rem; color: rgba(255,255,255,0.7); }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.25);
+            transition: .3s;
+            border-radius: 22px;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background: var(--accent); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        .unit-toggle {
+            display: flex;
+            background: rgba(255,255,255,0.15);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .unit-btn {
+            padding: .3rem .6rem;
+            font-size: .7rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            transition: all .2s;
+        }
+
+        .unit-btn.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tabs {
+            display: flex;
+            background: var(--surface);
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            transition: background 0.3s;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: .75rem .3rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: .7rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .2s;
+            position: relative;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tab-btn i {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: .15rem;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-content {
+            display: none;
+            padding: .75rem;
+            animation: fadeIn .25s ease;
+        }
+
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 1rem 1.1rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: .75rem;
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .card-title {
+            font-size: .95rem;
+            font-weight: 700;
+            margin-bottom: .75rem;
+            padding-bottom: .5rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            color: var(--text);
+        }
+
+        .card-title i { color: var(--accent); font-size: .9rem; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .6rem;
+            margin-bottom: .6rem;
+        }
+
+        .form-group {
+            margin-bottom: .6rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: .25rem;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: .7rem .75rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: .9rem;
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            transition: border-color .2s, box-shadow .2s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+        .form-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right .75rem center;
+            padding-right: 2rem;
+        }
+
+        .form-hint {
+            font-size: .7rem;
+            color: var(--text-secondary);
+            margin-top: .15rem;
+        }
+
+        .input-with-type {
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: .4rem;
+        }
+
+        .input-with-type input,
+        .input-with-type select {
+            width: 100%;
+            min-width: 0;
+        }
+
+        /* No mobile, empilha Valor 1 sobre Valor 2 para dar 100% de largura a ambos */
+        @media (max-width: 520px) {
+            #tab1 .form-row { grid-template-columns: 1fr; }
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: .85rem;
+            background: linear-gradient(135deg, var(--accent), #2563eb);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: .9rem;
+            font-weight: 700;
+            font-family: var(--font);
+            cursor: pointer;
+            transition: opacity .2s, transform .15s;
+        }
+
+        .btn:active { transform: scale(.97); }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: .5rem;
+            margin-top: .5rem;
+        }
+
+        .btn-group .btn { width: auto; flex: 1; }
+
+        .svg-container {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: .5rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .svg-container svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .5rem;
+        }
+
+        .result-item {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: .6rem .75rem;
+            text-align: center;
+            transition: background 0.3s;
+        }
+
+        .result-item .label {
+            font-size: .65rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+
+        .result-item .value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-top: .1rem;
+        }
+
+        .result-item .value.accent { color: var(--accent); }
+        .result-item .value.success { color: var(--success); }
+        .result-item .value.warning { color: var(--warning); }
+        .result-item.full { grid-column: 1 / -1; }
+
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-size: .72rem;
+            padding: .35rem .65rem;
+            border-radius: 20px;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .placeholder {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            font-size: .85rem;
+        }
+
+        .placeholder i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: .5rem;
+            opacity: .5;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: .6rem;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--surface);
+            padding: .75rem 1.25rem;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            border: 1px solid var(--border);
+            font-size: .85rem;
+            font-weight: 500;
+            z-index: 100;
+            opacity: 0;
+            transition: all .4s ease;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: all;
+        }
+
+        .toast i { margin-right: .5rem; }
+        .toast.success i { color: var(--success); }
+
+        .svg-text { font-family: var(--font); }
+        .svg-label { font-size: 13px; font-weight: 600; fill: var(--text); }
+        .svg-value { font-size: 11px; fill: var(--text-secondary); }
+        .svg-dim { stroke: var(--accent); stroke-width: 1.5; fill: none; stroke-dasharray: 4,3; }
+
+        /* ==========================================================================
+           MENU LATERAL OFF-CANVAS (HAMBÚRGUER)
+           ========================================================================== */
+        .app-sidebar-overlay {
+          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px);
+          z-index: 99; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .app-sidebar-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .app-sidebar {
+          position: fixed; top: 0; left: -280px; width: 260px; bottom: 0;
+          background: var(--surface, #ffffff); z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          display: flex; flex-direction: column; border-right: 1px solid var(--border, #e2e8f0);
+        }
+        .app-sidebar.active { left: 0; }
+
+        .app-sidebar-header {
+          padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--border, #e2e8f0);
+          display: flex; align-items: center; justify-content: space-between;
+          font-weight: 700; color: var(--text, #0f172a); font-size: 1rem;
+        }
+        .app-sidebar-close {
+          background: none; border: none; font-size: 1.25rem; color: var(--text-secondary, #64748b); cursor: pointer;
+        }
+
+        .app-sidebar-nav {
+          padding: 0.75rem 0; overflow-y: auto; display: flex; flex-direction: column; gap: 0.2rem;
+        }
+        .app-sidebar-item {
+          padding: 0.75rem 1.25rem; display: flex; align-items: center; gap: 0.75rem;
+          color: var(--text-secondary, #64748b); font-weight: 600; font-size: 0.88rem;
+          cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent;
+        }
+        .app-sidebar-item:hover { background: var(--bg, #f1f5f9); color: var(--accent, #3b82f6); }
+        .app-sidebar-item.active {
+          background: rgba(59, 130, 246, 0.08); color: var(--accent, #3b82f6); border-left-color: var(--accent, #3b82f6);
+        }
+        body.dark-theme .app-sidebar-item:hover { background: rgba(255,255,255,0.05); color: #60a5fa; }
+        body.dark-theme .app-sidebar-item.active {
+          background: rgba(96, 165, 250, 0.12); color: #60a5fa; border-left-color: #60a5fa;
+        }
+
+        .hamburger-toggle {
+          background: none; border: none; color: white; font-size: 1.2rem;
+          cursor: pointer; padding: 0.2rem 0.5rem; display: flex; align-items: center;
+        }
+
+        @media (max-width: 400px) {
+            .form-row { grid-template-columns: 1fr; }
+            .results-grid { grid-template-columns: 1fr; }
+            .tab-btn { font-size: .65rem; }
+            .header-content h1 { font-size: .95rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
+    <aside class="app-sidebar" id="appSidebar">
+        <div class="app-sidebar-header">
+            <span data-i18n="calderaria.trigonometria.menu_lateral_titulo">Menu de Trigonometria</span>
+            <button class="app-sidebar-close" onclick="toggleSidebar(false)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="app-sidebar-nav">
+            <div class="app-sidebar-item active" data-tab="tab1" onclick="selecionarModuloTrig('tab1', 'calderaria.trigonometria.tab_retangulo', 'Retângulo')">
+                <i class="fa-solid fa-square"></i> <span data-i18n="calderaria.trigonometria.tab_retangulo">Retângulo</span>
+            </div>
+            <div class="app-sidebar-item" data-tab="tab2" onclick="selecionarModuloTrig('tab2', 'calderaria.trigonometria.tab_obliquo', 'Obliquângulo')">
+                <i class="fa-solid fa-triangle"></i> <span data-i18n="calderaria.trigonometria.tab_obliquo">Obliquângulo</span>
+            </div>
+            <div class="app-sidebar-item" data-tab="tab3" onclick="selecionarModuloTrig('tab3', 'calderaria.trigonometria.tab_arco', 'Arco / Corda')">
+                <i class="fa-solid fa-circle"></i> <span data-i18n="calderaria.trigonometria.tab_arco">Arco / Corda</span>
+            </div>
+        </div>
+    </aside>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <button class="hamburger-toggle" onclick="toggleSidebar(true)" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+                    <h1><i class="fa-solid fa-drafting-compass"></i> <span id="headerTrigTitle" data-i18n="calderaria.trigonometria.tab_retangulo">Retângulo</span></h1>
+                </div>
+                <div class="header-right">
+                    <div class="unit-toggle" id="unitToggle">
+                        <button class="unit-btn active" data-unit="mm">mm</button>
+                        <button class="unit-btn" data-unit="in">in</button>
+                    </div>
+                    <div class="theme-switcher">
+                        <i class="fa-solid fa-sun"></i>
+                        <label class="switch"><input type="checkbox" id="themeToggle"><span class="slider"></span></label>
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="tabs" id="tabBar" style="display: none;">
+            <button class="tab-btn active" data-tab="tab1"><i class="fa-solid fa-square"></i> <span data-i18n="calderaria.trigonometria.tab_retangulo">Retângulo</span></button>
+            <button class="tab-btn" data-tab="tab2"><i class="fa-solid fa-triangle"></i> <span data-i18n="calderaria.trigonometria.tab_obliquo">Obliquângulo</span></button>
+            <button class="tab-btn" data-tab="tab3"><i class="fa-solid fa-circle"></i> <span data-i18n="calderaria.trigonometria.tab_arco">Arco / Corda</span></button>
+        </div>
+
+        <main class="main-content">
+
+            <div class="tab-content active" id="tab1">
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-square"></i> <span data-i18n="calderaria.trigonometria.tab_retangulo">Triângulo Retângulo</span></div>
+                    <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:.75rem;" data-i18n="calderaria.trigonometria.instrucao_retangulo">Informe 2 valores para calcular todos os lados e ângulos.</p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.valor_1">Valor 1</label>
+                            <div class="input-with-type">
+                                <input type="number" id="rtVal1" step="any" placeholder="0">
+                                <select id="rtType1">
+                                    <option value="opp" data-i18n="calderaria.trigonometria.cateto_oposto">Cateto Oposto</option>
+                                    <option value="adj" data-i18n="calderaria.trigonometria.cateto_adjacente">Cateto Adjacente</option>
+                                    <option value="hyp" data-i18n="calderaria.trigonometria.hipotenusa">Hipotenusa</option>
+                                    <option value="ang" data-i18n="calderaria.trigonometria.angulo">Ângulo (°)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.valor_2">Valor 2</label>
+                            <div class="input-with-type">
+                                <input type="number" id="rtVal2" step="any" placeholder="0">
+                                <select id="rtType2">
+                                    <option value="opp" data-i18n="calderaria.trigonometria.cateto_oposto">Cateto Oposto</option>
+                                    <option value="adj" selected data-i18n="calderaria.trigonometria.cateto_adjacente">Cateto Adjacente</option>
+                                    <option value="hyp" data-i18n="calderaria.trigonometria.hipotenusa">Hipotenusa</option>
+                                    <option value="ang" data-i18n="calderaria.trigonometria.angulo">Ângulo (°)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="calcRightTriangle()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calderaria.trigonometria.calcular">Calcular</span></button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-diagram-project"></i> <span data-i18n="calderaria.trigonometria.diagrama">Diagrama</span></div>
+                    <div class="svg-container">
+                        <svg id="rtSvg" viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                            <text x="120" y="95" class="placeholder-text" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;" data-i18n="calderaria.trigonometria.placeholder_diagrama">Calcule para ver o diagrama</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card" id="rtResults" style="display:none;">
+                    <div class="card-title"><i class="fa-solid fa-table-list"></i> <span data-i18n="calderaria.trigonometria.resultados">Resultados</span></div>
+                    <div class="results-grid" id="rtResultsGrid"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab2">
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-triangle"></i> <span data-i18n="calderaria.trigonometria.tab_obliquo">Triângulo Obliquângulo</span></div>
+                    <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:.75rem;" data-i18n="calderaria.trigonometria.instrucao_obliquo">Informe 3 valores (lados ou ângulos) para resolver o triângulo.</p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.lado_a">Lado A (mm)</label>
+                            <input type="number" id="obSideA" step="any" placeholder="—">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.angulo_a">Ângulo A (°)</label>
+                            <input type="number" id="obAngA" step="any" placeholder="—">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.lado_b">Lado B (mm)</label>
+                            <input type="number" id="obSideB" step="any" placeholder="—">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.angulo_b">Ângulo B (°)</label>
+                            <input type="number" id="obAngB" step="any" placeholder="—">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.lado_c">Lado C (mm)</label>
+                            <input type="number" id="obSideC" step="any" placeholder="—">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.angulo_c">Ângulo C (°)</label>
+                            <input type="number" id="obAngC" step="any" placeholder="—">
+                        </div>
+                    </div>
+                    <button class="btn" onclick="calcOblique()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calderaria.trigonometria.calcular">Calcular</span></button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-diagram-project"></i> <span data-i18n="calderaria.trigonometria.diagrama">Diagrama</span></div>
+                    <div class="svg-container">
+                        <svg id="obSvg" viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                            <text x="120" y="95" class="placeholder-text" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;" data-i18n="calderaria.trigonometria.placeholder_diagrama">Calcule para ver o diagrama</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card" id="obResults" style="display:none;">
+                    <div class="card-title"><i class="fa-solid fa-table-list"></i> <span data-i18n="calderaria.trigonometria.resultados">Resultados</span></div>
+                    <div class="results-grid" id="obResultsGrid"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab3">
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-circle"></i> <span data-i18n="calderaria.trigonometria.tab_arco">Arco, Corda e Flecha</span></div>
+                    <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:.75rem;" data-i18n="calderaria.trigonometria.instrucao_arco">Informe 2 valores para calcular os demais parâmetros do arco.</p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.raio">Raio (R)</label>
+                            <input type="number" id="arcRadius" step="any" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.angulo_central">Ângulo Central (θ)</label>
+                            <input type="number" id="arcAngle" step="any" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.corda">Corda (C)</label>
+                            <input type="number" id="arcChord" step="any" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="calderaria.trigonometria.flecha">Flecha (f)</label>
+                            <input type="number" id="arcSagitta" step="any" placeholder="0">
+                        </div>
+                    </div>
+                    <button class="btn" onclick="calcArc()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calderaria.trigonometria.calcular">Calcular</span></button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-diagram-project"></i> <span data-i18n="calderaria.trigonometria.diagrama">Diagrama</span></div>
+                    <div class="svg-container">
+                        <svg id="arcSvg" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                            <text x="130" y="95" class="placeholder-text" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;" data-i18n="calderaria.trigonometria.placeholder_diagrama">Calcule para ver o diagrama</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card" id="arcResults" style="display:none;">
+                    <div class="card-title"><i class="fa-solid fa-table-list"></i> <span data-i18n="calderaria.trigonometria.resultados">Resultados</span></div>
+                    <div class="results-grid" id="arcResultsGrid"></div>
+                </div>
+
+                <div class="card" id="arcExportCard" style="display:none;">
+                    <div class="card-title"><i class="fa-solid fa-file-export"></i> <span data-i18n="calderaria.trigonometria.exportar_dxf">Exportar DXF</span></div>
+                    <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:.65rem;" data-i18n="calderaria.trigonometria.instrucao_dxf">Baixe o desenho do arco em formato DXF para uso em CAD.</p>
+                    <button class="btn" onclick="exportArcDxf()"><i class="fa-solid fa-download"></i> <span data-i18n="calderaria.trigonometria.baixar_dxf">Baixar DXF</span></button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="../shared/i18n.js"></script>
+    <script src="shared.js"></script>
+    <script>
+    /* ===================================================================
+       Trigonometria Dinâmica — Calderaria
+       =================================================================== */
+
+    // ---- GESTÃO DO DRAWER (MENU LATERAL) ----
+    function toggleSidebar(force) {
+        const sidebar = document.getElementById('appSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (!sidebar || !overlay) return;
+        const state = typeof force === 'boolean' ? force : !sidebar.classList.contains('active');
+        sidebar.classList.toggle('active', state);
+        overlay.classList.toggle('active', state);
+    }
+
+    function selecionarModuloTrig(idTab, i18nKey, defaultTitle) {
+        document.querySelectorAll('.tab-content').forEach(function(tc) { tc.classList.remove('active'); });
+        const target = document.getElementById(idTab);
+        if (target) target.classList.add('active');
+
+        document.querySelectorAll('.app-sidebar-item').forEach(function(item) {
+            item.classList.toggle('active', item.getAttribute('data-tab') === idTab);
+        });
+
+        const headerTitle = document.getElementById('headerTrigTitle');
+        if (headerTitle) {
+            headerTitle.setAttribute('data-i18n', i18nKey);
+            headerTitle.textContent = defaultTitle;
+        }
+
+        recalcAll();
+        toggleSidebar(false);
+    }
+
+    // ---- Helpers ----
+    function t(key, fallback) {
+        return (window.i18n && typeof window.i18n.t === 'function') ? (window.i18n.t(key) || fallback) : fallback;
+    }
+
+    function fmtLen(v) {
+        if (v == null || isNaN(v)) return '—';
+        if (typeof formatLength === 'function') return formatLength(v);
+        var unit = getUnit();
+        var val = unit === 'in' ? v / 25.4 : v;
+        return val.toFixed(2) + ' ' + (unit === 'in' ? 'in' : 'mm');
+    }
+
+    function fmtAngle(v) {
+        if (v == null || isNaN(v)) return '—';
+        if (typeof formatAngle === 'function') return formatAngle(v);
+        return v.toFixed(2) + '°';
+    }
+
+    function fmtArea(v) {
+        var unit = getUnit();
+        var val = unit === 'in' ? v / (25.4 * 25.4) : v;
+        return val.toFixed(2) + ' ' + (unit === 'in' ? 'in²' : 'mm²');
+    }
+
+    function fmt(v, dec) {
+        if (v == null || isNaN(v)) return '—';
+        dec = dec || 2;
+        return v.toFixed(dec);
+    }
+
+    function toRad(d) { return d * Math.PI / 180; }
+    function toDeg(r) { return r * 180 / Math.PI; }
+
+    function getUnit() {
+        var btn = document.querySelector('.unit-btn.active');
+        return btn ? btn.dataset.unit : 'mm';
+    }
+
+    function setUnit(u) {
+        document.querySelectorAll('.unit-btn').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.unit === u);
+        });
+        localStorage.setItem('trig-unit', u);
+        recalcAll();
+    }
+
+    function recalcAll() {
+        var tab = document.querySelector('.tab-content.active');
+        if (!tab) return;
+        var id = tab.id;
+        if (id === 'tab1') calcRightTriangle();
+        else if (id === 'tab2') calcOblique();
+        else if (id === 'tab3') calcArc();
+    }
+
+    function showToast(msg, icon) {
+        var t = document.getElementById('toast');
+        t.innerHTML = '<i class="fa-solid ' + (icon || 'fa-check-circle') + '"></i> ' + msg;
+        t.className = 'toast show';
+        clearTimeout(t._hide);
+        t._hide = setTimeout(function() { t.className = 'toast'; }, 2200);
+    }
+
+    // ---- Theme ----
+    document.addEventListener('DOMContentLoaded', function() {
+        var th = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-theme');
+            th.checked = true;
+        }
+        th.addEventListener('change', function() {
+            document.body.classList.toggle('dark-theme', this.checked);
+            localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+            recalcAll();
+        });
+
+        var savedUnit = localStorage.getItem('trig-unit');
+        if (savedUnit) setUnit(savedUnit);
+    });
+
+    // ---- Unit toggle ----
+    document.getElementById('unitToggle').addEventListener('click', function(e) {
+        var btn = e.target.closest('.unit-btn');
+        if (!btn || btn.classList.contains('active')) return;
+        setUnit(btn.dataset.unit);
+    });
+
+    // ---- Auto-calc on input change ----
+    document.querySelectorAll('.tab-content input').forEach(function(inp) {
+        inp.addEventListener('input', recalcAll);
+    });
+
+    // ---- Auto-calc on Enter ----
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            var tab = document.querySelector('.tab-content.active');
+            if (!tab) return;
+            if (tab.id === 'tab1') calcRightTriangle();
+            else if (tab.id === 'tab2') calcOblique();
+            else if (tab.id === 'tab3') calcArc();
+        }
+    });
+
+    /* ===================================================================
+       SECTION 1 — RIGHT TRIANGLE
+       =================================================================== */
+    function calcRightTriangle() {
+        var v1 = parseFloat(document.getElementById('rtVal1').value);
+        var v2 = parseFloat(document.getElementById('rtVal2').value);
+        var t1 = document.getElementById('rtType1').value;
+        var t2 = document.getElementById('rtType2').value;
+
+        if (isNaN(v1) || isNaN(v2)) {
+            document.getElementById('rtResults').style.display = 'none';
+            drawRtSvg(null);
+            return;
+        }
+
+        var known = {};
+        known[t1] = v1;
+        known[t2] = v2;
+        if (known.ang !== undefined && known.ang >= 90) {
+            showToast(window.i18n.t('calderaria.trigonometria.err_ang_menor_90'), 'fa-exclamation-triangle');
+            return;
+        }
+
+        var opp, adj, hyp, ang;
+
+        if (known.opp !== undefined && known.adj !== undefined) {
+            opp = known.opp; adj = known.adj;
+            hyp = Math.sqrt(opp * opp + adj * adj);
+            ang = toDeg(Math.atan(opp / adj));
+        } else if (known.opp !== undefined && known.hyp !== undefined) {
+            opp = known.opp; hyp = known.hyp;
+            if (opp >= hyp) { showToast(window.i18n.t('calderaria.trigonometria.err_cat_oposto'), 'fa-exclamation-triangle'); return; }
+            adj = Math.sqrt(hyp * hyp - opp * opp);
+            ang = toDeg(Math.asin(opp / hyp));
+        } else if (known.opp !== undefined && known.ang !== undefined) {
+            opp = known.opp; ang = known.ang;
+            hyp = opp / Math.sin(toRad(ang));
+            adj = opp / Math.tan(toRad(ang));
+        } else if (known.adj !== undefined && known.hyp !== undefined) {
+            adj = known.adj; hyp = known.hyp;
+            if (adj >= hyp) { showToast(window.i18n.t('calderaria.trigonometria.err_cat_adj'), 'fa-exclamation-triangle'); return; }
+            opp = Math.sqrt(hyp * hyp - adj * adj);
+            ang = toDeg(Math.acos(adj / hyp));
+        } else if (known.adj !== undefined && known.ang !== undefined) {
+            adj = known.adj; ang = known.ang;
+            hyp = adj / Math.cos(toRad(ang));
+            opp = adj * Math.tan(toRad(ang));
+        } else if (known.hyp !== undefined && known.ang !== undefined) {
+            hyp = known.hyp; ang = known.ang;
+            opp = hyp * Math.sin(toRad(ang));
+            adj = hyp * Math.cos(toRad(ang));
+        } else {
+            showToast(window.i18n.t('calderaria.trigonometria.err_dois_valores'), 'fa-exclamation-triangle');
+            return;
+        }
+
+        if (opp <= 0 || adj <= 0 || hyp <= 0 || ang <= 0 || ang >= 90) {
+            showToast(window.i18n.t('calderaria.trigonometria.err_triangulo_invalido'), 'fa-exclamation-triangle');
+            return;
+        }
+
+        var angB = 90 - ang;
+        var area = (opp * adj) / 2;
+        var perim = opp + adj + hyp;
+
+        renderRtResults(opp, adj, hyp, ang, angB, area, perim);
+        drawRtSvg({ opp: opp, adj: adj, hyp: hyp, ang: ang, angB: angB });
+        document.getElementById('rtResults').style.display = 'block';
+    }
+
+    function renderRtResults(opp, adj, hyp, angA, angB, area, perim) {
+        var grid = document.getElementById('rtResultsGrid');
+        grid.innerHTML =
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.cateto_oposto">Cateto Oposto (A)</div><div class="value accent">' + fmtLen(opp) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.cateto_adjacente">Cateto Adjacente (B)</div><div class="value accent">' + fmtLen(adj) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.hipotenusa">Hipotenusa (C)</div><div class="value success">' + fmtLen(hyp) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.angulo_a">Ângulo α</div><div class="value warning">' + fmtAngle(angA) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.angulo_b">Ângulo β</div><div class="value warning">' + fmtAngle(angB) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.angulo_c">Ângulo γ</div><div class="value warning">90,00°</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.area">Área</div><div class="value">' + fmtArea(area) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.perimetro">Perímetro</div><div class="value">' + fmtLen(perim) + '</div></div>';
+    }
+
+    function drawRtSvg(data) {
+        var svg = document.getElementById('rtSvg');
+        var W = 240, H = 180;
+        var pad = 20;
+        var maxDim = data ? Math.max(data.opp, data.adj) : 1;
+        var scale = Math.min((W - pad * 3) / maxDim, (H - pad * 3) / maxDim);
+        if (data) {
+            var oppPx = data.opp * scale;
+            var adjPx = data.adj * scale;
+            var cx = pad + 2;
+            var cy = H - pad - 2;
+            var ax = cx;
+            var ay = cy - oppPx;
+            var bx = cx + adjPx;
+            var by = cy;
+
+            var rightAngleSize = 14;
+            var rAx = cx + rightAngleSize;
+            var rAy = cy;
+            var rBx = cx + rightAngleSize;
+            var rBy = cy - rightAngleSize;
+            var rCx = cx;
+            var rCy = cy - rightAngleSize;
+
+            svg.innerHTML =
+                '<path d="M' + ax + ',' + ay + ' L' + bx + ',' + by + ' L' + cx + ',' + cy + ' Z" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>' +
+                '<polyline points="' + rAx + ',' + rAy + ' ' + rBx + ',' + rBy + ' ' + rCx + ',' + rCy + '" fill="none" stroke="var(--text)" stroke-width="1.5"/>' +
+                '<text x="' + ((cx + bx) / 2) + '" y="' + (by + 16) + '" class="svg-label" text-anchor="middle">B</text>' +
+                '<text x="' + (ax - 16) + '" y="' + ((ay + cy) / 2 + 4) + '" class="svg-label" text-anchor="middle">A</text>' +
+                '<text x="' + ((ax + bx) / 2 + 2) + '" y="' + ((ay + by) / 2 - 6) + '" class="svg-label" text-anchor="middle">C</text>' +
+                '<text x="' + (cx + 5) + '" y="' + (cy - 5) + '" class="svg-value" fill="var(--warning)">90°</text>' +
+                '<text x="' + (cx + adjPx * 0.15 + 4) + '" y="' + (cy - oppPx * 0.15 - 2) + '" class="svg-value" fill="var(--accent)">α</text>' +
+                '<text x="' + (cx + adjPx * 0.85 + 6) + '" y="' + (cy - oppPx * 0.85 + 4) + '" class="svg-value" fill="var(--accent)">β</text>';
+        } else {
+            svg.innerHTML = '<text x="' + (W / 2) + '" y="' + (H / 2) + '" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;" data-i18n="calderaria.trigonometria.placeholder_diagrama">Calcule para ver o diagrama</text>';
+        }
+    }
+
+    /* ===================================================================
+       SECTION 2 — OBLIQUE TRIANGLE
+       =================================================================== */
+    function calcOblique() {
+        var sA = parseFloat(document.getElementById('obSideA').value);
+        var sB = parseFloat(document.getElementById('obSideB').value);
+        var sC = parseFloat(document.getElementById('obSideC').value);
+        var aA = parseFloat(document.getElementById('obAngA').value);
+        var aB = parseFloat(document.getElementById('obAngB').value);
+        var aC = parseFloat(document.getElementById('obAngC').value);
+
+        var known = [];
+        if (!isNaN(sA)) known.push('sA');
+        if (!isNaN(sB)) known.push('sB');
+        if (!isNaN(sC)) known.push('sC');
+        if (!isNaN(aA)) known.push('aA');
+        if (!isNaN(aB)) known.push('aB');
+        if (!isNaN(aC)) known.push('aC');
+
+        if (known.length < 3) {
+            showToast(window.i18n.t('calderaria.trigonometria.err_3_valores'), 'fa-exclamation-triangle');
+            document.getElementById('obResults').style.display = 'none';
+            drawObSvg(null);
+            return;
+        }
+
+        var side = [sA, sB, sC];
+        var ang = [aA, aB, aC];
+
+        var sidesKnown = [0,1,2].filter(function(i) { return !isNaN(side[i]); }).length;
+        var anglesKnown = [0,1,2].filter(function(i) { return !isNaN(ang[i]); }).length;
+
+        if (anglesKnown === 2) {
+            var sum = 0;
+            var missIdx = -1;
+            for (var i = 0; i < 3; i++) {
+                if (!isNaN(ang[i])) sum += ang[i];
+                else missIdx = i;
+            }
+            if (sum >= 180) {
+                showToast(window.i18n.t('calderaria.trigonometria.err_soma_180'), 'fa-exclamation-triangle');
+                return;
+            }
+            ang[missIdx] = 180 - sum;
+            anglesKnown = 3;
+        }
+
+        if (anglesKnown === 3 && sidesKnown === 0) {
+            showToast(window.i18n.t('calderaria.trigonometria.err_um_lado'), 'fa-exclamation-triangle');
+            return;
+        }
+
+        if (sidesKnown === 3) {
+            for (var i = 0; i < 3; i++) {
+                var j = (i + 1) % 3;
+                var k = (i + 2) % 3;
+                var cosVal = (side[j] * side[j] + side[k] * side[k] - side[i] * side[i]) / (2 * side[j] * side[k]);
+                cosVal = Math.max(-1, Math.min(1, cosVal));
+                ang[i] = toDeg(Math.acos(cosVal));
+            }
+            anglesKnown = 3;
+        }
+
+        if (sidesKnown === 2 && anglesKnown === 1) {
+            var knownSideIdx = [];
+            var knownAngIdx = -1;
+            for (var i = 0; i < 3; i++) {
+                if (!isNaN(side[i])) knownSideIdx.push(i);
+                if (!isNaN(ang[i])) knownAngIdx = i;
+            }
+            var s1 = knownSideIdx[0], s2 = knownSideIdx[1], ai = knownAngIdx;
+            var unkIdx = -1;
+            for (var i = 0; i < 3; i++) {
+                if (isNaN(side[i])) unkIdx = i;
+            }
+            if (unkIdx === ai) {
+                var j = (ai + 1) % 3;
+                var k = (ai + 2) % 3;
+                side[unkIdx] = Math.sqrt(side[j] * side[j] + side[k] * side[k] - 2 * side[j] * side[k] * Math.cos(toRad(ang[ai])));
+                sidesKnown = 3;
+                var sinRatio = side[unkIdx] / Math.sin(toRad(ang[ai]));
+                for (var i = 0; i < 3; i++) {
+                    if (isNaN(ang[i])) {
+                        var val = Math.asin(side[i] / sinRatio);
+                        ang[i] = toDeg(val);
+                    }
+                }
+                var sum = ang[0] + ang[1] + ang[2];
+                for (var i = 0; i < 3; i++) {
+                    if (isNaN(ang[i])) ang[i] = 180 - sum;
+                }
+                anglesKnown = 3;
+            } else {
+                var found = false;
+                for (var i = 0; i < 3; i++) {
+                    if (!isNaN(ang[i]) && !isNaN(side[i])) {
+                        var ratio = side[i] / Math.sin(toRad(ang[i]));
+                        for (var j = 0; j < 3; j++) {
+                            if (j !== i && !isNaN(side[j]) && isNaN(ang[j])) {
+                                ang[j] = toDeg(Math.asin(side[j] / ratio));
+                            }
+                        }
+                        for (var j = 0; j < 3; j++) {
+                            if (isNaN(side[j])) {
+                                side[j] = ratio * Math.sin(toRad(ang[j]));
+                            }
+                        }
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    showToast(window.i18n.t('calderaria.trigonometria.err_combinacao'), 'fa-exclamation-triangle');
+                    return;
+                }
+                var sum = 0;
+                var miss = -1;
+                for (var i = 0; i < 3; i++) {
+                    if (isNaN(ang[i])) miss = i;
+                    else sum += ang[i];
+                }
+                if (miss >= 0) ang[miss] = 180 - sum;
+                anglesKnown = 3;
+            }
+        }
+
+        if ((anglesKnown >= 2 || (anglesKnown === 1 && sidesKnown >= 2)) && sidesKnown === 1 && anglesKnown >= 2) {
+            var ratio = -1;
+            for (var i = 0; i < 3; i++) {
+                if (!isNaN(side[i]) && !isNaN(ang[i])) {
+                    ratio = side[i] / Math.sin(toRad(ang[i]));
+                    break;
+                }
+            }
+            if (ratio > 0) {
+                for (var i = 0; i < 3; i++) {
+                    if (isNaN(side[i])) side[i] = ratio * Math.sin(toRad(ang[i]));
+                }
+                sidesKnown = 3;
+            }
+        }
+
+        if (sidesKnown < 3 || anglesKnown < 3) {
+            if (sidesKnown === 2 && anglesKnown >= 2) {
+                for (var i = 0; i < 3; i++) {
+                    if (isNaN(side[i])) {
+                        var j = (i + 1) % 3;
+                        var k = (i + 2) % 3;
+                        var cosVal = (side[j] * side[j] + side[k] * side[k] - 2 * side[j] * side[k] * Math.cos(toRad(ang[i])));
+                        if (cosVal >= 0) {
+                            side[i] = Math.sqrt(cosVal);
+                        }
+                    }
+                }
+                sidesKnown = 3;
+            }
+            if (sidesKnown < 3 || anglesKnown < 3) {
+                showToast(window.i18n.t('calderaria.trigonometria.err_resolver'), 'fa-exclamation-triangle');
+                document.getElementById('obResults').style.display = 'none';
+                drawObSvg(null);
+                return;
+            }
+        }
+
+        var sumA = ang[0] + ang[1] + ang[2];
+        if (Math.abs(sumA - 180) > 1) {
+            showToast(window.i18n.t('calderaria.trigonometria.err_ang_soma_180'), 'fa-exclamation-triangle');
+            return;
+        }
+
+        if (side[0] + side[1] <= side[2] || side[1] + side[2] <= side[0] || side[0] + side[2] <= side[1]) {
+            showToast(window.i18n.t('calderaria.trigonometria.err_lados_invalidos'), 'fa-exclamation-triangle');
+            return;
+        }
+
+        var s = (side[0] + side[1] + side[2]) / 2;
+        var area = Math.sqrt(s * (s - side[0]) * (s - side[1]) * (s - side[2]));
+        var perim = side[0] + side[1] + side[2];
+
+        renderObResults(side, ang, area, perim);
+        drawObSvg(side, ang);
+        document.getElementById('obResults').style.display = 'block';
+    }
+
+    function renderObResults(side, ang, area, perim) {
+        var labels = ['A', 'B', 'C'];
+        var sideKeys = ['calderaria.trigonometria.lado_a', 'calderaria.trigonometria.lado_b', 'calderaria.trigonometria.lado_c'];
+        var angleKeys = ['calderaria.trigonometria.angulo_a', 'calderaria.trigonometria.angulo_b', 'calderaria.trigonometria.angulo_c'];
+        var grid = document.getElementById('obResultsGrid');
+        var html = '';
+        for (var i = 0; i < 3; i++) {
+            html += '<div class="result-item"><div class="label" data-i18n="' + sideKeys[i] + '">Lado ' + labels[i] + '</div><div class="value accent">' + fmtLen(side[i]) + '</div></div>';
+        }
+        for (var i = 0; i < 3; i++) {
+            html += '<div class="result-item"><div class="label" data-i18n="' + angleKeys[i] + '">Ângulo ' + labels[i] + '</div><div class="value warning">' + fmtAngle(ang[i]) + '</div></div>';
+        }
+        html += '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.area">Área</div><div class="value">' + fmtArea(area) + '</div></div>' +
+                '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.perimetro">Perímetro</div><div class="value">' + fmtLen(perim) + '</div></div>';
+        grid.innerHTML = html;
+    }
+
+    function drawObSvg(side, ang) {
+        var svg = document.getElementById('obSvg');
+        var W = 240, H = 180;
+        if (!side || !ang) {
+            svg.innerHTML = '<text x="120" y="95" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;" data-i18n="calderaria.trigonometria.placeholder_diagrama">Calcule para ver o diagrama</text>';
+            return;
+        }
+        var pad = 15;
+        var maxSide = Math.max(side[0], side[1], side[2]);
+        var scale = Math.min((W - pad * 3) / maxSide, (H - pad * 4) / maxSide);
+
+        var bx = pad + 10;
+        var by = H - pad - 5;
+
+        var cx = bx + side[0] * scale;
+        var cy = by;
+
+        var cLen2 = side[0] * scale;
+        var aLen2 = side[1] * scale;
+        var bLen2 = side[2] * scale;
+        var s2 = (cLen2 + aLen2 + bLen2) / 2;
+        var h2 = 2 * Math.sqrt(s2 * (s2 - cLen2) * (s2 - aLen2) * (s2 - bLen2)) / cLen2;
+        var d = (bLen2 * bLen2 - aLen2 * aLen2 + cLen2 * cLen2) / (2 * cLen2);
+        var ax = bx + d;
+        var ay = by - h2;
+
+        var pts = [
+            { x: ax, y: ay },
+            { x: bx, y: by },
+            { x: cx, y: cy }
+        ];
+
+        if (cLen2 < 5 || h2 < 5) {
+            svg.innerHTML = '<text x="120" y="95" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;" data-i18n="calderaria.trigonometria.triangulo_pequeno">Triângulo muito pequeno para desenhar</text>';
+            return;
+        }
+
+        svg.innerHTML =
+            '<polygon points="' + pts[0].x + ',' + pts[0].y + ' ' + pts[1].x + ',' + pts[1].y + ' ' + pts[2].x + ',' + pts[2].y + '" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>' +
+            '<text x="' + ((pts[1].x + pts[2].x) / 2) + '" y="' + (pts[1].y + 16) + '" class="svg-label" text-anchor="middle">a</text>' +
+            '<text x="' + ((pts[0].x + pts[2].x) / 2 + 4) + '" y="' + ((pts[0].y + pts[2].y) / 2 - 4) + '" class="svg-label" text-anchor="middle">c</text>' +
+            '<text x="' + ((pts[0].x + pts[1].x) / 2 - 4) + '" y="' + ((pts[0].y + pts[1].y) / 2 + 4) + '" class="svg-label" text-anchor="middle">b</text>' +
+            '<text x="' + (pts[0].x - 10) + '" y="' + (pts[0].y - 4) + '" class="svg-value" fill="var(--accent)">α</text>' +
+            '<text x="' + (pts[1].x - 4) + '" y="' + (pts[1].y + 18) + '" class="svg-value" fill="var(--accent)">β</text>' +
+            '<text x="' + (pts[2].x + 4) + '" y="' + (pts[2].y + 18) + '" class="svg-value" fill="var(--accent)">γ</text>' +
+            '<text x="' + ((pts[1].x + pts[2].x) / 2) + '" y="' + (pts[1].y + 30) + '" class="svg-value" text-anchor="middle">' + fmtLen(side[0]) + '</text>' +
+            '<text x="' + ((pts[0].x + pts[1].x) / 2 - 6) + '" y="' + ((pts[0].y + pts[1].y) / 2 + 18) + '" class="svg-value" text-anchor="middle">' + fmtLen(side[2]) + '</text>' +
+            '<text x="' + ((pts[0].x + pts[2].x) / 2 + 6) + '" y="' + ((pts[0].y + pts[2].y) / 2 - 11) + '" class="svg-value" text-anchor="middle">' + fmtLen(side[1]) + '</text>' +
+            '<text x="' + pts[0].x + '" y="' + (pts[0].y - 8) + '" class="svg-label" text-anchor="middle" font-size="14">A</text>' +
+            '<text x="' + pts[1].x + '" y="' + (pts[1].y + 14) + '" class="svg-label" text-anchor="middle" font-size="14">B</text>' +
+            '<text x="' + pts[2].x + '" y="' + (pts[2].y + 14) + '" class="svg-label" text-anchor="middle" font-size="14">C</text>';
+    }
+
+    /* ===================================================================
+       SECTION 3 — ARC, CHORD, SAGITTA
+       =================================================================== */
+    function calcArc() {
+        var R = parseFloat(document.getElementById('arcRadius').value);
+        var theta = parseFloat(document.getElementById('arcAngle').value);
+        var chord = parseFloat(document.getElementById('arcChord').value);
+        var sagitta = parseFloat(document.getElementById('arcSagitta').value);
+
+        var known = [];
+        if (!isNaN(R)) known.push('R');
+        if (!isNaN(theta)) known.push('theta');
+        if (!isNaN(chord)) known.push('chord');
+        if (!isNaN(sagitta)) known.push('sagitta');
+
+        if (known.length < 2) {
+            showToast(window.i18n.t('calderaria.trigonometria.err_2_valores'), 'fa-exclamation-triangle');
+            document.getElementById('arcResults').style.display = 'none';
+            document.getElementById('arcExportCard').style.display = 'none';
+            drawArcSvg(null);
+            return;
+        }
+
+        var solvedR = R, solvedTheta = theta, solvedChord = chord, solvedSagitta = sagitta;
+
+        try {
+            if (known.includes('R') && known.includes('theta')) {
+                solvedChord = 2 * R * Math.sin(toRad(theta / 2));
+                solvedSagitta = R * (1 - Math.cos(toRad(theta / 2)));
+            } else if (known.includes('R') && known.includes('chord')) {
+                var halfChord = chord / (2 * R);
+                if (halfChord > 1 || halfChord < -1) throw new Error('Corda maior que o diâmetro');
+                solvedTheta = 2 * toDeg(Math.asin(halfChord));
+                solvedSagitta = R * (1 - Math.cos(toRad(solvedTheta / 2)));
+            } else if (known.includes('R') && known.includes('sagitta')) {
+                if (sagitta >= R || sagitta < 0) throw new Error('Flecha inválida para o raio');
+                var cosHalf = 1 - sagitta / R;
+                if (cosHalf > 1 || cosHalf < -1) throw new Error('Flecha inválida');
+                solvedTheta = 2 * toDeg(Math.acos(cosHalf));
+                solvedChord = 2 * R * Math.sin(toRad(solvedTheta / 2));
+            } else if (known.includes('theta') && known.includes('chord')) {
+                if (theta <= 0 || theta >= 360) throw new Error('Ângulo inválido');
+                solvedR = chord / (2 * Math.sin(toRad(theta / 2)));
+                solvedSagitta = solvedR * (1 - Math.cos(toRad(theta / 2)));
+            } else if (known.includes('theta') && known.includes('sagitta')) {
+                if (theta <= 0 || theta >= 360) throw new Error('Ângulo inválido');
+                var cosHalf = Math.cos(toRad(theta / 2));
+                if (cosHalf >= 1) throw new Error('Ângulo muito pequeno');
+                solvedR = sagitta / (1 - cosHalf);
+                solvedChord = 2 * solvedR * Math.sin(toRad(theta / 2));
+            } else if (known.includes('chord') && known.includes('sagitta')) {
+                if (sagitta < 0 || chord <= 0) throw new Error('Valores inválidos');
+                solvedR = (chord * chord / (4 * sagitta) + sagitta) / 2;
+                var halfChord = chord / (2 * solvedR);
+                if (halfChord > 1 || halfChord < -1) throw new Error('Corda muito grande para a flecha');
+                solvedTheta = 2 * toDeg(Math.asin(halfChord));
+            } else {
+                throw new Error('Combinação não suportada');
+            }
+
+            if (solvedR <= 0 || solvedTheta <= 0 || solvedTheta >= 360) throw new Error('Valores resultantes inválidos');
+
+            var arcLen = solvedR * toRad(solvedTheta);
+            var areaSeg = (solvedR * solvedR / 2) * (toRad(solvedTheta) - Math.sin(toRad(solvedTheta)));
+
+            renderArcResults(solvedR, solvedTheta, solvedChord, solvedSagitta, arcLen, areaSeg);
+            drawArcSvg({ R: solvedR, theta: solvedTheta, chord: solvedChord, sagitta: solvedSagitta });
+            document.getElementById('arcResults').style.display = 'block';
+            document.getElementById('arcExportCard').style.display = 'block';
+            window._arcData = { R: solvedR, theta: solvedTheta, chord: solvedChord, sagitta: solvedSagitta, arcLen: arcLen };
+
+        } catch (e) {
+            showToast(e.message || window.i18n.t('calderaria.trigonometria.err_calculo_arco'), 'fa-exclamation-triangle');
+            document.getElementById('arcResults').style.display = 'none';
+            document.getElementById('arcExportCard').style.display = 'none';
+            drawArcSvg(null);
+        }
+    }
+
+    function renderArcResults(R, theta, chord, sagitta, arcLen, areaSeg) {
+        var grid = document.getElementById('arcResultsGrid');
+        grid.innerHTML =
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.raio">Raio (R)</div><div class="value accent">' + fmtLen(R) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.angulo_central">Ângulo Central (θ)</div><div class="value warning">' + fmtAngle(theta) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.corda">Corda (C)</div><div class="value">' + fmtLen(chord) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.flecha">Flecha (f)</div><div class="value">' + fmtLen(sagitta) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.arc_length">Compr. do Arco</div><div class="value success">' + fmtLen(arcLen) + '</div></div>' +
+            '<div class="result-item"><div class="label" data-i18n="calderaria.trigonometria.segment_area">Área do Segmento</div><div class="value">' + fmtArea(areaSeg) + '</div></div>';
+    }
+
+    function drawArcSvg(data) {
+        var svg = document.getElementById('arcSvg');
+        var W = 260, H = 180;
+        if (!data) {
+            svg.innerHTML = '<text x="130" y="95" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;">Calcule para ver o diagrama</text>';
+            return;
+        }
+        var R = data.R, theta = data.theta, chord = data.chord, sagitta = data.sagitta;
+        var maxDim = Math.max(R * 2, chord + sagitta * 2);
+        var pad = 15;
+        var scale = Math.min((W - pad * 2) / (maxDim * 1.1), (H - pad * 2) / (maxDim * 1.1));
+        scale = Math.min(scale, 1.5);
+
+        var rPx = R * scale;
+        var chordPx = chord * scale;
+        var sagPx = sagitta * scale;
+
+        if (rPx < 5 || chordPx < 2) {
+            svg.innerHTML = '<text x="130" y="95" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;" data-i18n="calderaria.trigonometria.arco_pequeno">Arco muito pequeno para desenhar</text>';
+            return;
+        }
+
+        var cx = W / 2;
+        var cy = H - pad - 2;
+        var centerY = cy - rPx + sagPx;
+        var halfAngle = toRad(theta / 2);
+
+        var x1 = cx - chordPx / 2;
+        var y1 = cy;
+        var x2 = cx + chordPx / 2;
+        var y2 = cy;
+
+        var startAngle = Math.PI / 2 - halfAngle;
+        var endAngle = Math.PI / 2 + halfAngle;
+
+        var ax1 = cx + rPx * Math.cos(startAngle);
+        var ay1 = centerY + rPx * Math.sin(startAngle);
+        var ax2 = cx + rPx * Math.cos(endAngle);
+        var ay2 = centerY + rPx * Math.sin(endAngle);
+
+        var largeArc = theta > 180 ? 1 : 0;
+        var sweep = 1;
+        var arcPath = 'M ' + ax1 + ',' + ay1 + ' A ' + rPx + ',' + rPx + ' 0 ' + largeArc + ',' + sweep + ' ' + ax2 + ',' + ay2;
+
+        var topX = cx;
+        var topY = centerY - rPx;
+        var saggX1 = cx;
+        var saggY1 = cy;
+        var saggX2 = cx;
+        var saggY2 = topY;
+
+        svg.innerHTML =
+            '<path d="' + arcPath + '" fill="none" stroke="var(--accent)" stroke-width="2.5"/>' +
+            '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="var(--text)" stroke-width="2"/>' +
+            '<line x1="' + saggX1 + '" y1="' + saggY1 + '" x2="' + saggX2 + '" y2="' + saggY2 + '" stroke="var(--warning)" stroke-width="1.5" stroke-dasharray="5,3"/>' +
+            '<circle cx="' + x1 + '" cy="' + y1 + '" r="3" fill="var(--text)"/>' +
+            '<circle cx="' + x2 + '" cy="' + y2 + '" r="3" fill="var(--text)"/>' +
+            '<circle cx="' + cx + '" cy="' + cy + '" r="3" fill="var(--text)"/>' +
+            '<text x="' + (cx) + '" y="' + (cy + 14) + '" class="svg-label" text-anchor="middle" data-i18n="calderaria.trigonometria.corda">Corda</text>' +
+            '<text x="' + (cx + chordPx / 4 + 6) + '" y="' + ((saggY1 + saggY2) / 2 + 4) + '" class="svg-value" fill="var(--warning)">f</text>' +
+            '<text x="' + (cx - chordPx / 4 - 6) + '" y="' + ((saggY1 + saggY2) / 2 + 4) + '" class="svg-value" fill="var(--accent)" text-anchor="end">R</text>' +
+            '<path d="M ' + (cx + 20 * Math.cos(startAngle)) + ',' + (centerY + 20 * Math.sin(startAngle)) +
+            ' A 20,20 0 0,1 ' + (cx + 20 * Math.cos(endAngle)) + ',' + (centerY + 20 * Math.sin(endAngle)) +
+            '" fill="none" stroke="var(--text)" stroke-width="1" stroke-dasharray="3,2"/>' +
+            '<text x="' + (cx + 28 * Math.cos((startAngle + endAngle) / 2)) + '" y="' + (centerY + 28 * Math.sin((startAngle + endAngle) / 2) + 4) + '" class="svg-value" text-anchor="middle">θ</text>';
+    }
+
+    /* ===================================================================
+       DXF EXPORT
+       =================================================================== */
+    function exportArcDxf() {
+        var d = window._arcData;
+        if (!d) {
+            showToast(window.i18n.t('calderaria.trigonometria.err_calcule_arco'), 'fa-exclamation-triangle');
+            return;
+        }
+
+        var R = d.R;
+        var theta = d.theta;
+        var chord = d.chord;
+        var sagitta = d.sagitta;
+        var arcLen = d.arcLen;
+        var unit = getUnit();
+        var scale = unit === 'mm' ? 1 : 1 / 25.4;
+
+        var cr = R * scale;
+        var cc = chord * scale;
+        var cs = sagitta * scale;
+        var ca = arcLen * scale;
+
+        var dxf = '0\nSECTION\n2\nHEADER\n9\n$ACADVER\n1\nAC1009\n0\nENDSEC\n';
+        dxf += '0\nSECTION\n2\nENTITIES\n';
+        dxf += '0\nARC\n8\n0\n';
+        dxf += '10\n0.0\n';
+        dxf += '20\n' + (cs - cr).toFixed(6) + '\n';
+        dxf += '40\n' + cr.toFixed(6) + '\n';
+        var startDeg = 90 - theta / 2;
+        var endDeg = 90 + theta / 2;
+        dxf += '50\n' + startDeg.toFixed(6) + '\n';
+        dxf += '51\n' + endDeg.toFixed(6) + '\n';
+        dxf += '0\nLINE\n8\n0\n';
+        dxf += '10\n' + (-cc / 2).toFixed(6) + '\n';
+        dxf += '20\n0.0\n';
+        dxf += '30\n0.0\n';
+        dxf += '11\n' + (cc / 2).toFixed(6) + '\n';
+        dxf += '21\n0.0\n';
+        dxf += '31\n0.0\n';
+        dxf += '0\nENDSEC\n0\nEOF';
+
+        var blob = new Blob([dxf], { type: 'application/dxf' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'arco_trigonometria.dxf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(window.i18n.t('calderaria.trigonometria.msg_dxf_sucesso'), 'fa-download');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var rt1 = document.getElementById('rtVal1');
+        var rt2 = document.getElementById('rtVal2');
+        if (rt1.value && rt2.value) calcRightTriangle();
+    });
+    </script>
+</body>
+</html>

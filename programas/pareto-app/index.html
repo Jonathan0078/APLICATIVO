@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pareto.title">Software de Diagrama de Pareto</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-chart-bar"></i> <span data-i18n="pareto.header">Análise de Pareto</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-keyboard"></i> <span data-i18n="pareto.input_section">Insira seus Dados</span></h2>
+                    <div class="input-group">
+                        <label for="data-input" data-i18n="pareto.input_label">Cada item em uma nova linha: <strong>Causa, Valor</strong></label>
+                        <textarea id="data-input" rows="10" data-i18n="pareto.input_placeholder">Ex: Atraso na entrega, 55
+Defeito no produto, 28
+Erro de faturamento, 12
+Suporte lento, 6
+Outros, 3</textarea>
+                    </div>
+                    <div class="button-group">
+                        <button id="generate-btn" class="main-button"><i class="fa-solid fa-chart-bar"></i> <span data-i18n="pareto.generate">Gerar Diagrama</span></button>
+                    </div>
+                    <div id="error-message" class="error-msg"></div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-chart-line"></i> <span data-i18n="pareto.visual">Análise Visual</span></h2>
+                    <div class="chart-container">
+                        <canvas id="pareto-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-table"></i> <span data-i18n="pareto.table_section">Tabela de Dados</span></h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-i18n="pareto.cause">Causa</th>
+                                    <th data-i18n="pareto.frequency">Frequência / Custo</th>
+                                    <th data-i18n="pareto.cumulative">% Acumulada</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pareto-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle-checkbox');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.checked = true;
+            }
+            themeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark-theme');
+                localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+            });
+        });
+    </script>
+</body>
+</html>

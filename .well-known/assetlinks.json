@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "manutencao.arquivos.app",
+      "sha256_cert_fingerprints": [
+        "DE:11:6B:2C:21:30:C5:21:49:DC:EC:07:07:44:73:D5:7D:02:39:D3:25:06:5B:0D:68:A4:53:89:BB:4E:4D:E7"
+      ]
+    }
+  }
+]

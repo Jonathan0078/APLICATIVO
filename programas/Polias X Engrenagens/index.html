@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title data-i18n="polias_eng.title">Substituição de Engrenagens por Polias V</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>
+                    <i class="fa-solid fa-gears"></i>
+                    <span data-i18n="polias_eng.title">Substituição de Engrenagens por Polias V</span>
+                </h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <section id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-right-to-bracket"></i> <span data-i18n="polias_eng.current_system">Sistema Atual (Engrenagens)</span></h2>
+
+                    <div class="input-group">
+                        <label for="chain-type" data-i18n="polias_eng.chain_type">Tipo de Corrente (Passo)</label>
+                        <select id="chain-type"></select>
+                    </div>
+
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="gear-teeth-motor" data-i18n="polias_eng.motor_teeth">Dentes Motor (Z1)</label>
+                            <input type="number" id="gear-teeth-motor" placeholder="Ex: 20" data-i18n-placeholder="polias_eng.motor_teeth_ph">
+                        </div>
+                        <div class="input-group">
+                            <label for="gear-teeth-driven" data-i18n="polias_eng.driven_teeth">Dentes Movido (Z2)</label>
+                            <input type="number" id="gear-teeth-driven" placeholder="Ex: 40" data-i18n-placeholder="polias_eng.driven_teeth_ph">
+                        </div>
+                    </div>
+
+                    <h2><i class="fa-solid fa-gauge-high"></i> <span data-i18n="polias_eng.op_conditions">Condições de Operação</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="motor-rpm" data-i18n="polias_eng.motor_rpm">RPM do Motor</label>
+                            <input type="number" id="motor-rpm" placeholder="Ex: 1750" data-i18n-placeholder="polias_eng.motor_rpm_ph">
+                        </div>
+                        <div class="input-group">
+                            <label for="motor-cv" data-i18n="polias_eng.power_cv">Potência (CV)</label>
+                            <input type="number" id="motor-cv" placeholder="Ex: 10" data-i18n-placeholder="polias_eng.power_cv_ph">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="center-distance" data-i18n="polias_eng.center_dist">Distância entre Eixos (mm)</label>
+                        <input type="number" id="center-distance" placeholder="Ex: 600" data-i18n-placeholder="polias_eng.center_dist_ph">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="service-factor" data-i18n="polias_eng.service_factor">Fator de Serviço / Tipo de Carga</label>
+                        <select id="service-factor"></select>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="main-button" id="calculate-button">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span data-i18n="polias_eng.find_system">Encontrar Sistema de Polias Equivalente</span>
+                        </button>
+                        <button class="secondary-button" id="reset-button">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span data-i18n="reset.btn">Limpar</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-square-poll-vertical"></i> <span data-i18n="polias_eng.solutions">Soluções Recomendadas</span></h2>
+                        <div class="header-buttons">
+                            <button class="icon-button" id="export-pdf-button" title="Exportar PDF" style="display: none;">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </button>
+                            <button class="icon-button" id="export-excel-button" title="Exportar Excel" style="display: none;">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </button>
+                            <button class="icon-button" id="clear-results-button" title="Limpar Resultados">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="results-container">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-cogs"></i>
+                            <p data-i18n="polias_eng.results_placeholder">O sistema de polias ideal para substituir suas engrenagens aparecerá aqui.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

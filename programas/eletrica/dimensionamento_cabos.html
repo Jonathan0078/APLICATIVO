@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title data-i18n="eletrica.cabos.title">Dimensionamento de Cabos (NBR 5410)</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+<style>
+:root { --cor-isol-pvc: #3b82f6; --cor-isol-epr: #f59e0b; }
+body.dark-theme { --cor-isol-pvc: #60a5fa; --cor-isol-epr: #fbbf24; }
+
+.result-section { display: none; margin-top: 1rem; }
+.result-section.show { display: block; }
+.resultado-secao {
+  font-size: 1.6rem; font-weight: 800; padding: .5rem;
+  text-align: center; color: var(--primary);
+}
+.resultado-secao .mm2 { font-size: 1rem; font-weight: 600; color: var(--text-secondary); }
+.secao-recomendada {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff; border-radius: var(--radius-sm); padding: 1.25rem;
+  text-align: center; margin-bottom: 1rem;
+}
+.secao-recomendada .label { font-size: .7rem; text-transform: uppercase; letter-spacing: .03em; opacity: .8; }
+.secao-recomendada .value { font-size: 2rem; font-weight: 800; }
+.secao-recomendada .sub { font-size: .85rem; opacity: .9; margin-top: .25rem; }
+
+.method-badge {
+  display: inline-block; padding: .15rem .4rem; border-radius: 4px;
+  font-size: .7rem; font-weight: 700; font-family: monospace;
+  background: var(--bg); color: var(--text-secondary); margin: .1rem;
+}
+.method-badge.active { background: var(--primary); color: #fff; }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-content">
+      <h1><i class="fa-solid fa-ruler"></i> <span data-i18n="eletrica.cabos.title">Dimensionamento de Cabos (NBR 5410)</span></h1>
+      <div class="theme-switcher">
+        <i class="fa-solid fa-sun"></i>
+        <label class="switch"><input type="checkbox" id="themeToggle"><span class="slider"></span></label>
+        <i class="fa-solid fa-moon"></i>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="card">
+      <h2><i class="fa-solid fa-sliders-h"></i> <span data-i18n="eletrica.cabos.parametros">Parâmetros do Circuito</span></h2>
+      <div class="input-grid">
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.corrente">Corrente de Projeto (A)</label>
+          <input type="number" id="corrente" value="50" step="1" min="0">
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.tensao">Tensão (V)</label>
+          <select id="tensao">
+            <option value="127" data-i18n="eletrica.cabos.tensao_127v">127 V</option>
+            <option value="220" selected data-i18n="eletrica.cabos.tensao_220v">220 V</option>
+            <option value="380" data-i18n="eletrica.cabos.tensao_380v">380 V</option>
+            <option value="440" data-i18n="eletrica.cabos.tensao_440v">440 V</option>
+            <option value="760" data-i18n="eletrica.cabos.tensao_760v">760 V</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.sistema">Sistema</label>
+          <select id="sistema">
+            <option value="mono" data-i18n="eletrica.cabos.mono">Monofásico (2 cond.)</option>
+            <option value="tri" selected data-i18n="eletrica.cabos.tri">Trifásico (3 cond.)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.material">Material do Condutor</label>
+          <select id="material">
+            <option value="cu" selected data-i18n="eletrica.cabos.cobre">Cobre</option>
+            <option value="al" data-i18n="eletrica.cabos.aluminio">Alumínio</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.isolamento">Tipo de Isolação</label>
+          <select id="isolacao">
+            <option value="pvc" selected data-i18n="eletrica.cabos.pvc">PVC 70°C</option>
+            <option value="epr" data-i18n="eletrica.cabos.epr">EPR/XLPE 90°C</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.metodo">Método de Instalação</label>
+          <select id="metodo">
+            <option value="B1" data-i18n="eletrica.cabos.metodo_b1">B1 — Eletroduto embutido em parede</option>
+            <option value="B2" data-i18n="eletrica.cabos.metodo_b2">B2 — Cabo multipolar em eletroduto</option>
+            <option value="C" selected data-i18n="eletrica.cabos.metodo_c">C — Cabo unipolar em superfície</option>
+            <option value="E" data-i18n="eletrica.cabos.metodo_e">E — Cabo ao ar livre</option>
+            <option value="F" data-i18n="eletrica.cabos.metodo_f">F — Cabo em bandeja perfurada</option>
+            <option value="D" data-i18n="eletrica.cabos.metodo_d">D — Cabo enterrado (diretamente)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.comprimento">Comprimento (m)</label>
+          <input type="number" id="comprimento" value="50" step="1" min="0">
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.queda_max_label">Queda de Tensão Máxima (%)</label>
+          <select id="quedaMax">
+            <option value="2" data-i18n="eletrica.cabos.queda_2">2% (iluminação)</option>
+            <option value="4" selected data-i18n="eletrica.cabos.queda_4">4% (força)</option>
+            <option value="5" data-i18n="eletrica.cabos.queda_5">5% (industrial)</option>
+            <option value="7" data-i18n="eletrica.cabos.queda_7">7% (partida)</option>
+          </select>
+        </div>
+      </div>
+
+      <h2 style="margin-top:.75rem;"><i class="fa-solid fa-temperature-half"></i> <span data-i18n="eletrica.cabos.fatores_correcao">Fatores de Correção</span></h2>
+      <div class="input-grid">
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.temp_amb_label">Temperatura Ambiente (°C)</label>
+          <select id="tempAmb">
+            <option value="25" data-i18n="eletrica.cabos.temp_25">25°C</option>
+            <option value="30" selected data-i18n="eletrica.cabos.temp_30">30°C</option>
+            <option value="35" data-i18n="eletrica.cabos.temp_35">35°C</option>
+            <option value="40" data-i18n="eletrica.cabos.temp_40">40°C</option>
+            <option value="45" data-i18n="eletrica.cabos.temp_45">45°C</option>
+            <option value="50" data-i18n="eletrica.cabos.temp_50">50°C</option>
+            <option value="55" data-i18n="eletrica.cabos.temp_55">55°C</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.tipo_agrupamento">Tipo de Agrupamento</label>
+          <select id="tipoAgrupamento">
+            <option value="eletroduto" data-i18n="eletrica.cabos.agr_eletroduto">Eletroduto / conduto fechado</option>
+            <option value="eletrocalha_perfurada" data-i18n="eletrica.cabos.agr_eletrocalha_perf">Eletrocalha perfurada (camada única)</option>
+            <option value="eletrocalha_fechada" selected data-i18n="eletrica.cabos.agr_eletrocalha_fechada">Eletrocalha não perfurada / bandeja (camada única)</option>
+            <option value="leito_escada" data-i18n="eletrica.cabos.agr_leito">Leito a cabos / suporte tipo escada (camada única)</option>
+          </select>
+          <small class="form-hint" id="agrupamentoHint" data-i18n="eletrica.cabos.agr_dica_motor">Comum em circuitos de motores: vários alimentadores agrupados no mesmo eletroduto ou eletrocalha reduzem a capacidade de condução de cada cabo.</small>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.cabos.n_circuitos">Nº de Circuitos Agrupados</label>
+          <select id="nCirc">
+            <option value="1" selected data-i18n="eletrica.cabos.ncirc_1">1 (isolado)</option>
+            <option value="2" data-i18n="eletrica.cabos.ncirc_2">2 circuitos</option>
+            <option value="3" data-i18n="eletrica.cabos.ncirc_3">3 circuitos</option>
+            <option value="4" data-i18n="eletrica.cabos.ncirc_4">4 circuitos</option>
+            <option value="5" data-i18n="eletrica.cabos.ncirc_5">5 circuitos</option>
+            <option value="6" data-i18n="eletrica.cabos.ncirc_6">6 circuitos</option>
+            <option value="7" data-i18n="eletrica.cabos.ncirc_7">7 circuitos</option>
+            <option value="8" data-i18n="eletrica.cabos.ncirc_8">8 circuitos</option>
+            <option value="9" data-i18n="eletrica.cabos.ncirc_9">9+ circuitos</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button class="main-button" onclick="calcular()"><i class="fa-solid fa-calculator"></i> <span data-i18n="eletrica.cabos.calcular">Dimensionar</span></button>
+        <button class="secondary-button" onclick="resetCalc()"><i class="fa-solid fa-undo"></i> <span data-i18n="eletrica.cabos.limpar">Limpar</span></button>
+      </div>
+    </div>
+
+    <div class="result-section" id="resultSection">
+      <div class="card">
+        <h2><i class="fa-solid fa-check-circle" style="color:var(--cor-sucesso)"></i> <span data-i18n="eletrica.cabos.resultado">Resultado</span></h2>
+        <div class="secao-recomendada">
+          <div class="label" data-i18n="eletrica.cabos.secao_recomendada">Seção Nominal Recomendada</div>
+          <div class="value" id="secaoFinal">—</div>
+          <div class="sub" id="subInfo"></div>
+        </div>
+        <div class="result-grid">
+          <div class="result-item"><div class="label" data-i18n="eletrica.cabos.capacidade_base">Capacidade Base (A)</div><div class="value accent" id="resBase">—</div></div>
+          <div class="result-item"><div class="label" data-i18n="eletrica.cabos.fct_label">FCT (Temperatura)</div><div class="value" id="resFCT">—</div></div>
+          <div class="result-item"><div class="label" data-i18n="eletrica.cabos.fca_label">FCA (Agrupamento)</div><div class="value" id="resFCA">—</div></div>
+          <div class="result-item"><div class="label" data-i18n="eletrica.cabos.capacidade_corrigida">Capac. Corrigida (A)</div><div class="value success" id="resCorrigida">—</div></div>
+          <div class="result-item"><div class="label" data-i18n="eletrica.cabos.queda_tensao_pct">Queda de Tensão (%)</div><div class="value warning" id="resQueda">—</div></div>
+          <div class="result-item"><div class="label" data-i18n="eletrica.cabos.queda_tensao_v">Queda de Tensão (V)</div><div class="value" id="resQuedaV">—</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><i class="fa-solid fa-table"></i> <span data-i18n="eletrica.cabos.tabela_secoes">Tabela de Seções Disponíveis</span></h2>
+        <div class="table-wrap">
+          <table id="tabelaSecoes">
+            <thead>
+              <tr><th data-i18n="eletrica.cabos.th_secao">Seção (mm²)</th><th data-i18n="eletrica.cabos.th_cap_base">Cap. Base (A)</th><th data-i18n="eletrica.cabos.th_cap_corrigida">Cap. Corrigida (A)</th><th data-i18n="eletrica.cabos.th_dv">ΔV (%)</th><th data-i18n="eletrica.cabos.th_adequado">Adequado</th></tr>
+            </thead>
+            <tbody id="secoesBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/i18n.js"></script>
+<script src="shared.js"></script>
+<script>
+// Capacidades de corrente (A) conforme NBR 5410 - Tabelas 33 a 40
+// [PVC 70°C, EPR/XLPE 90°C] para cada método
+var secoes = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500];
+
+var capacidadeBase = {
+  // Método B1: eletroduto embutido parede
+  B1: {
+    pvc:  [15.5, 21, 28, 36, 50, 68, 89, 110, 134, 171, 207, 239, 275, 314, 369, 424, 488, 552],
+    epr:  [19.5, 26, 35, 45, 63, 86, 115, 143, 175, 224, 271, 314, 363, 415, 490, 565, 650, 735]
+  },
+  // Método B2: cabo multipolar eletroduto
+  B2: {
+    pvc:  [14, 18.5, 25, 32, 45, 61, 80, 99, 121, 154, 186, 215, 248, 283, 332, 382, 440, 497],
+    epr:  [17.5, 23.5, 31, 40, 56, 77, 103, 128, 157, 201, 244, 283, 327, 374, 441, 509, 585, 662]
+  },
+  // Método C: cabo unipolar superfície
+  C: {
+    pvc:  [17.5, 24, 32, 41, 57, 77, 101, 125, 153, 196, 238, 276, 318, 364, 428, 495, 570, 645],
+    epr:  [23, 31, 41, 53, 73, 100, 133, 165, 203, 261, 318, 370, 428, 491, 579, 671, 775, 880]
+  },
+  // Método E: cabo ao ar livre
+  E: {
+    pvc:  [19, 26, 35, 46, 64, 87, 115, 142, 174, 223, 271, 314, 363, 416, 490, 568, 655, 742],
+    epr:  [25, 34, 46, 59, 83, 114, 152, 188, 232, 298, 363, 423, 489, 562, 663, 770, 888, 1010]
+  },
+  // Método F: cabo em bandeja perfurada
+  F: {
+    pvc:  [21, 29, 38, 50, 69, 93, 123, 152, 186, 238, 289, 335, 387, 443, 521, 604, 697, 790],
+    epr:  [27, 37, 49, 63, 88, 120, 160, 198, 244, 313, 382, 445, 514, 590, 697, 809, 935, 1065]
+  },
+  // Método D: cabo enterrado
+  D: {
+    pvc:  [22, 30, 40, 52, 73, 99, 130, 161, 197, 251, 304, 352, 405, 463, 544, 629, 723, 818],
+    epr:  [26, 35, 47, 61, 86, 117, 156, 194, 238, 306, 373, 434, 501, 575, 679, 789, 910, 1033]
+  }
+};
+
+// FCT - Fator de Correção de Temperatura (Tabela 42 NBR 5410)
+var fctTabela = {
+  pvc:  {25: 1.06, 30: 1.00, 35: 0.94, 40: 0.87, 45: 0.79, 50: 0.71, 55: 0.61},
+  epr:  {25: 1.04, 30: 1.00, 35: 0.96, 40: 0.91, 45: 0.87, 50: 0.82, 55: 0.76}
+};
+
+// FCA - Fator de Correção de Agrupamento (Tabela 42 NBR 5410 / IEC 60364-5-52)
+// Valores para circuitos de mesma seção agrupados em camada única, cabos encostados.
+// Cada disposição de instalação tem sua própria curva de redução.
+var fcaTabela = {
+  // Eletroduto ou outro conduto fechado (embutido ou aparente) — cabos enfeixados/encostados
+  eletroduto: {
+    1: 1.00, 2: 0.80, 3: 0.70, 4: 0.65, 5: 0.60, 6: 0.57, 7: 0.54, 8: 0.52, 9: 0.50
+  },
+  // Eletrocalha perfurada, camada única, cabos encostados
+  eletrocalha_perfurada: {
+    1: 1.00, 2: 0.88, 3: 0.82, 4: 0.77, 5: 0.75, 6: 0.73, 7: 0.73, 8: 0.72, 9: 0.72
+  },
+  // Eletrocalha não perfurada / bandeja sólida, parede ou piso, camada única, cabos encostados
+  eletrocalha_fechada: {
+    1: 1.00, 2: 0.85, 3: 0.79, 4: 0.75, 5: 0.73, 6: 0.72, 7: 0.72, 8: 0.71, 9: 0.70
+  },
+  // Leito a cabos / suporte tipo escada / cleats, camada única, cabos encostados
+  leito_escada: {
+    1: 1.00, 2: 0.87, 3: 0.82, 4: 0.80, 5: 0.80, 6: 0.79, 7: 0.79, 8: 0.78, 9: 0.78
+  }
+};
+
+// Sugestão padrão de disposição de agrupamento conforme o método de instalação escolhido
+// (o usuário pode sobrescrever manualmente no select)
+var agrupamentoPorMetodo = {
+  B1: 'eletroduto',
+  B2: 'eletroduto',
+  C:  'eletrocalha_fechada',
+  E:  'leito_escada',
+  F:  'eletrocalha_perfurada',
+  D:  'eletroduto'
+};
+
+// Resistência (Ω/km a 20°C) para cabos de cobre e alumínio
+// Valores aproximados conforme NBR 5410 / IEC 60228
+var R20 = {
+  cu: {1.5: 12.1, 2.5: 7.41, 4: 4.61, 6: 3.08, 10: 1.83, 16: 1.15, 25: 0.727, 35: 0.524,
+       50: 0.387, 70: 0.268, 95: 0.193, 120: 0.153, 150: 0.124, 185: 0.0991,
+       240: 0.0754, 300: 0.0601, 400: 0.0470, 500: 0.0366},
+  al: {1.5: 18.1, 2.5: 11.1, 4: 6.92, 6: 4.62, 10: 2.75, 16: 1.73, 25: 1.09, 35: 0.786,
+       50: 0.581, 70: 0.402, 95: 0.290, 120: 0.229, 150: 0.186, 185: 0.149,
+       240: 0.113, 300: 0.0901, 400: 0.0705, 500: 0.0549}
+};
+
+// Reatância indutiva aproximada (Ω/km) — valores típicos para cabos
+var X = {1.5: 0.125, 2.5: 0.116, 4: 0.107, 6: 0.100, 10: 0.092, 16: 0.087, 25: 0.082,
+         35: 0.079, 50: 0.077, 70: 0.075, 95: 0.074, 120: 0.073, 150: 0.072,
+         185: 0.071, 240: 0.070, 300: 0.069, 400: 0.068, 500: 0.067};
+
+function fmt(v) { return v != null ? v.toFixed(1) : '—'; }
+function fmt2(v) { return v != null ? v.toFixed(2) : '—'; }
+function fmt3(v) { return v != null ? v.toFixed(3) : '—'; }
+
+var agrupamentoLabel = {
+  eletroduto: 'Eletroduto',
+  eletrocalha_perfurada: 'Eletrocalha perf.',
+  eletrocalha_fechada: 'Eletrocalha fechada',
+  leito_escada: 'Leito/escada'
+};
+
+function calcular() {
+  var I = parseFloat(document.getElementById('corrente').value);
+  var tensao = parseFloat(document.getElementById('tensao').value);
+  var sistema = document.getElementById('sistema').value;
+  var material = document.getElementById('material').value;
+  var isol = document.getElementById('isolacao').value;
+  var metodo = document.getElementById('metodo').value;
+  var compr = parseFloat(document.getElementById('comprimento').value);
+  var dVmax = parseFloat(document.getElementById('quedaMax').value);
+  var temp = parseInt(document.getElementById('tempAmb').value);
+  var tipoAgrup = document.getElementById('tipoAgrupamento').value;
+  var nCirc = parseInt(document.getElementById('nCirc').value);
+
+  if (!I || I <= 0 || !compr || compr <= 0) {
+    showToast(window.i18n.t('eletrica.cabos.preencha'));
+    return;
+  }
+
+  var keyIsol = isol === 'pvc' ? 'pvc' : 'epr';
+  var tabBase = capacidadeBase[metodo][keyIsol];
+
+  var FCT = fctTabela[keyIsol][temp] || 1.0;
+  var tabelaFCA = fcaTabela[tipoAgrup] || fcaTabela.eletroduto;
+  var FCA = tabelaFCA[nCirc] || 0.50;
+  var Iproj = I;
+
+  // Encontrar menor seção que atenda capacidade corrigida
+  var secaoEscolhida = null;
+  var idxEscolhida = -1;
+  var tabelaLinhas = [];
+
+  for (var i = 0; i < secoes.length; i++) {
+    var S = secoes[i];
+    var Ibase = tabBase[i];
+    var Icorr = Ibase * FCT * FCA;
+
+    // Queda de tensão
+    var R20_val = R20[material][S];
+    if (!R20_val) continue;
+    // Resistência a 70°C (PVC) ou 90°C (EPR)
+    var Tcond = isol === 'pvc' ? 70 : 90;
+    var alpha = 0.0039; // Cu
+    if (material === 'al') alpha = 0.0040;
+    var RT = R20_val * (1 + alpha * (Tcond - 20));
+    var X_val = X[S] || 0.07;
+    var Z = Math.sqrt(RT * RT + X_val * X_val);
+    var dV = 0;
+    if (sistema === 'tri') {
+      dV = (I * compr * Z * Math.sqrt(3)) / (tensao * 10);
+    } else {
+      dV = (I * compr * Z * 2) / (tensao * 10);
+    }
+    var dVPct = dV;
+
+    var adequado = Icorr >= Iproj && dVPct <= dVmax;
+    if (adequado && secaoEscolhida === null) {
+      secaoEscolhida = S;
+      idxEscolhida = i;
+    }
+
+    tabelaLinhas.push({ S: S, Ibase: Ibase, Icorr: Icorr, dV: dVPct, ok: adequado });
+  }
+
+  // Exibir resultados
+  document.getElementById('resultSection').classList.add('show');
+
+  if (secaoEscolhida) {
+    var linha = tabelaLinhas[idxEscolhida];
+    document.getElementById('secaoFinal').textContent = secaoEscolhida + ' mm²';
+    document.getElementById('subInfo').textContent =
+      window.i18n.t('eletrica.cabos.capacidade_corrigida_info') + ': ' + fmt(linha.Icorr) + ' A | ΔV: ' + fmt2(linha.dV) + '%';
+    document.getElementById('resBase').textContent = fmt(linha.Ibase) + ' A';
+    document.getElementById('resFCT').textContent = fmt3(FCT);
+    document.getElementById('resFCA').textContent = fmt3(FCA) + ' (' + (agrupamentoLabel[tipoAgrup] || '') + ')';
+    document.getElementById('resCorrigida').textContent = fmt(linha.Icorr) + ' A';
+    document.getElementById('resQueda').textContent = fmt2(linha.dV) + '%';
+    document.getElementById('resQuedaV').textContent = fmt2(linha.dV * tensao / 100) + ' V';
+  } else {
+    document.getElementById('secaoFinal').textContent = window.i18n.t('eletrica.cabos.nenhuma_secao');
+    document.getElementById('subInfo').textContent = window.i18n.t('eletrica.cabos.aumente');
+    document.getElementById('resBase').textContent = '—';
+    document.getElementById('resFCT').textContent = fmt3(FCT);
+    document.getElementById('resFCA').textContent = fmt3(FCA) + ' (' + (agrupamentoLabel[tipoAgrup] || '') + ')';
+    document.getElementById('resCorrigida').textContent = '—';
+    document.getElementById('resQueda').textContent = '—';
+    document.getElementById('resQuedaV').textContent = '—';
+  }
+
+  // Renderizar tabela
+  var tbody = document.getElementById('secoesBody');
+  tbody.innerHTML = '';
+  tabelaLinhas.forEach(function(l) {
+    var tr = document.createElement('tr');
+    var cor = l.ok ? 'var(--cor-sucesso)' : 'var(--cor-erro)';
+    var icone = l.ok ? 'fa-check-circle' : 'fa-times-circle';
+    tr.style.color = l.ok ? 'var(--cor-sucesso)' : 'var(--text)';
+    tr.innerHTML =
+      '<td style="font-weight:' + (l.ok ? '700' : '400') + '">' + l.S + '</td>' +
+      '<td>' + fmt(l.Ibase) + ' A</td>' +
+      '<td>' + fmt(l.Icorr) + ' A</td>' +
+      '<td>' + fmt2(l.dV) + '%</td>' +
+      '<td><i class="fas ' + icone + '" style="color:' + cor + '"></i></td>';
+    tbody.appendChild(tr);
+  });
+
+  window.scrollTo({ top: document.getElementById('resultSection').offsetTop - 100, behavior: 'smooth' });
+}
+
+function resetCalc() {
+  document.getElementById('resultSection').classList.remove('show');
+}
+
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--surface);padding:.75rem 1.25rem;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.15);border:1px solid var(--border);font-size:.85rem;font-weight:500;z-index:100;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { t.remove(); }, 2500);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+    var metodoEl = document.getElementById('metodo');
+    var agrupEl = document.getElementById('tipoAgrupamento');
+    if (metodoEl && agrupEl) {
+      metodoEl.addEventListener('change', function() {
+        var sugestao = agrupamentoPorMetodo[metodoEl.value];
+        if (sugestao) agrupEl.value = sugestao;
+      });
+    }
+});
+</script>
+</body>
+</html>

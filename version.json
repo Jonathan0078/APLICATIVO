@@ -1,0 +1,13 @@
+{
+  "version": "1.1.1",
+  "versionCode": 16,
+  "apkVersionCode": 16, 
+  "updateDate": "2026-06-20",
+  "updateMessage": "Novas ferramentas adicionadas",
+  "forceUpdate": true,
+  "minimumVersion": "1.0.0",
+  "minimumVersionCode": 4,
+  "changelog": [
+    "Novas categoria e ferramentas adicionadas"
+  ]
+}

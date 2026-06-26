@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>FullScreen</key>
+            <true/>
+            <key>IgnoreManifestScope</key>
+            <true/>
+            <key>IsRemovable</key>
+            <true/>
+            <key>Label</key>
+            <string>MI Arquivos</string>
+            <key>Icon</key>
+            <data>
+            iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAA80lEQVR42u3SMQ0AAAjAMBxw4gH//sAGCT1mYGlk9ehvYQIARgAgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAAwAQAjABAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAANCNFhoWxN6nIAKVAAAAAElFTkSuQmCC
+            </data>
+            <key>PayloadDisplayName</key>
+            <string>MI Arquivos</string>
+            <key>PayloadIdentifier</key>
+            <string>com.miarquivos.ios.clip</string>
+            <key>PayloadType</key>
+            <string>com.apple.webClip.managed</string>
+            <key>PayloadUUID</key>
+            <string>510df22d-24a8-54d7-aa55-66e24ca1fe65</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>URL</key>
+            <string>https://jonathan0078.github.io/APLICATIVO/</string>
+            <key>StatusBarStyle</key>
+            <string>black-translucent</string>
+            <key>Precomposed</key>
+            <true/>
+        </dict>
+    </array>
+    <key>PayloadDisplayName</key>
+    <string>MI Arquivos</string>
+    <key>PayloadDescription</key>
+    <string>Adiciona o aplicativo MI Arquivos à tela inicial do seu iPhone.</string>
+    <key>PayloadIdentifier</key>
+    <string>com.miarquivos.ios</string>
+    <key>PayloadOrganization</key>
+    <string>Manutenção Industrial Arquivos</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>a32ac1c0-5e25-5bbe-b601-1d1be440c830</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>

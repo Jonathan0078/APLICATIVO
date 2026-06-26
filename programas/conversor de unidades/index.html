@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="unidades.title">Conversor de Unidades</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#003366">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-arrows-rotate"></i> <span data-i18n="unidades.title">Conversor de Unidades</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entrada -->
+            <div id="inputs-column">
+                <!-- Card de Categorias -->
+                <div class="card">
+                    <h2><i class="fa-solid fa-ruler"></i> <span data-i18n="unidades.select_category">Selecione a Categoria</span></h2>
+                    <nav class="sub-navegacao">
+                        <button class="sub-nav-button active" data-i18n="unidades.cat_comprimento" onclick="mostrarPainelConversao('painel-comprimento')">Comprimento</button>
+                        <button class="sub-nav-button" data-i18n="unidades.cat_massa" onclick="mostrarPainelConversao('painel-massa')">Massa</button>
+                        <button class="sub-nav-button" data-i18n="unidades.cat_pressao" onclick="mostrarPainelConversao('painel-pressao')">Pressão</button>
+                        <button class="sub-nav-button" data-i18n="unidades.cat_area" onclick="mostrarPainelConversao('painel-area')">Área</button>
+                        <button class="sub-nav-button" data-i18n="unidades.cat_volume" onclick="mostrarPainelConversao('painel-volume')">Volume</button>
+                    </nav>
+                </div>
+
+                <!-- Card de Conversão -->
+                <div class="card">
+                    <h2><i class="fa-solid fa-arrow-right-arrow-left"></i> <span data-i18n="unidades.conversion">Conversão</span></h2>
+                    
+                    <!-- PAINEL COMPRIMENTO -->
+                    <div id="painel-comprimento" class="painel-conversao">
+                        <div class="input-group">
+                            <label for="comp-valor" data-i18n="unidades.valor">Valor</label>
+                            <input type="number" id="comp-valor" class="conversor-input" value="1" data-i18n-placeholder="unidades.valor">
+                        </div>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="comp-de" data-i18n="unidades.de">De</label>
+                                <select id="comp-de" class="conversor-select">
+                                    <option value="m" selected data-i18n="unidades.comp_m">Metro (m)</option>
+                                    <option value="km" data-i18n="unidades.comp_km">Quilômetro (km)</option>
+                                    <option value="cm" data-i18n="unidades.comp_cm">Centímetro (cm)</option>
+                                    <option value="mm" data-i18n="unidades.comp_mm">Milímetro (mm)</option>
+                                    <option value="in" data-i18n="unidades.comp_in">Polegada (in)</option>
+                                    <option value="ft" data-i18n="unidades.comp_ft">Pé (ft)</option>
+                                    <option value="mi" data-i18n="unidades.comp_mi">Milha (mi)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="comp-para" data-i18n="unidades.para">Para</label>
+                                <select id="comp-para" class="conversor-select">
+                                    <option value="m" data-i18n="unidades.comp_m">Metro (m)</option>
+                                    <option value="km" data-i18n="unidades.comp_km">Quilômetro (km)</option>
+                                    <option value="cm" selected data-i18n="unidades.comp_cm">Centímetro (cm)</option>
+                                    <option value="mm" data-i18n="unidades.comp_mm">Milímetro (mm)</option>
+                                    <option value="in" data-i18n="unidades.comp_in">Polegada (in)</option>
+                                    <option value="ft" data-i18n="unidades.comp_ft">Pé (ft)</option>
+                                    <option value="mi" data-i18n="unidades.comp_mi">Milha (mi)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAINEL MASSA -->
+                    <div id="painel-massa" class="painel-conversao hidden">
+                        <div class="input-group">
+                            <label for="massa-valor" data-i18n="unidades.valor">Valor</label>
+                            <input type="number" id="massa-valor" class="conversor-input" value="1" data-i18n-placeholder="unidades.valor">
+                        </div>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="massa-de" data-i18n="unidades.de">De</label>
+                                <select id="massa-de" class="conversor-select">
+                                    <option value="kg" selected data-i18n="unidades.massa_kg">Quilograma (kg)</option>
+                                    <option value="g" data-i18n="unidades.massa_g">Grama (g)</option>
+                                    <option value="t" data-i18n="unidades.massa_t">Tonelada (t)</option>
+                                    <option value="lb" data-i18n="unidades.massa_lb">Libra (lb)</option>
+                                    <option value="oz" data-i18n="unidades.massa_oz">Onça (oz)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="massa-para" data-i18n="unidades.para">Para</label>
+                                <select id="massa-para" class="conversor-select">
+                                    <option value="kg" data-i18n="unidades.massa_kg">Quilograma (kg)</option>
+                                    <option value="g" selected data-i18n="unidades.massa_g">Grama (g)</option>
+                                    <option value="t" data-i18n="unidades.massa_t">Tonelada (t)</option>
+                                    <option value="lb" data-i18n="unidades.massa_lb">Libra (lb)</option>
+                                    <option value="oz" data-i18n="unidades.massa_oz">Onça (oz)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- PAINEL PRESSÃO -->
+                    <div id="painel-pressao" class="painel-conversao hidden">
+                        <div class="input-group">
+                            <label for="pressao-valor" data-i18n="unidades.valor">Valor</label>
+                            <input type="number" id="pressao-valor" class="conversor-input" value="1" data-i18n-placeholder="unidades.valor">
+                        </div>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="pressao-de" data-i18n="unidades.de">De</label>
+                                <select id="pressao-de" class="conversor-select">
+                                    <option value="bar" selected data-i18n="unidades.pressao_bar">Bar</option>
+                                    <option value="pa" data-i18n="unidades.pressao_pa">Pascal (Pa)</option>
+                                    <option value="kpa" data-i18n="unidades.pressao_kpa">Quilopascal (kPa)</option>
+                                    <option value="psi" data-i18n="unidades.pressao_psi">PSI</option>
+                                    <option value="atm" data-i18n="unidades.pressao_atm">Atmosfera (atm)</option>
+                                    <option value="kgfcm2" data-i18n="unidades.pressao_kgfcm2">kgf/cm²</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="pressao-para" data-i18n="unidades.para">Para</label>
+                                <select id="pressao-para" class="conversor-select">
+                                    <option value="bar" data-i18n="unidades.pressao_bar">Bar</option>
+                                    <option value="pa" data-i18n="unidades.pressao_pa">Pascal (Pa)</option>
+                                    <option value="kpa" data-i18n="unidades.pressao_kpa">Quilopascal (kPa)</option>
+                                    <option value="psi" selected data-i18n="unidades.pressao_psi">PSI</option>
+                                    <option value="atm" data-i18n="unidades.pressao_atm">Atmosfera (atm)</option>
+                                    <option value="kgfcm2" data-i18n="unidades.pressao_kgfcm2">kgf/cm²</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- PAINEL ÁREA -->
+                    <div id="painel-area" class="painel-conversao hidden">
+                        <div class="input-group">
+                            <label for="area-valor" data-i18n="unidades.valor">Valor</label>
+                            <input type="number" id="area-valor" class="conversor-input" value="1" data-i18n-placeholder="unidades.valor">
+                        </div>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="area-de" data-i18n="unidades.de">De</label>
+                                <select id="area-de" class="conversor-select">
+                                    <option value="m2" selected data-i18n="unidades.area_m2">Metro² (m²)</option>
+                                    <option value="km2" data-i18n="unidades.area_km2">Quilômetro² (km²)</option>
+                                    <option value="ha" data-i18n="unidades.area_ha">Hectare (ha)</option>
+                                    <option value="ft2" data-i18n="unidades.area_ft2">Pé² (ft²)</option>
+                                    <option value="ac" data-i18n="unidades.area_ac">Acre (ac)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="area-para" data-i18n="unidades.para">Para</label>
+                                <select id="area-para" class="conversor-select">
+                                    <option value="m2" data-i18n="unidades.area_m2">Metro² (m²)</option>
+                                    <option value="km2" data-i18n="unidades.area_km2">Quilômetro² (km²)</option>
+                                    <option value="ha" data-i18n="unidades.area_ha">Hectare (ha)</option>
+                                    <option value="ft2" selected data-i18n="unidades.area_ft2">Pé² (ft²)</option>
+                                    <option value="ac" data-i18n="unidades.area_ac">Acre (ac)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAINEL VOLUME -->
+                    <div id="painel-volume" class="painel-conversao hidden">
+                        <div class="input-group">
+                            <label for="volume-valor" data-i18n="unidades.valor">Valor</label>
+                            <input type="number" id="volume-valor" class="conversor-input" value="1" data-i18n-placeholder="unidades.valor">
+                        </div>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="volume-de" data-i18n="unidades.de">De</label>
+                                <select id="volume-de" class="conversor-select">
+                                    <option value="l" selected data-i18n="unidades.vol_l">Litro (L)</option>
+                                    <option value="m3" data-i18n="unidades.vol_m3">Metro³ (m³)</option>
+                                    <option value="ml" data-i18n="unidades.vol_ml">Mililitro (ml)</option>
+                                    <option value="gal" data-i18n="unidades.vol_gal">Galão (US)</option>
+                                    <option value="ft3" data-i18n="unidades.vol_ft3">Pé³ (ft³)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="volume-para" data-i18n="unidades.para">Para</label>
+                                <select id="volume-para" class="conversor-select">
+                                    <option value="l" data-i18n="unidades.vol_l">Litro (L)</option>
+                                    <option value="m3" data-i18n="unidades.vol_m3">Metro³ (m³)</option>
+                                    <option value="ml" data-i18n="unidades.vol_ml">Mililitro (ml)</option>
+                                    <option value="gal" selected data-i18n="unidades.vol_gal">Galão (US)</option>
+                                    <option value="ft3" data-i18n="unidades.vol_ft3">Pé³ (ft³)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="main-button" onclick="converterCategoriaAtual()">
+                            <i class="fa-solid fa-calculator"></i> <span data-i18n="unidades.converter">Converter</span>
+                        </button>
+                        <button class="secondary-button" onclick="limparCampos()">
+                            <i class="fa-solid fa-eraser"></i> <span data-i18n="unidades.limpar">Limpar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Resultado -->
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-square-check"></i> <span data-i18n="unidades.resultado">Resultado</span></h2>
+                        <span id="categoria-atual-label" class="badge" data-i18n="unidades.cat_comprimento">Comprimento</span>
+                    </div>
+                    <div class="resultado-container success" id="resultado-container">
+                        <div class="resultado-display">
+                            <div class="result-main-text" id="resultado-valor">
+                                <span id="resultado-numero">100</span>
+                                <span id="resultado-unidade">cm</span>
+                            </div>
+                            <div class="result-sub-text" id="resultado-detalhe">
+                                1 m = 100 cm
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                        <div class="input-grid">
+                            <div class="input-group" style="margin-bottom: 0;">
+                                 <label data-i18n="unidades.valor_original">Valor Original</label>
+                                <input type="text" id="historico-original" class="conversor-resultado" value="1 m" readonly style="font-weight:400;">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 0;">
+                                 <label data-i18n="unidades.resultado_label">Resultado</label>
+                                <input type="text" id="historico-convertido" class="conversor-resultado" value="100 cm" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // TEMA
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle-checkbox');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.checked = true;
+            }
+            themeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark-theme');
+                localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+            });
+            
+            atualizarLabelCategoria('comprimento');
+        });
+
+        function atualizarLabelCategoria(categoria) {
+            const nomes = {
+                comprimento: i18n.t('unidades.cat_comprimento'),
+                massa: i18n.t('unidades.cat_massa'),
+                pressao: i18n.t('unidades.cat_pressao'),
+                area: i18n.t('unidades.cat_area'),
+                volume: i18n.t('unidades.cat_volume')
+            };
+            document.getElementById('categoria-atual-label').textContent = nomes[categoria] || categoria;
+        }
+
+        // Sobrescrever mostrarPainelConversao para atualizar o label
+        const mostrarPainelConversaoOriginal = window.mostrarPainelConversao;
+        window.mostrarPainelConversao = function(idDoPainel) {
+            mostrarPainelConversaoOriginal(idDoPainel);
+            const categoria = idDoPainel.replace('painel-', '');
+            atualizarLabelCategoria(categoria);
+        };
+
+        function converterCategoriaAtual() {
+            const painelVisivel = document.querySelector('.painel-conversao:not(.hidden)');
+            if (painelVisivel) {
+                const id = painelVisivel.id;
+                const categoria = id.replace('painel-', '');
+                converter(categoria);
+            }
+        }
+
+        function limparCampos() {
+            document.querySelectorAll('.conversor-input').forEach(input => {
+                input.value = '';
+            });
+            document.querySelectorAll('.conversor-resultado').forEach(input => {
+                input.value = '';
+            });
+            document.getElementById('resultado-numero').textContent = '—';
+            document.getElementById('resultado-unidade').textContent = '';
+            document.getElementById('resultado-detalhe').textContent = i18n.t('unidades.waiting');
+            document.getElementById('historico-original').value = '';
+            document.getElementById('historico-convertido').value = '';
+        }
+
+        // Modificar a função converter para atualizar os elementos de resultado
+        window.converter = function(categoria) {
+            const prefixo = mapeamentoCategoria[categoria]?.prefixo;
+            if (!prefixo) return;
+
+            const valorInput = document.getElementById(`${prefixo}-valor`);
+            const deSelect = document.getElementById(`${prefixo}-de`);
+            const paraSelect = document.getElementById(`${prefixo}-para`);
+
+            if (!valorInput || !deSelect || !paraSelect) return;
+
+            const valor = parseFloat(valorInput.value);
+            const deUnidade = deSelect.value;
+            const paraUnidade = paraSelect.value;
+            
+            if (isNaN(valor) || valor === '') {
+                document.getElementById('resultado-numero').textContent = '—';
+                document.getElementById('resultado-unidade').textContent = '';
+                document.getElementById('resultado-detalhe').textContent = i18n.t('unidades.waiting');
+                document.getElementById('historico-original').value = '';
+                document.getElementById('historico-convertido').value = '';
+                return;
+            }
+
+            const fatores = fatoresDeConversao[categoria];
+            const valorNaBase = valor * fatores[deUnidade];
+            const resultado = valorNaBase / fatores[paraUnidade];
+
+            let resultadoFormatado;
+            if (resultado === 0) {
+                resultadoFormatado = '0';
+            } else if (resultado < 0.0001 || resultado > 10000000) {
+                resultadoFormatado = resultado.toExponential(4);
+            } else {
+                resultadoFormatado = parseFloat(resultado.toPrecision(7)).toString();
+            }
+
+            const nomesUnidades = {
+                'm': 'm', 'km': 'km', 'cm': 'cm', 'mm': 'mm', 'in': 'in', 'ft': 'ft', 'mi': 'mi',
+                'kg': 'kg', 'g': 'g', 't': 't', 'lb': 'lb', 'oz': 'oz',
+                'pa': 'Pa', 'bar': 'bar', 'kpa': 'kPa', 'psi': 'psi', 'atm': 'atm', 'kgfcm2': 'kgf/cm²',
+                'm2': 'm²', 'km2': 'km²', 'ha': 'ha', 'ft2': 'ft²', 'ac': 'ac',
+                'l': 'L', 'm3': 'm³', 'ml': 'ml', 'gal': 'gal', 'ft3': 'ft³'
+            };
+
+            const nomeDe = nomesUnidades[deUnidade] || deUnidade;
+            const nomePara = nomesUnidades[paraUnidade] || paraUnidade;
+
+            document.getElementById('resultado-numero').textContent = resultadoFormatado;
+            document.getElementById('resultado-unidade').textContent = nomePara;
+            document.getElementById('resultado-detalhe').textContent = `${valor} ${nomeDe} = ${resultadoFormatado} ${nomePara}`;
+            document.getElementById('historico-original').value = `${valor} ${nomeDe}`;
+            document.getElementById('historico-convertido').value = `${resultadoFormatado} ${nomePara}`;
+        };
+    </script>
+</body>

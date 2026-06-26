@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="lms.mix_title">SGL - Calculador de Mistura Pro</title>
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#003366">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <button id="menu-toggle-btn" class="icon-button" style="color: white; font-size: 1.5rem;"><i class="fa-solid fa-bars"></i></button>
+                <h1 data-i18n="lms.header"><i class="fa-solid fa-layer-group"></i> SGL Pro</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i><label class="switch"><input type="checkbox" id="theme-toggle-checkbox"><span class="slider"></span></label><i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <div id="fullscreen-menu" class="fullscreen-menu">
+            <button id="close-menu-btn" class="icon-button close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <nav class="overlay-nav">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-search"></i> Buscador</a>
+                <a href="calculadora.html" class="nav-link"><i class="fa-solid fa-calculator"></i> Calculadora VG</a>
+                <a href="plano.html" class="nav-link"><i class="fa-solid fa-calendar-check"></i> Plano de Lubrificação</a>
+                <a href="mistura.html" class="nav-link"><i class="fa-solid fa-vial"></i> Calculador de Mistura</a>
+                <a href="configuracoes.html" class="nav-link"><i class="fa-solid fa-cogs"></i> Configurações</a>
+            </nav>
+        </div>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card blend-calculator-section">
+                    <h2><i class="fas fa-vial"></i> Configuração da Mistura</h2>
+                    
+                    <form id="blend-form" class="blend-form">
+                        <div style="background-color: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 1rem;">
+                            <h3 style="margin-top: 0; color: var(--secondary); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1rem;"><i class="fas fa-tint"></i> Óleo 1</h3>
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label for="visc1" data-i18n="lms.visc_40">Viscosidade (cSt a 40°C)</label>
+                                    <input type="number" id="visc1" required placeholder="Ex: 150">
+                                </div>
+                                <div class="input-group">
+                                    <label for="vol1" data-i18n="lms.vol_pct">Volume na mistura (%)</label>
+                                    <input type="number" id="vol1" min="1" max="99" required placeholder="Ex: 70">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background-color: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                            <h3 style="margin-top: 0; color: var(--secondary); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1rem;"><i class="fas fa-plus"></i> Óleo 2</h3>
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label for="visc2" data-i18n="lms.visc_40">Viscosidade (cSt a 40°C)</label>
+                                    <input type="number" id="visc2" required placeholder="Ex: 32">
+                                </div>
+                                <div class="input-group">
+                                    <label data-i18n="lms.vol_pct">Volume na mistura (%)</label>
+                                    <input type="text" id="vol2-display" disabled placeholder="Automático">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="button-group" style="margin-top: 1.5rem;">
+                        <button type="button" id="calculate-blend-button" class="main-button" style="background-color: #6f42c1;"><i class="fas fa-calculator"></i> <span data-i18n="lms.calc_blend_btn">Calcular Viscosidade</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <h2><i class="fas fa-chart-pie"></i> Resultado da Mistura</h2>
+                    
+                    <div id="blend-result" class="hidden resultado-container" style="background-color: rgba(111,66,193,0.05); border-left: 4px solid #6f42c1; padding: 2rem; border-radius: var(--radius-sm); text-align: center;">
+                        <h3 data-i18n="lms.blend_visc" style="color: var(--text-secondary); font-size: 1rem;">Viscosidade Resultante:</h3>
+                        <p id="blend-result-text" class="recommended-vg" style="color: #6f42c1; font-size: 3rem; font-weight: bold; margin: 0;"></p>
+                    </div>
+
+                    <div class="result-placeholder" id="blendPlaceholder" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        <i class="fas fa-vials" style="font-size: 3rem; color: #6f42c1; margin-bottom: 1rem;"></i>
+                        <p>Informe as viscosidades originais e o volume da mistura para calcular o ISO VG final projetado.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/mistura.js"></script>
+    <script src="../shared/i18n.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle-btn'); const closeMenu = document.getElementById('close-menu-btn'); const fullscreenMenu = document.getElementById('fullscreen-menu');
+            if(menuToggle) { menuToggle.addEventListener('click', () => { fullscreenMenu.classList.add('active'); document.body.style.overflow = 'hidden'; }); closeMenu.addEventListener('click', () => { fullscreenMenu.classList.remove('active'); document.body.style.overflow = ''; }); }
+            document.querySelectorAll('.overlay-nav .nav-link').forEach(link => { if (link.getAttribute('href') === (window.location.pathname.split('/').pop() || 'mistura.html')) link.classList.add('active'); });
+            const themeToggleCb = document.getElementById('theme-toggle-checkbox');
+            if (themeToggleCb) {
+                if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-theme'); themeToggleCb.checked = true; }
+                themeToggleCb.addEventListener('change', (e) => { document.body.classList.toggle('dark-theme', e.target.checked); localStorage.setItem('theme', e.target.checked ? 'dark' : 'light'); });
+            }
+        });
+    </script>
+</body>
+</html>

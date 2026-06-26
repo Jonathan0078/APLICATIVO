@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="roteiro.title">Roteiro de Lubrificação Pro</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="roteiro.title">Roteiro de Lubrificação Pro</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main" style="grid-template-columns: 1fr;"> 
+            
+            <div class="card">
+                <h2><i class="fa-solid fa-pen-to-square"></i> <span data-i18n="roteiro.register">Registrar Lubrificação</span></h2>
+                <form id="lubForm">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="equipamento" data-i18n="roteiro.equipment">Equipamento</label>
+                            <input type="text" id="equipamento" required placeholder="Ex: Motor Principal" data-i18n-placeholder="roteiro.equipamento_placeholder">
+                        </div>
+                        <div class="input-group">
+                            <label for="patrimonio" data-i18n="roteiro.asset_number">Patrimônio</label>
+                            <input type="text" id="patrimonio" required placeholder="Ex: 12345" data-i18n-placeholder="roteiro.patrimonio_placeholder">
+                        </div>
+                    </div>
+
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="periodo" data-i18n="roteiro.interval">Período/Intervalo</label>
+                            <input type="text" id="periodo" required placeholder="Ex: Semanal, Mensal" data-i18n-placeholder="roteiro.periodo_placeholder">
+                        </div>
+                        <div class="input-group">
+                            <label for="data_realizada" data-i18n="roteiro.date">Data Realizada</label>
+                            <input type="date" id="data_realizada" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="observacoes" data-i18n="roteiro.observations">Observações Gerais</label>
+                            <input type="text" id="observacoes" placeholder="Condição, anomalias..." data-i18n-placeholder="roteiro.obs_placeholder">
+                        </div>
+                    </div>
+
+                    <div class="components-section">
+                        <h3><i class="fa-solid fa-gears"></i> <span data-i18n="roteiro.componentes_lubrificados">Componentes Lubrificados</span></h3>
+                        
+                        <div id="componentsList" class="components-list"></div>
+
+                        <div class="input-grid" style="align-items: end;">
+                            <div class="input-group">
+                                <label data-i18n="roteiro.tipo_componente">Tipo de Componente</label>
+                                <select id="componentType">
+                                    <option value="" data-i18n="roteiro.select_tipo">Selecione...</option>
+                                    <option value="mancal" data-i18n="roteiro.tipo_mancal">Mancal</option>
+                                    <option value="guia" data-i18n="roteiro.tipo_guia">Guia Linear</option>
+                                    <option value="rolamento" data-i18n="roteiro.tipo_rolamento">Rolamento</option>
+                                    <option value="corrente" data-i18n="roteiro.tipo_corrente">Corrente</option>
+                                    <option value="redutor" data-i18n="roteiro.tipo_redutor">Redutor</option>
+                                    <option value="outro" data-i18n="roteiro.tipo_outro">Outro (Especificar)</option>
+                                </select>
+                            </div>
+                            <div class="input-group" id="containerTypeOther" style="display: none;">
+                                <label data-i18n="roteiro.especificar">Especificar</label>
+                                <input type="text" id="componentTypeOther" placeholder="Qual?" data-i18n-placeholder="roteiro.qual_placeholder">
+                            </div>
+                            <div class="input-group" style="max-width: 100px;">
+                                <label data-i18n="roteiro.qtd">Qtd</label>
+                                <input type="number" id="componentQty" placeholder="1" min="1">
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="roteiro.lubrificante">Lubrificante Utilizado</label>
+                                <input type="text" id="componentLub" placeholder="Ex: Graxa EP2" data-i18n-placeholder="roteiro.lubrificante_placeholder">
+                            </div>
+                            <div class="input-group">
+                                <button type="button" id="addComponentBtn" class="secondary-button" style="width: 100%;"><i class="fa-solid fa-plus"></i> <span data-i18n="roteiro.adicionar">Adicionar</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group" style="margin-top: 2rem;">
+                        <button type="submit" id="saveBtn" class="main-button"><i class="fa-solid fa-check"></i> <span data-i18n="roteiro.save_record">Salvar Registro</span></button>
+                        <button type="button" id="clearBtn" class="secondary-button"><i class="fa-solid fa-eraser"></i> <span data-i18n="roteiro.limpar">Limpar Formulário</span></button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem; gap: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                    <h2 style="border: none; margin: 0; padding: 0;"><i class="fa-solid fa-table-list"></i> <span data-i18n="roteiro.historico">Histórico de Registros</span></h2>
+                    <div class="button-group" style="margin: 0; padding: 0;">
+                        <button type="button" id="exportBtn" class="secondary-button"><i class="fa-solid fa-file-csv"></i> <span data-i18n="roteiro.export">Exportar</span></button>
+                        <button type="button" id="printBtn" class="secondary-button"><i class="fa-solid fa-print"></i> <span data-i18n="roteiro.print">Imprimir</span></button>
+                        <button type="button" id="clearAllBtn" class="secondary-button" style="color: var(--cor-erro); border-color: var(--cor-erro);"><i class="fa-solid fa-trash"></i> <span data-i18n="roteiro.apagar_tudo">Apagar Tudo</span></button>
+                    </div>
+                </div>
+
+                <div class="input-grid" style="margin-bottom: 1.5rem;">
+                    <div class="input-group">
+                        <input type="text" id="search" placeholder="Buscar por equipamento ou patrimônio..." data-i18n-placeholder="roteiro.search_placeholder">
+                    </div>
+                    <div class="input-group">
+                            <select id="filterPeriodo">
+                                <option value="" data-i18n="roteiro.filter_all">Filtrar: Todos os períodos</option>
+                                <option value="semanal" data-i18n="roteiro.semanal">Semanal</option>
+                                <option value="mensal" data-i18n="roteiro.mensal">Mensal</option>
+                                <option value="trimestral" data-i18n="roteiro.trimestral">Trimestral</option>
+                                <option value="semestral" data-i18n="roteiro.semestral">Semestral</option>
+                                <option value="anual" data-i18n="roteiro.anual">Anual</option>
+                            </select>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="entriesTable">
+                        <thead>
+                            <tr>
+                                <th data-i18n="roteiro.th_equipamento">Equipamento</th>
+                                <th data-i18n="roteiro.th_patrimonio">Patrimônio</th>
+                                <th data-i18n="roteiro.th_periodo">Período</th>
+                                <th data-i18n="roteiro.th_data">Data Realizada</th>
+                                <th data-i18n="roteiro.th_proxima">Próxima Troca</th>
+                                <th style="text-align: center;" data-i18n="roteiro.th_acoes">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

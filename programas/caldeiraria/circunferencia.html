@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title data-i18n="circunf.title">Divisão de Circunferências - Furação de Flanges</title>
+<link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+<link rel="stylesheet" href="style.css">
+<style>
+:root {
+    --bg: #f1f5f9;
+    --surface: #ffffff;
+    --primary: #0f172a;
+    --accent: #3b82f6;
+    --accent-light: #eff6ff;
+    --text: #0f172a;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+}
+body.dark-theme {
+    --bg: #0a1929;
+    --surface: #112233;
+    --text: #e9ecef;
+    --text-secondary: #8696a7;
+    --border: #334b61;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    --accent-light: #1e3a5f;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+}
+.app-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem 2rem;
+}
+.app-header {
+    background: linear-gradient(145deg, #0f172a 0%, #1e3a5f 50%, #1a365d 100%);
+    color: white;
+    padding: 1rem 1.25rem;
+    border-radius: 0 0 var(--radius) var(--radius);
+    margin: 0 -1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+.app-header h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+.app-header h1 i { color: #60a5fa; }
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.unit-toggle-group {
+    display: flex;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.unit-toggle {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    font-family: inherit;
+}
+.unit-toggle.active {
+    background: rgba(255,255,255,0.25);
+    color: white;
+}
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.theme-switcher i { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+.switch {
+    position: relative; display: inline-block; width: 44px; height: 22px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255,255,255,0.25); transition: 0.3s; border-radius: 22px;
+}
+.slider:before {
+    position: absolute; content: ""; height: 16px; width: 16px;
+    left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%;
+}
+input:checked + .slider { background-color: var(--accent); }
+input:checked + .slider:before { transform: translateX(22px); }
+
+.card {
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+}
+.card h2 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+}
+body.dark-theme .card h2 { color: var(--text); }
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+.input-group { margin-bottom: 0.5rem; }
+.input-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+}
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 1.05rem;
+    font-weight: 600;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+.input-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+}
+.btn-chip {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    min-height: 38px;
+}
+.btn-chip:active { transform: scale(0.95); }
+.btn-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+.result-item {
+    text-align: center;
+    padding: 1rem 0.5rem;
+    background: var(--bg);
+    border-radius: 8px;
+}
+.result-item.chord {
+    grid-column: 1 / -1;
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+}
+.result-item .label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+.result-item .value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+.result-item.chord .value {
+    font-size: 1.8rem;
+    color: var(--accent);
+}
+body.dark-theme .result-item .value { color: var(--text); }
+body.dark-theme .result-item.chord .value { color: var(--accent); }
+
+.svg-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    width: 100%;
+}
+.svg-container svg {
+    max-width: 100%;
+    height: auto;
+    width: 100%;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+th, td {
+    padding: 0.55rem 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+th {
+    background: var(--bg);
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+td { color: var(--text); }
+tr:nth-child(even) { background: var(--bg); }
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    min-height: 44px;
+}
+.btn-action:active { transform: scale(0.96); }
+.btn-primary { background: var(--accent); color: white; }
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.section-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.section-tab {
+    padding: 0.55rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+.section-tab.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+@media (max-width: 600px) {
+    .results-grid { grid-template-columns: 1fr 1fr; }
+    .input-grid { grid-template-columns: 1fr; }
+    .app-header h1 { font-size: 0.95rem; }
+}
+</style>
+</head>
+<body>
+<div class="app-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
+<aside class="app-sidebar" id="appSidebar">
+    <div class="app-sidebar-header">
+        <span data-i18n="circunf.header">Divisão de Circunferências</span>
+        <button class="app-sidebar-close" onclick="toggleSidebar(false)"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="app-sidebar-nav">
+        <div class="app-sidebar-item active" data-section="card-dados" onclick="scrollToSection('card-dados')">
+            <i class="fa-solid fa-sliders"></i> <span data-i18n="circunf.dados_flange">Dados do Flange</span>
+        </div>
+        <div class="app-sidebar-item" data-section="card-rapida" onclick="scrollToSection('card-rapida')">
+            <i class="fa-solid fa-bolt"></i> <span data-i18n="circunf.selecao_rapida">Seleção Rápida</span>
+        </div>
+        <div class="app-sidebar-item" data-section="card-resultados" onclick="scrollToSection('card-resultados')">
+            <i class="fa-solid fa-ruler"></i> <span data-i18n="circunf.resultados">Resultados</span>
+        </div>
+        <div class="app-sidebar-item" data-section="card-esquema" onclick="scrollToSection('card-esquema')">
+            <i class="fa-solid fa-circle"></i> <span data-i18n="circunf.esquema">Esquema Gráfico</span>
+        </div>
+        <div class="app-sidebar-item" data-section="card-tabela" onclick="scrollToSection('card-tabela')">
+            <i class="fa-solid fa-table"></i> <span data-i18n="circunf.tab_xy">Tabelas</span>
+        </div>
+    </div>
+</aside>
+
+<div class="app-container">
+
+    <header class="app-header">
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+            <button class="hamburger-toggle" onclick="toggleSidebar(true)" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+            <h1><i class="fa-solid fa-circle-notch"></i> <span data-i18n="circunf.header">Divisão de Circunferências</span></h1>
+        </div>
+        <div class="header-right">
+            <div class="unit-toggle-group">
+                <button class="unit-toggle active" data-unit="mm" onclick="setUnit('mm')">mm</button>
+                <button class="unit-toggle" data-unit="in" onclick="setUnit('in')">in</button>
+            </div>
+            <div class="theme-switcher">
+                <i class="fa-solid fa-sun"></i>
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+                <i class="fa-solid fa-moon"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="card" id="card-dados">
+        <h2 data-i18n="circunf.dados_flange"><i class="fa-solid fa-sliders"></i> Dados do Flange</h2>
+        <div class="input-grid">
+            <div class="input-group">
+                <label data-i18n="circunf.pcd">Diâmetro Primitivo (PCD) <span class="unit-label">mm</span></label>
+                <input type="number" id="inputPCD" class="calc-input" value="200" min="1" step="0.1">
+            </div>
+            <div class="input-group">
+                <label data-i18n="circunf.num_furos">Número de Furos (N)</label>
+                <input type="number" id="inputHoles" class="calc-input" value="8" min="2" max="48" step="1">
+            </div>
+        </div>
+        <div class="input-group">
+            <label data-i18n="circunf.diam_furo">Diâmetro do Furo (opcional) <span class="unit-label">mm</span></label>
+            <input type="number" id="inputHoleDia" class="calc-input" value="" min="0.1" step="0.1" placeholder="Opcional">
+        </div>
+    </div>
+
+    <div class="card" id="card-rapida">
+        <h2 data-i18n="circunf.selecao_rapida"><i class="fa-solid fa-bolt"></i> Seleção Rápida</h2>
+        <div style="margin-bottom:0.6rem;font-size:0.75rem;color:var(--text-secondary);font-weight:600;" data-i18n="circunf.furos">Furos:</div>
+        <div class="btn-group" id="quickHoles">
+            <button class="btn-chip" data-value="4">4</button>
+            <button class="btn-chip" data-value="6">6</button>
+            <button class="btn-chip" data-value="8">8</button>
+            <button class="btn-chip" data-value="10">10</button>
+            <button class="btn-chip" data-value="12">12</button>
+            <button class="btn-chip" data-value="16">16</button>
+            <button class="btn-chip" data-value="20">20</button>
+            <button class="btn-chip" data-value="24">24</button>
+        </div>
+        <div style="margin:0.6rem 0 0.3rem;font-size:0.75rem;color:var(--text-secondary);font-weight:600;" data-i18n="circunf.pcd_quick">PCD (mm):</div>
+        <div class="btn-group" id="quickPCD">
+            <button class="btn-chip" data-value="80">80</button>
+            <button class="btn-chip" data-value="100">100</button>
+            <button class="btn-chip" data-value="120">120</button>
+            <button class="btn-chip" data-value="150">150</button>
+            <button class="btn-chip" data-value="200">200</button>
+            <button class="btn-chip" data-value="250">250</button>
+            <button class="btn-chip" data-value="300">300</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-resultados">
+        <h2 data-i18n="circunf.resultados"><i class="fa-solid fa-ruler"></i> Resultados</h2>
+        <div class="results-grid" id="resultsGrid">
+            <div class="result-item chord">
+                <div class="label" data-i18n="circunf.corda">Corda entre furos adjacentes</div>
+                <div class="value" id="resChord">—</div>
+            </div>
+            <div class="result-item">
+                <div class="label" data-i18n="circunf.angulo">Ângulo entre furos</div>
+                <div class="value" id="resAngle">—</div>
+            </div>
+            <div class="result-item">
+                <div class="label" data-i18n="circunf.arco">Arco entre furos</div>
+                <div class="value" id="resArc">—</div>
+            </div>
+            <div class="result-item">
+                <div class="label" data-i18n="circunf.corda_pula1">Corda (pula 1 furo)</div>
+                <div class="value" id="resSkip1">—</div>
+            </div>
+            <div class="result-item">
+                <div class="label" data-i18n="circunf.corda_pula2">Corda (pula 2 furos)</div>
+                <div class="value" id="resSkip2">—</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" id="card-esquema">
+        <h2 data-i18n="circunf.esquema"><i class="fa-solid fa-circle"></i> Esquema Gráfico</h2>
+        <div class="svg-container">
+            <svg id="boltsvg" width="400" height="400" viewBox="-200 -200 400 400"></svg>
+        </div>
+    </div>
+
+    <div class="card" id="card-tabela">
+        <div class="section-tabs">
+            <button class="section-tab active" data-tab="tabXY" data-i18n="circunf.tab_xy">Coordenadas X/Y</button>
+            <button class="section-tab" data-tab="tabChordTable" data-i18n="circunf.tab_cordas">Cordas Acumuladas</button>
+        </div>
+
+        <div class="tab-content active" id="tabXY">
+            <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem;flex-wrap:wrap;">
+                <button class="btn-action btn-outline" onclick="copyTable('xyTable')" data-i18n="circunf.copiar"><i class="fa-solid fa-copy"></i> Copiar</button>
+                <button class="btn-action btn-primary" onclick="exportDXF()" data-i18n="circunf.export_dxf"><i class="fa-solid fa-file-export"></i> Exportar DXF</button>
+            </div>
+            <div class="table-container">
+                <table id="xyTable">
+                    <thead><tr><th data-i18n="circunf.furo">Nº</th><th data-i18n="circunf.angulo_graus">Ângulo</th><th data-i18n="circunf.coord_x">X <span class="unit-label">mm</span></th><th data-i18n="circunf.coord_y">Y <span class="unit-label">mm</span></th></tr></thead>
+                    <tbody id="xyBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tabChordTable">
+            <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem;flex-wrap:wrap;">
+                <button class="btn-action btn-outline" onclick="copyTable('chordTable')" data-i18n="circunf.copiar"><i class="fa-solid fa-copy"></i> Copiar</button>
+            </div>
+            <div class="table-container">
+                <table id="chordTable">
+                    <thead><tr><th data-i18n="circunf.furo">Nº</th><th data-i18n="circunf.corda_acum">Corda do 1º furo <span class="unit-label">mm</span></th></tr></thead>
+                    <tbody id="chordBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="../shared/i18n.js"></script>
+<script src="shared.js"></script>
+<script>
+var calderariaUnit = 'mm';
+
+function setUnit(unit) {
+    calderariaUnit = unit;
+    localStorage.setItem('calderariaUnit', unit);
+    localStorage.setItem('trig-unit', unit);
+    var toggles = document.querySelectorAll('.unit-toggle');
+    for (var i = 0; i < toggles.length; i++) {
+        toggles[i].classList.toggle('active', toggles[i].getAttribute('data-unit') === unit);
+    }
+    var unitLabels = document.querySelectorAll('.unit-label');
+    var label = unit === 'mm' ? 'mm' : 'in';
+    for (var j = 0; j < unitLabels.length; j++) {
+        unitLabels[j].textContent = label;
+    }
+    calcular();
+}
+
+(function() {
+    var savedUnit = localStorage.getItem('calderariaUnit');
+    if (savedUnit === 'in' || savedUnit === 'mm') setUnit(savedUnit);
+})();
+
+document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+    var inputs = document.querySelectorAll('.calc-input');
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('input', calcular);
+    }
+
+    var quickBtns = document.querySelectorAll('.btn-chip');
+    for (var i = 0; i < quickBtns.length; i++) {
+        (function(btn) {
+            btn.addEventListener('click', function() {
+                var parent = this.parentElement;
+                if (parent.id === 'quickHoles') {
+                    document.getElementById('inputHoles').value = this.getAttribute('data-value');
+                } else if (parent.id === 'quickPCD') {
+                    document.getElementById('inputPCD').value = this.getAttribute('data-value');
+                }
+                calcular();
+            });
+        })(quickBtns[i]);
+    }
+
+    var tabs = document.querySelectorAll('.section-tab');
+    for (var i = 0; i < tabs.length; i++) {
+        (function(tab) {
+            tab.addEventListener('click', function() {
+                var parent = this.parentElement;
+                var tabs = parent.querySelectorAll('.section-tab');
+                for (var j = 0; j < tabs.length; j++) tabs[j].classList.remove('active');
+                this.classList.add('active');
+                var contents = parent.parentElement.querySelectorAll('.tab-content');
+                for (var j = 0; j < contents.length; j++) contents[j].classList.remove('active');
+                document.getElementById(this.getAttribute('data-tab')).classList.add('active');
+            });
+        })(tabs[i]);
+    }
+
+    document.addEventListener('calderaria:unitchange', calcular);
+    calcular();
+});
+
+function calcular() {
+    var pcd = parseFloat(document.getElementById('inputPCD').value);
+    var n = parseInt(document.getElementById('inputHoles').value);
+    var holeDia = parseFloat(document.getElementById('inputHoleDia').value) || 0;
+
+    if (isNaN(pcd) || isNaN(n) || n < 2 || pcd <= 0) {
+        resetResults();
+        return;
+    }
+
+    if (n > 48) n = 48;
+    if (n < 2) n = 2;
+
+    var angleDeg = 360 / n;
+    var angleRad = angleDeg * Math.PI / 180;
+    var chord = pcd * Math.sin(angleRad / 2);
+    var arc = Math.PI * pcd / n;
+    var skip1 = pcd * Math.sin(angleRad);
+    var skip2 = pcd * Math.sin(3 * angleRad / 2);
+
+    document.getElementById('resChord').textContent = formatLength(chord);
+    document.getElementById('resAngle').textContent = angleDeg.toFixed(2) + '°';
+    document.getElementById('resArc').textContent = formatLength(arc);
+    document.getElementById('resSkip1').textContent = formatLength(skip1);
+    document.getElementById('resSkip2').textContent = formatLength(skip2);
+
+    drawSVG(pcd, n, holeDia, angleDeg);
+    buildTables(pcd, n, angleDeg, chord);
+}
+
+function resetResults() {
+    document.getElementById('resChord').textContent = '—';
+    document.getElementById('resAngle').textContent = '—';
+    document.getElementById('resArc').textContent = '—';
+    document.getElementById('resSkip1').textContent = '—';
+    document.getElementById('resSkip2').textContent = '—';
+    drawSVG(0, 0, 0, 0);
+    document.getElementById('xyBody').innerHTML = '';
+    document.getElementById('chordBody').innerHTML = '';
+}
+
+function drawSVG(pcd, n, holeDia, angleDeg) {
+    var svg = document.getElementById('boltsvg');
+    svg.innerHTML = '';
+    if (pcd <= 0 || n < 2) {
+        var ns = 'http://www.w3.org/2000/svg';
+        var txt = document.createElementNS(ns, 'text');
+        txt.setAttribute('x', '0');
+        txt.setAttribute('y', '0');
+        txt.setAttribute('text-anchor', 'middle');
+        txt.setAttribute('dominant-baseline', 'central');
+        txt.setAttribute('font-size', '14');
+        txt.setAttribute('fill', '#64748b');
+        txt.setAttribute('font-family', 'sans-serif');
+        txt.textContent = 'Insira os dados para gerar o gráfico';
+        svg.appendChild(txt);
+        return;
+    }
+
+    var ns = 'http://www.w3.org/2000/svg';
+    var isDark = document.body.classList.contains('dark-theme');
+    var R = pcd / 2;
+    var scale = 180 / (R * 1.3);
+    if (R * scale > 190) scale = 190 / R;
+    var rPx = R * scale;
+
+    var colorPCD = isDark ? '#3b82f6' : '#2563eb';
+    var colorHole = isDark ? '#ffc107' : '#dc3545';
+    var colorDim = isDark ? '#8696a7' : '#6c757d';
+    var colorText = isDark ? '#e9ecef' : '#0f172a';
+    var colorBg = isDark ? '#0a1929' : '#f1f5f9';
+    var colorGrid = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
+
+    svg.style.background = colorBg;
+    svg.style.borderRadius = '8px';
+
+    // Axis lines
+    var axisH = document.createElementNS(ns, 'line');
+    axisH.setAttribute('x1', String(-rPx - 25));
+    axisH.setAttribute('y1', '0');
+    axisH.setAttribute('x2', String(rPx + 25));
+    axisH.setAttribute('y2', '0');
+    axisH.setAttribute('stroke', colorGrid);
+    axisH.setAttribute('stroke-width', '1');
+    axisH.setAttribute('stroke-dasharray', '4,4');
+    svg.appendChild(axisH);
+
+    var axisV = document.createElementNS(ns, 'line');
+    axisV.setAttribute('x1', '0');
+    axisV.setAttribute('y1', String(-rPx - 25));
+    axisV.setAttribute('x2', '0');
+    axisV.setAttribute('y2', String(rPx + 25));
+    axisV.setAttribute('stroke', colorGrid);
+    axisV.setAttribute('stroke-width', '1');
+    axisV.setAttribute('stroke-dasharray', '4,4');
+    svg.appendChild(axisV);
+
+    // Reference label
+    var refLabel = document.createElementNS(ns, 'text');
+    refLabel.setAttribute('x', '0');
+    refLabel.setAttribute('y', String(-rPx - 30));
+    refLabel.setAttribute('text-anchor', 'middle');
+    refLabel.setAttribute('font-size', '10');
+    refLabel.setAttribute('fill', colorDim);
+    refLabel.setAttribute('font-family', 'sans-serif');
+    refLabel.textContent = '0°';
+    svg.appendChild(refLabel);
+
+    // Pitch circle
+    var circle = document.createElementNS(ns, 'circle');
+    circle.setAttribute('cx', '0');
+    circle.setAttribute('cy', '0');
+    circle.setAttribute('r', String(rPx));
+    circle.setAttribute('fill', 'none');
+    circle.setAttribute('stroke', colorPCD);
+    circle.setAttribute('stroke-width', '1.5');
+    circle.setAttribute('stroke-dasharray', '6,4');
+    svg.appendChild(circle);
+
+    // PCD label
+    var pcdLabel = document.createElementNS(ns, 'text');
+    pcdLabel.setAttribute('x', '0');
+    pcdLabel.setAttribute('y', String(rPx + 18));
+    pcdLabel.setAttribute('text-anchor', 'middle');
+    pcdLabel.setAttribute('font-size', '10');
+    pcdLabel.setAttribute('fill', colorPCD);
+    pcdLabel.setAttribute('font-family', 'sans-serif');
+    pcdLabel.textContent = 'Ø' + formatLength(pcd);
+    svg.appendChild(pcdLabel);
+
+    var points = [];
+    var holeRadiusPx = holeDia > 0 ? (holeDia / 2) * scale : 5;
+    if (holeRadiusPx < 3) holeRadiusPx = 3;
+    if (holeRadiusPx > 12) holeRadiusPx = 12;
+
+    for (var i = 0; i < n; i++) {
+        var a = i * angleDeg * Math.PI / 180;
+        var px = rPx * Math.sin(a);
+        var py = -rPx * Math.cos(a);
+        points.push({ x: px, y: py, num: i + 1 });
+
+        // Radial line
+        var line = document.createElementNS(ns, 'line');
+        line.setAttribute('x1', '0');
+        line.setAttribute('y1', '0');
+        line.setAttribute('x2', String(px));
+        line.setAttribute('y2', String(py));
+        line.setAttribute('stroke', colorGrid);
+        line.setAttribute('stroke-width', '0.5');
+        svg.appendChild(line);
+
+        // Hole circle
+        var hole = document.createElementNS(ns, 'circle');
+        hole.setAttribute('cx', String(px));
+        hole.setAttribute('cy', String(py));
+        hole.setAttribute('r', String(holeRadiusPx));
+        hole.setAttribute('fill', colorHole);
+        hole.setAttribute('stroke', isDark ? '#112233' : '#ffffff');
+        hole.setAttribute('stroke-width', '1.5');
+        svg.appendChild(hole);
+
+        // Hole number
+        var txt = document.createElementNS(ns, 'text');
+        var tx = px, ty = py;
+        var dist = holeRadiusPx + 14;
+        if (Math.abs(px) > 1 || Math.abs(py) > 1) {
+            var ang = Math.atan2(py, px);
+            tx = px + dist * Math.cos(ang);
+            ty = py + dist * Math.sin(ang);
+        } else {
+            ty = py - dist;
+        }
+        txt.setAttribute('x', String(tx));
+        txt.setAttribute('y', String(ty));
+        txt.setAttribute('text-anchor', 'middle');
+        txt.setAttribute('dominant-baseline', 'central');
+        txt.setAttribute('font-size', '11');
+        txt.setAttribute('font-weight', 'bold');
+        txt.setAttribute('fill', colorText);
+        txt.setAttribute('font-family', 'sans-serif');
+        txt.textContent = String(i + 1);
+        svg.appendChild(txt);
+    }
+
+    // Chord dimension line between first two adjacent holes
+    if (n >= 2 && points.length >= 2) {
+        var p1 = points[0], p2 = points[1];
+        var mx = (p1.x + p2.x) / 2;
+        var my = (p1.y + p2.y) / 2;
+        var dx = p2.x - p1.x, dy = p2.y - p1.y;
+        var len = Math.sqrt(dx * dx + dy * dy);
+        if (len > 0) {
+            var nx = -dy / len * 14, ny = dx / len * 14;
+            var off = 12;
+            var ox = -dy / len * off, oy = dx / len * off;
+
+            var dimLine = document.createElementNS(ns, 'line');
+            dimLine.setAttribute('x1', String(p1.x + ox));
+            dimLine.setAttribute('y1', String(p1.y + oy));
+            dimLine.setAttribute('x2', String(p2.x + ox));
+            dimLine.setAttribute('y2', String(p2.y + oy));
+            dimLine.setAttribute('stroke', colorDim);
+            dimLine.setAttribute('stroke-width', '1');
+            svg.appendChild(dimLine);
+
+            var ext1 = document.createElementNS(ns, 'line');
+            ext1.setAttribute('x1', String(p1.x));
+            ext1.setAttribute('y1', String(p1.y));
+            ext1.setAttribute('x2', String(p1.x + ox * 1.8));
+            ext1.setAttribute('y2', String(p1.y + oy * 1.8));
+            ext1.setAttribute('stroke', colorDim);
+            ext1.setAttribute('stroke-width', '0.5');
+            svg.appendChild(ext1);
+
+            var ext2 = document.createElementNS(ns, 'line');
+            ext2.setAttribute('x1', String(p2.x));
+            ext2.setAttribute('y1', String(p2.y));
+            ext2.setAttribute('x2', String(p2.x + ox * 1.8));
+            ext2.setAttribute('y2', String(p2.y + oy * 1.8));
+            ext2.setAttribute('stroke', colorDim);
+            ext2.setAttribute('stroke-width', '0.5');
+            svg.appendChild(ext2);
+
+            var chordLabel = document.createElementNS(ns, 'text');
+            chordLabel.setAttribute('x', String(mx + ox * 1.4));
+            chordLabel.setAttribute('y', String(my + oy * 1.4));
+            chordLabel.setAttribute('text-anchor', 'middle');
+            chordLabel.setAttribute('font-size', '10');
+            chordLabel.setAttribute('fill', colorDim);
+            chordLabel.setAttribute('font-family', 'sans-serif');
+            chordLabel.textContent = formatLength(pcd * Math.sin(Math.PI / n));
+            svg.appendChild(chordLabel);
+        }
+    }
+}
+
+function buildTables(pcd, n, angleDeg, chord) {
+    var R = pcd / 2;
+    var angleRad = angleDeg * Math.PI / 180;
+    var xyBody = document.getElementById('xyBody');
+    var chordBody = document.getElementById('chordBody');
+    xyBody.innerHTML = '';
+    chordBody.innerHTML = '';
+
+    var xys = '';
+    var chds = '';
+    var cumChord = 0;
+
+    for (var i = 0; i < n; i++) {
+        var aRad = i * angleRad;
+        var x = R * Math.sin(aRad);
+        var y = R * Math.cos(aRad);
+        if (Math.abs(x) < 1e-10) x = 0;
+        if (Math.abs(y) < 1e-10) y = 0;
+
+        xys += '<tr><td><strong>' + (i + 1) + '</strong></td><td>' + (i * angleDeg).toFixed(2) + '°</td><td>' + formatLength(x, true) + '</td><td>' + formatLength(y, true) + '</td></tr>';
+
+        if (i === 0) {
+            chds += '<tr><td><strong>1</strong></td><td>0 ' + (calderariaUnit === 'mm' ? 'mm' : 'in') + '</td></tr>';
+        } else {
+            var prevRad = (i - 1) * angleRad;
+            var px = R * Math.sin(prevRad);
+            var py = R * Math.cos(prevRad);
+            var dx = x - px, dy = y - py;
+            cumChord += Math.sqrt(dx * dx + dy * dy);
+            chds += '<tr><td><strong>' + (i + 1) + '</strong></td><td>' + formatLength(cumChord, true) + '</td></tr>';
+        }
+    }
+
+    xyBody.innerHTML = xys;
+    chordBody.innerHTML = chds;
+}
+
+function formatLength(mmVal, raw) {
+    if (mmVal === null || mmVal === undefined || isNaN(mmVal)) return '—';
+    if (calderariaUnit === 'in') {
+        var inches = mmVal / 25.4;
+        if (Math.abs(inches) < 0.000001) return '0 in';
+        // Trocada a função inexistente pela formatação nativa de 3 casas decimais
+        return inches.toFixed(3) + ' in';
+    }
+    return mmVal.toFixed(2) + ' mm';
+}
+
+function copyTable(tableId) {
+    var table = document.getElementById(tableId);
+    if (!table) return;
+    var text = '';
+    for (var i = 0; i < table.rows.length; i++) {
+        var cells = table.rows[i].cells;
+        for (var j = 0; j < cells.length; j++) {
+            text += cells[j].textContent.trim();
+            if (j < cells.length - 1) text += '\t';
+        }
+        text += '\n';
+    }
+    navigator.clipboard.writeText(text).then(function() {
+        showToast(window.i18n.t('calderaria.circunferencia.msg_copiado'));
+    }).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(window.i18n.t('calderaria.circunferencia.msg_copiado'));
+    });
+}
+
+function showToast(msg) {
+    var existing = document.querySelector('.toast-circunf');
+    if (existing) existing.remove();
+    var toast = document.createElement('div');
+    toast.className = 'toast-circunf';
+    toast.textContent = msg;
+    toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--surface);color:var(--text);padding:10px 20px;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.15);z-index:9999;font-weight:600;font-size:0.9rem;border:1px solid var(--border);transition:opacity 0.3s;';
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.style.opacity = '0'; setTimeout(function() { toast.remove(); }, 300); }, 1500);
+}
+
+function exportDXF() {
+    var pcd = parseFloat(document.getElementById('inputPCD').value);
+    var n = parseInt(document.getElementById('inputHoles').value);
+    if (isNaN(pcd) || isNaN(n) || n < 2 || pcd <= 0) { showToast(window.i18n.t('calderaria.circunferencia.err_preencha_dados')); return; }
+
+    var R = pcd / 2;
+    var angleDeg = 360 / n;
+    var lines = [];
+    var arcs = [];
+    var points = [];
+
+    for (var i = 0; i < n; i++) {
+        var aRad = i * angleDeg * Math.PI / 180;
+        var x = R * Math.sin(aRad);
+        var y = R * Math.cos(aRad);
+        points.push({ x: x, y: y });
+        // Lines from center to each hole
+        lines.push({ x1: 0, y1: 0, x2: x, y2: y });
+    }
+
+    // Pitch circle arc
+    arcs.push({ cx: 0, cy: 0, r: R, startAngle: 0, endAngle: 360 });
+
+    // Connect adjacent holes with lines
+    for (var i = 0; i < n; i++) {
+        var next = (i + 1) % n;
+        lines.push({ x1: points[i].x, y1: points[i].y, x2: points[next].x, y2: points[next].y });
+    }
+
+    if (typeof window.exportDXF === 'function') {
+        window.exportDXF('circunferencia_' + n + '_furos.dxf', lines, arcs);
+    } else {
+        showToast(window.i18n.t('calderaria.circunferencia.err_dxf_ausente'));
+    }
+}
+
+function toggleSidebar(force) {
+    var sidebar = document.getElementById('appSidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+    if (!sidebar || !overlay) return;
+    var state = typeof force === 'boolean' ? force : !sidebar.classList.contains('active');
+    sidebar.classList.toggle('active', state);
+    overlay.classList.toggle('active', state);
+}
+
+function scrollToSection(id) {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    var items = document.querySelectorAll('.app-sidebar-item');
+    for (var i = 0; i < items.length; i++) {
+        items[i].classList.toggle('active', items[i].getAttribute('data-section') === id);
+    }
+    toggleSidebar(false);
+}
+</script>
+</body>
+</html>

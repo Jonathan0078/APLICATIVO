@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="tubulacao_pneu.title">Tubulação Pneumática</title>
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-container">
+    <header class="app-header">
+        <div class="header-content">
+            <h1><i class="fa-solid fa-bezier-curve" style="margin-right:8px"></i> <span data-i18n="tubulacao_pneu.title">Tubulação Pneumática</span></h1>
+            <div class="theme-switcher">
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <h2><i class="fa-solid fa-sliders"></i> <span data-i18n="tubulacao_pneu.params">Dimensionamento</span></h2>
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="vazao" data-i18n="tubulacao_pneu.vazao">Vazão (L/min)</label>
+                    <input type="number" id="vazao" data-i18n-placeholder="tubulacao_pneu.vazao_ph" step="1" min="1" value="500">
+                </div>
+                <div class="input-group">
+                    <label for="pressao" data-i18n="tubulacao_pneu.pressao">Pressão de Linha (bar)</label>
+                    <input type="number" id="pressao" data-i18n-placeholder="tubulacao_pneu.pressao_ph" step="0.1" min="0.1" value="6">
+                </div>
+            </div>
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="comprimento" data-i18n="tubulacao_pneu.comprimento">Comprimento da Linha (m)</label>
+                    <input type="number" id="comprimento" data-i18n-placeholder="tubulacao_pneu.comprimento_ph" step="1" min="1" value="50">
+                </div>
+                <div class="input-group">
+                    <label for="perda" data-i18n="tubulacao_pneu.perda">Perda de Carga Adm. (bar)</label>
+                    <input type="number" id="perda" data-i18n-placeholder="tubulacao_pneu.perda_ph" step="0.05" min="0.05" value="0.3">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="tipo" data-i18n="tubulacao_pneu.tipo">Tipo de Tubo</label>
+                <select id="tipo">
+                    <option value="aco" data-i18n="tubulacao_pneu.tipo_aco">Aço</option>
+                    <option value="cobre" data-i18n="tubulacao_pneu.tipo_cobre">Cobre</option>
+                    <option value="aluminio" data-i18n="tubulacao_pneu.tipo_aluminio">Alumínio</option>
+                    <option value="plastico" selected data-i18n="tubulacao_pneu.tipo_plastico">Plástico (PU/PA)</option>
+                </select>
+            </div>
+
+            <button class="btn-primary" onclick="calcular()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+        </div>
+
+        <div class="card" id="resultCard" style="display:none">
+            <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="result.title">Resultados</span></h2>
+            <div id="resultContent"></div>
+        </div>
+
+        <div class="card info-card">
+            <h3><i class="fa-solid fa-lightbulb"></i> <span data-i18n="tubulacao_pneu.ref_title">Referência</span></h3>
+            <div class="ref-table">
+                <div class="ref-row"><span class="ref-label" data-i18n="tubulacao_pneu.ref_diam">Diâmetro int.</span><span class="ref-val" data-i18n="tubulacao_pneu.ref_vel">Velocidade do ar</span></div>
+                <div class="ref-row"><span>1/4" (6 mm)</span><span>~ 10 m/s</span></div>
+                <div class="ref-row"><span>3/8" (10 mm)</span><span>~ 15 m/s</span></div>
+                <div class="ref-row"><span>1/2" (13 mm)</span><span>~ 18 m/s</span></div>
+                <div class="ref-row"><span>3/4" (19 mm)</span><span>~ 22 m/s</span></div>
+                <div class="ref-row"><span>1" (25 mm)</span><span>~ 26 m/s</span></div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="../shared/i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

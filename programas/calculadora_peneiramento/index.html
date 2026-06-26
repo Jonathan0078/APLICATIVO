@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="peneira.title">Calculadora de Eficiência e Capacidade de Peneiramento</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-filter"></i> <span data-i18n="peneira.header">Peneiramento Pro</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="themeToggle"><span class="slider"></span></label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column" class="card">
+                <h2><i class="fas fa-cogs"></i> <span data-i18n="label.inputs">Parâmetros de Entrada</span></h2>
+
+                <h3 style="font-size: 0.9rem; color: var(--cor-texto-suave); margin-bottom: 0.5rem;" data-i18n="peneira.screening_eff">Eficiência de Peneiramento</h3>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="feedFines" data-i18n="peneira.feed_fines">Massa Finos Alim. (Ff)</label>
+                        <input type="number" id="feedFines" placeholder="Ex: 100" data-i18n-placeholder="peneira.feed_fines_placeholder">
+                    </div>
+                    <div class="input-group">
+                        <label for="productFines" data-i18n="peneira.product_fines">Massa Finos Prod. (Pf)</label>
+                        <input type="number" id="productFines" placeholder="Ex: 95" data-i18n-placeholder="peneira.product_fines_placeholder">
+                    </div>
+                    <div class="input-group">
+                        <label for="rejectFines" data-i18n="peneira.reject_fines">Massa Finos Rej. (Rf)</label>
+                        <input type="number" id="rejectFines" placeholder="Ex: 5" data-i18n-placeholder="peneira.reject_fines_placeholder">
+                    </div>
+                </div>
+
+                <h3 style="font-size: 0.9rem; color: var(--cor-texto-suave); margin-top: 1rem; margin-bottom: 0.5rem;" data-i18n="peneira.capacity">Capacidade de Peneiramento</h3>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="screenWidth" data-i18n="peneira.width">Largura (W) - metros</label>
+                        <input type="number" id="screenWidth" placeholder="Ex: 1.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="screenLength" data-i18n="peneira.length">Comprimento (L) - metros</label>
+                        <input type="number" id="screenLength" placeholder="Ex: 3.0">
+                    </div>
+                </div>
+
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="totalFeedRate" data-i18n="peneira.feed_rate">Vazão Total (ton/h)</label>
+                        <input type="number" id="totalFeedRate" placeholder="Ex: 200">
+                    </div>
+                    <div class="input-group">
+                        <label for="materialDensity" data-i18n="peneira.density">Densidade (ton/m³)</label>
+                        <input type="number" id="materialDensity" placeholder="Ex: 1.6">
+                    </div>
+                </div>
+
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="screenAperture" data-i18n="peneira.aperture">Abertura da Tela (mm)</label>
+                        <input type="number" id="screenAperture" placeholder="Ex: 10">
+                    </div>
+                    <div class="input-group">
+                        <label for="materialCorrectionFactor" data-i18n="peneira.material_factor">Fator Correção Material</label>
+                        <input type="number" id="materialCorrectionFactor" value="1.0" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="apertureCorrectionFactor" data-i18n="peneira.aperture_factor">Fator Correção Abertura</label>
+                        <input type="number" id="apertureCorrectionFactor" value="1.0" step="0.01">
+                    </div>
+                </div>
+
+                <div class="button-group" style="margin-top: 1rem;">
+                    <button id="calculateBtn" class="main-button"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular Desempenho</span></button>
+                </div>
+            </div>
+
+            <div id="outputs-column" class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-line"></i> <span data-i18n="result.title">Resultados</span></h2>
+                </div>
+
+                <div id="erro-container" style="display: none; background-color: rgba(220, 53, 69, 0.1); border-left: 4px solid var(--cor-erro); padding: 1rem; border-radius: var(--raio-borda); margin-bottom: 1.5rem;">
+                    <div style="color: var(--cor-erro); font-weight: bold; margin-bottom: 0.25rem;"><i class="fa-solid fa-triangle-exclamation"></i> Atenção</div>
+                    <span id="erro-msg" style="color: var(--cor-texto);"></span>
+                </div>
+
+                <div id="results" class="results-grid" style="display: none;">
+                    <div class="result-item" style="border-left-color: var(--cor-destaque);">
+                        <span class="label" data-i18n="peneira.screening_eff">Eficiência de Peneiramento</span>
+                        <div style="display: flex; align-items: baseline; gap: 0.2rem;">
+                            <span id="screeningEfficiency" class="value" style="color: var(--cor-primaria);">--</span>
+                            <span class="unit" style="font-weight: bold; color: var(--cor-texto-suave);">%</span>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <span class="label" data-i18n="peneira.actual_capacity">Capacidade Real</span>
+                        <div style="display: flex; align-items: baseline; gap: 0.2rem;">
+                            <span id="actualCapacity" class="value">--</span>
+                            <span class="unit" style="font-size: 0.9rem; color: var(--cor-texto-suave);">ton/h</span>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <span class="label" data-i18n="peneira.specific_capacity">Capacidade Específica</span>
+                        <div style="display: flex; align-items: baseline; gap: 0.2rem;">
+                            <span id="specificCapacity" class="value">--</span>
+                            <span class="unit" style="font-size: 0.9rem; color: var(--cor-texto-suave);">ton/h/m²</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-placeholder" id="resultPlaceholder">
+                    <i class="fas fa-info-circle" style="color: var(--cor-primaria);"></i>
+                    <p data-i18n="result.placeholder">Preencha os dados e clique em Calcular para avaliar a eficiência e capacidade.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('themeToggle');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.checked = true;
+            }
+            themeToggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    document.body.classList.add('dark-theme');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-theme');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

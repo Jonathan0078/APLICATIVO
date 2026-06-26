@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="grease.dfaacp">Fluxo de Óleo em Mancais - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+
+    <!-- Scripts -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/DFAACPCtrl.js"></script>
+    <script src="js/menu-button.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-water"></i> <span data-i18n="grease.dfaacp.title">Fluxo de Óleo em Mancais</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> <span data-i18n="grease.instructions">Instruções</span></h2>
+                    <p data-i18n="grease.dfaacp.instr">Forneça os dados para calcular a vazão de óleo em mancais planos:</p>
+                    <ul>
+                        <li data-i18n="grease.dfaacp.li1">Selecione a unidade de fluxo (Galões/Gotas por minuto).</li>
+                        <li data-i18n="grease.dfaacp.li2">Digite o diâmetro do eixo (polegadas).</li>
+                        <li data-i18n="grease.dfaacp.li3">Digite o diâmetro do mancal (polegadas).</li>
+                        <li data-i18n="grease.dfaacp.li4">Digite a carga constante (libras).</li>
+                        <li data-i18n="grease.dfaacp.li5">Digite o comprimento do mancal (polegadas).</li>
+                        <li data-i18n="grease.dfaacp.li6">Insira a velocidade de rotação (RPM).</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> <span data-i18n="grease.dfaacp.bearing_data">Dados do Mancal</span></h2>
+                    <div class="input-group">
+                        <label for="trabajo" data-i18n="grease.dfaacp.flow_unit">Unidade de Fluxo</label>
+                        <select id="trabajo">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value="1" data-i18n="grease.dfaacp.gpm">Galões por minuto</option>
+                            <option value="2" data-i18n="grease.dfaacp.dpm">Gotas por minuto</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="deje" data-i18n="grease.dfaacp.shaft_diam">Diâmetro do Eixo (pol)</label>
+                        <input id="deje" type="number" placeholder="Ex: 2.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="dcoj" data-i18n="grease.dfaacp.bearing_diam">Diâmetro do Mancal (pol)</label>
+                        <input id="dcoj" type="number" placeholder="Ex: 2.505">
+                    </div>
+                    <div class="input-group">
+                        <label for="carga" data-i18n="grease.dfaacp.load">Carga Constante (lb)</label>
+                        <input id="carga" type="number" placeholder="Ex: 500">
+                    </div>
+                    <div class="input-group">
+                        <label for="largo" data-i18n="grease.dfaacp.length">Comprimento do Mancal (pol)</label>
+                        <input id="largo" type="number" placeholder="Ex: 3">
+                    </div>
+                    <div class="input-group">
+                        <label for="rpm" data-i18n="grease.dfaacp.speed">Velocidade de Rotação (RPM)</label>
+                        <input id="rpm" type="number" placeholder="Ex: 1800">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validar1v()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        <button class="secondary-button" onclick="Limpiar()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> <span data-i18n="result.title">Resultado</span></h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p data-i18n="grease.dfaacp.placeholder">O resultado do fluxo de óleo aparecerá aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="result-header">
+                            <span class="label" data-i18n="grease.dfaacp.result_label">Fluxo de Óleo Calculado</span>
+                            <span id="resultado" class="designation-value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+
+        // Adaptação para mostrar/esconder os resultados
+        const original_validar1v = window.validar1v;
+        window.validar1v = function() {
+            original_validar1v();
+            const resultValue = document.getElementById('resultado').value;
+            if (resultValue) {
+                document.getElementById('result-placeholder').style.display = 'none';
+                document.getElementById('result-content').style.display = 'block';
+                document.querySelector('#result-content .designation-value').textContent = resultValue;
+            }
+        }
+
+        const original_Limpiar = window.Limpiar;
+        window.Limpiar = function() {
+            original_Limpiar();
+            document.getElementById('result-placeholder').style.display = 'block';
+            document.getElementById('result-content').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

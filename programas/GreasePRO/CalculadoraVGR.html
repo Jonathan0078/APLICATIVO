@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="grease.vgr">Quantidade de Graxa em Mancais - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+
+    <!-- Scripts -->
+    <script src="js/VGRCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-oil-can"></i> <span data-i18n="grease.vgr.title">Quantidade de Graxa em Mancais</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> <span data-i18n="grease.instructions">Instruções</span></h2>
+                    <p data-i18n="grease.vgr.instr">Forneça os dados para calcular o volume de graxa para relubrificação:</p>
+                    <ul>
+                        <li data-i18n="grease.vgr.li1">Digite o comprimento do mancal.</li>
+                        <li data-i18n="grease.vgr.li2">Digite o diâmetro do eixo.</li>
+                        <li data-i18n="grease.vgr.li3">Digite a espessura da película de lubrificante.</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> <span data-i18n="grease.vgr.bearing_data">Dados do Mancal</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="longitud" data-i18n="grease.vgr.length_mm">Comprimento (mm)</label>
+                            <input id="longitud" type="number" placeholder="Ex: 100" oninput="mmaIn3(this.value)" onchange="mmaIn3(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="longitudIn" data-i18n="grease.vgr.length_in">Comprimento (in)</label>
+                            <input id="longitudIn" type="number" placeholder="Ex: 3.9" oninput="inaMm3(this.value)" onchange="inaMm3(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="diametro" data-i18n="grease.vgr.diam_mm">Diâmetro (mm)</label>
+                            <input id="diametro" type="number" placeholder="Ex: 50" oninput="mmaIn(this.value)" onchange="mmaIn(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="diametroIn" data-i18n="grease.vgr.diam_in">Diâmetro (in)</label>
+                            <input id="diametroIn" type="number" placeholder="Ex: 2" oninput="inaMm(this.value)" onchange="inaMm(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="espesor" data-i18n="grease.vgr.film_mm">Espessura Película (mm)</label>
+                            <input id="espesor" type="number" placeholder="Ex: 0.5" oninput="mmaIn2(this.value)" onchange="mmaIn2(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="espesorIn" data-i18n="grease.vgr.film_in">Espessura Película (in)</label>
+                            <input id="espesorIn" type="number" placeholder="Ex: 0.02" oninput="inaMm2(this.value)" onchange="inaMm2(this.value)">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="ValidarDatos()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        <button class="secondary-button" onclick="Limpiar()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> <span data-i18n="result.title">Resultados</span></h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p data-i18n="grease.vgr.placeholder">O volume de graxa para a relubrificação aparecerá aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="label" data-i18n="grease.vgr.vol_grams">Volume (gramas)</span>
+                                <span id="res2" class="value">0 g</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label" data-i18n="grease.vgr.vol_oz">Volume (onças)</span>
+                                <span id="res1" class="value">0 oz</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+
+        // Adaptação para mostrar/esconder os resultados
+        const original_ValidarDatos = window.ValidarDatos;
+        window.ValidarDatos = function() {
+            original_ValidarDatos();
+            const res1Value = document.getElementById('res1').value;
+            const res2Value = document.getElementById('res2').value;
+            if (res1Value && res2Value) {
+                document.getElementById('result-placeholder').style.display = 'none';
+                document.getElementById('result-content').style.display = 'block';
+                document.querySelector('#result-content #res2').textContent = res2Value + " g";
+                document.querySelector('#result-content #res1').textContent = res1Value + " oz";
+            }
+        }
+
+        const original_Limpiar = window.Limpiar;
+        window.Limpiar = function() {
+            original_Limpiar();
+            document.getElementById('result-placeholder').style.display = 'block';
+            document.getElementById('result-content').style.display = 'none';
+        }
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

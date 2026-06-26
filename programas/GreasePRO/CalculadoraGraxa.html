@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="greasepro.selector.title">Seletor de Graxa Industrial - GreasePRO</title>
+
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+
+    <script src="js/GraxaCtrl.js"></script>
+
+    <style>
+        /* ── Seletor de Graxa ── */
+        .sg-alertas { margin-bottom: 16px; }
+        .sg-alerta {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffc107;
+            border-radius: 10px; padding: 14px 16px;
+            color: #664d00; font-size: 0.85em; line-height: 1.5;
+            margin-bottom: 8px; font-weight: 500;
+            display: flex; align-items: flex-start; gap: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
+        }
+        .sg-alerta::before {
+            content: '\f06a'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            font-size: 1.1em; flex-shrink: 0; margin-top: 1px; color: #d49400;
+        }
+        body.dark-theme .sg-alerta {
+            background: linear-gradient(135deg, #2a2000, #3a2e00);
+            border-color: #8a6400; color: #ffd44d;
+        }
+        body.dark-theme .sg-alerta::before { color: #ffb300; }
+
+        .sg-section-title {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.78em; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--primary, #2563eb);
+            margin: 18px 0 10px; padding: 8px 12px;
+            background: rgba(37,99,235,.06);
+            border-radius: 8px;
+        }
+        body.dark-theme .sg-section-title { background: rgba(59,130,246,.1); }
+        .sg-section-title i { font-size: 0.95em; }
+
+        .sg-thickener-card {
+            background: var(--surface, #fff);
+            border: 1px solid var(--border, #dee2e6);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.04);
+        }
+        body.dark-theme .sg-thickener-card { background: var(--bg, #0a1929); box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+        .sg-thickener-alt { opacity: .92; }
+
+        .sg-th-header {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 10px; flex-wrap: wrap;
+        }
+        .sg-th-icon { font-size: 1.4em; line-height: 1; flex-shrink: 0; }
+        .sg-th-name {
+            font-weight: 700; font-size: 1.05em; flex: 1 1 auto;
+            min-width: 40%; color: var(--text, #212529);
+        }
+        .sg-th-badge {
+            color: #fff; font-size: 0.68em; font-weight: 800;
+            padding: 5px 16px; border-radius: 20px; white-space: nowrap;
+            margin-left: auto; flex-shrink: 0; letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .sg-th-badge-alt { opacity: .9; }
+        .sg-th-desc {
+            font-size: 0.88em; color: var(--text-secondary, #6c757d);
+            margin: 0 0 14px; line-height: 1.55; padding-right: 4px;
+        }
+        .sg-th-specs {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            font-size: 0.8em; color: var(--text, #212529);
+        }
+        .sg-th-specs span {
+            background: var(--bg, #f0f2f5);
+            border: 1px solid var(--border, #dee2e6);
+            border-radius: 8px;
+            padding: 5px 11px; white-space: nowrap; line-height: 1.4;
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        .sg-th-specs span i { font-size: 0.85em; opacity: 0.65; }
+
+        /* ── Results grid ── */
+        .sg-result-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+        }
+        .sg-result-item {
+            background: var(--surface, #fff);
+            border: 1px solid var(--border, #dee2e6);
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex; flex-direction: column; gap: 3px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.03);
+        }
+        body.dark-theme .sg-result-item { background: var(--bg, #0a1929); }
+        .sg-result-item .sg-label {
+            font-size: 0.68em; font-weight: 600;
+            color: var(--text-secondary, #6c757d);
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .sg-result-item .sg-value {
+            font-size: 1.1em; font-weight: 700;
+            color: var(--text, #212529);
+        }
+        @media (max-width: 480px) {
+            .sg-result-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── Justificativa ── */
+        .sg-just-box {
+            background: var(--bg, #f0f2f5);
+            border: 1px solid var(--border, #dee2e6);
+            border-radius: 10px;
+            padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+        }
+        body.dark-theme .sg-just-box { background: var(--surface, #112233); }
+        .sg-just-item {
+            display: flex; gap: 12px; align-items: flex-start;
+            font-size: 0.86em; color: var(--text, #212529); line-height: 1.55;
+        }
+        .sg-just-num {
+            background: var(--primary, #2563eb); color: #fff;
+            border-radius: 50%; min-width: 24px; width: 24px; height: 24px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75em; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+        }
+
+        /* ── Grease cards ── */
+        .sg-brand-dot {
+            display: inline-block; width: 10px; height: 10px;
+            border-radius: 50%; vertical-align: middle; margin-right: 4px;
+        }
+        .sg-brand-label {
+            font-size: 0.78em; font-weight: 700; color: var(--text-secondary, #6c757d);
+            margin-bottom: 8px; text-transform: uppercase; letter-spacing: .04em;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .sg-grease-grid {
+            display: flex; flex-direction: column; gap: 10px;
+            margin-bottom: 4px;
+        }
+        .sg-grease-card {
+            border: 1px solid var(--border, #dee2e6);
+            border-radius: 12px;
+            padding: 18px 20px; background: var(--surface, #fff);
+            transition: box-shadow .25s, border-color .25s, transform .25s;
+            box-shadow: 0 1px 4px rgba(0,0,0,.03);
+        }
+        body.dark-theme .sg-grease-card { background: var(--bg, #0a1929); }
+        .sg-grease-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,.08);
+            border-color: var(--primary, #2563eb);
+            transform: translateY(-2px);
+        }
+        body.dark-theme .sg-grease-card:hover {
+            box-shadow: 0 6px 24px rgba(0,0,0,.3);
+        }
+
+        .sg-grease-header {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 10px; flex-wrap: wrap;
+        }
+        .sg-brand-badge {
+            color: #fff; font-size: 0.72em; font-weight: 800;
+            padding: 5px 14px; border-radius: 20px; white-space: nowrap;
+            letter-spacing: .03em;
+        }
+        .sg-th-pill {
+            font-size: 0.75em; font-weight: 600;
+            background: var(--bg, #f0f2f5); color: var(--text-secondary, #6c757d);
+            border-radius: 12px; padding: 5px 11px; white-space: nowrap;
+            border: 1px solid var(--border, #dee2e6);
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        .sg-product-name {
+            font-weight: 700; font-size: 1em; margin-bottom: 5px;
+            color: var(--text, #212529);
+        }
+        .sg-product-desc {
+            font-size: 0.85em; color: var(--text-secondary, #6c757d);
+            margin-bottom: 12px; line-height: 1.5;
+        }
+        .sg-specs-row {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            font-size: 0.8em; color: var(--text, #212529);
+            margin-bottom: 12px;
+        }
+        .sg-specs-row span {
+            background: var(--bg, #f0f2f5);
+            border: 1px solid var(--border, #dee2e6);
+            border-radius: 8px; padding: 5px 11px; white-space: nowrap;
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        .sg-specs-row span i { font-size: 0.85em; opacity: 0.65; }
+
+        .sg-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .sg-tag {
+            font-size: 0.68em; font-weight: 600;
+            background: rgba(37,99,235,.08);
+            color: var(--primary, #2563eb); border-radius: 8px;
+            padding: 4px 10px; border: 1px solid rgba(37,99,235,.2);
+            letter-spacing: .02em;
+        }
+        body.dark-theme .sg-tag { background: rgba(59,130,246,.12); border-color: rgba(59,130,246,.28); }
+
+        /* ── Checkboxes ── */
+        .sg-checkbox-group {
+            display: flex; flex-direction: column; gap: 10px;
+            margin-top: 4px;
+        }
+        .sg-checkbox-item {
+            display: flex; align-items: center; gap: 14px;
+            cursor: pointer; font-size: 0.9em;
+            background: var(--surface, #fff);
+            border: 2px solid var(--border, #dee2e6);
+            border-radius: 12px;
+            padding: 16px 18px;
+            transition: border-color .2s, background-color .2s, box-shadow .2s;
+            position: relative;
+        }
+        body.dark-theme .sg-checkbox-item { background: var(--bg, #0a1929); }
+        .sg-checkbox-item:hover {
+            border-color: var(--primary, #2563eb);
+            background: var(--bg, #f0f2f5);
+        }
+        .sg-checkbox-item:has(input:checked) {
+            border-color: var(--primary, #2563eb);
+            background: rgba(37,99,235,.06);
+            box-shadow: 0 0 0 1px rgba(37,99,235,.12);
+        }
+        body.dark-theme .sg-checkbox-item:has(input:checked) { background: rgba(59,130,246,.12); }
+
+        .sg-checkbox-icon {
+            flex-shrink: 0; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; font-size: 1.05em;
+            background: var(--bg, #f0f2f5); color: var(--primary, #2563eb);
+            border: 1px solid var(--border, #dee2e6);
+            transition: background-color .2s, color .2s, transform .2s;
+        }
+        .sg-checkbox-item:has(input:checked) .sg-checkbox-icon {
+            background: var(--primary, #2563eb);
+            color: #fff;
+            border-color: var(--primary, #2563eb);
+            transform: scale(1.05);
+        }
+        body.dark-theme .sg-checkbox-item:has(input:checked) .sg-checkbox-icon {
+            background: #3b82f6;
+        }
+        .sg-checkbox-text { flex: 1 1 auto; line-height: 1.5; }
+        .sg-checkbox-text strong {
+            display: block; color: var(--text, #212529);
+            margin-bottom: 3px; font-size: 1.02em;
+        }
+        .sg-checkbox-text .sg-checkbox-desc {
+            font-size: 0.82em; color: var(--text-secondary, #6c757d);
+        }
+
+        .sg-checkbox-item input[type="checkbox"] {
+            width: 20px; height: 20px; cursor: pointer;
+            accent-color: var(--primary, #2563eb); flex-shrink: 0;
+        }
+
+        @media (max-width: 420px) {
+            .sg-th-badge { margin-left: 0; }
+            .sg-checkbox-item { padding: 14px 16px; gap: 10px; }
+            .sg-checkbox-icon { width: 36px; height: 36px; font-size: 0.95em; }
+            .sg-thickener-card { padding: 14px 16px; }
+            .sg-grease-card { padding: 14px 16px; }
+            .sg-section-title { padding: 6px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 data-i18n="greasepro.selector.title"><i class="fas fa-oil-can"></i> Seletor de Graxa Industrial</h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+
+            <div id="inputs-column">
+
+                <div class="card">
+                    <h2 data-i18n="greasepro.selector.instructions"><i class="fas fa-info-circle"></i> Como usar</h2>
+                    <p data-i18n="greasepro.selector.instructions" style="font-size:0.9em;margin:0">Informe as condições de operação do rolamento e clique em <strong>Recomendar Graxa</strong>. O sistema analisará temperatura, velocidade, carga e ambiente para indicar o tipo de espessante, grau NLGI, viscosidade ideal e marcas disponíveis no mercado.</p>
+                </div>
+
+                <div class="card">
+                    <h2 data-i18n="greasepro.selector.temp_section"><i class="fas fa-thermometer-half"></i> Temperatura de Operação</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label data-i18n="greasepro.selector.temp_max" for="sg-tempMax">Temperatura Máxima (°C)</label>
+                            <input id="sg-tempMax" type="number" placeholder="Ex: 80" step="1">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="greasepro.selector.temp_min" for="sg-tempMin">Temperatura Mínima / Ambiente (°C)</label>
+                            <input id="sg-tempMin" type="number" placeholder="Ex: 20" step="1">
+                        </div>
+                    </div>
+                    <p data-i18n="greasepro.selector.temp_label" style="font-size:0.78em;color:var(--text-secondary, #6c757d);margin:6px 0 0">
+                        <i class="fas fa-lightbulb"></i> Temperatura <em>máxima</em> = temperatura real no mancal em plena operação. Temperatura <em>mínima</em> = temperatura de partida a frio ou temperatura ambiente mínima do local.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h2 data-i18n="greasepro.selector.speed_section"><i class="fas fa-cogs"></i> Velocidade e Carga</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label data-i18n="greasepro.selector.speed_label" for="sg-velocidade">Velocidade de Rotação</label>
+                            <select id="sg-velocidade">
+                                <option data-i18n="greasepro.selector.speed_opt_baixa" value="baixa">Baixa — &lt; 300 RPM</option>
+                                <option data-i18n="greasepro.selector.speed_opt_media" value="media" selected>Média — 300 a 1800 RPM</option>
+                                <option data-i18n="greasepro.selector.speed_opt_alta" value="alta">Alta — 1800 a 5000 RPM</option>
+                                <option data-i18n="greasepro.selector.speed_opt_muito_alta" value="muito_alta">Muito Alta — &gt; 5000 RPM</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="greasepro.selector.load_label" for="sg-carga">Tipo de Carga</label>
+                            <select id="sg-carga">
+                                <option data-i18n="greasepro.selector.load_opt_normal" value="normal" selected>Normal — Carga uniforme e constante</option>
+                                <option data-i18n="greasepro.selector.load_opt_pesada" value="pesada">Pesada — Cargas elevadas contínuas</option>
+                                <option data-i18n="greasepro.selector.load_opt_choque" value="choque">Choque / Impacto — Cargas dinâmicas</option>
+                                <option data-i18n="greasepro.selector.load_opt_vibracao" value="vibracao">Vibração Severa — Cargas oscilatórias</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border);">
+                        <span style="display:block; font-size:0.78em; font-weight:700; color:var(--primary); text-transform:uppercase; margin-bottom:10px;">
+                            <i class="fas fa-gauge-high"></i> Cálculo de Fator DN (Opcional - Recomendado)
+                        </span>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="sg-rpmExato">Rotação Real (RPM)</label>
+                                <input id="sg-rpmExato" type="number" placeholder="Ex: 1750" step="1">
+                            </div>
+                            <div class="input-group">
+                                <label for="sg-d">Ø Interno - d (mm)</label>
+                                <input id="sg-d" type="number" placeholder="Ex: 40" step="0.1">
+                            </div>
+                            <div class="input-group">
+                                <label for="sg-D">Ø Externo - D (mm)</label>
+                                <input id="sg-D" type="number" placeholder="Ex: 90" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 data-i18n="greasepro.selector.env_section"><i class="fas fa-industry"></i> Ambiente e Tipo de Rolamento</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label data-i18n="greasepro.selector.env_label" for="sg-ambiente">Ambiente de Operação</label>
+                            <select id="sg-ambiente">
+                                <option data-i18n="greasepro.selector.env_opt_normal" value="normal" selected>Normal — Sem exposições especiais</option>
+                                <option data-i18n="greasepro.selector.env_opt_umido" value="umido">Úmido — Condensação / vapor</option>
+                                <option data-i18n="greasepro.selector.env_opt_agua" value="agua">Contato com Água — Lavagem / imersão</option>
+                                <option data-i18n="greasepro.selector.env_opt_marinho" value="marinho">Marítimo — Água salgada / offshore</option>
+                                <option data-i18n="greasepro.selector.env_opt_empoeirado" value="empoeirado">Empoeirado — Abrasivos / particulados</option>
+                                <option data-i18n="greasepro.selector.env_opt_quimico" value="quimico">Químico / Corrosivo — Solventes / ácidos</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="greasepro.selector.bearing_label" for="sg-rolamento">Tipo de Rolamento / Mancal</label>
+                            <select id="sg-rolamento">
+                                <option data-i18n="greasepro.selector.bearing_opt_esferas" value="esferas" selected>Esferas — Uso geral</option>
+                                <option data-i18n="greasepro.selector.bearing_opt_cilindrico" value="cilindrico">Cilíndrico — Cargas radiais altas</option>
+                                <option data-i18n="greasepro.selector.bearing_opt_conico" value="conico">Cônico — Cargas axiais e radiais</option>
+                                <option data-i18n="greasepro.selector.bearing_opt_esferico" value="esferico">Esférico — Desalinhamento / vibração</option>
+                                <option data-i18n="greasepro.selector.bearing_opt_deslizamento" value="deslizamento">Mancal de Deslizamento</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 data-i18n="greasepro.selector.special_section"><i class="fas fa-star"></i> Condições Especiais</h2>
+                    <div class="sg-checkbox-group">
+                        <label class="sg-checkbox-item" for="sg-motor">
+                            <span class="sg-checkbox-icon"><i class="fas fa-bolt"></i></span>
+                            <span class="sg-checkbox-text">
+                                <strong data-i18n="greasepro.selector.motor_label">Motor Elétrico</strong>
+                                <span data-i18n="greasepro.selector.motor_desc" class="sg-checkbox-desc">Prioriza Poliureia para longa vida e alta velocidade</span>
+                            </span>
+                            <input type="checkbox" id="sg-motor">
+                        </label>
+                        <label class="sg-checkbox-item" for="sg-centralizador">
+                            <span class="sg-checkbox-icon"><i class="fas fa-share-nodes"></i></span>
+                            <span class="sg-checkbox-text">
+                                <strong data-i18n="greasepro.selector.central_label">Sistema Centralizador</strong>
+                                <span data-i18n="greasepro.selector.central_desc" class="sg-checkbox-desc">Ajusta NLGI para fluxo em tubulações</span>
+                            </span>
+                            <input type="checkbox" id="sg-centralizador">
+                        </label>
+                        <label class="sg-checkbox-item" for="sg-precisao">
+                            <span class="sg-checkbox-icon"><i class="fas fa-bullseye"></i></span>
+                            <span class="sg-checkbox-text">
+                                <strong data-i18n="greasepro.selector.precision_label">Rolamento de Precisão</strong>
+                                <span data-i18n="greasepro.selector.precision_desc" class="sg-checkbox-desc">Prioriza baixo ruído e torque de partida reduzido</span>
+                            </span>
+                            <input type="checkbox" id="sg-precisao">
+                        </label>
+                    </div>
+
+                    <div class="button-group" style="margin-top:16px">
+                        <button data-i18n="greasepro.selector.recommend_btn" class="main-button" onclick="calcularSeletorGraxa()">
+                            <i class="fas fa-search"></i> Recomendar Graxa
+                        </button>
+                        <button data-i18n="greasepro.selector.clear_btn" class="secondary-button" onclick="limparSeletorGraxa()">
+                            <i class="fas fa-eraser"></i> Limpar
+                        </button>
+                        <button id="catalog-btn" class="secondary-button" onclick="openGreaseCatalog()">
+                            <i class="fas fa-book-open"></i> Catálogo de Graxas
+                        </button>
+                    </div>
+                </div>
+
+            </div><div id="outputs-column">
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2 data-i18n="greasepro.selector.results_title"><i class="fas fa-award"></i> Recomendação de Graxa</h2>
+                    </div>
+
+                    <div class="result-placeholder" id="sg-placeholder">
+                        <i class="fas fa-oil-can"></i>
+                        <p data-i18n="greasepro.selector.placeholder">Preencha as condições de operação e clique em <strong>Recomendar Graxa</strong> para obter a indicação completa com marcas e produtos.</p>
+                    </div>
+
+                    <div class="result-content" id="sg-result" style="display:none;"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="catalog-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="greasepro.catalog.title"><i class="fas fa-book-open"></i> Catálogo de Graxas</h2>
+                <button class="close-button" onclick="closeGreaseCatalog()">&times;</button>
+            </div>
+            <div id="catalog-body" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        var tt = document.getElementById('theme-toggle');
+        tt.addEventListener('change', function() { document.body.classList.toggle('dark-theme'); });
+        if (localStorage.getItem('greasepro-theme') === 'dark') {
+            document.body.classList.add('dark-theme');
+            tt.checked = true;
+        }
+    </script>
+    <script src="js/menu-button.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

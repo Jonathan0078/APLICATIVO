@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title data-i18n="greasepro.title">GreasePRO</title>
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="../shared/i18n.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>
+                    <i class="fas fa-bars" id="menuToggle" style="cursor:pointer;font-size:1.2rem;" role="button" tabindex="0" aria-label="Menu"></i>
+                    <span data-i18n="greasepro.title">GreasePRO</span>
+                </h1>
+                <div class="theme-switcher">
+                    <label class="switch" title="Alternar tema" data-i18n-title="greasepro.theme_toggle">
+                        <input type="checkbox" id="themeToggle" aria-label="Alternar tema claro/escuro" data-i18n-title="greasepro.theme_toggle">
+                        <span class="slider" data-i18n-title="greasepro.theme_toggle"></span>
+                    </label>
+                </div>
+            </div>
+        </header>
+
+        <div class="fullscreen-menu" id="fullscreenMenu">
+            <button class="close-btn" id="closeMenuBtn" aria-label="Fechar menu" data-i18n-title="greasepro.close_menu">&times;</button>
+            <nav class="overlay-nav" id="overlayNav">
+                </nav>
+        </div>
+
+        <main class="app-main" id="appMain">
+            <section id="inputs-column"></section>
+            <section id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-simple"></i> <span data-i18n="greasepro.results">Resultados</span></h2>
+                    </div>
+                    <div class="result-placeholder">
+                        <i class="fas fa-calculator"></i>
+                        <span data-i18n="greasepro.select_calc">Selecione uma calculadora no menu acima para começar.</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    (function(){
+        var CALCULATOR_FILES = [
+            { file: "CalculadoraGq.html",       label: i18n.t('grease.gq'),              icon: "fa-solid fa-oil-can" },
+            { file: "Calculadora2v.html",        label: i18n.t('grease.mix_2v'),          icon: "fa-solid fa-flask" },
+            { file: "CalculadoraDFAACP.html",    label: i18n.t('grease.dfaacp'),          icon: "fa-solid fa-water" },
+            { file: "CalculadoraFM.html",        label: i18n.t('grease.fm'),              icon: "fa-solid fa-calculator" },
+            { file: "CalculadoraFRMT.html",      label: i18n.t('grease.frmt'),            icon: "fa-solid fa-cogs" },
+            { file: "CalculadoraFT.html",        label: i18n.t('grease.ft'),     icon: "fa-solid fa-clock" },
+            { file: "CalculadoraH.html",         label: i18n.t('grease.horas'), icon: "fa-solid fa-chart-line" },
+            { file: "CalculadoraIV.html",        label: i18n.t('grease.iv'),    icon: "fa-solid fa-thermometer-half" },
+            { file: "CalculadoraVAE.html",       label: i18n.t('grease.vae'),   icon: "fa-solid fa-compress" },
+            { file: "CalculadoraVGR.html",       label: i18n.t('grease.vgr'),   icon: "fa-solid fa-droplet" },
+            { file: "CalculadoraGraxa.html",     label: i18n.t('greasepro.selector.title'), icon: "fa-solid fa-award" },
+        ];
+
+        var overlayNav = document.getElementById('overlayNav');
+        var inputsColumn = document.getElementById('inputs-column');
+        var outputsColumn = document.getElementById('outputs-column');
+        var menuToggle = document.getElementById('menuToggle');
+        var closeMenuBtn = document.getElementById('closeMenuBtn');
+        var fullscreenMenu = document.getElementById('fullscreenMenu');
+        var themeToggle = document.getElementById('themeToggle');
+        var resultsCard = document.getElementById('results-card');
+
+        var currentFile = null;
+
+        // ─── Theme ───
+        function applyTheme(dark) {
+            document.body.classList.toggle('dark-theme', dark);
+            themeToggle.checked = dark;
+            localStorage.setItem('greasepro-theme', dark ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('greasepro-theme') === 'dark') { applyTheme(true); }
+        themeToggle.addEventListener('change', function() { applyTheme(this.checked); });
+
+        // ─── Build menu ───
+        CALCULATOR_FILES.forEach(function(item) {
+            var a = document.createElement('a');
+            a.href = '#';
+            a.className = 'nav-link';
+            a.dataset.file = item.file;
+            a.innerHTML = '<i class="' + item.icon + '"></i> ' + item.label;
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMenu();
+                loadCalculator(item.file);
+                document.querySelectorAll('.overlay-nav .nav-link').forEach(function(nav) { nav.classList.remove('active'); });
+                a.classList.add('active');
+            });
+            overlayNav.appendChild(a);
+        });
+
+        // ─── Menu open/close ───
+        function openMenu() { fullscreenMenu.classList.add('active'); }
+        function closeMenu() { fullscreenMenu.classList.remove('active'); }
+        menuToggle.addEventListener('click', openMenu);
+        closeMenuBtn.addEventListener('click', closeMenu);
+        fullscreenMenu.addEventListener('click', function(e) { if (e.target === fullscreenMenu) closeMenu(); });
+
+        // ─── Injeta estilos da calculadora no <head> e limpa os anteriores ───
+        var STYLE_MARKER = 'data-calc-style';
+        function injectCalculatorStyles(doc) {
+            document.querySelectorAll('[' + STYLE_MARKER + ']').forEach(function(el) { el.remove(); });
+            doc.querySelectorAll('head link[rel="stylesheet"], head style').forEach(function(el) {
+                if (el.tagName === 'LINK') {
+                    var link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = el.getAttribute('href');
+                    link.setAttribute(STYLE_MARKER, '');
+                    document.head.appendChild(link);
+                } else if (el.tagName === 'STYLE') {
+                    var style = document.createElement('style');
+                    style.textContent = el.textContent;
+                    style.setAttribute(STYLE_MARKER, '');
+                    document.head.appendChild(style);
+                }
+            });
+        }
+
+        // ─── Carregar scripts em sequência ───
+        var SKIP_SRCS = ['i18n.js', 'menu-button.js', 'menu-hamburguer.js', 'bootstrap.min.js', 'popper.min.js', 'jquery'];
+
+        function loadScriptsSequentially(scripts, onDone) {
+            var remaining = Array.from(scripts);
+            function next() {
+                if (remaining.length === 0) { if (onDone) onDone(); return; }
+                var old = remaining.shift();
+                var s = document.createElement('script');
+                Array.from(old.attributes).forEach(function(a) { s.setAttribute(a.name, a.value); });
+                if (!old.getAttribute('src')) s.textContent = old.textContent;
+                if (old.getAttribute('src')) {
+                    s.onload = next;
+                    s.onerror = next;
+                    document.body.appendChild(s);
+                } else {
+                    document.body.appendChild(s);
+                    next();
+                }
+            }
+            next();
+        }
+
+        // ─── Load calculator ───
+        function loadCalculator(file) {
+            if (file === currentFile) return;
+            currentFile = file;
+            resultsCard.innerHTML = '<div class="card-header"><h2><i class="fas fa-chart-simple"></i> ' + i18n.t('greasepro.results') + '</h2></div><div class="result-placeholder"><i class="fas fa-spinner fa-pulse"></i><span>' + i18n.t('greasepro.loading') + '</span></div>';
+            inputsColumn.innerHTML = '';
+
+            var url = encodeURI(file);
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            
+            xhr.onload = function() {
+                if (xhr.status === 200 || xhr.status === 0) {
+                    var html = xhr.responseText;
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(html, 'text/html');
+                    var inputs = doc.getElementById('inputs-column');
+                    var outputs = doc.getElementById('outputs-column');
+
+                    injectCalculatorStyles(doc);
+
+                    if (inputs) inputsColumn.innerHTML = inputs.innerHTML;
+
+                    if (outputs) {
+                        var calcResultsCard = outputs.querySelector('#results-card');
+                        if (calcResultsCard) {
+                            resultsCard.outerHTML = calcResultsCard.outerHTML;
+                            resultsCard = document.getElementById('results-card');
+                        }
+                    }
+
+                    var modal = doc.getElementById('catalog-modal');
+                    if (modal && !document.getElementById('catalog-modal')) {
+                        document.body.appendChild(modal.cloneNode(true));
+                    }
+
+                    var headScripts = Array.from(doc.querySelectorAll('head script[src]')).filter(function(s) {
+                        var src = s.getAttribute('src') || '';
+                        return !SKIP_SRCS.some(function(skip) { return src.indexOf(skip) !== -1; });
+                    });
+                    loadScriptsSequentially(headScripts);
+                } else {
+                    resultsCard.innerHTML = '<div class="card-header"><h2><i class="fas fa-chart-simple"></i> ' + i18n.t('greasepro.results') + '</h2></div><div class="result-placeholder"><i class="fas fa-triangle-exclamation" style="color:var(--cor-erro)"></i><span>' + i18n.t('greasepro.error_prefix') + 'Falha ao ler arquivo local</span></div>';
+                }
+            };
+
+            xhr.onerror = function() {
+                resultsCard.innerHTML = '<div class="card-header"><h2><i class="fas fa-chart-simple"></i> ' + i18n.t('greasepro.results') + '</h2></div><div class="result-placeholder"><i class="fas fa-triangle-exclamation" style="color:var(--cor-erro)"></i><span>' + i18n.t('greasepro.error_prefix') + 'Acesso bloqueado pela WebView</span></div>';
+            };
+
+            xhr.send();
+        }
+
+        // ─── Load default calculator ───
+        loadCalculator(CALCULATOR_FILES[0].file);
+        var firstLink = overlayNav.querySelector('.nav-link');
+        if (firstLink) firstLink.classList.add('active');
+    })();
+    </script>
+</body>
+</html>

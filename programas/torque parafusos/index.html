@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="parafuso.title">Calculadora de Torque e Pré-Carga de Parafusos</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-screwdriver-wrench"></i> <span data-i18n="parafuso.title">Calculadora de Parafusos Pro</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-sliders"></i> <span data-i18n="parafuso.dimensionamento">Parâmetros de Dimensionamento</span></h2>
+                    
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="diametro" data-i18n="parafuso.diametro">Diâmetro Nominal (d) - mm</label>
+                            <input type="number" id="diametro" data-i18n-placeholder="parafuso.diametro_placeholder" placeholder="Ex: 12" step="0.1" min="1">
+                        </div>
+                        <div class="input-group">
+                            <label for="passo" data-i18n="parafuso.passo">Passo da Rosca (p) - mm</label>
+                            <input type="number" id="passo" data-i18n-placeholder="parafuso.passo_placeholder" placeholder="Ex: 1.75" step="0.01" min="0.1">
+                        </div>
+                    </div>
+
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="classe" data-i18n="parafuso.classe_resistencia">Classe de Resistência (ISO)</label>
+                            <select id="classe" class="input-group">
+                                <option value="5.6">5.6</option>
+                                <option value="8.8" selected>8.8</option>
+                                <option value="10.9">10.9</option>
+                                <option value="12.9">12.9</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="fatorK" data-i18n="parafuso.fator_k">Fator de Atrito (K)</label>
+                            <input type="number" id="fatorK" data-i18n-placeholder="parafuso.k_placeholder" placeholder="Ex: 0.15" step="0.01" min="0.01" value="0.15">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="boltName" data-i18n="parafuso.identificacao">Identificação do Elemento (Opcional)</label>
+                        <input type="text" id="boltName" data-i18n-placeholder="parafuso.id_placeholder" placeholder="Ex: Parafuso Mancal Superior">
+                    </div>
+
+                    <div class="button-group">
+                        <button class="main-button" onclick="calculateScrew()"><i class="fa-solid fa-bolt"></i> <span data-i18n="parafuso.calcular">Calcular</span></button>
+                        <button class="secondary-button" onclick="addToComparison()"><i class="fa-solid fa-plus"></i> <span data-i18n="parafuso.adicionar_lista">Adicionar à Lista</span></button>
+                    </div>
+                    
+                    <div id="error-container" class="resultado-container error hidden"></div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="parafuso.results_title">Análises Técnicas</span></h2>
+                    </div>
+                    <div class="tabs">
+                        <div class="tab active" onclick="showTab('torque', event)" data-i18n="parafuso.tab_torque">Torque e Força</div>
+                        <div class="tab" onclick="showTab('tension', event)" data-i18n="parafuso.tab_tensao">Gráfico de Tensões</div>
+                    </div>
+                    
+                    <div id="torque-tab" class="tab-content active">
+                        <div id="result" class="hidden"></div>
+                        <div class="info-box">
+                            <strong>Interpretação:</strong> <span data-i18n="parafuso.interpretacao">O torque de aperto recomendado baseia-se no cálculo padrão de engenharia para atingir a zona de pré-carga segura (geralmente entre 75% e 90% do limite de escoamento do material), evitando a deformação plástica permanente do elemento de fixação.</span>
+                        </div>
+                    </div>
+                    
+                    <div id="tension-tab" class="tab-content">
+                        <div class="chart-container">
+                            <canvas id="viscosityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" id="comparacao-oleos-card">
+                <h2><i class="fa-solid fa-table"></i> <span data-i18n="parafuso.comparacao_title">Elementos Dimensionados para Comparação</span></h2>
+                <div id="comparisonTableContainer">
+                    <p data-i18n="parafuso.comparacao_empty">Adicione elementos utilizando o botão "Adicionar à Lista" para estruturar a tabela comparativa.</p>
+                </div>
+            </div>
+
+            <div class="card" id="guia-referencia-card">
+                <h2><i class="fa-solid fa-info-circle"></i> <span data-i18n="parafuso.guia_title">Guia de Referência: Propriedades Mecânicas (ISO 898-1)</span></h2>
+                <div class="table-container no-scroll-mobile">
+                    <table class="comparison-table responsive-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="parafuso.th_classe">Classe de Resistência</th>
+                                <th data-i18n="parafuso.th_tracao">Limite de Tração (Su)</th>
+                                <th data-i18n="parafuso.th_escoamento">Limite de Escoamento (Sy)</th>
+                                <th data-i18n="parafuso.th_aplicacoes">Aplicações Típicas na Indústria</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Classe de Resistência"><strong>5.6</strong></td>
+                                <td data-label="Limite de Tração (Su)">500 MPa</td>
+                                <td data-label="Limite de Escoamento (Sy)">300 MPa</td>
+                                <td data-label="Aplicações Típicas" data-i18n="parafuso.aplicacao_5_6">Uniões de baixa responsabilidade e cargas estáticas reduzidas.</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Classe de Resistência"><strong>8.8</strong></td>
+                                <td data-label="Limite de Tração (Su)">800 MPa</td>
+                                <td data-label="Limite de Escoamento (Sy)">640 MPa</td>
+                                <td data-label="Aplicações Típicas" data-i18n="parafuso.aplicacao_8_8">Padrão industrial para maquinários, motores e montagens mecânicas correntes.</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Classe de Resistência"><strong>10.9</strong></td>
+                                <td data-label="Limite de Tração (Su)">1040 MPa</td>
+                                <td data-label="Limite de Escoamento (Sy)">940 MPa</td>
+                                <td data-label="Aplicações Típicas" data-i18n="parafuso.aplicacao_10_9">Uniões estruturais severas, componentes sujeitos a cargas dinâmicas elevadas.</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Classe de Resistência"><strong>12.9</strong></td>
+                                <td data-label="Limite de Tração (Su)">1220 MPa</td>
+                                <td data-label="Limite de Escoamento (Sy)">1100 MPa</td>
+                                <td data-label="Aplicações Típicas" data-i18n="parafuso.aplicacao_12_9">Aplicações críticas de alta precisão, fixação de matrizes e caixas de engrenagens.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

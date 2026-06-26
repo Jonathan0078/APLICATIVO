@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="soldagem.simbologia.title">Simbologia de Soldagem</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-shapes"></i> <span data-i18n="soldagem.simbologia.title">Simbologia de Soldagem</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="theme-toggle-checkbox"><span class="slider"></span></label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-search"></i> <span data-i18n="soldagem.simbologia.search_title">Consultar Símbolo</span></h2>
+                    <div class="input-group">
+                        <label for="categoria" data-i18n="soldagem.simbologia.categoria">Categoria</label>
+                        <select id="categoria" onchange="filtrar()">
+                            <option value="todos" data-i18n="soldagem.simbologia.todos">Todos</option>
+                            <option value="basico" selected data-i18n="soldagem.simbologia.cat_basico">Símbolos Básicos</option>
+                            <option value="suplementar" data-i18n="soldagem.simbologia.cat_supl">Símbolos Suplementares</option>
+                            <option value="posicao" data-i18n="soldagem.simbologia.cat_pos">Posição da Solda</option>
+                            <option value="acabamento" data-i18n="soldagem.simbologia.cat_acab">Acabamento</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="position:relative">
+                        <label for="simbSearch" data-i18n="soldagem.simbologia.search">Buscar símbolo</label>
+                        <input type="text" id="simbSearch" data-i18n-placeholder="soldagem.simbologia.ph_search" placeholder="Ex: filete, chanfro, K" oninput="filtrar()">
+                    </div>
+                    <div class="info-box">
+                        <i class="fa-solid fa-info-circle"></i>
+                        <span data-i18n="soldagem.simbologia.info">Símbolos conforme norma AWS A2.4 / ISO 2553. Clique em um símbolo para ver detalhes.</span>
+                    </div>
+                </div>
+            </div>
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-shapes"></i> <span data-i18n="soldagem.simbologia.symbols_title">Símbolos de Soldagem</span></h2>
+                    </div>
+                    <div id="result-container">
+                        <div id="symbolGrid" class="symbol-grid"></div>
+                        <div id="symbolDetail" class="hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

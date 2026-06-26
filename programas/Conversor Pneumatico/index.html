@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="conversor_pneu.title">Conversor Pneumático</title>
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-container">
+    <header class="app-header">
+        <div class="header-content">
+            <h1><i class="fa-solid fa-arrows-left-right" style="margin-right:8px"></i> <span data-i18n="conversor_pneu.title">Conversor Pneumático</span></h1>
+            <div class="theme-switcher">
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div class="mode-tabs">
+                <button class="mode-tab active" data-mode="pressao" onclick="setMode('pressao')"><i class="fa-solid fa-gauge"></i> <span data-i18n="conversor_pneu.mode_pressao">Pressão</span></button>
+                <button class="mode-tab" data-mode="vazao" onclick="setMode('vazao')"><i class="fa-solid fa-wind"></i> <span data-i18n="conversor_pneu.mode_vazao">Vazão</span></button>
+                <button class="mode-tab" data-mode="temp" onclick="setMode('temp')"><i class="fa-solid fa-temperature-high"></i> <span data-i18n="conversor_pneu.mode_temp">Temperatura</span></button>
+                <button class="mode-tab" data-mode="compr" onclick="setMode('compr')"><i class="fa-solid fa-ruler"></i> <span data-i18n="conversor_pneu.mode_compr">Comprimento</span></button>
+            </div>
+            <div id="converterContent"></div>
+        </div>
+
+        <div class="card" id="resultCard" style="display:none">
+            <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="result.title">Resultados</span></h2>
+            <div id="resultContent"></div>
+        </div>
+    </main>
+</div>
+<script src="../shared/i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

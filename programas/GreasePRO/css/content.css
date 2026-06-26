@@ -1,0 +1,65 @@
+#page-content-wrapper {
+    padding-top: 2rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-right: 0;
+}
+
+.iframe-container {
+    margin-top: 1rem;
+}
+
+iframe {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustes para o menu hamburguer */
+.hamburger-menu {
+    background-color: var(--cor-primaria);
+    border-radius: 8px;
+    padding: 12px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.hamburger-menu:hover {
+    transform: scale(1.05);
+    background-color: var(--cor-secundaria);
+}
+
+.hamburger-line {
+    width: 20px;
+    height: 2px;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+/* Animação do botão hamburguer */
+.hamburger-menu.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.calculator-iframe {
+    height: 90vh;
+}

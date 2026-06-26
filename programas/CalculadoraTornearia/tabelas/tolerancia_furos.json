@@ -1,0 +1,14 @@
+{
+  "title": "Tolerância Dimensional - Furos",
+  "headers": ["Classe", "Limite Superior (mm)", "Limite Inferior (mm)", "Aplicação"],
+  "rows": [
+    ["H7", "+0,021", "0", "Ajuste deslizante"],
+    ["G6", "+0,014", "-0,006", "Ajuste de transição"],
+    ["F7", "+0,025", "+0,004", "Ajuste justo"],
+    ["J6", "+0,006", "-0,019", "Ajuste de interferência leve"],
+    ["K6", "+0,014", "-0,025", "Ajuste de interferência"],
+    ["M6", "+0,025", "-0,040", "Ajuste de interferência forte"],
+    ["P6", "+0,040", "-0,060", "Ajuste especial"],
+    ["R6", "+0,060", "-0,080", "Ajuste para cargas elevadas"]
+  ]
+}

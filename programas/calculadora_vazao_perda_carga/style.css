@@ -1,0 +1,312 @@
+@import url('../../shared/base.css');
+
+:root {
+    /* TEMA CLARO (PADRÃO) */
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --text: #212529;
+    --text-secondary: #6c757d;
+    --border: #dee2e6;
+    --shadow: 0 2px 4px rgba(0,0,0,0.07);
+
+    /* Cores de destaque */
+    --primary: #2563eb; /* Tom de azul do GreasePRO */
+    --secondary: #3b82f6; /* Tom de azul secundário do GreasePRO */
+    --accent: #ffc107;
+    --accent-light: #fff3cd;
+
+    --radius-sm: 8px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body.dark-theme {
+    /* TEMA ESCURO (ATIVADO COM A CLASSE) */
+    --bg: #0a1929;
+    --surface: #112233;
+    --text: #e9ecef;
+    --text-secondary: #8696a7;
+    --border: #334b61;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    --primary: #0d6efd; /* Azul um pouco mais vivo para o tema escuro */
+}
+
+/* --- ESTILOS GERAIS --- */
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    margin: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* --- CABEÇALHO --- */
+.app-header {
+    background: linear-gradient(145deg, #0f172a 0%, #1e3a5f 50%, #1a365d 100%);
+    color: white;
+    padding: 0.9rem 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.header-content h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    color: white;
+}
+
+body.dark-theme .app-header {
+    background: linear-gradient(145deg, #0a0f1a 0%, #0f172a 50%, #0d1a2e 100%);
+}
+
+/* --- CONTEÚDO PRINCIPAL --- */
+.app-main {
+    width: 100%;
+    max-width: 800px; /* Aumentei um pouco para dar mais espaço */
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex-grow: 1;
+    box-sizing: border-box; /* Garante que o padding não cause overflow */
+}
+
+/* Estilo dos "Cards" */
+.card {
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.card h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Estilo para os grupos de input */
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: .4rem;
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"] {
+    width: 100%;
+    padding: .7rem .85rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    transition: border-color .2s, box-shadow .2s;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+}
+body.dark-theme .input-group input:focus {
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.15);
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.button-group {
+    display: flex;
+    gap: .75rem;
+    margin-top: 1.5rem;
+}
+
+.main-button,
+.secondary-button {
+    padding: .85rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: .9rem;
+    font-weight: 700;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: opacity .2s, transform .15s, box-shadow .2s;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    text-decoration: none;
+}
+
+.main-button {
+    background: var(--primary);
+    color: white;
+}
+
+.secondary-button {
+    background: var(--surface);
+    color: var(--primary);
+    border: 2px solid var(--border);
+}
+body.dark-theme .secondary-button {
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.main-button:hover {
+    opacity: 0.9;
+}
+.secondary-button:hover {
+    background: var(--bg);
+}
+body.dark-theme .secondary-button:hover {
+    background: var(--border);
+}
+
+.main-button:active,
+.secondary-button:active {
+    transform: scale(.98);
+}
+
+.result-placeholder {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-size: .9rem;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg);
+}
+
+.result-placeholder i {
+    font-size: 2.5rem;
+    margin-bottom: .75rem;
+    display: block;
+    color: var(--accent);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+}
+
+.result-item {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--secondary);
+    display: flex;
+    flex-direction: column;
+}
+body.dark-theme .result-item {
+    background: var(--surface);
+}
+
+.result-item .label {
+    font-size: .7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: .2rem;
+}
+
+.result-item .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    word-break: break-word;
+}
+
+.result-item .unit {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-left: 0.25rem;
+}
+
+/* --- TEMA / SWITCH --- */
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.25);
+    transition: .3s;
+    border-radius: 24px;
+}
+.slider::before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+input:checked + .slider { background: #fbbf24; }
+input:checked + .slider::before { transform: translateX(24px); }
+
+/* --- AJUSTES PARA DISPOSITIVOS MÓVEIS --- */
+@media (max-width: 600px) {
+    .app-main {
+        padding: 1rem; /* Reduz o preenchimento em telas menores */
+    }
+}

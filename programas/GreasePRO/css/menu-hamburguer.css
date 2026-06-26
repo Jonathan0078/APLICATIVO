@@ -1,0 +1,146 @@
+/* Estilos do Menu Hamburguer */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+}
+
+.hamburger-menu:focus {
+    outline: none;
+}
+
+.hamburger-line {
+    width: 2rem;
+    height: 0.25rem;
+    background: var(--cor-texto-claro);
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    position: relative;
+    transform-origin: 1px;
+}
+
+.menu-mobile {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -320px;
+    height: 100vh;
+    width: 300px;
+    background: linear-gradient(145deg, var(--cor-primaria), var(--cor-secundaria));
+    padding: 3rem 2rem 2rem 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.menu-mobile.active {
+    left: 0;
+    opacity: 1;
+    visibility: visible;
+    right: auto;
+}
+
+.menu-mobile.active {
+    right: 0;
+}
+
+.menu-mobile ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-mobile li {
+    margin: 0.8rem 0;
+    padding: 0.5rem;
+    border-radius: var(--raio-borda);
+    transition: background-color 0.3s ease;
+}
+
+.menu-mobile li:hover {
+    background-color: var(--cor-secundaria);
+}
+
+.menu-mobile a {
+    color: var(--cor-texto-claro);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: block;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.menu-mobile .sidebar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: var(--cor-destaque);
+    text-align: center;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--cor-destaque);
+}
+
+.menu-mobile a:hover {
+    color: var(--cor-destaque);
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Sempre mostrar menu hamburguer */
+.hamburger-menu {
+    display: flex;
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 1001;
+    background-color: transparent;
+    padding: 0.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: none;
+}
+
+.hamburger-menu:hover {
+    transform: scale(1.05);
+    background-color: var(--cor-secundaria);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.menu-desktop {
+    display: none;
+}
+
+.menu-mobile {
+    display: block;
+}
+
+.overlay.active {
+    display: block;
+}
+
+/* Ajustes para o conteúdo principal */
+#page-content-wrapper {
+    width: 100%;
+    padding: 1rem;
+}

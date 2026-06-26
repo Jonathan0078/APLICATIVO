@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="guia_lub.title">Guia de Lubrificação Industrial Pro</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1 data-i18n="guia_lub.title"><i class="fa-solid fa-oil-can"></i> Guia de Lubrificação Pro</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-hand-pointer"></i> <span data-i18n="guia_lub.compatibility">Compatibilidade de Graxas</span></h2>
+                    <div class="input-group">
+                        <label for="grease1" data-i18n="guia_lub.grease1">Graxa 1 (Espessante):</label>
+                        <select id="grease1" class="input-group">
+                            <option value="Lítio">Lítio</option>
+                            <option value="Lítio Complexo">Lítio Complexo</option>
+                            <option value="Cálcio">Cálcio</option>
+                            <option value="Cálcio Complexo">Cálcio Complexo</option>
+                            <option value="Alumínio Complexo">Alumínio Complexo</option>
+                            <option value="Poliureia">Poliureia</option>
+                            <option value="Bentonita / Sílica">Bentonita / Sílica</option>
+                            <option value="Sulfonato de Cálcio">Sulfonato de Cálcio</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="grease2" data-i18n="guia_lub.grease2">Graxa 2 (Espessante):</label>
+                        <select id="grease2" class="input-group">
+                            <option value="Lítio">Lítio</option>
+                            <option value="Lítio Complexo">Lítio Complexo</option>
+                            <option value="Cálcio">Cálcio</option>
+                            <option value="Cálcio Complexo">Cálcio Complexo</option>
+                            <option value="Alumínio Complexo">Alumínio Complexo</option>
+                            <option value="Poliureia">Poliureia</option>
+                            <option value="Bentonita / Sílica">Bentonita / Sílica</option>
+                            <option value="Sulfonato de Cálcio">Sulfonato de Cálcio</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="checkCompatibility()"><i class="fa-solid fa-check"></i> <span data-i18n="guia_lub.check_compat">Verificar Compatibilidade</span></button>
+                    </div>
+                    <div id="compatibility-result-container" class="resultado-container hidden"></div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-calculator"></i> <span data-i18n="guia_lub.vi_calc">Calculadora de IV</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="visc40" data-i18n="guia_lub.visc40">Viscosidade a 40°C (cSt)</label>
+                            <input type="number" id="visc40" placeholder="Ex: 100" step="0.01" min="0.01" data-i18n-placeholder="guia_lub.visc40_ph">
+                        </div>
+                        <div class="input-group">
+                            <label for="visc100" data-i18n="guia_lub.visc100">Viscosidade a 100°C (cSt)</label>
+                            <input type="number" id="visc100" placeholder="Ex: 12.5" step="0.01" min="0.01" data-i18n-placeholder="guia_lub.visc100_ph">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="oilName" data-i18n="guia_lub.oil_name">Nome do Óleo (Opcional)</label>
+                        <input type="text" id="oilName" placeholder="Ex: Óleo Motor 5W-30" data-i18n-placeholder="guia_lub.oil_name_ph">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="calculateVI()"><i class="fa-solid fa-bolt"></i> <span data-i18n="guia_lub.calc_vi">Calcular IV</span></button>
+                        <button class="secondary-button" onclick="addToComparison()"><i class="fa-solid fa-plus"></i> <span data-i18n="guia_lub.add_comparison">Adicionar à Comparação</span></button>
+                    </div>
+                    <div id="result" class="hidden"></div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="guia_lub.charts">Análises Gráficas</span></h2>
+                    </div>
+                    <div class="tabs">
+                        <div class="tab active" onclick="showTab('viscosity', event)" data-i18n="guia_lub.visc_temp">Visc vs Temp</div>
+                        <div class="tab" onclick="showTab('comparison', event)" data-i18n="guia_lub.comparison">Comparação</div>
+                        <div class="tab" onclick="showTab('distribution', event)" data-i18n="guia_lub.distribution">Distribuição</div>
+                    </div>
+                    <div id="viscosity-tab" class="tab-content active">
+                        <div class="chart-container"><canvas id="viscosityChart"></canvas></div>
+                        <div class="info-box">
+                            <strong data-i18n="guia_lub.interpretation">Interpretação:</strong> <span data-i18n="guia_lub.vi_explain">Óleos com IV mais alto (linha mais plana) mantêm viscosidade mais estável com mudanças de temperatura.</span>
+                        </div>
+                    </div>
+                    <div id="comparison-tab" class="tab-content">
+                        <div class="chart-container"><canvas id="comparisonChart"></canvas></div>
+                        <button class="secondary-button" onclick="clearComparison()" style="margin-top: 10px;" data-i18n="guia_lub.clear_comparisons">Limpar Comparações</button>
+                    </div>
+                    <div id="distribution-tab" class="tab-content">
+                        <div class="chart-container"><canvas id="distributionChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" id="comparacao-oleos-card">
+                <h2><i class="fa-solid fa-table"></i> <span data-i18n="guia_lub.oil_comparison">Comparação de Óleos</span></h2>
+                <div id="comparisonTableContainer">
+                    <p data-i18n="guia_lub.add_oils_hint">Adicione óleos para comparação usando o botão "Adicionar à Comparação"</p>
+                </div>
+            </div>
+
+            <div class="card" id="guia-referencia-card">
+                <h2><i class="fa-solid fa-info-circle"></i> <span data-i18n="guia_lub.reference_guide">Guia de Referência</span></h2>
+                <div class="table-container">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="guia_lub.vi_range">Faixa de IV</th>
+                                <th data-i18n="guia_lub.classification">Classificação</th>
+                                <th data-i18n="guia_lub.characteristics">Características</th>
+                                <th data-i18n="guia_lub.typical_apps">Aplicações Típicas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>120+</td><td data-i18n="guia_lub.excellent">Excelente</td><td>Estabilidade térmica superior</td><td>Óleos sintéticos premium</td></tr>
+                            <tr><td>90-119</td><td data-i18n="guia_lub.good">Bom</td><td>Boa estabilidade térmica</td><td>Óleos minerais de alta qualidade</td></tr>
+                            <tr><td>40-89</td><td data-i18n="guia_lub.medium">Médio</td><td>Estabilidade moderada</td><td>Óleos convencionais</td></tr>
+                            <tr><td>&lt; 40</td><td data-i18n="guia_lub.low">Baixo</td><td>Baixa estabilidade térmica</td><td>Óleos básicos não refinados</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

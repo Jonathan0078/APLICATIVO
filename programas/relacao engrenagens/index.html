@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="engrenagens.title">Calculadora Avançada de Engrenagens</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-gears"></i> <span data-i18n="engrenagens.title">Calculadora de Engrenagens</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="card animation-card">
+                <div class="animation-container">
+                    <div class="gear-wrapper">
+                        <div class="gear-clip"><img src="assets/gear.svg" class="gear" id="gear1" alt="Gear 1"></div>
+                        <label for="dentes-z1" data-i18n="engrenagens.z1">Z1 (Motora)</label>
+                        <span class="rotation-indicator" id="gear1-rotation">Rotação: --</span>
+                    </div>
+                    <div class="gear-wrapper">
+                        <div class="gear-clip"><img src="assets/gear.svg" class="gear" id="gear2" alt="Gear 2"></div>
+                        <label for="dentes-z2" data-i18n="engrenagens.z2">Z2 (Movida)</label>
+                        <span class="rotation-indicator" id="gear2-rotation">Rotação: --</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 data-i18n="engrenagens.params"><i class="fas fa-sliders-h"></i> Parâmetros do Sistema</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="dentes-z1" data-i18n="engrenagens.teeth_z1">Dentes (Z1):</label>
+                        <input type="number" id="dentes-z1" min="1" placeholder="Ex: 20" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="dentes-z2" data-i18n="engrenagens.teeth_z2">Dentes (Z2):</label>
+                        <input type="number" id="dentes-z2" min="1" placeholder="Ex: 60" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="rpm-entrada" data-i18n="engrenagens.input_rpm">RPM Entrada:</label>
+                        <input type="number" id="rpm-entrada" min="0" value="1200" placeholder="Ex: 1200">
+                    </div>
+                    <div class="input-group">
+                        <label for="torque-entrada" data-i18n="engrenagens.input_torque">Torque Entrada (N·m):</label>
+                        <input type="number" id="torque-entrada" min="0" value="10" placeholder="Ex: 10">
+                    </div>
+                    <div class="input-group">
+                        <label for="eficiencia" data-i18n="engrenagens.efficiency">Eficiência (%):</label>
+                        <input type="number" id="eficiencia" min="0" max="100" value="95" placeholder="Ex: 95">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button id="calcular-btn" class="main-button" disabled><i class="fas fa-cogs"></i> <span data-i18n="calc.btn.animate">Calcular e Animar</span></button>
+                    <button id="reset-btn" class="secondary-button"><i class="fas fa-undo"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                </div>
+            </div>
+
+            <div id="resultado-container" class="card result-card hidden">
+                <h2 data-i18n="result.title"><i class="fas fa-chart-bar"></i> Resultados</h2>
+                <div class="resultado-grid">
+                    <div class="resultado-item"><h4><span data-i18n="engrenagens.transmission_type">Tipo de Transmissão:</span> <span id="resultado-tipo">--</span></h4></div>
+                    <div class="resultado-item"><h4><span data-i18n="engrenagens.ratio">Relação (i):</span> <span id="resultado-relacao">--</span> : 1</h4></div>
+                    <div class="resultado-item"><h4><span data-i18n="engrenagens.output_rpm">RPM Saída:</span> <span id="resultado-rpm">--</span> RPM</h4></div>
+                    <div class="resultado-item"><h4><span data-i18n="engrenagens.output_torque">Torque Saída:</span> <span id="resultado-torque">--</span> N·m</h4></div>
+                </div>
+            </div>
+
+            <div id="erro-container" class="notification error hidden" aria-live="polite">
+                <p>Por favor, insira valores válidos para o número de dentes (maiores que zero).</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle-checkbox');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                if (themeToggle) themeToggle.checked = true;
+            }
+            if (themeToggle) {
+                themeToggle.addEventListener('change', (e) => {
+                    document.body.classList.toggle('dark-theme', e.target.checked);
+                    localStorage.setItem('theme', e.target.checked ? 'dark' : 'light');
+                });
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

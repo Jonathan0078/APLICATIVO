@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="grease.ft">Tempo de Filtração - GreasePRO</title>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+
+    <!-- Scripts -->
+    <script src="js/TFCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-filter"></i> <span data-i18n="grease.ft.title">Tempo de Filtração e Número de Passagens</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> <span data-i18n="grease.instructions">Instruções</span></h2>
+                    <p data-i18n="grease.ft.instr">Forneça os dados para calcular o tempo de filtração e o número de passagens (aplicável apenas para filtração OFF-LINE):</p>
+                    <ul>
+                        <li data-i18n="grease.ft.li1">Nível de limpeza inicial (@ x mícron por ml).</li>
+                        <li data-i18n="grease.ft.li2">Nível de limpeza final (@ x mícron por ml).</li>
+                        <li data-i18n="grease.ft.li3">Volume do sistema (galões).</li>
+                        <li data-i18n="grease.ft.li4">Vazão através do filtro (gpm).</li>
+                        <li data-i18n="grease.ft.li5">Taxa de filtração Beta.</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <h2><i class="fas fa-calculator"></i> <span data-i18n="grease.ft.filt_data">Dados de Filtração</span></h2>
+                    <div class="input-group">
+                        <label for="nli" data-i18n="grease.ft.initial_level">Nível de Limpeza Inicial (@ x mícron/ml)</label>
+                        <input id="nli" type="number" placeholder="Ex: 5000">
+                    </div>
+                    <div class="input-group">
+                        <label for="nlf" data-i18n="grease.ft.final_level">Nível de Limpeza Final (@ x mícron/ml)</label>
+                        <input id="nlf" type="number" placeholder="Ex: 100">
+                    </div>
+                    <div class="input-group">
+                        <label for="vsg" data-i18n="grease.ft.sys_volume">Volume do Sistema (gal)</label>
+                        <input id="vsg" type="number" placeholder="Ex: 100">
+                    </div>
+                    <div class="input-group">
+                        <label for="tft" data-i18n="grease.ft.filter_flow">Vazão do Filtro (gpm)</label>
+                        <input id="tft" type="number" placeholder="Ex: 10">
+                    </div>
+                    <div class="input-group">
+                        <label for="tfb" data-i18n="grease.ft.beta_ratio">Taxa de Filtração Beta</label>
+                        <input id="tfb" type="number" placeholder="Ex: 200">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validarC()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> <span data-i18n="result.title">Resultados</span></h2>
+                    </div>
+                    
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p data-i18n="grease.ft.placeholder">Os resultados aparecerão aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="label" data-i18n="grease.ft.time_min">Tempo (minutos)</span>
+                                <span id="res1-val" class="value">0 min</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label" data-i18n="grease.ft.passes">Nº de Passagens</span>
+                                <span id="res2-val" class="value">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+
+        // Adaptação para mostrar/esconder os resultados
+        const original_validarC = window.validarC;
+        window.validarC = function() {
+            original_validarC();
+            const res1Value = document.getElementById('res1').value;
+            const res2Value = document.getElementById('res2').value;
+            if (res1Value && res2Value) {
+                document.getElementById('result-placeholder').style.display = 'none';
+                document.getElementById('result-content').style.display = 'block';
+                document.getElementById('res1-val').textContent = res1Value + " min";
+                document.getElementById('res2-val').textContent = res2Value;
+            }
+        }
+        
+        const original_limpiarC = window.limpiarC;
+        window.limpiarC = function() {
+            original_limpiarC();
+            document.getElementById('result-placeholder').style.display = 'block';
+            document.getElementById('result-content').style.display = 'none';
+        }
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

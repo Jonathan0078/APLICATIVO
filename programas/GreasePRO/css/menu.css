@@ -1,0 +1,68 @@
+.menu-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.menu-link {
+    display: block;
+    padding: 10px 15px;
+    color: #333333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    border-left: 4px solid transparent;
+    font-weight: 500;
+}
+
+.menu-link:hover {
+    background-color: #f5f5f5;
+    border-left: 4px solid #07518d;
+    color: #07518d;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.menu-item.active .menu-link {
+    background-color: #f5f5f5;
+    border-left: 4px solid #07518d;
+    color: #07518d;
+    font-weight: bold;
+}
+
+/* Estilos para dispositivos móveis */
+@media screen and (max-width: 768px) {
+    .menu-item {
+        padding: 4px 0;
+    }
+
+    .menu-link {
+        padding: 12px 10px;
+        font-size: 16px; /* Fonte maior para melhor legibilidade em telas touch */
+        border-left: none;
+        border-bottom: 2px solid transparent;
+    }
+
+    .menu-link:hover {
+        border-left: none;
+        border-bottom: 2px solid #07518d;
+        background-color: #f8f9fa;
+    }
+
+    .menu-item.active .menu-link {
+        border-left: none;
+        border-bottom: 2px solid #07518d;
+    }
+}
+
+/* Estilos para dispositivos muito pequenos */
+@media screen and (max-width: 480px) {
+    .menu-link {
+        padding: 15px 10px;
+        font-size: 18px; /* Fonte ainda maior para telas muito pequenas */
+        text-align: center;
+    }
+
+    .menu-item {
+        margin-bottom: 5px;
+    }
+}

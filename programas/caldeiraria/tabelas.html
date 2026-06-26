@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="calderaria.tabelas.title">Tabelas Técnicas - Caldeiraria</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+<style>
+/* Estilos específicos locais exclusivos da tabela de tubulações ANSI */
+.pipe-row-sch40 { background: rgba(37,99,235,0.03); }
+body.dark-theme .pipe-row-sch40 { background: rgba(59,130,246,0.06); }
+.pipe-row-sch80 { background: rgba(245,158,11,0.03); }
+body.dark-theme .pipe-row-sch80 { background: rgba(245,158,11,0.06); }
+
+.pipe-header-sch40 { color: var(--primary) !important; }
+.pipe-header-sch80 { color: var(--cor-destaque) !important; }
+</style>
+</head>
+<body>
+
+<div class="app-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
+<aside class="app-sidebar" id="appSidebar">
+    <div class="app-sidebar-header">
+        <span data-i18n="calderaria.tabelas.menu_lateral_titulo">Menu de Tabelas</span>
+        <button class="app-sidebar-close" onclick="toggleSidebar(false)"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="app-sidebar-nav">
+        <div style="padding: 0.8rem 1.25rem 0.4rem; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 800; letter-spacing: 0.5px;" data-i18n="calderaria.tabelas.tab_peso">
+            Calculadora de Peso
+        </div>
+        
+        <div class="app-sidebar-item active" data-panel="sub-chapas" onclick="selecionarModuloTabela('sub-chapas', 'calderaria.tabelas.sub_chapas')">
+            <i class="fa-solid fa-cube"></i> <span data-i18n="calderaria.tabelas.sub_chapas">Chapas</span>
+        </div>
+        <div class="app-sidebar-item" data-panel="sub-perfil-i" onclick="selecionarModuloTabela('sub-perfil-i', 'calderaria.tabelas.sub_perfil_i')">
+            <i class="fa-solid fa-chart-line"></i> <span data-i18n="calderaria.tabelas.sub_perfil_i">Perfil I</span>
+        </div>
+        <div class="app-sidebar-item" data-panel="sub-perfil-u" onclick="selecionarModuloTabela('sub-perfil-u', 'calderaria.tabelas.sub_perfil_u')">
+            <i class="fa-solid fa-chart-bar"></i> <span data-i18n="calderaria.tabelas.sub_perfil_u">Perfil U</span>
+        </div>
+        <div class="app-sidebar-item" data-panel="sub-cantoneira" onclick="selecionarModuloTabela('sub-cantoneira', 'calderaria.tabelas.sub_cantoneira')">
+            <i class="fa-solid fa-angles-right"></i> <span data-i18n="calderaria.tabelas.sub_cantoneira">Cantoneira</span>
+        </div>
+        <div class="app-sidebar-item" data-panel="sub-tubo" onclick="selecionarModuloTabela('sub-tubo', 'calderaria.tabelas.sub_tubo')">
+            <i class="fa-solid fa-circle"></i> <span data-i18n="calderaria.tabelas.sub_tubo">Tubo</span>
+        </div>
+        <div class="app-sidebar-item" data-panel="sub-tubo-ansi" onclick="selecionarModuloTabela('sub-tubo-ansi', 'calderaria.tabelas.ansi_calc_title')">
+            <i class="fa-solid fa-calculator"></i> <span data-i18n="calderaria.tabelas.ansi_calc_title">Calc. Tubo ANSI</span>
+        </div>
+
+        <div style="padding: 1.2rem 1.25rem 0.4rem; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 800; letter-spacing: 0.5px;" data-i18n="calderaria.tabelas.tab_ansi">
+            Tabelas
+        </div>
+
+        <div class="app-sidebar-item" data-panel="tab-ansi" onclick="selecionarModuloTabela('tab-ansi', 'calderaria.tabelas.tab_ansi')">
+            <i class="fa-solid fa-pipe"></i> <span data-i18n="calderaria.tabelas.tab_ansi">Tabela ANSI</span>
+        </div>
+    </div>
+</aside>
+
+<div class="app-container">
+    <header class="app-header">
+        <div class="header-content">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button class="hamburger-toggle" onclick="toggleSidebar(true)" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+                <h1><i class="fa-solid fa-table-cells-large"></i> <span id="headerTabelaTitle" data-i18n="calderaria.tabelas.sub_chapas">Chapas (Placas)</span></h1>
+            </div>
+            <div class="theme-switcher">
+                <i class="fa-solid fa-sun"></i>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle-checkbox">
+                    <span class="slider"></span>
+                </label>
+                <i class="fa-solid fa-moon"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <div class="card" style="padding: 1rem 1.5rem;">
+            <div id="tab-peso" class="tab-panel active" role="tabpanel">
+                <div id="sub-chapas" class="sub-tab-panel active">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-cube"></i> <span data-i18n="calderaria.tabelas.chapas">Chapas (Placas)</span></h2>
+                        <div class="input-group">
+                            <label><span data-i18n="calderaria.tabelas.material">Material</span></label>
+                            <select id="chapa-material">
+                                <option data-i18n="calderaria.tabelas.opt_aco_carbono" value="7.85">Aço Carbono (7.85 g/cm³)</option>
+                                <option data-i18n="calderaria.tabelas.opt_inox_304" value="7.93">Inox 304 (7.93 g/cm³)</option>
+                                <option data-i18n="calderaria.tabelas.opt_inox_316" value="8.0">Inox 316 (8.0 g/cm³)</option>
+                                <option data-i18n="calderaria.tabelas.opt_aluminio" value="2.7">Alumínio (2.7 g/cm³)</option>
+                                <option data-i18n="calderaria.tabelas.opt_cobre" value="8.96">Cobre (8.96 g/cm³)</option>
+                                <option data-i18n="calderaria.tabelas.opt_latao" value="8.5">Latão (8.5 g/cm³)</option>
+                            </select>
+                        </div>
+                        <div class="input-grid-2">
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.espessura">Espessura</span> <span class="unit-hint">(mm)</span></label>
+                                <input type="number" id="chapa-espessura" data-i18n-placeholder="calderaria.tabelas.ph_espessura" placeholder="Ex: 6.35" step="0.01" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.largura">Largura</span> <span class="unit-hint">(mm)</span></label>
+                                <input type="number" id="chapa-largura" data-i18n-placeholder="calderaria.tabelas.ph_largura" placeholder="Ex: 1200" step="1" min="0">
+                            </div>
+                        </div>
+                        <div class="input-grid-2">
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.comprimento">Comprimento</span> <span class="unit-hint">(mm)</span></label>
+                                <input type="number" id="chapa-comprimento" data-i18n-placeholder="calderaria.tabelas.ph_comprimento" placeholder="Ex: 3000" step="1" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.quantidade">Quantidade</span></label>
+                                <input type="number" id="chapa-quantidade" data-i18n-placeholder="calderaria.tabelas.ph_quantidade" placeholder="Ex: 10" step="1" min="1" value="1">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" onclick="calcChapas()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                            <button class="secondary-button" onclick="calcChapasComparativo()"><i class="fa-solid fa-table"></i> <span data-i18n="calderaria.tabelas.comparar">Comparar Materiais</span></button>
+                        </div>
+                        <div id="chapa-resultado" class="resultado-container" style="display:none;"></div>
+                    </div>
+                </div>
+
+                <div id="sub-perfil-i" class="sub-tab-panel">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-chart-line"></i> <span data-i18n="calderaria.tabelas.perfil_i">Perfil Estrutural I (Viga I)</span></h2>
+                        <div class="input-group">
+                            <label><span data-i18n="calderaria.tabelas.perfil">Perfil</span></label>
+                            <select id="perfil-i-select"></select>
+                        </div>
+                        <div class="input-grid-2">
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.comprimento">Comprimento</span> <span class="unit-hint">(m)</span></label>
+                                <input type="number" id="perfil-i-comprimento" data-i18n-placeholder="calderaria.tabelas.ph_comprimento_m" placeholder="Ex: 6" step="0.1" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.quantidade">Quantidade</span></label>
+                                <input type="number" id="perfil-i-quantidade" data-i18n-placeholder="calderaria.tabelas.ph_quantidade_curta" placeholder="Ex: 3" step="1" min="1" value="1">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" onclick="calcPerfilI()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        </div>
+                        <div id="perfil-i-resultado" class="resultado-container" style="display:none;"></div>
+                        <div class="info-box mt-2">
+                            <i class="fa-solid fa-info-circle"></i>
+                            <div><span data-i18n="calderaria.tabelas.densidade_info_1">Densidade: 7.850 kg/m³ (Aço Carbono).</span><br><span data-i18n="calderaria.tabelas.densidade_info_2">Peso por metro calculado pela área da seção transversal.</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub-perfil-u" class="sub-tab-panel">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-chart-bar"></i> <span data-i18n="calderaria.tabelas.perfil_u">Perfil U (Canal)</span></h2>
+                        <div class="input-group">
+                            <label><span data-i18n="calderaria.tabelas.perfil">Perfil</span></label>
+                            <select id="perfil-u-select"></select>
+                        </div>
+                        <div class="input-grid-2">
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.comprimento">Comprimento</span> <span class="unit-hint">(m)</span></label>
+                                <input type="number" id="perfil-u-comprimento" data-i18n-placeholder="calderaria.tabelas.ph_comprimento_m" placeholder="Ex: 6" step="0.1" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.quantidade">Quantidade</span></label>
+                                <input type="number" id="perfil-u-quantidade" data-i18n-placeholder="calderaria.tabelas.ph_quantidade_curta" placeholder="Ex: 3" step="1" min="1" value="1">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" onclick="calcPerfilU()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        </div>
+                        <div id="perfil-u-resultado" class="resultado-container" style="display:none;"></div>
+                        <div class="info-box mt-2">
+                            <i class="fa-solid fa-info-circle"></i>
+                            <div><span data-i18n="calderaria.tabelas.densidade_info_u">Densidade: 7.850 kg/m³ (Aço Carbono).</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub-cantoneira" class="sub-tab-panel">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-angles-right"></i> <span data-i18n="calderaria.tabelas.cantoneira">Cantoneira (L)</span></h2>
+                        <div class="input-group">
+                            <label><span data-i18n="calderaria.tabelas.perfil">Perfil</span></label>
+                            <select id="cantoneira-select"></select>
+                        </div>
+                        <div class="input-grid-2">
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.comprimento">Comprimento</span> <span class="unit-hint">(m)</span></label>
+                                <input type="number" id="cantoneira-comprimento" data-i18n-placeholder="calderaria.tabelas.ph_comprimento_m" placeholder="Ex: 6" step="0.1" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.quantidade">Quantidade</span></label>
+                                <input type="number" id="cantoneira-quantidade" data-i18n-placeholder="calderaria.tabelas.ph_quantidade_curta" placeholder="Ex: 3" step="1" min="1" value="1">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" onclick="calcCantoneira()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        </div>
+                        <div id="cantoneira-resultado" class="resultado-container" style="display:none;"></div>
+                        <div class="info-box mt-2">
+                            <i class="fa-solid fa-info-circle"></i>
+                            <div><span data-i18n="calderaria.tabelas.densidade_info_cantoneira_1">Densidade: 7.850 kg/m³ (Aço Carbono).</span><br><span data-i18n="calderaria.tabelas.densidade_info_cantoneira_2">Peso por metro de tabela de perfis laminados.</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub-tubo" class="sub-tab-panel">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-circle"></i> <span data-i18n="calderaria.tabelas.tubo">Tubo (Seção Circular)</span></h2>
+                        <div class="input-grid-2">
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.diametro_externo">Diâmetro Externo</span> <span class="unit-hint">(mm)</span></label>
+                                <input type="number" id="tubo-de" data-i18n-placeholder="calderaria.tabelas.ph_de" placeholder="Ex: 60.3" step="0.1" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.parede">Espessura da Parede</span> <span class="unit-hint">(mm)</span></label>
+                                <input type="number" id="tubo-espessura" data-i18n-placeholder="calderaria.tabelas.ph_parede" placeholder="Ex: 3.91" step="0.01" min="0">
+                            </div>
+                        </div>
+                        <div class="input-grid-2">
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.comprimento">Comprimento</span> <span class="unit-hint">(m)</span></label>
+                                <input type="number" id="tubo-comprimento" data-i18n-placeholder="calderaria.tabelas.ph_comprimento_m" placeholder="Ex: 6" step="0.1" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.quantidade">Quantidade</span></label>
+                                <input type="number" id="tubo-quantidade" data-i18n-placeholder="calderaria.tabelas.ph_quantidade" placeholder="Ex: 10" step="1" min="1" value="1">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" onclick="calcTubo()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calderaria.tabelas.calc_tubo">Calcular Peso</span></button>
+                        </div>
+                        <div id="tubo-resultado" class="resultado-container" style="display:none;"></div>
+                        <div class="info-box mt-2">
+                            <i class="fa-solid fa-info-circle"></i>
+                            <div><span data-i18n="calderaria.tabelas.densidade_info_tubo_1">Densidade: 7.850 kg/m³ (Aço Carbono).</span><br><span data-i18n="calderaria.tabelas.densidade_info_tubo_2">Fórmula: (DE - e) × e × 0.02466 kg/m</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub-tubo-ansi" class="sub-tab-panel">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-calculator"></i> <span data-i18n="calderaria.tabelas.ansi_calc_title">Calculadora de Tubo ANSI</span></h2>
+                        <div class="input-grid-2">
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.nps_label">NPS</span></label>
+                                <select id="ansi-calc-nps"></select>
+                            </div>
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.schedule_label">Schedule</span></label>
+                                <select id="ansi-calc-sch">
+                                    <option data-i18n="calderaria.tabelas.ansi_sch40" value="40">Schedule 40</option>
+                                    <option data-i18n="calderaria.tabelas.ansi_sch80" value="80">Schedule 80</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-grid-2">
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.comprimento">Comprimento</span> <span class="unit-hint">(m)</span></label>
+                                <input type="number" id="ansi-calc-comp" data-i18n-placeholder="calderaria.tabelas.ph_comprimento_m" placeholder="Ex: 6" step="0.1" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label><span data-i18n="calderaria.tabelas.quantidade">Quantidade</span></label>
+                                <input type="number" id="ansi-calc-qtd" data-i18n-placeholder="calderaria.tabelas.ph_quantidade_media" placeholder="Ex: 5" step="1" min="1" value="1">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button class="main-button" onclick="calcAnsiTubo()"><i class="fa-solid fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        </div>
+                        <div id="ansi-calc-resultado" class="resultado-container" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-ansi" class="tab-panel" role="tabpanel">
+                <div class="card">
+                    <h2><i class="fa-solid fa-pipe"></i> <span data-i18n="calderaria.tabelas.ansi_title">Tabela de Tubulações ANSI B36.10</span></h2>
+                    <p class="text-secondary" style="font-size:0.85rem;margin-bottom:1rem;"><span data-i18n="calderaria.tabelas.ansi_desc">Dimensões padrão para tubos de aço — Schedule 40 e Schedule 80 (NPS 1/8" a 24").</span></p>
+                    <div class="search-box mb-2">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="ansi-search" data-i18n-placeholder="calderaria.tabelas.search_nps" placeholder="Filtrar por NPS, diâmetro..." oninput="filterAnsiTable()">
+                    </div>
+                    <div class="table-container">
+                        <table class="comparison-table responsive-table" id="ansi-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-col="nps" onclick="sortAnsiTable('nps')"><span data-i18n="calderaria.tabelas.th_nps">NPS</span> <i class="fa-solid fa-sort sort-icon"></i></th>
+                                    <th class="sortable" data-col="od" onclick="sortAnsiTable('od')"><span data-i18n="calderaria.tabelas.th_de">DE (mm)</span> <i class="fa-solid fa-sort sort-icon"></i></th>
+                                    <th class="sortable pipe-header-sch40" data-col="sch40-e" onclick="sortAnsiTable('sch40-e')"><span data-i18n="calderaria.tabelas.th_sch40_esp">Sch 40 - Esp (mm)</span> <i class="fa-solid fa-sort sort-icon"></i></th>
+                                    <th class="sortable pipe-header-sch40" data-col="sch40-id" onclick="sortAnsiTable('sch40-id')"><span data-i18n="calderaria.tabelas.th_sch40_di">Sch 40 - DI (mm)</span> <i class="fa-solid fa-sort sort-icon"></i></th>
+                                    <th class="sortable pipe-header-sch40" data-col="sch40-peso" onclick="sortAnsiTable('sch40-peso')"><span data-i18n="calderaria.tabelas.th_sch40_peso">Sch 40 - kg/m</span> <i class="fa-solid fa-sort sort-icon"></i></th>
+                                    <th class="sortable pipe-header-sch80" data-col="sch80-e" onclick="sortAnsiTable('sch80-e')"><span data-i18n="calderaria.tabelas.th_sch80_esp">Sch 80 - Esp (mm)</span> <i class="fa-solid fa-sort sort-icon"></i></th>
+                                    <th class="sortable pipe-header-sch80" data-col="sch80-id" onclick="sortAnsiTable('sch80-id')"><span data-i18n="calderaria.tabelas.th_sch80_di">Sch 80 - DI (mm)</span> <i class="fa-solid fa-sort sort-icon"></i></th>
+                                    <th class="sortable pipe-header-sch80" data-col="sch80-peso" onclick="sortAnsiTable('sch80-peso')"><span data-i18n="calderaria.tabelas.th_sch80_peso">Sch 80 - kg/m</span> <i class="fa-solid fa-sort sort-icon"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody id="ansi-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="../shared/i18n.js"></script>
+<script src="shared.js"></script>
+<script>
+// ============================================================
+// DADOS DOS PERFIS
+// ============================================================
+
+var perfisI = [
+    { id: 'I 100×55', h: 100, b: 55, area: 8.84 },
+    { id: 'I 127×64', h: 127, b: 64, area: 11.72 },
+    { id: 'I 152×76', h: 152, b: 76, area: 14.73 },
+    { id: 'I 178×89', h: 178, b: 89, area: 18.29 },
+    { id: 'I 203×102', h: 203, b: 102, area: 22.14 },
+    { id: 'I 254×118', h: 254, b: 118, area: 28.32 }
+];
+
+var perfisU = [
+    { id: 'U 50×25', h: 50, b: 25, area: 3.73 },
+    { id: 'U 76×40', h: 76, b: 40, area: 5.98 },
+    { id: 'U 100×50', h: 100, b: 50, area: 8.05 },
+    { id: 'U 127×50', h: 127, b: 50, area: 9.86 },
+    { id: 'U 152×50', h: 152, b: 50, area: 11.61 },
+    { id: 'U 203×57', h: 203, b: 57, area: 16.89 }
+];
+
+var cantoneiras = [
+    { id: 'L 25×3', area: 1.43 },
+    { id: 'L 32×3', area: 1.86 },
+    { id: 'L 40×3', area: 2.35 },
+    { id: 'L 50×5', area: 4.80 },
+    { id: 'L 63×5', area: 6.11 },
+    { id: 'L 76×6', area: 8.79 },
+    { id: 'L 100×10', area: 19.20 }
+];
+
+var DENSIDADE_ACO = 7850; // kg/m³
+
+// ============================================================
+// DADOS ANSI — NPS 1/8" a 24" (OD em mm, espessura em mm)
+// ============================================================
+
+var ansiData = [
+    { nps: '1/8"',  od: 10.3,  sch40: 1.73, sch80: 2.41 },
+    { nps: '1/4"',  od: 13.7,  sch40: 2.24, sch80: 3.02 },
+    { nps: '3/8"',  od: 17.1,  sch40: 2.31, sch80: 3.20 },
+    { nps: '1/2"',  od: 21.3,  sch40: 2.77, sch80: 3.73 },
+    { nps: '3/4"',  od: 26.7,  sch40: 2.87, sch80: 3.91 },
+    { nps: '1"',    od: 33.4,  sch40: 3.38, sch80: 4.55 },
+    { nps: '1 1/4"',od: 42.2,  sch40: 3.56, sch80: 4.85 },
+    { nps: '1 1/2"',od: 48.3,  sch40: 3.68, sch80: 5.08 },
+    { nps: '2"',    od: 60.3,  sch40: 3.91, sch80: 5.54 },
+    { nps: '2 1/2"',od: 73.0,  sch40: 5.16, sch80: 7.01 },
+    { nps: '3"',    od: 88.9,  sch40: 5.49, sch80: 7.62 },
+    { nps: '3 1/2"',od: 101.6, sch40: 5.74, sch80: 8.08 },
+    { nps: '4"',    od: 114.3, sch40: 6.02, sch80: 8.56 },
+    { nps: '5"',    od: 141.3, sch40: 6.55, sch80: 9.53 },
+    { nps: '6"',    od: 168.3, sch40: 7.11, sch80: 10.97 },
+    { nps: '8"',    od: 219.1, sch40: 8.18, sch80: 12.70 },
+    { nps: '10"',   od: 273.0, sch40: 9.27, sch80: 15.09 },
+    { nps: '12"',   od: 323.8, sch40: 10.31, sch80: 17.48 },
+    { nps: '14"',   od: 355.6, sch40: 11.13, sch80: 19.05 },
+    { nps: '16"',   od: 406.4, sch40: 12.70, sch80: 21.41 },
+    { nps: '18"',   od: 457.2, sch40: 14.27, sch80: 23.83 },
+    { nps: '20"',   od: 508.0, sch40: 15.09, sch80: 26.19 },
+    { nps: '24"',   od: 609.6, sch40: 17.48, sch80: 30.96 }
+];
+
+function calcPipeWeight(od, wt) {
+    return (od - wt) * wt * 0.02466;
+}
+
+// Dados enriquecidos
+var ansiFull = ansiData.map(function(d) {
+    return {
+        nps: d.nps,
+        od: d.od,
+        sch40_e: d.sch40,
+        sch40_id: +(d.od - 2 * d.sch40).toFixed(2),
+        sch40_peso: +(calcPipeWeight(d.od, d.sch40)).toFixed(3),
+        sch80_e: d.sch80,
+        sch80_id: +(d.od - 2 * d.sch80).toFixed(2),
+        sch80_peso: +(calcPipeWeight(d.od, d.sch80)).toFixed(3)
+    };
+});
+
+// ============================================================
+// INICIALIZAÇÃO E GESTÃO DO DRAWER (MENU LATERAL)
+// ============================================================
+
+function toggleSidebar(force) {
+    const sidebar = document.getElementById('appSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (!sidebar || !overlay) return;
+    const state = typeof force === 'boolean' ? force : !sidebar.classList.contains('active');
+    sidebar.classList.toggle('active', state);
+    overlay.classList.toggle('active', state);
+}
+
+function selecionarModuloTabela(targetId, i18nKey, defaultTitle) {
+    const tabPeso = document.getElementById('tab-peso');
+    const tabAnsi = document.getElementById('tab-ansi');
+
+    if (targetId === 'tab-ansi') {
+        if (tabPeso) tabPeso.classList.remove('active');
+        if (tabAnsi) tabAnsi.classList.add('active');
+    } else {
+        if (tabAnsi) tabAnsi.classList.remove('active');
+        if (tabPeso) tabPeso.classList.add('active');
+
+        document.querySelectorAll('.sub-tab-panel').forEach(function(p) { p.classList.remove('active'); });
+        const targetSub = document.getElementById(targetId);
+        if (targetSub) targetSub.classList.add('active');
+    }
+
+    document.querySelectorAll('.app-sidebar-item').forEach(function(item) {
+        item.classList.toggle('active', item.getAttribute('data-panel') === targetId);
+    });
+
+    const headerTitle = document.getElementById('headerTabelaTitle');
+    if (headerTitle) {
+        headerTitle.setAttribute('data-i18n', i18nKey);
+        headerTitle.textContent = window.i18n.t(i18nKey);
+    }
+
+    toggleSidebar(false);
+}
+
+function populateSelect(id, items, labelKey) {
+    var sel = document.getElementById(id);
+    if (!sel) return;
+    sel.innerHTML = items.map(function(item) {
+        return '<option value="' + item.id + '">' + item.id + '</option>';
+    }).join('');
+}
+
+function populateAnsiNps() {
+    var sel = document.getElementById('ansi-calc-nps');
+    if (!sel) return;
+    sel.innerHTML = ansiFull.map(function(d) {
+        return '<option value="' + d.nps + '">' + d.nps + ' (' + d.od.toFixed(1) + ' mm)</option>';
+    }).join('');
+}
+
+function init() {
+    if (typeof initTheme === 'function') initTheme();
+
+    populateSelect('perfil-i-select', perfisI);
+    populateSelect('perfil-u-select', perfisU);
+    populateSelect('cantoneira-select', cantoneiras);
+    populateAnsiNps();
+    renderAnsiTable(ansiFull);
+
+    // Seleção inicial limpa
+    selecionarModuloTabela('sub-chapas', 'calderaria.tabelas.sub_chapas');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+// ============================================================
+// CALCULADORAS DE PESO
+// ============================================================
+
+function getVal(id) { return parseFloat(document.getElementById(id).value); }
+function getInt(id) { return parseInt(document.getElementById(id).value, 10) || 1; }
+
+function calcChapas() {
+    var dens = getVal('chapa-material');
+    var esp = getVal('chapa-espessura');
+    var larg = getVal('chapa-largura');
+    var comp = getVal('chapa-comprimento');
+    var qtd = getInt('chapa-quantidade');
+
+    if (!esp || !larg || !comp) {
+        showError('chapa-resultado', window.i18n.t('calderaria.tabelas.err_preencher_chapa'));
+        return;
+    }
+
+    var volUnit = (esp / 1000) * (larg / 1000) * (comp / 1000);
+    var pesoUnit = volUnit * dens * 1000;
+    var pesoTotal = pesoUnit * qtd;
+    var area = (larg / 1000) * (comp / 1000);
+
+    var r = document.getElementById('chapa-resultado');
+    r.style.display = 'block';
+    r.className = 'resultado-container success';
+    r.innerHTML = '<div class="resultado-grid">' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_chapa') + '</div><div class="valor">' + pesoUnit.toFixed(3) + ' kg</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_total') + '</div><div class="valor">' + pesoTotal.toFixed(3) + ' kg</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_area') + '</div><div class="valor">' + area.toFixed(3) + ' m²</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_quantidade') + '</div><div class="valor">' + qtd + '</div></div>' +
+        '</div>';
+}
+
+function calcChapasComparativo() {
+    var esp = getVal('chapa-espessura');
+    var larg = getVal('chapa-largura');
+    var comp = getVal('chapa-comprimento');
+    var qtd = getInt('chapa-quantidade');
+
+    if (!esp || !larg || !comp) {
+        showError('chapa-resultado', window.i18n.t('calderaria.tabelas.err_preencher_chapa'));
+        return;
+    }
+
+    var materiais = [
+        { nome: 'Aço Carbono', dens: 7.85 },
+        { nome: 'Inox 304', dens: 7.93 },
+        { nome: 'Inox 316', dens: 8.0 },
+        { nome: 'Alumínio', dens: 2.7 },
+        { nome: 'Cobre', dens: 8.96 },
+        { nome: 'Latão', dens: 8.5 }
+    ];
+
+    var volUnit = (esp / 1000) * (larg / 1000) * (comp / 1000);
+
+    var html = '<div class="multimat-grid">';
+    for (var i = 0; i < materiais.length; i++) {
+        var m = materiais[i];
+        var pu = volUnit * m.dens * 1000;
+        var pt = pu * qtd;
+        html += '<div class="mat-item"><div class="nome">' + m.nome + '</div><div class="peso">' + pu.toFixed(2) + ' kg</div><div style="font-size:0.6rem;color:var(--text-secondary)">Total: ' + pt.toFixed(1) + ' kg</div></div>';
+    }
+    html += '</div>';
+
+    var r = document.getElementById('chapa-resultado');
+    r.style.display = 'block';
+    r.className = 'resultado-container warning';
+    r.innerHTML = '<div style="font-weight:700;margin-bottom:0.75rem;font-size:0.9rem;"><i class="fa-solid fa-table"></i> ' + window.i18n.t('calderaria.tabelas.comparativo_title') + '</div>' + html;
+}
+
+function calcPerfilI() {
+    var id = document.getElementById('perfil-i-select').value;
+    var comp = getVal('perfil-i-comprimento');
+    var qtd = getInt('perfil-i-quantidade');
+
+    if (!id || !comp) { showError('perfil-i-resultado', window.i18n.t('calderaria.tabelas.err_selecionar_perfil')); return; }
+
+    var perfil = null;
+    for (var i = 0; i < perfisI.length; i++) {
+        if (perfisI[i].id === id) { perfil = perfisI[i]; break; }
+    }
+    if (!perfil) return;
+
+    var areaM2 = perfil.area / 10000;
+    var pesoPorMetro = areaM2 * DENSIDADE_ACO;
+    var pesoTotal = pesoPorMetro * comp * qtd;
+
+    var r = document.getElementById('perfil-i-resultado');
+    r.style.display = 'block';
+    r.className = 'resultado-container success';
+    r.innerHTML = '<div class="resultado-grid">' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_perfil') + '</div><div class="valor">' + perfil.id + '</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_metro') + '</div><div class="valor">' + pesoPorMetro.toFixed(3) + ' kg/m</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_comprimento') + '</div><div class="valor">' + comp.toFixed(1) + ' m</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_total') + '</div><div class="valor">' + pesoTotal.toFixed(3) + ' kg</div></div>' +
+        '</div>';
+}
+
+function calcPerfilU() {
+    var id = document.getElementById('perfil-u-select').value;
+    var comp = getVal('perfil-u-comprimento');
+    var qtd = getInt('perfil-u-quantidade');
+
+    if (!id || !comp) { showError('perfil-u-resultado', window.i18n.t('calderaria.tabelas.err_selecionar_perfil')); return; }
+
+    var perfil = null;
+    for (var i = 0; i < perfisU.length; i++) {
+        if (perfisU[i].id === id) { perfil = perfisU[i]; break; }
+    }
+    if (!perfil) return;
+
+    var areaM2 = perfil.area / 10000;
+    var pesoPorMetro = areaM2 * DENSIDADE_ACO;
+    var pesoTotal = pesoPorMetro * comp * qtd;
+
+    var r = document.getElementById('perfil-u-resultado');
+    r.style.display = 'block';
+    r.className = 'resultado-container success';
+    r.innerHTML = '<div class="resultado-grid">' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_perfil') + '</div><div class="valor">' + perfil.id + '</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_metro') + '</div><div class="valor">' + pesoPorMetro.toFixed(3) + ' kg/m</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_comprimento') + '</div><div class="valor">' + comp.toFixed(1) + ' m</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_total') + '</div><div class="valor">' + pesoTotal.toFixed(3) + ' kg</div></div>' +
+        '</div>';
+}
+
+function calcCantoneira() {
+    var id = document.getElementById('cantoneira-select').value;
+    var comp = getVal('cantoneira-comprimento');
+    var qtd = getInt('cantoneira-quantidade');
+
+    if (!id || !comp) { showError('cantoneira-resultado', window.i18n.t('calderaria.tabelas.err_selecionar_perfil')); return; }
+
+    var perfil = null;
+    for (var i = 0; i < cantoneiras.length; i++) {
+        if (cantoneiras[i].id === id) { perfil = cantoneiras[i]; break; }
+    }
+    if (!perfil) return;
+
+    var areaM2 = perfil.area / 10000;
+    var pesoPorMetro = areaM2 * DENSIDADE_ACO;
+    var pesoTotal = pesoPorMetro * comp * qtd;
+
+    var r = document.getElementById('cantoneira-resultado');
+    r.style.display = 'block';
+    r.className = 'resultado-container success';
+    r.innerHTML = '<div class="resultado-grid">' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_perfil') + '</div><div class="valor">' + perfil.id + '</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_metro') + '</div><div class="valor">' + pesoPorMetro.toFixed(3) + ' kg/m</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_comprimento') + '</div><div class="valor">' + comp.toFixed(1) + ' m</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_total') + '</div><div class="valor">' + pesoTotal.toFixed(3) + ' kg</div></div>' +
+        '</div>';
+}
+
+function calcTubo() {
+    var de = getVal('tubo-de');
+    var esp = getVal('tubo-espessura');
+    var comp = getVal('tubo-comprimento');
+    var qtd = getInt('tubo-quantidade');
+
+    if (!de || !esp || !comp) { showError('tubo-resultado', window.i18n.t('calderaria.tabelas.err_preencher_tubo')); return; }
+
+    var pesoPorMetro = (de - esp) * esp * 0.02466;
+    var pesoTotal = pesoPorMetro * comp * qtd;
+    var di = de - 2 * esp;
+
+    var r = document.getElementById('tubo-resultado');
+    r.style.display = 'block';
+    r.className = 'resultado-container success';
+    r.innerHTML = '<div class="resultado-grid">' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_de') + '</div><div class="valor">' + de.toFixed(1) + ' mm</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_di') + '</div><div class="valor">' + di.toFixed(2) + ' mm</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_metro') + '</div><div class="valor">' + pesoPorMetro.toFixed(3) + ' kg/m</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_total') + '</div><div class="valor">' + pesoTotal.toFixed(3) + ' kg</div></div>' +
+        '</div>';
+}
+
+function showError(containerId, msg) {
+    var r = document.getElementById(containerId);
+    if (!r) return;
+    r.style.display = 'block';
+    r.className = 'resultado-container warning';
+    r.innerHTML = '<i class="fa-solid fa-exclamation-triangle"></i> ' + msg;
+}
+
+// ============================================================
+// TABELA ANSI B36.10
+// ============================================================
+
+var ansiSortCol = null;
+var ansiSortDir = 1;
+
+function renderAnsiTable(data) {
+    var tbody = document.getElementById('ansi-tbody');
+    if (!tbody) return;
+    var tnps = window.i18n.t('calderaria.tabelas.th_nps');
+    var tde = window.i18n.t('calderaria.tabelas.th_de');
+    var t40e = window.i18n.t('calderaria.tabelas.th_sch40_esp');
+    var t40di = window.i18n.t('calderaria.tabelas.th_sch40_di');
+    var t40p = window.i18n.t('calderaria.tabelas.th_sch40_peso');
+    var t80e = window.i18n.t('calderaria.tabelas.th_sch80_esp');
+    var t80di = window.i18n.t('calderaria.tabelas.th_sch80_di');
+    var t80p = window.i18n.t('calderaria.tabelas.th_sch80_peso');
+    tbody.innerHTML = data.map(function(d) {
+        return '<tr class="pipe-row-sch40">' +
+            '<td data-label="' + tnps + '"><strong>' + d.nps + '</strong></td>' +
+            '<td data-label="' + tde + '">' + d.od.toFixed(1) + '</td>' +
+            '<td data-label="' + t40e + '">' + d.sch40_e.toFixed(2) + '</td>' +
+            '<td data-label="' + t40di + '">' + d.sch40_id.toFixed(2) + '</td>' +
+            '<td data-label="' + t40p + '">' + d.sch40_peso.toFixed(3) + '</td>' +
+            '<td data-label="' + t80e + '">' + d.sch80_e.toFixed(2) + '</td>' +
+            '<td data-label="' + t80di + '">' + d.sch80_id.toFixed(2) + '</td>' +
+            '<td data-label="' + t80p + '">' + d.sch80_peso.toFixed(3) + '</td>' +
+            '</tr>';
+    }).join('');
+}
+
+function filterAnsiTable() {
+    var q = document.getElementById('ansi-search').value.toLowerCase();
+    var filtered = ansiFull.filter(function(d) {
+        return d.nps.toLowerCase().indexOf(q) !== -1 ||
+            d.od.toFixed(1).indexOf(q) !== -1 ||
+            d.sch40_peso.toFixed(3).indexOf(q) !== -1 ||
+            d.sch80_peso.toFixed(3).indexOf(q) !== -1;
+    });
+    renderAnsiTable(filtered);
+}
+
+function sortAnsiTable(col) {
+    if (ansiSortCol === col) {
+        ansiSortDir *= -1;
+    } else {
+        ansiSortCol = col;
+        ansiSortDir = 1;
+    }
+
+    var icons = document.querySelectorAll('#ansi-table .sort-icon');
+    icons.forEach(function(ic) { ic.className = 'fa-solid fa-sort sort-icon'; });
+
+    var sorted = ansiFull.slice().sort(function(a, b) {
+        var va = a[col], vb = b[col];
+        if (col === 'nps') {
+            var ia = ansiFull.indexOf(a);
+            var ib = ansiFull.indexOf(b);
+            return (ia - ib) * ansiSortDir;
+        }
+        if (typeof va === 'string') va = parseFloat(va) || 0;
+        if (typeof vb === 'string') vb = parseFloat(vb) || 0;
+        return (va - vb) * ansiSortDir;
+    });
+
+    var ths = document.querySelectorAll('#ansi-table .sortable');
+    ths.forEach(function(th) {
+        if (th.getAttribute('data-col') === col) {
+            var icon = th.querySelector('.sort-icon');
+            if (icon) icon.className = 'fa-solid fa-sort' + (ansiSortDir === 1 ? '-up' : '-down') + ' sort-icon active';
+        }
+    });
+
+    renderAnsiTable(sorted);
+}
+
+function calcAnsiTubo() {
+    var nps = document.getElementById('ansi-calc-nps').value;
+    var sch = parseInt(document.getElementById('ansi-calc-sch').value, 10);
+    var comp = getVal('ansi-calc-comp');
+    var qtd = getInt('ansi-calc-qtd');
+
+    if (!comp) { showError('ansi-calc-resultado', window.i18n.t('calderaria.tabelas.err_informar_comprimento')); return; }
+
+    var item = null;
+    for (var i = 0; i < ansiFull.length; i++) {
+        if (ansiFull[i].nps === nps) { item = ansiFull[i]; break; }
+    }
+    if (!item) return;
+
+    var pesoPorMetro = sch === 40 ? item.sch40_peso : item.sch80_peso;
+    var esp = sch === 40 ? item.sch40_e : item.sch80_e;
+    var pesoTotal = pesoPorMetro * comp * qtd;
+
+    var r = document.getElementById('ansi-calc-resultado');
+    r.style.display = 'block';
+    r.className = 'resultado-container success';
+    r.innerHTML = '<div class="resultado-grid">' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_nps') + '</div><div class="valor">' + item.nps + '</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_schedule') + '</div><div class="valor">' + sch + '</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_de') + '</div><div class="valor">' + item.od.toFixed(1) + ' mm</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_espessura') + '</div><div class="valor">' + esp.toFixed(2) + ' mm</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_metro') + '</div><div class="valor">' + pesoPorMetro.toFixed(3) + ' kg/m</div></div>' +
+        '<div class="item"><div class="rotulo">' + window.i18n.t('calderaria.tabelas.res_peso_total') + '</div><div class="valor">' + pesoTotal.toFixed(3) + ' kg</div></div>' +
+        '</div>';
+}
+</script>
+</body>
+</html>

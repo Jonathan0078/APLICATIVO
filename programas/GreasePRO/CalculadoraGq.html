@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="grease.gq_title">Quantidade de Graxa para Rolamentos - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+
+    <!-- Scripts -->
+    <script src="../calculadora_rolamentos/database.js"></script>
+    <script src="js/GqCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-ring"></i> <span data-i18n="grease.gq">Quantidade de Graxa para Rolamentos</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> <span data-i18n="grease.instructions">Instruções</span></h2>
+                    <p data-i18n="grease.gq.instr">Forneça os dados para calcular a quantidade de graxa para relubrificação:</p>
+                    <ul>
+                        <li data-i18n="grease.gq.li1">Digite o diâmetro externo do rolamento.</li>
+                        <li data-i18n="grease.gq.li2">Digite a largura do rolamento.</li>
+                    </ul>
+                </div>
+
+                <!-- Card de Seleção de Rolamento (recolhido por padrão) -->
+                <div class="card" id="bearing-selector-card" style="display:none;">
+                    <div class="card-header">
+                        <h2><i class="fas fa-list"></i> <span data-i18n="grease.gq.bearing_select">Selecionar Rolamento</span></h2>
+                        <button type="button" class="close-button" onclick="toggleBearingSelector()">&times;</button>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group" style="grid-column: 1 / -1;">
+                            <label for="bearingSearch" data-i18n="grease.gq.bearing_search">Buscar Rolamento</label>
+                            <input id="bearingSearch" type="text" data-i18n-placeholder="grease.gq.bearing_search" placeholder="Digite a designação..." oninput="populateBearingList(this.value)">
+                        </div>
+                        <div class="input-group" style="grid-column: 1 / -1;">
+                            <label for="bearingSelect" data-i18n="grease.gq.bearing_placeholder">Rolamento</label>
+                            <select id="bearingSelect" size="8" onchange="onBearingSelect()">
+                                <option value="" data-i18n="grease.gq.bearing_placeholder">Selecione um rolamento...</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Cálculo -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-calculator"></i> <span data-i18n="grease.gq.bearing_data">Dados do Rolamento</span></h2>
+                        <button type="button" class="icon-button" onclick="toggleBearingSelector()" title="Selecionar rolamento da lista">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="diametro" data-i18n="grease.gq.diam_mm">Diâmetro (mm)</label>
+                            <input id="diametro" type="number" placeholder="Ex: 80" oninput="mmaIn(this.value)" onchange="mmaIn(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="diametroIn" data-i18n="grease.gq.diam_in">Diâmetro (in)</label>
+                            <input id="diametroIn" type="number" placeholder="Ex: 3.15" oninput="inaMm(this.value)" onchange="inaMm(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="ancho" data-i18n="grease.gq.width_mm">Largura (mm)</label>
+                            <input id="ancho" type="number" placeholder="Ex: 20" oninput="mmaIn2(this.value)" onchange="mmaIn2(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="anchoIn" data-i18n="grease.gq.width_in">Largura (in)</label>
+                            <input id="anchoIn" type="number" placeholder="Ex: 0.78" oninput="inaMm2(this.value)" onchange="inaMm2(this.value)">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="ValidarC()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        <button class="secondary-button" onclick="Limpiar()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> <span data-i18n="grease.gq.result_card">Resultado</span></h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p data-i18n="grease.gq.placeholder">A quantidade de graxa a aplicar aparecerá aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="label" data-i18n="grease.gq.qty_grams">Quantidade (gramas)</span>
+                                <span id="res1-val" class="value">0 g</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label" data-i18n="grease.gq.qty_oz">Quantidade (onças)</span>
+                                <span id="res2-val" class="value">0 oz</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+<script src="js/menu-button.js"></script>
+<script src="../shared/i18n.js"></script>
+</body>
+</html>

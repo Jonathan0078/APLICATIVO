@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="mmpolegadas.title">Conversor de MM para Polegadas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <div class="site-title">
+                    <h1 data-i18n="mmpolegadas.title"><i class="fa-solid fa-ruler-combined"></i> Conversor de Milímetros para Polegadas</h1>
+                    <p class="subtitle" data-i18n="convmm.subtitle">Converta valores de mm para polegadas fracionárias e consulte referências rápidas</p>
+                </div>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="card">
+                <h2 class="section-title"><i class="fa-solid fa-calculator"></i> <span data-i18n="mmpolegadas.convert_tab">Conversão</span></h2>
+                <p class="helper-text instruction">Digite o valor em milímetros e clique em Converter</p>
+                <div class="input-group single">
+                    <div class="label-wrapper">
+                        <label for="mm-input" data-i18n="mmpolegadas.mm_label">Milímetros (mm)</label>
+                        <input type="number" id="mm-input" data-i18n-placeholder="convmm.mm_ph" placeholder="Digite o valor em mm" step="any" min="0" max="999999" autofocus>
+                    </div>
+                    <div class="field-pair">
+                        <button id="convert-btn" class="main-button" data-i18n="mmpolegadas.convert_btn"><i class="fa-solid fa-bolt"></i> Converter</button>
+                    </div>
+                </div>
+                <div class="result-container">
+                    <p id="result-text">-</p>
+                    <button id="copy-btn" class="icon-button" aria-label="Copiar resultado">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="section-title"><i class="fa-solid fa-table-list"></i> <span data-i18n="mmpolegadas.reference">Valores de Referência Comuns</span></h2>
+                <div id="reference-container" class="reference-container"></div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p class="copyright" data-i18n="convmm.copyright">&copy; 2025 Conversor MM &rarr; Polegadas. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast" role="alert"></div>
+    <script src="script.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

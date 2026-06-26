@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="grease.fm">Frequência de Amostragem de Óleo - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+
+    <!-- Scripts -->
+    <script src="js/FMCtrl.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Botão do Menu -->
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-vial"></i> <span data-i18n="grease.fm.title">Frequência de Amostragem de Óleo</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Cálculo Parte 1 -->
+                <div class="card">
+                    <h2><i class="fas fa-cogs"></i> <span data-i18n="grease.fm.part1">Parte 1: Frequência Padrão</span></h2>
+                    <div class="input-group">
+                        <label for="mostrar" data-i18n="grease.fm.comp_type">Tipo de Componente</label>
+                        <select id="mostrar" onchange="mostrarS()">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value="1" data-i18n="grease.fm.mobile">Equipamento móvel</option>
+                            <option value="2" data-i18n="grease.fm.industrial">Equipamento industrial</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="select1" data-i18n="grease.fm.ref_freq">Frequência de Referência</label>
+                        <select id="select1" style="display: block;">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value="500">Diferenciais, mandos finais e transmissões| 500 hrs.</option>
+                            <option value="250">Motores de combustão interna a diésel | 250hrs.</option>
+                            <option value="500">Hidráulicos em equipo movil| 500hrs</option>
+                            <option value="150">Motores de aviação alternativos| 150 hrs.</option>
+                            <option value="150">Transmisiones aviación | 150hrs</option>
+                            <option value="100">Turbinas de aviação | 100 hrs</option>
+                            <option value="150">Hidráulicos de aviação | 150 hrs.</option>
+                        </select>
+                        <select id="select2" style="display: none;">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value="500">Engrenagens (mais de 100 rpm.) | 500 hrs.</option>
+                            <option value="2000">Engrenagens (menos de 100 rpm.) | 2000 hrs.</option>
+                            <option value="750">Hidráulicos | 750 hrs.</option>
+                            <option value="750">Compressores | 750 hrs.</option>
+                            <option value="750">Cojinetes y rodamientos | 750 hrs.</option>
+                            <option value="500">Turbinas de gas | 500 hrs. </option>
+                            <option value="750">Turbinas de vapor e hidráulicas | 750 hrs.</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="omc" data-i18n="grease.fm.omc">Criticidade Global da Máquina (OMC)</label>
+                        <select id="omc">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value=".10" data-i18n="grease.fm.level_extreme_high">Extremamente Alta</option>
+                            <option value=".25" data-i18n="grease.fm.level_very_high">Muito Alta (.25)</option>
+                            <option value=".5" data-i18n="grease.fm.level_high">Alta (.5)</option>
+                            <option value=".75" data-i18n="grease.fm.level_above_avg">Superior a la media (.75)</option>
+                            <option value="1" data-i18n="grease.fm.level_average">Promedio (1)</option>
+                            <option value="1.25" data-i18n="grease.fm.level_moderate">Moderada (1.25)</option>
+                            <option value="1.5" data-i18n="grease.fm.level_low">Baja (1.5)</option>
+                            <option value="1.75" data-i18n="grease.fm.level_very_low">Muy Baja (1.75)</option>
+                            <option value="2" data-i18n="grease.fm.level_extreme_low">Extremadamente Baja (2)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="fes" data-i18n="grease.fm.fes">Severidade Ambiental do Fluido (FES)</label>
+                        <select id="fes">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value=".10" data-i18n="grease.fm.level_extreme_high">Extremamente Alta</option>
+                            <option value=".25" data-i18n="grease.fm.level_very_high">Muito Alta (.25)</option>
+                            <option value=".5" data-i18n="grease.fm.level_high">Alta (.5)</option>
+                            <option value=".75" data-i18n="grease.fm.level_above_avg">Superior a la media (.75)</option>
+                            <option value="1" data-i18n="grease.fm.level_average">Promedio (1)</option>
+                            <option value="1.25" data-i18n="grease.fm.level_moderate">Moderada (1.25)</option>
+                            <option value="1.5" data-i18n="grease.fm.level_low">Baja (1.5)</option>
+                            <option value="1.75" data-i18n="grease.fm.level_very_low">Muy Baja (1.75)</option>
+                            <option value="2" data-i18n="grease.fm.level_extreme_low">Extremadamente Baja (2)</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validarC()"><i class="fas fa-calculator"></i> <span data-i18n="grease.fm.calc1_btn">Calcular Parte 1</span></button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+
+                <!-- Card de Cálculo Parte 2 -->
+                <div class="card">
+                    <h2><i class="fas fa-sliders-h"></i> <span data-i18n="grease.fm.part2">Parte 2: Frequência Ajustada</span></h2>
+                    <div class="input-group">
+                        <label for="ma" data-i18n="grease.fm.machine_age">Idade da Máquina (% vida útil restante)</label>
+                        <select id="ma">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value=".10">100%</option>
+                            <option value=".5">95%</option>
+                            <option value="1">75%</option>
+                            <option value="1">60%</option>
+                            <option value="1">50%</option>
+                            <option value="1">40%</option>
+                            <option value=".5">25%</option>
+                            <option value=".3">10%</option>
+                            <option value=".25">5%</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="la" data-i18n="grease.fm.lube_age">Idade do Lubrificante (% vida útil restante)</label>
+                        <select id="la">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value=".10">100%</option>
+                            <option value="1">95%</option>
+                            <option value="1">75%</option>
+                            <option value="1">60%</option>
+                            <option value="1">50%</option>
+                            <option value="1">40%</option>
+                            <option value=".5">25%</option>
+                            <option value=".3">10%</option>
+                            <option value=".25">5%</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="cm" data-i18n="grease.fm.cm">Resultados do Monitoramento de Condição (CM)</label>
+                        <select id="cm">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value="1" data-i18n="grease.fm.cm_ne">(NE) Normal estable</option>
+                            <option value=".5" data-i18n="grease.fm.cm_nvm">(NVM) Normal com variação moderada</option>
+                            <option value=".3" data-i18n="grease.fm.cm_nvr">(NVR) Normal com variação rápida</option>
+                            <option value=".5" data-i18n="grease.fm.cm_ae">(AE) Anormal estable</option>
+                            <option value=".3" data-i18n="grease.fm.cm_avm">(AVM) Anormal com variação moderada</option>
+                            <option value=".25" data-i18n="grease.fm.cm_avr">(AVR) Anormal com variação rápida</option>
+                            <option value=".3" data-i18n="grease.fm.cm_ce">(CE) Crítico estable</option>
+                            <option value=".25" data-i18n="grease.fm.cm_cvm">(CVM) Crítico com variação moderada</option>
+                            <option value=".1" data-i18n="grease.fm.cm_cvr">(CVR) Crítico com variação rápida</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validar2C()"><i class="fas fa-calculator"></i> <span data-i18n="grease.fm.calc2_btn">Calcular Parte 2</span></button>
+                        <button class="secondary-button" onclick="limpiarB()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> <span data-i18n="result.title">Resultados</span></h2>
+                    </div>
+
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p data-i18n="grease.results_placeholder">Os resultados aparecerão aqui.</p>
+                    </div>
+
+                    <div class="result-content" id="result-content" style="display: none;">
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.fm.ref_freq_result">Frequência de Referência (horas)</span>
+                            <span id="res1" class="value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-i18n="grease.fm.adj_factor">Fator de Ajuste (OMS ou FES)</span>
+                            <span id="res2" class="value">0</span>
+                        </div>
+                        <div class="result-header">
+                            <span class="label" data-i18n="grease.fm.ssf">Frequência Padrão (SSF)</span>
+                            <span id="res3" class="designation-value">0 horas</span>
+                        </div>
+                        <div class="result-header">
+                            <span class="label" data-i18n="grease.fm.temporal">Frequência Ajustada (Temporal)</span>
+                            <span id="res6" class="designation-value">0 horas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+
+        // Adaptação para mostrar/esconder os resultados
+        function showResults() {
+            document.getElementById('result-placeholder').style.display = 'none';
+            document.getElementById('result-content').style.display = 'block';
+        }
+
+        const original_validarC = window.validarC;
+        window.validarC = function() {
+            original_validarC();
+            showResults();
+            document.querySelector('#result-content #res1').textContent = document.getElementById('res1').value;
+            document.querySelector('#result-content #res2').textContent = document.getElementById('res2').value;
+            document.querySelector('#result-content #res3').textContent = document.getElementById('res3').value + " horas";
+        }
+
+        const original_validar2C = window.validar2C;
+        window.validar2C = function() {
+            original_validar2C();
+            showResults();
+            document.querySelector('#result-content #res6').textContent = document.getElementById('res6').value + " horas";
+        }
+
+        const original_limpiarC = window.limpiarC;
+        window.limpiarC = function() {
+            original_limpiarC();
+            document.getElementById('result-placeholder').style.display = 'block';
+            document.getElementById('result-content').style.display = 'none';
+        }
+
+        const original_limpiarB = window.limpiarB;
+        window.limpiarB = function() {
+            original_limpiarB();
+            document.querySelector('#result-content #res6').textContent = "0 horas";
+        }
+    </script>
+<script src="js/menu-button.js"></script>
+</body>
+</html>

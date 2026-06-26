@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="lms.title">SGL - Buscador de Equivalentes Pro</title>
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#003366">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <button id="menu-toggle-btn" class="icon-button" style="color: white; font-size: 1.5rem;"><i class="fa-solid fa-bars"></i></button>
+                <h1 data-i18n="lms.header"><i class="fa-solid fa-layer-group"></i> SGL Pro</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <div id="fullscreen-menu" class="fullscreen-menu">
+            <button id="close-menu-btn" class="icon-button close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <nav class="overlay-nav">
+                <a href="index.html" class="nav-link" data-i18n="lms.nav_search"><i class="fa-solid fa-search"></i> Buscador</a>
+                <a href="calculadora.html" class="nav-link" data-i18n="lms.nav_calc"><i class="fa-solid fa-calculator"></i> Calculadora VG</a>
+                <a href="plano.html" class="nav-link" data-i18n="lms.nav_plan"><i class="fa-solid fa-calendar-check"></i> Plano de Lubrificação</a>
+                <a href="mistura.html" class="nav-link" data-i18n="lms.nav_mix"><i class="fa-solid fa-vial"></i> Calculador de Mistura</a>
+                <a href="configuracoes.html" class="nav-link" data-i18n="lms.nav_settings"><i class="fa-solid fa-cogs"></i> Configurações</a>
+            </nav>
+        </div>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card search-box">
+                    <h2><i class="fas fa-search"></i> <span data-i18n="lms.search_equiv">Buscador de Equivalentes</span></h2>
+                    
+                    <div class="input-group">
+                        <label for="application-select" data-i18n="lms.app_type">Tipo de Aplicação:</label>
+                        <select id="application-select">
+                            <option value="" data-i18n="lms.all_apps">-- Todas as Aplicações --</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="marca-select" data-i18n="lms.brand">Marca:</label>
+                        <select id="marca-select" disabled>
+                            <option value="" data-i18n="lms.select_app_first">-- Primeiro selecione uma aplicação --</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="oleo-select" data-i18n="lms.product_name">Nome do Produto:</label>
+                        <select id="oleo-select" disabled>
+                            <option value="" data-i18n="lms.select_brand_first">-- Primeiro selecione uma marca --</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group">
+                        <button id="search-button" class="main-button"><i class="fas fa-sync-alt"></i> <span data-i18n="lms.find_equiv">Encontrar Equivalentes</span></button>
+                    </div>
+                </div>
+
+                <div class="card knowledge-base-section" style="margin-top: 1.5rem;">
+                    <h2><i class="fas fa-book-open"></i> <span data-i18n="lms.knowledge_base">Base de Conhecimento</span></h2>
+                    <div class="accordion"></div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <h2><i class="fas fa-list-check"></i> <span data-i18n="result.title">Resultados da Busca</span></h2>
+                    
+                    <div id="results-container"></div>
+                    
+                    <div class="result-placeholder" id="resultPlaceholder" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        <i class="fas fa-info-circle" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <p data-i18n="lms.placeholder_hint">Selecione a aplicação, marca e produto para consultar as equivalências e verificar a compatibilidade.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="compatibility-modal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <button id="modal-close-button" class="modal-close">×</button>
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+        </div>
+    </div>
+
+    <script type="module" src="js/script.js"></script>
+    <script src="../shared/i18n.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle-btn');
+            const closeMenu = document.getElementById('close-menu-btn');
+            const fullscreenMenu = document.getElementById('fullscreen-menu');
+            if(menuToggle && closeMenu && fullscreenMenu) {
+                menuToggle.addEventListener('click', () => { fullscreenMenu.classList.add('active'); document.body.style.overflow = 'hidden'; });
+                closeMenu.addEventListener('click', () => { fullscreenMenu.classList.remove('active'); document.body.style.overflow = ''; });
+            }
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.overlay-nav .nav-link').forEach(link => {
+                if (link.getAttribute('href') === currentPage) link.classList.add('active');
+            });
+            const themeToggleCb = document.getElementById('theme-toggle-checkbox');
+            if (themeToggleCb) {
+                if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-theme'); themeToggleCb.checked = true; }
+                themeToggleCb.addEventListener('change', (e) => {
+                    document.body.classList.toggle('dark-theme', e.target.checked);
+                    localStorage.setItem('theme', e.target.checked ? 'dark' : 'light');
+                });
+            }
+        });
+        if ('serviceWorker' in navigator) { window.addEventListener('load', async () => { try { await navigator.serviceWorker.register('../../sw.js'); } catch (err) {} }); }
+    </script>
+</body>
+</html>

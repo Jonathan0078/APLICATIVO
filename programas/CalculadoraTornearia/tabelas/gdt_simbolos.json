@@ -1,0 +1,28 @@
+{
+  "title": "Símbolos GD&T (Dimensionamento e Tolerância Geométrica)",
+  "headers": ["Símbolo", "Significado", "Categoria"],
+  "rows": [
+    ["⏥", "Planicidade (Flatness)", "Forma"],
+    ["⏤", "Retilineidade (Straightness)", "Forma"],
+    ["⏣", "Circularidade (Roundness)", "Forma"],
+    ["⏮", "Cilindricidade (Cylindricity)", "Forma"],
+    ["⏬", "Perfil de Linha (Profile of a Line)", "Perfil"],
+    ["⏭", "Perfil de Superfície (Profile of a Surface)", "Perfil"],
+    ["⏢", "Perpendicularidade (Perpendicularity)", "Orientação"],
+    ["⏧", "Paralelismo (Parallelism)", "Orientação"],
+    ["∠", "Angularidade (Angularity)", "Orientação"],
+    ["⏩", "Posição (Position)", "Localização"],
+    ["⏦", "Concentricidade (Concentricity)", "Localização"],
+    ["⏨", "Simetria (Symmetry)", "Localização"],
+    ["◎", "Coaxialidade (Coaxiality)", "Localização"],
+    ["⏫", "Batimento Circular (Circular Runout)", "Batimento"],
+    ["⏪", "Batimento Total (Total Runout)", "Batimento"],
+    ["⌀", "Diâmetro (Diameter)", "Modificador"],
+    ["R", "Raio (Radius)", "Modificador"],
+    ["SR", "Raio Esférico (Spherical Radius)", "Modificador"],
+    ["S⌀", "Diâmetro Esférico (Spherical Diameter)", "Modificador"],
+    ["M", "Máximo Material (MMC)", "Modificador"],
+    ["L", "Mínimo Material (LMC)", "Modificador"],
+    ["A,B,C", "Referência (Datum)", "Referência"]
+  ]
+}

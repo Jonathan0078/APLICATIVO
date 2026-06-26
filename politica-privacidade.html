@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Política de Privacidade</title>
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --accent-color: #2b6cb0;
+            --bg-color: #f7fafc;
+            --text-color: #2d3748;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-top: 60px;
+            padding-bottom: 20px;
+        }
+
+        /* Header Fixo para Mobile/WebView */
+        .app-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: #ffffff;
+            padding: 8px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        .btn-back:active {
+            opacity: 0.6;
+        }
+
+        .app-header h1 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Conteúdo Principal */
+        .main-container {
+            padding: 16px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .policy-card {
+            background-color: var(--card-bg);
+            padding: 20px 16px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .policy-card h2 {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+        }
+
+        .date-badge {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .policy-card h3 {
+            font-size: 1.05rem;
+            color: var(--primary-color);
+            margin-top: 22px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 8px;
+        }
+
+        .policy-card p {
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: #4a5568;
+            text-align: justify;
+        }
+
+        .policy-card ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+            color: #4a5568;
+            font-size: 0.95rem;
+        }
+
+        .policy-card li {
+            margin-bottom: 6px;
+        }
+
+        .policy-card a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .policy-card a:underline {
+            text-decoration: underline;
+        }
+
+        /* Otimizações de toque para links de contato/comunidade */
+        .contact-item {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <button id="btn-voltar" class="btn-back" aria-label="Voltar para o aplicativo">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <h1>Política de Privacidade</h1>
+    </header>
+
+    <main class="main-container">
+        <article class="policy-card">
+            <h2>Termos Gerais</h2>
+            <span class="date-badge">Última atualização: <span id="data-extenso">-- de -- de ----</span></span>
+
+            <p>Esta Política de Privacidade descreve de forma clara e transparente como são tratadas as informações no aplicativo associado ao endereço <a href="https://jonathan0078.github.io/APLICATIVO/">Manutenção Industrial Arquivos</a>, de responsabilidade do desenvolvedor independente <strong>Jonathan da Silva Oliveira</strong>.</p>
+
+            <h3>1. Coleta e Uso de Dados</h3>
+            <p>Este aplicativo foi projetado estritamente como uma ferramenta de suporte técnico e consulta para profissionais de manutenção. <strong>Não coletamos, não solicitamos e não armazenamos qualquer tipo de informação pessoal, identificável ou sensível</strong> dos utilizadores durante o uso das funcionalidades.</p>
+
+            <h3>2. Armazenamento Local (Offline)</h3>
+            <p>Para assegurar a máxima rapidez e privacidade, quaisquer dados inseridos em calculadoras técnicas ou configurações de preferência de interface permanecem guardados exclusivamente na memória local do seu próprio dispositivo móvel (através de <em>Local Storage</em>). Nenhuma dessas informações é enviada para servidores externos.</p>
+
+            <h3>3. Permissões de Rede</h3>
+            <p>Como o aplicativo opera em estrutura de WebView para carregar os recursos mais recentes da plataforma, ele requer apenas a permissão básica de acesso à rede (<code>INTERNET</code>). Esta ligação serve única e exclusivamente para transferir os dados estruturais necessários para a exibição correta das telas de consulta técnica.</p>
+
+            <h3>4. Serviços de Terceiros</h3>
+            <p>A interface do sistema encontra-se alojada na infraestrutura do GitHub Pages. Ao aceder ao serviço, o servidor técnico do fornecedor de alojamento pode registar dados técnicos automáticos e anónimos padrão de tráfego (como o tipo de sistema operativo do dispositivo ou relatórios genéricos de erros na web) para garantir a estabilidade e a segurança contra ataques cibernéticos.</p>
+
+            <h3>5. Alterações nesta Política</h3>
+            <p>Esta política poderá ser atualizada ocasionalmente para refletir melhorias técnicas ou novas ferramentas adicionadas ao sistema. A data de modificação no topo da página indicará sempre a revisão mais recente em vigor.</p>
+
+            <h3>6. Suporte e Contacto</h3>
+            <p>Caso tenha qualquer dúvida estrutural sobre o funcionamento deste termo ou necessite de suporte técnico relacionado com a ferramenta, utilize os canais oficiais da comunidade:</p>
+            
+            <div class="contact-item">
+                <p><strong>Desenvolvedor Responsável:</strong> Jonathan da Silva Oliveira</p>
+                <p><strong>Canal de Repositório:</strong> Manutenção Industrial Arquivos</p>
+                <p><strong>Plataforma Base:</strong> GitHub Pages</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Atualização dinâmica da data de vigência da política
+            const dataElemento = document.getElementById("data-extenso");
+            if (dataElemento) {
+                const hoje = new Date();
+                const opcoes = { year: 'numeric', month: 'long', day: 'numeric' };
+                dataElemento.textContent = hoje.toLocaleDateString('pt-BR', opcoes);
+            }
+
+            // Tratamento do botão Voltar nativo da interface WebView
+            const btnVoltar = document.getElementById("btn-voltar");
+            if (btnVoltar) {
+                btnVoltar.addEventListener("click", () => {
+                    if (window.history.length > 1) {
+                        window.history.back();
+                    } else {
+                        // Redirecionamento de segurança para a raiz caso não haja histórico de navegação anterior
+                        window.location.href = "index.html";
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

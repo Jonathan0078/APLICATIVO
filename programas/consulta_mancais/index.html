@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<script>function start(){}function onHasParentDirectory(){}function addRow(){}</script>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="mancal.title">Doutor Mancal - Assistente Técnico</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-cogs" aria-hidden="true"></i> <span data-i18n="mancal.header">Doutor Mancal</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun" aria-hidden="true"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main" id="app-main">
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <form id="search-form" autocomplete="off" class="result-search">
+                        <div class="input-clear-wrap">
+                            <input type="text" id="search-input" placeholder="Buscar por designação…" data-i18n-placeholder="mancal.search_placeholder">
+                            <button type="button" class="clear-btn" id="clear-search" tabindex="-1">&times;</button>
+                        </div>
+                        <div id="autocomplete-list" class="autocomplete-items"></div>
+                        <div class="result-search-row">
+                            <input type="text" id="rolamento-input" placeholder="Rolamento (ex: UC205)" data-i18n-placeholder="mancal.rolamento_placeholder">
+                            <input type="number" id="shaft-input" placeholder="Eixo mm" data-i18n-placeholder="mancal.shaft_placeholder">
+                            <select id="type-filter"><option value="">Tipo</option></select>
+                            <select id="fix-filter"><option value="">Fixação</option></select>
+                        </div>
+                    </form>
+                    <div class="result-header">
+                        <span class="result-count" id="result-count"></span>
+                        <div class="result-header-actions">
+                            <button type="button" class="collapse-all-btn" id="collapse-all" title="Recolher/Expandir todos os grupos"><i class="fas fa-chevron-up"></i> <span data-i18n="mancal.collapse_all">Recolher todos</span></button>
+                            <button type="button" class="sort-btn" data-sort="eixo" title="Ordenar por diâmetro do eixo"><i class="fas fa-sort-amount-down-alt"></i></button>
+                        </div>
+                    </div>
+                    <div id="results-container">
+                        <div id="loader">
+                            <p data-i18n="mancal.loading">Carregando base de dados, por favor aguarde...</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="svg-card" class="card">
+                    <h2><i class="fas fa-draw-polygon"></i> <span data-i18n="mancal.illustration_title">Ilustração do Tipo</span></h2>
+                    <div id="svg-container"><p style="color:var(--text-secondary);text-align:center;padding:1rem;font-size:0.85rem" data-i18n="mancal.click_hint">Clique num mancal para ver a ilustração do tipo construtivo.</p></div>
+                </div>
+                <div id="compare-panel" class="card compare-panel" style="display:none">
+                    <h2><i class="fas fa-balance-scale"></i> <span data-i18n="mancal.compare_title">Comparar Mancais</span></h2>
+                    <div id="compare-list" class="compare-list"></div>
+                    <div id="compare-table-wrap"></div>
+                    <button type="button" class="secondary-button" id="clear-compare" style="margin-top:.75rem"><span data-i18n="mancal.clear_compare">Limpar Comparação</span></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+    <script src="../../shared/i18n.js"></script>
+</body>
+</html>

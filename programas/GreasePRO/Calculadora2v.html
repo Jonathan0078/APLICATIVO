@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="grease.mix_2v_title">Cálculo de Mistura de Óleos - GreasePRO</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu-button.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+
+    <!-- Scripts -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/V2Ctrl.js"></script>
+    <script src="js/menu-button.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-content">
+                <button class="menu-button" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-tint"></i> <span data-i18n="grease.2v.title">Cálculo de Mistura de Óleos</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entradas -->
+            <div id="inputs-column">
+                <!-- Card de Instruções -->
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> <span data-i18n="grease.instructions">Instruções</span></h2>
+                    <div class="input-group">
+                        <label for="calculadora" data-i18n="grease.2v.select_type">Selecione o tipo de cálculo:</label>
+                        <select id="calculadora" onchange="mostrarT()">
+                            <option selected data-i18n="grease.select_option">Selecione uma opção</option>
+                            <option value="1" data-i18n="grease.2v.opt1">1. Calcular viscosidade da mistura</option>
+                            <option value="2" data-i18n="grease.2v.opt2">2. Calcular proporção para mistura</option>
+                        </select>
+                    </div>
+                    <div id="tabbody1" style="display: none;">
+                        <p data-i18n="grease.2v.instr1">Para calcular a viscosidade final da mistura:</p>
+                        <ul>
+                            <li data-i18n="grease.2v.li1_1">Informe a viscosidade do Óleo 1.</li>
+                            <li data-i18n="grease.2v.li1_2">Informe a viscosidade do Óleo 2.</li>
+                            <li data-i18n="grease.2v.li1_3">Informe a porcentagem (%) do Óleo 1 na mistura.</li>
+                        </ul>
+                    </div>
+                    <div id="tabbody2" style="display: none;">
+                        <p data-i18n="grease.2v.instr2">Para calcular a proporção ideal de cada óleo:</p>
+                        <ul>
+                            <li data-i18n="grease.2v.li1_1">Informe a viscosidade do Óleo 1.</li>
+                            <li data-i18n="grease.2v.li1_2">Informe a viscosidade do Óleo 2.</li>
+                            <li data-i18n="grease.2v.li2_3">Informe a viscosidade final desejada para a mistura.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card de Cálculo 1 -->
+                <div class="card" id="tabla1" style="display: none;">
+                    <h2><i class="fas fa-flask"></i> <span data-i18n="grease.2v.section1">1. Calcular Viscosidade da Mistura</span></h2>
+                    <div class="input-group">
+                        <label for="ace1" data-i18n="grease.2v.visc_oil1">Viscosidade Óleo #1 (cSt)</label>
+                        <input id="ace1" type="number" placeholder="Ex: 150">
+                    </div>
+                    <div class="input-group">
+                        <label for="ace2" data-i18n="grease.2v.visc_oil2">Viscosidade Óleo #2 (cSt)</label>
+                        <input id="ace2" type="number" placeholder="Ex: 460">
+                    </div>
+                    <div class="input-group">
+                        <label for="porc" data-i18n="grease.2v.perc_oil1">Porcentagem Óleo #1 (%)</label>
+                        <input id="porc" type="number" placeholder="Ex: 50">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validar1v()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+
+                <!-- Card de Cálculo 2 -->
+                <div class="card" id="tabla2" style="display: none;">
+                    <h2><i class="fas fa-balance-scale"></i> <span data-i18n="grease.2v.section2">2. Calcular Proporção para Mistura</span></h2>
+                    <div class="input-group">
+                        <label for="vis1" data-i18n="grease.2v.visc_oil1">Viscosidade Óleo #1 (cSt)</label>
+                        <input id="vis1" type="number" placeholder="Ex: 150">
+                    </div>
+                    <div class="input-group">
+                        <label for="vis2" data-i18n="grease.2v.visc_oil2">Viscosidade Óleo #2 (cSt)</label>
+                        <input id="vis2" type="number" placeholder="Ex: 460">
+                    </div>
+                    <div class="input-group">
+                        <label for="visd" data-i18n="grease.2v.visc_desired">Viscosidade Desejada (cSt)</label>
+                        <input id="visd" type="number" placeholder="Ex: 220">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="validar2v()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        <button class="secondary-button" onclick="limpiarC()"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Saídas -->
+            <div id="outputs-column">
+                <!-- Card de Resultados -->
+                <div id="results-card" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> <span data-i18n="result.title">Resultados</span></h2>
+                    </div>
+
+                    <!-- Placeholder inicial -->
+                    <div class="result-placeholder" id="result-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p data-i18n="grease.2v.placeholder">Os resultados do seu cálculo aparecerão aqui.</p>
+                    </div>
+
+                    <!-- Conteúdo do resultado 1 -->
+                    <div class="result-content" id="result-content1" style="display: none;">
+                        <div class="result-header">
+                            <span class="label" data-i18n="grease.2v.blend_visc">Viscosidade da Mistura</span>
+                            <span id="result" class="designation-value">0 cSt</span>
+                        </div>
+                    </div>
+
+                    <!-- Conteúdo do resultado 2 -->
+                    <div class="result-content" id="result-content2" style="display: none;">
+                         <div class="results-grid">
+                            <div class="result-item">
+                                <span class="label" data-i18n="grease.2v.oil1">Óleo #1</span>
+                                <span id="result1" class="value">0%</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label" data-i18n="grease.2v.oil2">Óleo #2</span>
+                                <span id="result2" class="value">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script>
+        // Lógica para o seletor de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+
+        // Adaptação para mostrar/esconder os resultados
+        const original_validar1v = window.validar1v;
+        window.validar1v = function() {
+            original_validar1v();
+            const resultValue = document.getElementById('result').value;
+            if (resultValue) {
+                document.getElementById('result-placeholder').style.display = 'none';
+                document.getElementById('result-content2').style.display = 'none';
+                document.getElementById('result-content1').style.display = 'block';
+                document.querySelector('#result-content1 .designation-value').textContent = resultValue + " cSt";
+            }
+        }
+
+        const original_validar2v = window.validar2v;
+        window.validar2v = function() {
+            original_validar2v();
+            const result1Value = document.getElementById('result1').value;
+            const result2Value = document.getElementById('result2').value;
+            if (result1Value && result2Value) {
+                document.getElementById('result-placeholder').style.display = 'none';
+                document.getElementById('result-content1').style.display = 'none';
+                document.getElementById('result-content2').style.display = 'block';
+                document.querySelector('#result-content2 #result1').textContent = result1Value;
+                document.querySelector('#result-content2 #result2').textContent = result2Value;
+            }
+        }
+
+        const original_limpiarC = window.limpiarC;
+        window.limpiarC = function() {
+            original_limpiarC();
+            document.getElementById('result-placeholder').style.display = 'block';
+            document.getElementById('result-content1').style.display = 'none';
+            document.getElementById('result-content2').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

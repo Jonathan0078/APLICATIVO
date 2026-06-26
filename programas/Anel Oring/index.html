@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="oring.title">Calculadora de Anel O-Ring</title>
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-calculator"></i><span data-i18n="oring.title">Calculadora de Anel O-Ring</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fas fa-cog"></i><span data-i18n="oring.params">Parâmetros do Anel O-Ring</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="tipoAlojamento" data-i18n="oring.housing_type">Tipo de Alojamento</label>
+                            <select id="tipoAlojamento">
+                                <option value="estatico" data-i18n="oring.static">Alojamento Estático</option>
+                                <option value="dinamico" data-i18n="oring.dynamic">Alojamento Dinâmico</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="diametro" data-i18n="oring.nominal_dia">Diâmetro Nominal (W)</label>
+                            <select id="diametro" required>
+                                <option value="" disabled selected data-i18n="oring.select_dia">Selecione o diâmetro</option>
+                                <option value="1.78" data-i18n="oring.dia_1.78">1.78 mm</option>
+                                <option value="2.62" data-i18n="oring.dia_2.62">2.62 mm</option>
+                                <option value="3.53" data-i18n="oring.dia_3.53">3.53 mm</option>
+                                <option value="5.33" data-i18n="oring.dia_5.33">5.33 mm</option>
+                                <option value="6.99" data-i18n="oring.dia_6.99">6.99 mm</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button id="calcular" class="main-button"><i class="fas fa-chart-bar"></i><span data-i18n="calc.btn">Calcular</span></button>
+                    </div>
+                </div>
+            </div>
+            <div id="outputs-column">
+                <div id="resultado" class="card">
+                    <div class="result-placeholder">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p data-i18n="oring.results_placeholder">Os resultados da sua análise aparecerão aqui.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

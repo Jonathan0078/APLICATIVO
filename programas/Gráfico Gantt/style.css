@@ -1,0 +1,331 @@
+/* --- FUNDAÇÃO E IDENTIDADE VISUAL --- */
+@import url('../../shared/base.css');
+
+:root {
+    /* TEMA CLARO (PADRÃO) */
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --text: #212529;
+    --text-secondary: #6c757d;
+    --border: #dee2e6;
+    --shadow: 0 2px 8px rgba(0,0,0,0.07);
+
+    /* Cores de destaque padrão do repositório */
+    --primary: #2563eb;
+    --secondary: #003366;
+    --cor-destaque: #ffc107;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+    --accent-light: #fff3cd;
+
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --transition: 0.3s ease;
+}
+
+body.dark-theme {
+    /* TEMA ESCURO */
+    --bg: #0a1929;
+    --surface: #112233;
+    --text: #e9ecef;
+    --text-secondary: #8696a7;
+    --border: #334b61;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    --primary: #3b82f6;
+}
+
+/* --- ESTILOS GERAIS E LAYOUT --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: var(--font);
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background-color var(--transition), color var(--transition);
+    overflow-x: hidden; 
+    -webkit-text-size-adjust: 100%;
+}
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%; 
+}
+
+/* --- HEADER REFINADO --- */
+.app-header {
+    background: linear-gradient(145deg, #0f172a 0%, #1e3a5f 50%, #1a365d 100%);
+    color: white;
+    padding: 0.9rem 1rem;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    position: sticky;
+    top: 0;
+}
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+.header-content h1 {
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+}
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.25); transition: .4s; border-radius: 26px; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--cor-destaque); }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* --- LAYOUT PRINCIPAL (GRID) --- */
+.app-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* --- CARDS E TÍTULOS --- */
+.card {
+    background-color: var(--surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: all var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+.card h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+body.dark-theme .card h2 { color: var(--text); }
+
+/* --- FORMULÁRIOS E INPUTS --- */
+.input-group { margin-bottom: 1rem; }
+.input-group label {
+    display: block;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: .4rem;
+}
+.input-group select,
+.input-group input[type="text"],
+.input-group input[type="date"],
+.input-group input[type="number"] {
+    width: 100%;
+    padding: .7rem .85rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg);
+    color: var(--text);
+    font-size: .9rem;
+    transition: border-color .2s, box-shadow .2s;
+}
+.input-group select:focus, 
+.input-group input:focus {
+    outline: none;
+    border-color: var(--cor-destaque);
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.15);
+}
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr));
+    gap: 1rem;
+}
+
+/* --- BOTÕES --- */
+.button-group { display: flex; gap: .75rem; margin-top: auto; padding-top: 1rem; flex-wrap: wrap;}
+.main-button, .secondary-button {
+    padding: .85rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: .9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1;
+}
+.main-button {
+    background-color: var(--primary);
+    color: white;
+}
+.secondary-button {
+    background-color: transparent;
+    color: var(--primary);
+    border: 2px solid var(--border);
+}
+body.dark-theme .secondary-button { color: var(--text); }
+.main-button:hover { opacity: 0.9; }
+.secondary-button:hover { background: var(--bg); }
+body.dark-theme .secondary-button:hover { background: var(--border); }
+.main-button:active, .secondary-button:active { transform: scale(.98); }
+
+
+/* ========================================================= */
+/* --- ESTILOS ESPECÍFICOS: GESTOR DE TAREFAS / DASHBOARD --- */
+/* ========================================================= */
+
+#dashboard { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 1rem; 
+}
+
+.metric-card { 
+    background-color: var(--bg); 
+    padding: 1rem; 
+    border-radius: var(--radius-sm); 
+    border-left: 4px solid; 
+    box-shadow: var(--shadow); 
+}
+
+.metric-card .label { 
+    font-size: 0.9rem; 
+    color: var(--text-secondary); 
+    font-weight: 600; 
+}
+
+.metric-card .value { 
+    font-size: 2rem; 
+    font-weight: 700; 
+    line-height: 1.2; 
+}
+
+/* --- CONTROLES E BARRAS DO GANTT --- */
+.gantt-controls { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid var(--border); 
+    padding-bottom: 1rem; 
+    margin-bottom: 1rem; 
+    gap: 1rem; 
+}
+
+.gantt-controls .button-group { margin: 0; padding: 0; }
+#gantt-chart-container { min-height: 300px; flex-grow: 1; }
+#gantt-chart { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.task-bar { 
+    width: 100%; 
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    min-height: 50px; 
+    padding: 0.5rem 1rem; 
+    border-radius: var(--radius-sm); 
+    color: #ffffff; 
+    font-weight: 500; 
+    font-size: 0.9rem; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+    overflow: hidden; 
+}
+
+.task-content { 
+    position: relative; 
+    z-index: 2; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    width: 100%; 
+    flex-wrap: wrap; 
+    gap: 1rem; 
+}
+
+.task-name { 
+    flex-grow: 1; 
+    white-space: normal; 
+    word-break: break-word; 
+    cursor: text; 
+}
+
+.task-details { 
+    display: flex; 
+    align-items: center; 
+    gap: 1rem; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+}
+
+.task-date-info { 
+    font-size: 0.8rem; 
+    text-align: right; 
+    color: rgba(255, 255, 255, 0.9); 
+    line-height: 1.2; 
+}
+
+.progress-bar { 
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    height: 100%; 
+    z-index: 1; 
+    background-color: rgba(0, 0, 0, 0.25); 
+    transition: width 0.3s ease; 
+}
+
+.progress-input-wrapper { 
+    display: flex; 
+    align-items: center; 
+}
+
+.task-progress-input { 
+    width: 45px; 
+    background: transparent; 
+    border: none; 
+    color: white; 
+    text-align: right; 
+    border-radius: 4px; 
+    -moz-appearance: textfield; 
+    font-weight: bold; 
+}
+
+.task-progress-input:focus { 
+    outline: none; 
+    background: rgba(0,0,0,0.3); 
+}
+
+.task-progress-input::-webkit-outer-spin-button, 
+.task-progress-input::-webkit-inner-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+/* --- RESPONSIVIDADE ESPECÍFICA DO GANTT --- */
+@media (max-width: 768px) {
+    .gantt-controls { flex-direction: column; align-items: stretch; }
+    .task-details { gap: 0.5rem; }
+    .task-date-info { display: none; }
+}

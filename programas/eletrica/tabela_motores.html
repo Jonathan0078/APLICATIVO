@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title data-i18n="eletrica.motores.title">Tabela de Motores Elétricos</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+<style>
+.motor-table th { position: sticky; top: 0; z-index: 2; }
+.motor-table td { font-variant-numeric: tabular-nums; }
+.motor-table .cv-col { font-weight: 700; color: var(--primary); }
+body.dark-theme .motor-table .cv-col { color: var(--accent); }
+.motor-table tr:hover td { background: var(--accent-light); }
+.polos-badge {
+  display: inline-block; padding: .15rem .5rem; border-radius: 10px;
+  font-size: .68rem; font-weight: 700;
+}
+.polos-2 { background: #dbeafe; color: #1d4ed8; }
+.polos-4 { background: #dcfce7; color: #166534; }
+.polos-6 { background: #fef3c7; color: #92400e; }
+.polos-8 { background: #f3e8ff; color: #6b21a8; }
+body.dark-theme .polos-2 { background: #1e3a5f; color: #93c5fd; }
+body.dark-theme .polos-4 { background: #14532d; color: #86efac; }
+body.dark-theme .polos-6 { background: #451a03; color: #fcd34d; }
+body.dark-theme .polos-8 { background: #2e1065; color: #c4b5fd; }
+.result-count { font-size: .78rem; color: var(--text-secondary); margin-bottom: .5rem; }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-content">
+      <h1><i class="fa-solid fa-bolt"></i> <span data-i18n="eletrica.motores.title">Tabela de Motores Elétricos</span></h1>
+      <div class="theme-switcher">
+        <i class="fa-solid fa-sun"></i>
+        <label class="switch"><input type="checkbox" id="themeToggle"><span class="slider"></span></label>
+        <i class="fa-solid fa-moon"></i>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="card">
+      <h2><i class="fa-solid fa-filter"></i> <span data-i18n="eletrica.motores.filtros">Filtros</span></h2>
+      <div class="filtro-motores">
+        <select id="filtroPolo">
+          <option value="todas" data-i18n="eletrica.motores.todas_rotacoes">Todas as rotações</option>
+          <option value="2" data-i18n="eletrica.motores.p2">2 Polos (3600 RPM)</option>
+          <option value="4" data-i18n="eletrica.motores.p4">4 Polos (1800 RPM)</option>
+          <option value="6" data-i18n="eletrica.motores.p6">6 Polos (1200 RPM)</option>
+          <option value="8" data-i18n="eletrica.motores.p8">8 Polos (900 RPM)</option>
+        </select>
+        <select id="filtroTensao">
+          <option value="220" data-i18n="eletrica.motores.v220">220 V</option>
+          <option value="380" data-i18n="eletrica.motores.v380">380 V</option>
+          <option value="440" data-i18n="eletrica.motores.v440">440 V</option>
+          <option value="760" data-i18n="eletrica.motores.v760">760 V</option>
+          <option value="todas" data-i18n="eletrica.motores.todas_tensoes">Todas as tensões</option>
+        </select>
+        <select id="filtroCV">
+          <option value="todas" data-i18n="eletrica.motores.todas_potencias">Todas as potências</option>
+          <option value="pequeno" data-i18n="eletrica.motores.ate_10cv">Até 10 CV</option>
+          <option value="medio" data-i18n="eletrica.motores.10a50cv">10 a 50 CV</option>
+          <option value="grande" data-i18n="eletrica.motores.acima_50cv">Acima de 50 CV</option>
+        </select>
+      </div>
+      <div class="search-box">
+        <i class="fa-solid fa-search"></i>
+        <input type="text" id="buscaMotor" data-i18n-placeholder="eletrica.motores.busca_placeholder" placeholder="Buscar por potência (CV ou kW)...">
+      </div>
+      <div class="result-count" id="resultCount" data-i18n="eletrica.motores.result_count">Exibindo todos os motores</div>
+    </div>
+
+    <div class="card">
+      <h2><i class="fa-solid fa-table"></i> <span data-i18n="eletrica.motores.dados_tecnicos">Dados Técnicos</span></h2>
+      <div class="table-wrap">
+        <table class="motor-table" id="motorTable">
+          <thead>
+            <tr>
+              <th data-i18n="eletrica.motores.th_cv">CV</th>
+              <th data-i18n="eletrica.motores.th_kw">kW</th>
+              <th data-i18n="eletrica.motores.th_polos">Pólos</th>
+              <th data-i18n="eletrica.motores.th_rpm">RPM</th>
+              <th id="thTensao" data-i18n="eletrica.motores.th_220v">220V (A)</th>
+              <th data-i18n="eletrica.motores.th_380v">380V (A)</th>
+              <th data-i18n="eletrica.motores.th_440v">440V (A)</th>
+              <th data-i18n="eletrica.motores.th_760v">760V (A)</th>
+              <th data-i18n="eletrica.motores.th_rend">Rend. (%)</th>
+              <th data-i18n="eletrica.motores.th_fp">FP</th>
+              <th data-i18n="eletrica.motores.th_ipin">Ip/In</th>
+              <th data-i18n="eletrica.motores.th_carcaca">Carcaça</th>
+            </tr>
+          </thead>
+          <tbody id="motorBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/i18n.js"></script>
+<script src="shared.js"></script>
+<script>
+var motores = [
+  // {cv, kw, polos, rpm, i220, i380, i440, i760, rend, fp, ipin, carc}
+  // ---- 2 POLOS (3600 RPM) ----
+  {cv:0.5, kw:0.37, polos:2, rpm:3480, i220:1.6, i380:0.92, i440:null, i760:null, rend:66.0, fp:0.66, ipin:4.5, carc:'56'},
+  {cv:1, kw:0.75, polos:2, rpm:3510, i220:2.7, i380:1.56, i440:null, i760:null, rend:72.0, fp:0.73, ipin:5.0, carc:'63'},
+  {cv:2, kw:1.5, polos:2, rpm:3520, i220:4.8, i380:2.78, i440:null, i760:null, rend:76.5, fp:0.77, ipin:5.5, carc:'71'},
+  {cv:3, kw:2.2, polos:2, rpm:3530, i220:6.8, i380:3.94, i440:null, i760:null, rend:79.5, fp:0.78, ipin:5.5, carc:'80'},
+  {cv:5, kw:3.7, polos:2, rpm:3540, i220:10.8, i380:6.26, i440:null, i760:null, rend:82.0, fp:0.80, ipin:6.0, carc:'90'},
+  {cv:7.5, kw:5.5, polos:2, rpm:3550, i220:15.5, i380:8.98, i440:null, i760:null, rend:83.5, fp:0.81, ipin:6.5, carc:'100'},
+  {cv:10, kw:7.5, polos:2, rpm:3560, i220:20.8, i380:12.1, i440:null, i760:null, rend:84.5, fp:0.82, ipin:7.0, carc:'112'},
+  {cv:12.5, kw:9.2, polos:2, rpm:3560, i220:25.5, i380:14.8, i440:12.8, i760:null, rend:85.0, fp:0.82, ipin:7.0, carc:'112'},
+  {cv:15, kw:11, polos:2, rpm:3570, i220:30.2, i380:17.5, i440:15.1, i760:null, rend:85.5, fp:0.83, ipin:7.0, carc:'132'},
+  {cv:20, kw:15, polos:2, rpm:3570, i220:40.0, i380:23.2, i440:20.0, i760:null, rend:86.5, fp:0.83, ipin:7.0, carc:'132'},
+  {cv:25, kw:18.5, polos:2, rpm:3580, i220:49.5, i380:28.7, i440:24.8, i760:null, rend:87.5, fp:0.84, ipin:7.0, carc:'160'},
+  {cv:30, kw:22, polos:2, rpm:3580, i220:59.0, i380:34.2, i440:29.5, i760:null, rend:88.0, fp:0.84, ipin:7.5, carc:'160'},
+  {cv:40, kw:30, polos:2, rpm:3590, i220:78.0, i380:45.2, i440:39.0, i760:22.5, rend:88.5, fp:0.85, ipin:7.5, carc:'180'},
+  {cv:50, kw:37, polos:2, rpm:3590, i220:97.0, i380:56.2, i440:48.5, i760:28.1, rend:89.0, fp:0.85, ipin:7.5, carc:'200'},
+  {cv:60, kw:45, polos:2, rpm:3590, i220:116, i380:67.2, i440:58.0, i760:33.6, rend:89.5, fp:0.86, ipin:7.5, carc:'200'},
+  {cv:75, kw:55, polos:2, rpm:3600, i220:140, i380:81.0, i440:70.0, i760:40.5, rend:90.0, fp:0.86, ipin:7.5, carc:'225'},
+  {cv:100, kw:75, polos:2, rpm:3600, i220:185, i380:107, i440:92.5, i760:53.5, rend:90.5, fp:0.87, ipin:7.5, carc:'250'},
+  {cv:125, kw:90, polos:2, rpm:3600, i220:220, i380:128, i440:110, i760:64.0, rend:91.0, fp:0.87, ipin:7.5, carc:'280'},
+  {cv:150, kw:110, polos:2, rpm:3600, i220:268, i380:155, i440:134, i760:77.5, rend:91.5, fp:0.87, ipin:7.5, carc:'280'},
+  {cv:200, kw:150, polos:2, rpm:3600, i220:355, i380:206, i440:178, i760:103, rend:92.0, fp:0.88, ipin:7.5, carc:'315'},
+  {cv:250, kw:185, polos:2, rpm:3600, i220:440, i380:255, i440:220, i760:128, rend:92.0, fp:0.88, ipin:7.5, carc:'315'},
+  {cv:300, kw:220, polos:2, rpm:3600, i220:520, i380:301, i440:260, i760:151, rend:92.5, fp:0.88, ipin:7.5, carc:'355'},
+  // ---- 4 POLOS (1800 RPM) ----
+  {cv:0.5, kw:0.37, polos:4, rpm:1710, i220:1.6, i380:0.92, i440:null, i760:null, rend:66.0, fp:0.66, ipin:4.5, carc:'56'},
+  {cv:1, kw:0.75, polos:4, rpm:1730, i220:2.8, i380:1.62, i440:1.40, i760:null, rend:72.0, fp:0.73, ipin:5.0, carc:'63'},
+  {cv:2, kw:1.5, polos:4, rpm:1740, i220:5.0, i380:2.89, i440:2.50, i760:null, rend:76.5, fp:0.77, ipin:5.5, carc:'71'},
+  {cv:3, kw:2.2, polos:4, rpm:1745, i220:7.0, i380:4.05, i440:3.50, i760:null, rend:79.5, fp:0.78, ipin:5.5, carc:'80'},
+  {cv:5, kw:3.7, polos:4, rpm:1750, i220:11.2, i380:6.50, i440:5.60, i760:null, rend:82.0, fp:0.80, ipin:6.0, carc:'90'},
+  {cv:7.5, kw:5.5, polos:4, rpm:1755, i220:16.0, i380:9.30, i440:8.00, i760:null, rend:83.5, fp:0.81, ipin:6.5, carc:'100'},
+  {cv:10, kw:7.5, polos:4, rpm:1760, i220:21.6, i380:12.5, i440:10.8, i760:null, rend:84.5, fp:0.82, ipin:7.0, carc:'112'},
+  {cv:12.5, kw:9.2, polos:4, rpm:1760, i220:26.5, i380:15.4, i440:13.3, i760:null, rend:85.0, fp:0.82, ipin:7.0, carc:'112'},
+  {cv:15, kw:11, polos:4, rpm:1765, i220:31.2, i380:18.0, i440:15.6, i760:null, rend:85.5, fp:0.83, ipin:7.0, carc:'132'},
+  {cv:20, kw:15, polos:4, rpm:1765, i220:41.5, i380:24.0, i440:20.8, i760:null, rend:86.5, fp:0.83, ipin:7.0, carc:'132'},
+  {cv:25, kw:18.5, polos:4, rpm:1770, i220:51.5, i380:29.8, i440:25.8, i760:null, rend:87.5, fp:0.84, ipin:7.0, carc:'160'},
+  {cv:30, kw:22, polos:4, rpm:1770, i220:61.0, i380:35.3, i440:30.5, i760:null, rend:88.0, fp:0.84, ipin:7.5, carc:'160'},
+  {cv:40, kw:30, polos:4, rpm:1775, i220:81.0, i380:46.9, i440:40.5, i760:23.5, rend:88.5, fp:0.85, ipin:7.5, carc:'180'},
+  {cv:50, kw:37, polos:4, rpm:1775, i220:100, i380:58.0, i440:50.0, i760:29.0, rend:89.0, fp:0.85, ipin:7.5, carc:'200'},
+  {cv:60, kw:45, polos:4, rpm:1780, i220:120, i380:69.5, i440:60.0, i760:34.7, rend:89.5, fp:0.86, ipin:7.5, carc:'200'},
+  {cv:75, kw:55, polos:4, rpm:1780, i220:145, i380:84.0, i440:72.5, i760:42.0, rend:90.0, fp:0.86, ipin:7.5, carc:'225'},
+  {cv:100, kw:75, polos:4, rpm:1780, i220:192, i380:111, i440:96.0, i760:55.5, rend:90.5, fp:0.87, ipin:7.5, carc:'250'},
+  {cv:125, kw:90, polos:4, rpm:1785, i220:228, i380:132, i440:114, i760:66.0, rend:91.0, fp:0.87, ipin:7.5, carc:'280'},
+  {cv:150, kw:110, polos:4, rpm:1785, i220:278, i380:161, i440:139, i760:80.5, rend:91.5, fp:0.87, ipin:7.5, carc:'280'},
+  {cv:200, kw:150, polos:4, rpm:1785, i220:368, i380:213, i440:184, i760:107, rend:92.0, fp:0.88, ipin:7.5, carc:'315'},
+  {cv:250, kw:185, polos:4, rpm:1785, i220:455, i380:263, i440:228, i760:132, rend:92.0, fp:0.88, ipin:7.5, carc:'315'},
+  {cv:300, kw:220, polos:4, rpm:1790, i220:540, i380:312, i440:270, i760:156, rend:92.5, fp:0.88, ipin:7.5, carc:'355'},
+  {cv:350, kw:260, polos:4, rpm:1790, i220:625, i380:361, i440:313, i760:181, rend:92.5, fp:0.88, ipin:7.5, carc:'355'},
+  {cv:400, kw:300, polos:4, rpm:1790, i220:710, i380:410, i440:355, i760:205, rend:93.0, fp:0.89, ipin:7.5, carc:'400'},
+  {cv:450, kw:330, polos:4, rpm:1790, i220:785, i380:454, i440:393, i760:227, rend:93.0, fp:0.89, ipin:7.5, carc:'400'},
+  {cv:500, kw:370, polos:4, rpm:1790, i220:870, i380:503, i440:435, i760:251, rend:93.0, fp:0.89, ipin:7.5, carc:'400'},
+  // ---- 6 POLOS (1200 RPM) ----
+  {cv:1, kw:0.75, polos:6, rpm:1150, i220:3.0, i380:1.74, i440:null, i760:null, rend:68.0, fp:0.68, ipin:4.5, carc:'71'},
+  {cv:2, kw:1.5, polos:6, rpm:1155, i220:5.3, i380:3.07, i440:null, i760:null, rend:72.0, fp:0.72, ipin:5.0, carc:'80'},
+  {cv:3, kw:2.2, polos:6, rpm:1160, i220:7.5, i380:4.35, i440:null, i760:null, rend:75.0, fp:0.74, ipin:5.0, carc:'90'},
+  {cv:5, kw:3.7, polos:6, rpm:1165, i220:12.0, i380:6.95, i440:null, i760:null, rend:78.0, fp:0.76, ipin:5.5, carc:'100'},
+  {cv:7.5, kw:5.5, polos:6, rpm:1170, i220:17.0, i380:9.85, i440:null, i760:null, rend:80.0, fp:0.78, ipin:6.0, carc:'112'},
+  {cv:10, kw:7.5, polos:6, rpm:1170, i220:23.0, i380:13.3, i440:11.5, i760:null, rend:81.5, fp:0.79, ipin:6.0, carc:'112'},
+  {cv:12.5, kw:9.2, polos:6, rpm:1170, i220:28.0, i380:16.2, i440:14.0, i760:null, rend:82.5, fp:0.79, ipin:6.0, carc:'132'},
+  {cv:15, kw:11, polos:6, rpm:1175, i220:33.0, i380:19.1, i440:16.5, i760:null, rend:83.5, fp:0.80, ipin:6.5, carc:'132'},
+  {cv:20, kw:15, polos:6, rpm:1175, i220:44.0, i380:25.5, i440:22.0, i760:null, rend:84.5, fp:0.80, ipin:6.5, carc:'160'},
+  {cv:25, kw:18.5, polos:6, rpm:1175, i220:54.5, i380:31.6, i440:27.3, i760:null, rend:85.5, fp:0.81, ipin:6.5, carc:'160'},
+  {cv:30, kw:22, polos:6, rpm:1180, i220:65.0, i380:37.7, i440:32.5, i760:null, rend:86.0, fp:0.81, ipin:7.0, carc:'180'},
+  {cv:40, kw:30, polos:6, rpm:1180, i220:86.0, i380:49.8, i440:43.0, i760:24.9, rend:87.0, fp:0.82, ipin:7.0, carc:'200'},
+  {cv:50, kw:37, polos:6, rpm:1180, i220:106, i380:61.4, i440:53.0, i760:30.7, rend:87.5, fp:0.82, ipin:7.0, carc:'200'},
+  {cv:60, kw:45, polos:6, rpm:1185, i220:127, i380:73.6, i440:63.5, i760:36.8, rend:88.0, fp:0.83, ipin:7.0, carc:'225'},
+  {cv:75, kw:55, polos:6, rpm:1185, i220:155, i380:89.8, i440:77.5, i760:44.9, rend:88.5, fp:0.83, ipin:7.0, carc:'225'},
+  {cv:100, kw:75, polos:6, rpm:1185, i220:205, i380:119, i440:103, i760:59.5, rend:89.0, fp:0.84, ipin:7.0, carc:'250'},
+  {cv:125, kw:90, polos:6, rpm:1190, i220:245, i380:142, i440:123, i760:71.0, rend:89.5, fp:0.84, ipin:7.0, carc:'280'},
+  {cv:150, kw:110, polos:6, rpm:1190, i220:295, i380:171, i440:148, i760:85.5, rend:90.0, fp:0.85, ipin:7.0, carc:'280'},
+  {cv:200, kw:150, polos:6, rpm:1190, i220:390, i380:226, i440:195, i760:113, rend:90.5, fp:0.85, ipin:7.0, carc:'315'},
+  {cv:250, kw:185, polos:6, rpm:1190, i220:485, i380:281, i440:243, i760:141, rend:90.5, fp:0.85, ipin:7.0, carc:'315'},
+  {cv:300, kw:220, polos:6, rpm:1190, i220:575, i380:333, i440:288, i760:167, rend:91.0, fp:0.86, ipin:7.0, carc:'355'},
+  // ---- 8 POLOS (900 RPM) ----
+  {cv:3, kw:2.2, polos:8, rpm:865, i220:8.2, i380:4.75, i440:null, i760:null, rend:70.0, fp:0.68, ipin:4.5, carc:'100'},
+  {cv:5, kw:3.7, polos:8, rpm:870, i220:13.0, i380:7.54, i440:null, i760:null, rend:73.0, fp:0.70, ipin:5.0, carc:'112'},
+  {cv:7.5, kw:5.5, polos:8, rpm:875, i220:18.5, i380:10.7, i440:null, i760:null, rend:75.5, fp:0.72, ipin:5.5, carc:'112'},
+  {cv:10, kw:7.5, polos:8, rpm:875, i220:24.5, i380:14.2, i440:12.3, i760:null, rend:77.5, fp:0.74, ipin:5.5, carc:'132'},
+  {cv:12.5, kw:9.2, polos:8, rpm:875, i220:30.0, i380:17.4, i440:15.0, i760:null, rend:78.5, fp:0.74, ipin:5.5, carc:'132'},
+  {cv:15, kw:11, polos:8, rpm:880, i220:35.5, i380:20.6, i440:17.8, i760:null, rend:79.5, fp:0.75, ipin:6.0, carc:'160'},
+  {cv:20, kw:15, polos:8, rpm:880, i220:47.0, i380:27.2, i440:23.5, i760:null, rend:81.0, fp:0.76, ipin:6.0, carc:'160'},
+  {cv:25, kw:18.5, polos:8, rpm:880, i220:58.0, i380:33.6, i440:29.0, i760:null, rend:82.0, fp:0.76, ipin:6.0, carc:'180'},
+  {cv:30, kw:22, polos:8, rpm:885, i220:69.0, i380:40.0, i440:34.5, i760:null, rend:83.0, fp:0.77, ipin:6.0, carc:'180'},
+  {cv:40, kw:30, polos:8, rpm:885, i220:91.0, i380:52.7, i440:45.5, i760:26.4, rend:84.0, fp:0.78, ipin:6.5, carc:'200'},
+  {cv:50, kw:37, polos:8, rpm:885, i220:112, i380:64.9, i440:56.0, i760:32.4, rend:84.5, fp:0.78, ipin:6.5, carc:'200'},
+  {cv:60, kw:45, polos:8, rpm:890, i220:134, i380:77.7, i440:67.0, i760:38.8, rend:85.5, fp:0.79, ipin:6.5, carc:'225'},
+  {cv:75, kw:55, polos:8, rpm:890, i220:165, i380:95.6, i440:82.5, i760:47.8, rend:86.5, fp:0.79, ipin:6.5, carc:'225'},
+  {cv:100, kw:75, polos:8, rpm:890, i220:218, i380:126, i440:109, i760:63.0, rend:87.5, fp:0.80, ipin:6.5, carc:'250'},
+  {cv:125, kw:90, polos:8, rpm:890, i220:260, i380:151, i440:130, i760:75.5, rend:88.0, fp:0.80, ipin:6.5, carc:'280'},
+  {cv:150, kw:110, polos:8, rpm:890, i220:310, i380:180, i440:155, i760:90.0, rend:88.5, fp:0.81, ipin:6.5, carc:'280'},
+  {cv:200, kw:150, polos:8, rpm:890, i220:410, i380:238, i440:205, i760:119, rend:89.0, fp:0.81, ipin:6.5, carc:'315'},
+];
+
+function fmt(v) { return v != null ? v.toFixed(2) : '—'; }
+function fmt1(v) { return v != null ? v.toFixed(1) : '—'; }
+
+function renderTable() {
+    var polos = document.getElementById('filtroPolo').value;
+    var tensao = document.getElementById('filtroTensao').value;
+    var cvFiltro = document.getElementById('filtroCV').value;
+    var busca = document.getElementById('buscaMotor').value.toLowerCase().trim();
+
+    var filtered = motores.filter(function(m) {
+        if (polos !== 'todas' && m.polos !== parseInt(polos)) return false;
+        if (tensao !== 'todas') {
+            var key = 'i' + tensao;
+            if (m[key] === null || m[key] === undefined) return false;
+        }
+        if (cvFiltro === 'pequeno' && m.cv > 10) return false;
+        if (cvFiltro === 'medio' && (m.cv < 10 || m.cv > 50)) return false;
+        if (cvFiltro === 'grande' && m.cv <= 50) return false;
+        if (busca) {
+            var txt = m.cv + ' ' + m.kw + ' ' + m.carc + ' ' + m.rpm;
+            if (txt.indexOf(busca) === -1) return false;
+        }
+        return true;
+    });
+
+    var thTensao = document.getElementById('thTensao');
+    var tensaoKey = tensao !== 'todas' ? 'eletrica.motores.th_' + tensao + 'v' : 'eletrica.motores.th_220v';
+    thTensao.setAttribute('data-i18n', tensaoKey);
+    thTensao.textContent = i18n.t(tensaoKey);
+
+    var tbody = document.getElementById('motorBody');
+    tbody.innerHTML = '';
+    filtered.forEach(function(m) {
+        var polosClass = 'polos-' + m.polos;
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+            '<td class="cv-col">' + m.cv + '</td>' +
+            '<td>' + m.kw.toFixed(2) + '</td>' +
+            '<td><span class="polos-badge ' + polosClass + '">' + m.polos + 'P</span></td>' +
+            '<td>' + m.rpm + '</td>' +
+            '<td>' + fmt(m.i220) + '</td>' +
+            '<td>' + fmt(m.i380) + '</td>' +
+            '<td>' + fmt(m.i440) + '</td>' +
+            '<td>' + fmt(m.i760) + '</td>' +
+            '<td>' + fmt1(m.rend) + '</td>' +
+            '<td>' + m.fp.toFixed(2) + '</td>' +
+            '<td>' + m.ipin.toFixed(1) + '</td>' +
+            '<td>' + m.carc + '</td>';
+        tbody.appendChild(tr);
+    });
+
+    document.getElementById('resultCount').textContent =
+        window.i18n.t('eletrica.motores.exibindo') + ' ' + filtered.length + ' ' + window.i18n.t('eletrica.motores.de') + ' ' + motores.length + ' ' + window.i18n.t('eletrica.motores.motores');
+}
+
+document.getElementById('filtroPolo').addEventListener('change', renderTable);
+document.getElementById('filtroTensao').addEventListener('change', renderTable);
+document.getElementById('filtroCV').addEventListener('change', renderTable);
+document.getElementById('buscaMotor').addEventListener('input', renderTable);
+
+document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+    renderTable();
+});
+</script>
+</body>
+</html>

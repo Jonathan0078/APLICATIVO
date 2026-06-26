@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="ohm.title">Calculadora da Lei de Ohm</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-bolt"></i> <span data-i18n="ohm.header">Sistema de Gestão - Lei de Ohm</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Círculo de Ohm -->
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-circle-nodes"></i> <span data-i18n="ohm.select_quantity">Selecione a Grandeza</span></h2>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1rem;" data-i18n="ohm.click_hint">Clique em uma seção do círculo para começar.</p>
+                    
+                    <div id="ohm-wheel" class="ohm-wheel animate-fadeInUp" style="animation-delay: 0.3s; margin: 0 auto;">
+                        <div id="quadrant-P" class="quadrant quadrant-p" data-type="P">
+                            <div class="quadrant-content"><h2>P</h2><p><span data-i18n="ohm.watts">(Watts)</span></p></div>
+                        </div>
+                        <div id="quadrant-V" class="quadrant quadrant-v" data-type="V">
+                            <div class="quadrant-content"><h2>V</h2><p><span data-i18n="ohm.volts">(Volts)</span></p></div>
+                        </div>
+                        <div id="quadrant-I" class="quadrant quadrant-i" data-type="I">
+                            <div class="quadrant-content"><h2>I</h2><p><span data-i18n="ohm.amps">(Amps)</span></p></div>
+                        </div>
+                        <div id="quadrant-R" class="quadrant quadrant-r" data-type="R">
+                            <div class="quadrant-content"><h2>R</h2><p><span data-i18n="ohm.ohms">(Ohms)</span></p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Calculadora -->
+            <div id="outputs-column">
+                <div class="card" id="calculator-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-calculator"></i> <span id="formula-title" data-i18n="ohm.calculator">Calculadora</span></h2>
+                        <span id="categoria-atual-label" class="badge" data-i18n="ohm.badge_waiting">Aguardando</span>
+                    </div>
+                    
+                    <div id="instruction" class="instruction">
+                        <p style="text-align:center; color:var(--text-secondary); padding:1rem 0;" data-i18n="ohm.waiting">Selecione uma grandeza no círculo ao lado</p>
+                    </div>
+                    
+                    <div id="calculator-content" class="hidden" style="display:flex; flex-direction:column; flex:1;">
+                        <div id="formula-buttons" class="formula-buttons" style="margin-bottom:1rem;"></div>
+                        
+                        <div id="input-section" class="hidden input-section">
+                            <div class="input-wrapper">
+                                <label id="label1" for="input1"></label>
+                                <span id="icon1" class="input-icon"></span>
+                                <input type="number" id="input1" class="styled-input" data-i18n-placeholder="ohm.value_placeholder" placeholder="Digite o valor...">
+                            </div>
+                            <div class="input-wrapper">
+                                <label id="label2" for="input2"></label>
+                                <span id="icon2" class="input-icon"></span>
+                                <input type="number" id="input2" class="styled-input" data-i18n-placeholder="ohm.value_placeholder" placeholder="Digite o valor...">
+                            </div>
+                        </div>
+                        
+                        <div class="button-group" style="margin-top:1rem;">
+                            <button id="calculate-btn" class="hidden main-button" data-i18n="calc.btn">
+                                <i class="fa-solid fa-equals"></i> Calcular
+                            </button>
+                            <button id="clear-btn" class="secondary-button" onclick="limparCalculadora()">
+                                <i class="fa-solid fa-eraser"></i> <span data-i18n="common.limpar">Limpar</span>
+                            </button>
+                        </div>
+                        
+                        <div id="result-container" style="margin-top:1rem; text-align:center; min-height:60px;">
+                            <p id="result" style="font-size:1.6rem; font-weight:700; color:var(--primary);"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Tema
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle-checkbox');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.checked = true;
+            }
+            themeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark-theme');
+                localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+            });
+        });
+
+        function limparCalculadora() {
+            document.getElementById('input1').value = '';
+            document.getElementById('input2').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('result').style.color = 'var(--primary)';
+            
+            // Resetar seleção do círculo
+            document.querySelectorAll('.quadrant').forEach(q => q.classList.remove('active'));
+            document.getElementById('ohm-wheel').classList.remove('active');
+            document.getElementById('instruction').style.display = 'block';
+            document.getElementById('calculator-content').classList.add('hidden');
+            document.getElementById('input-section').classList.add('hidden');
+            document.getElementById('calculate-btn').classList.add('hidden');
+            document.getElementById('categoria-atual-label').textContent = window.i18n.t('ohm.badge_waiting');
+            document.getElementById('formula-title').textContent = window.i18n.t('ohm.calculator');
+            document.getElementById('formula-buttons').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

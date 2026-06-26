@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="soldagem.aporte.title">Parâmetros e Aporte Térmico</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-temperature-high"></i> <span data-i18n="soldagem.aporte.title">Parâmetros e Aporte Térmico</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="theme-toggle-checkbox"><span class="slider"></span></label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-sliders"></i> <span data-i18n="soldagem.aporte.param_title">Parâmetros de Soldagem</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="processo" data-i18n="soldagem.aporte.processo">Processo de Soldagem</label>
+                            <select id="processo">
+                                <option value="0.8" data-i18n="soldagem.aporte.proc_smaw">SMAW (Eletrodo Revestido)</option>
+                                <option value="0.9" selected data-i18n="soldagem.aporte.proc_gmaw">MIG/MAG (GMAW)</option>
+                                <option value="0.6" data-i18n="soldagem.aporte.proc_gtaw">TIG (GTAW)</option>
+                                <option value="0.9" data-i18n="soldagem.aporte.proc_fcaw">Arame Tubular (FCAW)</option>
+                                <option value="0.75" data-i18n="soldagem.aporte.proc_saw">Arco Submerso (SAW)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="corrente" data-i18n="soldagem.aporte.corrente">Corrente (A)</label>
+                            <input type="number" id="corrente" data-i18n-placeholder="soldagem.aporte.ph_corrente" placeholder="Ex: 250" step="1" min="1" value="250">
+                        </div>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="tensao" data-i18n="soldagem.aporte.tensao">Tensão (V)</label>
+                            <input type="number" id="tensao" data-i18n-placeholder="soldagem.aporte.ph_tensao" placeholder="Ex: 28" step="0.1" min="1" value="28">
+                        </div>
+                        <div class="input-group">
+                            <label for="velocidade" data-i18n="soldagem.aporte.velocidade">Velocidade de Soldagem (mm/min)</label>
+                            <input type="number" id="velocidade" data-i18n-placeholder="soldagem.aporte.ph_velocidade" placeholder="Ex: 350" step="1" min="1" value="350">
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <i class="fa-solid fa-info-circle"></i>
+                        <span data-i18n="soldagem.aporte.formula_info">Aporte Térmico (kJ/mm) = (Corrente × Tensão × Eficiência × 60) / (Velocidade × 1000)</span>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" onclick="calcular()"><i class="fa-solid fa-bolt"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                    </div>
+                </div>
+            </div>
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="result.title">Resultados</span></h2>
+                    </div>
+                    <div id="result-container">
+                        <p class="placeholder-text" data-i18n="soldagem.aporte.placeholder">Preencha corrente, tensão e velocidade.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2><i class="fa-solid fa-table"></i> <span data-i18n="soldagem.aporte.ref_title">Tabela de Referência — Aporte Térmico Recomendado</span></h2>
+                    <div class="table-container no-scroll-mobile">
+                        <table class="comparison-table responsive-table">
+                            <thead>
+                                <tr><th data-i18n="soldagem.aporte.th_material">Material</th><th data-i18n="soldagem.aporte.th_aporte_min">Aporte Mín. (kJ/mm)</th><th data-i18n="soldagem.aporte.th_aporte_max">Aporte Máx. (kJ/mm)</th><th data-i18n="soldagem.aporte.th_obs">Observação</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td data-label="Material">Aço Carbono (ASTM A36)</td><td data-label="Aporte Mín.">1,0</td><td data-label="Aporte Máx.">2,5</td><td data-label="Observação" data-i18n="soldagem.aporte.obs_aco_carb">Evitar acima de 2,5 para não fragilizar ZTA</td></tr>
+                                <tr><td data-label="Material">Aço Ligado (ASTM A572 Gr.50)</td><td data-label="Aporte Mín.">1,2</td><td data-label="Aporte Máx.">2,2</td><td data-label="Observação" data-i18n="soldagem.aporte.obs_aco_liga">Controle entre passes</td></tr>
+                                <tr><td data-label="Material">Aço Inox 304/304L</td><td data-label="Aporte Mín.">0,5</td><td data-label="Aporte Máx.">1,5</td><td data-label="Observação" data-i18n="soldagem.aporte.obs_inox">Baixo aporte evita sensitização</td></tr>
+                                <tr><td data-label="Material">Aço Inox 316/316L</td><td data-label="Aporte Mín.">0,5</td><td data-label="Aporte Máx.">1,5</td><td data-label="Observação" data-i18n="soldagem.aporte.obs_inox_316">Igual ao 304, evitar superaquecimento</td></tr>
+                                <tr><td data-label="Material">Aço 9% Ni (ASTM A333)</td><td data-label="Aporte Mín.">0,8</td><td data-label="Aporte Máx.">2,0</td><td data-label="Observação" data-i18n="soldagem.aporte.obs_9ni">Pré-aquecimento obrigatório</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

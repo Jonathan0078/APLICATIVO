@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<script>function start(){}function onHasParentDirectory(){}function addRow(){}</script>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title data-i18n="falhas_inversores.title">Falhas de Inversores</title>
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../shared/i18n.js"></script>
+    <script>
+    // Load translation file for inverter faults based on current language
+    (function() {
+        var lang = 'pt';
+        try { lang = localStorage.getItem('site-lang') || navigator.language?.slice(0, 2) || 'pt'; } catch(e) {}
+        lang = ['pt', 'es', 'en'].includes(lang) ? lang : 'pt';
+        if (lang !== 'pt') {
+            var s = document.createElement('script');
+            s.src = lang === 'en' ? 'faults_en.js' : 'faults_es.js';
+            document.head.appendChild(s);
+        }
+    })();
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>
+                    <span data-i18n="falhas_inversores.title">Falhas de Inversores</span>
+                </h1>
+                <div class="theme-switcher">
+                    <label class="switch" data-i18n-title="greasepro.theme_toggle">
+                        <input type="checkbox" id="themeToggle" aria-label="Alternar tema claro/escuro">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </header>
+
+        <div class="stats-row" id="statsRow">
+            <div class="stat-card">
+                <i class="fas fa-building stat-icon"></i>
+                <span class="stat-number" id="statBrands">0</span>
+                <span class="stat-label" data-i18n="falhas_inversores.stats_brands">Marcas</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-microchip stat-icon"></i>
+                <span class="stat-number" id="statModels">0</span>
+                <span class="stat-label" data-i18n="falhas_inversores.stats_models">Modelos</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-exclamation-triangle stat-icon"></i>
+                <span class="stat-number" id="statFaults">0</span>
+                <span class="stat-label" data-i18n="falhas_inversores.stats_faults">Falhas</span>
+            </div>
+        </div>
+
+        <main class="app-main">
+            <div class="card">
+                <h2><i class="fas fa-search"></i> <span data-i18n="falhas_inversores.search_title">Consultar Falha</span></h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label data-i18n="falhas_inversores.brand_label">Marca</label>
+                        <select id="brandSelect">
+                            <option value="" data-i18n="falhas_inversores.all_brands">Todas as Marcas</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="falhas_inversores.model_label">Modelo / Série</label>
+                        <select id="modelSelect">
+                            <option value="" data-i18n="falhas_inversores.all_models">Todos os Modelos</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label data-i18n="falhas_inversores.code_label">Código da Falha</label>
+                    <div class="search-box" style="margin-bottom:0;position:relative;">
+                        <i class="fas fa-code"></i>
+                        <input type="text" id="faultSearch" data-i18n-placeholder="falhas_inversores.code_placeholder" placeholder="Digite o código da falha... Ex: F0022, E01, A5001" autocomplete="off">
+                        <div class="suggestions-box" id="suggestionsBox"></div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="main-button" id="searchBtn"><i class="fas fa-search"></i> <span data-i18n="falhas_inversores.btn_search">Consultar</span></button>
+                    <button class="secondary-button" id="clearBtn"><i class="fas fa-eraser"></i> <span data-i18n="falhas_inversores.btn_clear">Limpar</span></button>
+                </div>
+                <div class="fault-count" id="faultCount"></div>
+            </div>
+
+            <div class="fault-result" id="faultResult">
+                <div class="fault-header">
+                    <span class="fault-code" id="resultCode">F0022</span>
+                    <span class="fault-brand" id="resultBrand">WEG</span>
+                    <span class="fault-model" id="resultModel">CFW-11</span>
+                </div>
+                <div class="fault-body">
+                    <div class="fault-section">
+                        <h3><i class="fas fa-info-circle"></i> <span data-i18n="falhas_inversores.section_desc">Descrição</span></h3>
+                        <p id="resultDescription">Descrição da falha...</p>
+                    </div>
+                    <div class="two-col">
+                        <div class="fault-section">
+                            <h3><i class="fas fa-exclamation-triangle"></i> <span data-i18n="falhas_inversores.section_symptoms">Sintomas</span></h3>
+                            <ul id="resultSymptoms"></ul>
+                        </div>
+                        <div class="fault-section">
+                            <h3><i class="fas fa-search-plus"></i> <span data-i18n="falhas_inversores.section_causes">Causas Prováveis</span></h3>
+                            <div id="resultCauses"></div>
+                        </div>
+                    </div>
+                    <div class="fault-section">
+                        <h3><i class="fas fa-wrench"></i> <span data-i18n="falhas_inversores.section_solutions">Soluções</span></h3>
+                        <div id="resultSolutions"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-results" id="noResults">
+                <i class="fas fa-search"></i>
+                <p data-i18n="falhas_inversores.no_results">Nenhuma falha encontrada</p>
+                <span class="hint" data-i18n="falhas_inversores.no_results_hint">Selecione uma marca/modelo ou digite o código da falha</span>
+            </div>
+        </main>
+    </div>
+
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

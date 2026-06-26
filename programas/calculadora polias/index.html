@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="polias.title">Suíte de Engenharia de Transmissão por Correias</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#003366">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-cogs"></i> <span data-i18n="polias.header">Suíte de Engenharia</span></h1>
+                <div class="header-actions">
+                    <div class="theme-switcher">
+                        <i class="fas fa-sun"></i>
+                        <label class="switch"><input type="checkbox" id="themeToggle"><span class="slider"></span></label>
+                        <i class="fas fa-moon"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <section id="inputs-column">
+                <div class="card calculation-module" id="direct-calculation-module">
+                    <h2><i class="fas fa-calculator"></i> <span data-i18n="polias.sys_params">Parâmetros do Sistema</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group"><label for="rpmMotor" data-i18n="polias.motor_rpm">RPM do Motor</label><input type="number" id="rpmMotor" data-i18n-placeholder="polias.rpm_placeholder"></div>
+                        <div class="input-group"><label for="potenciaMotor" data-i18n="polias.power_cv">Potência (CV)</label><input type="number" id="potenciaMotor" data-i18n-placeholder="polias.power_placeholder"></div>
+                    </div>
+                    <div class="input-group"><label for="fatorServico" data-i18n="polias.service_factor">Regime de Trabalho</label><select id="fatorServico"></select></div>
+                    <div class="input-group"><label for="tipoCorreia" data-i18n="polias.belt_profile">Perfil da Correia</label><select id="tipoCorreia"></select></div>
+                    <div class="input-grid">
+                        <div class="input-group"><label for="diametroMotora" data-i18n="polias.drive_pulley">Polia Motora (mm)</label><select id="diametroMotora"></select></div>
+                        <div class="input-group"><label for="diametroMovida" data-i18n="polias.driven_pulley">Polia Movida (mm)</label><select id="diametroMovida"></select></div>
+                    </div>
+                    <div class="input-group"><label for="distanciaEixos" data-i18n="polias.center_distance">Distância entre Eixos (mm)</label><input type="number" id="distanciaEixos" data-i18n-placeholder="polias.distance_placeholder"></div>
+                    <div class="button-group">
+                        <button id="calcularBtn" class="main-button"><i class="fas fa-check-circle"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                        <button id="resetBtn" class="secondary-button"><i class="fas fa-undo"></i> <span data-i18n="polias.reset">Zerar</span></button>
+                    </div>
+                </div>
+
+                <div class="card calculation-module" id="reverse-calculation-module" style="display: none;">
+                    <h2><i class="fas fa-magic"></i> <span data-i18n="polias.optimizer">Otimizador de Projeto</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group"><label for="revRpmMotor" data-i18n="polias.motor_rpm">RPM do Motor</label><input type="number" id="revRpmMotor" data-i18n-placeholder="polias.rpm_placeholder"></div>
+                        <div class="input-group"><label for="revRpmFinal" data-i18n="polias.desired_rpm">RPM Final Desejado</label><input type="number" id="revRpmFinal" data-i18n-placeholder="polias.desired_rpm_placeholder"></div>
+                    </div>
+                    <div class="input-group"><label for="revPotenciaMotor" data-i18n="polias.power_cv">Potência (CV)</label><input type="number" id="revPotenciaMotor" data-i18n-placeholder="polias.power_placeholder"></div>
+                    <div class="input-group"><label for="revFatorServico" data-i18n="polias.service_factor">Regime de Trabalho</label><select id="revFatorServico"></select></div>
+                    <div class="button-group">
+                        <button id="optimizeBtn" class="main-button"><i class="fas fa-search"></i> <span data-i18n="polias.find_solutions">Encontrar Soluções</span></button>
+                    </div>
+                </div>
+
+                <div class="card calculation-module" id="saved-projects-module" style="display: none;">
+                    <h2><i class="fas fa-save"></i> <span data-i18n="polias.saved_projects">Projetos Salvos</span></h2>
+                    <div class="input-group"><label for="projectName" data-i18n="polias.project_name">Nome do Projeto p/ Salvar</label><input type="text" id="projectName" data-i18n-placeholder="polias.project_name_placeholder"></div>
+                    <button id="saveProjectBtn" class="main-button"><i class="fas fa-plus-circle"></i> <span data-i18n="polias.save_project">Salvar Projeto Atual</span></button>
+                    <div class="io-button-group">
+                        <button id="importBtn" class="secondary-button"><i class="fas fa-upload"></i> <span data-i18n="btn.export_pdf">Importar</span></button>
+                        <button id="exportBtn" class="secondary-button"><i class="fas fa-download"></i> <span data-i18n="btn.export_csv">Exportar</span></button>
+                    </div>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;">
+                    <div id="projectList"></div>
+                </div>
+            </section>
+
+            <section id="outputs-column">
+                <div id="direct-results-container">
+                    <div class="card" id="results-card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-chart-bar"></i> <span data-i18n="polias.project_results">Resultados do Projeto</span></h2>
+                            <button id="printBtn" class="icon-button" data-i18n-title="polias.print_report" title="Imprimir Relatório"><i class="fas fa-print"></i></button>
+                        </div>
+                        <div class="results-grid-main">
+                            <div class="result-item highlight-result"><span class="label" data-i18n="polias.belt">Correia</span><span class="value" id="resultadoCorreia">--</span></div>
+                            <div class="result-item highlight-result success"><span class="label" data-i18n="polias.belt_count">Nº de Correias</span><span class="value" id="resultadoNumCorreias">--</span></div>
+                        </div>
+                        <div class="results-grid-secondary">
+                            <div class="result-item"><span class="label" data-i18n="polias.final_rpm">RPM Final</span><span class="value" id="resultadoRpm">--</span></div>
+                            <div class="result-item"><span class="label" data-i18n="polias.ratio">Relação</span><span class="value" id="resultadoRelacao">--</span></div>
+                            <div class="result-item" id="velocidadeCorreiaCard"><span class="label" data-i18n="polias.speed_ms">Velocidade (m/s)</span><span class="value" id="resultadoVelocidade">--</span></div>
+                            <div class="result-item" id="anguloAbracamentoCard"><span class="label" data-i18n="polias.wrap_angle">Abraçamento (°)</span><span class="value" id="resultadoAngulo">--</span></div>
+                            <div class="result-item" id="forcaEixoCard"><span class="label" data-i18n="polias.shaft_force">Força no Eixo (kgf)</span><span class="value" id="resultadoForca">--</span></div>
+                            <div class="result-item" id="frequenciaVibracaoCard"><span class="label" data-i18n="polias.vib_freq">Freq. Vibração (Hz)</span><span class="value" id="resultadoFrequencia">--</span></div>
+                        </div>
+                    </div>
+                    <div class="card" id="diagram-card" style="display: none;">
+                        <h2><i class="fas fa-project-diagram"></i> <span data-i18n="polias.diagram">Diagrama do Sistema</span></h2>
+                        <svg id="transmissionDiagram" viewBox="0 0 800 300"></svg>
+                    </div>
+                </div>
+
+                <div id="reverse-results-container" style="display: none;">
+                    <div class="card">
+                        <h2><i class="fas fa-stream"></i> <span data-i18n="polias.solutions">Soluções Encontradas</span></h2>
+                        <div class="table-container">
+                            <table id="solutionsTable">
+                                <thead><tr><th data-i18n="polias.profile">Perfil</th><th data-i18n="polias.drive_pulley_short">P. Motora</th><th data-i18n="polias.driven_pulley_short">P. Movida</th><th data-i18n="polias.belt">Correia</th><th data-i18n="polias.est_cost">Custo Est.</th><th data-i18n="polias.action">Ação</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="floating-menu-button"><i class="fas fa-bars"></i></div>
+        <div id="floating-menu" style="display: none;">
+            <ul>
+                <li><a href="#" id="direct-calculation-option"><i class="fas fa-calculator"></i> <span data-i18n="polias.direct_calc">Cálculo Direto</span></a></li>
+                <li><a href="#" id="reverse-calculation-option"><i class="fas fa-magic"></i> <span data-i18n="polias.reverse_calc">Cálculo Reverso</span></a></li>
+                <li><a href="#" id="saved-projects-option"><i class="fas fa-save"></i> <span data-i18n="polias.saved_projects">Projetos Salvos</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="customModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button id="modalConfirmBtn" class="main-button" data-i18n="polias.confirm">Confirmar</button>
+                <button id="modalCancelBtn" class="secondary-button" data-i18n="btn.cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            document.body.classList.toggle('dark-theme', currentTheme === 'dark');
+            themeToggle.checked = currentTheme === 'dark';
+            themeToggle.addEventListener('change', function() {
+                document.body.classList.toggle('dark-theme', this.checked);
+                localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+            });
+        }
+    </script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

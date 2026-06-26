@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="kpis.title">Calculadora de KPIs de Manutenção</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-chart-line"></i> <span data-i18n="kpis.title">Calculadora de KPIs de Manutenção</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- Coluna da Esquerda: Entrada -->
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-stopwatch"></i> <span data-i18n="kpis.mtbf_section">MTBF (Mean Time Between Failures)</span></h2>
+                    <div class="input-group">
+                        <label for="mtbf-tempo-operacao" data-i18n="kpis.op_time">Tempo Total de Operação (horas)</label>
+                        <input type="number" id="mtbf-tempo-operacao" placeholder="Ex: 1000" data-i18n-placeholder="kpis.tempo_placeholder">
+                    </div>
+                    <div class="input-group">
+                        <label for="mtbf-num-falhas" data-i18n="kpis.failures">Número de Falhas</label>
+                        <input type="number" id="mtbf-num-falhas" placeholder="Ex: 5" data-i18n-placeholder="kpis.falhas_placeholder">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-wrench"></i> <span data-i18n="kpis.mttr_section">MTTR (Mean Time To Repair)</span></h2>
+                    <div class="input-group">
+                        <label for="mttr-tempo-manutencao" data-i18n="kpis.maint_time">Tempo Total de Manutenção (horas)</label>
+                        <input type="number" id="mttr-tempo-manutencao" placeholder="Ex: 50" data-i18n-placeholder="kpis.maint_placeholder">
+                    </div>
+                    <div class="input-group">
+                        <label for="mttr-num-falhas" data-i18n="kpis.repairs">Número de Reparos</label>
+                        <input type="number" id="mttr-num-falhas" placeholder="Ex: 5" data-i18n-placeholder="kpis.falhas_placeholder">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-thumbs-up"></i> <span data-i18n="kpis.availability">Disponibilidade</span></h2>
+                    <div class="input-group">
+                        <label for="disponibilidade-mtbf" data-i18n="kpis.mtbf_input">MTBF (calculado ou manual)</label>
+                        <input type="number" id="disponibilidade-mtbf" placeholder="Ex: 200" step="any" data-i18n-placeholder="kpis.mtbf_placeholder">
+                    </div>
+                    <div class="input-group">
+                        <label for="disponibilidade-mttr" data-i18n="kpis.mttr_input">MTTR (calculado ou manual)</label>
+                        <input type="number" id="disponibilidade-mttr" placeholder="Ex: 10" step="any" data-i18n-placeholder="kpis.mttr_placeholder">
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="button-group">
+                        <button class="main-button" id="calculate-btn">
+                            <i class="fa-solid fa-calculator"></i> <span data-i18n="kpis.calculate">Calcular KPIs</span>
+                        </button>
+                        <button class="secondary-button" id="clear-btn">
+                            <i class="fa-solid fa-eraser"></i> <span data-i18n="kpis.clear_all">Limpar Tudo</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Resultado -->
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="kpis.results_title">Resultados</span></h2>
+                    </div>
+                    <div id="result-display">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <p data-i18n="kpis.waiting">Aguardando o cálculo...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="history-card">
+                    <h2><i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="kpis.history_title">Histórico de Cálculos</span></h2>
+                    <ul id="history-list">
+                        <li class="history-placeholder" data-i18n="kpis.no_history">Nenhum cálculo recente.</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

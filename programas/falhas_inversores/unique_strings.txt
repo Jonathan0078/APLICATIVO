@@ -1,0 +1,2454 @@
+﻿Acel. curta
+Acel. rápida
+Aceleração lenta
+Aceleração muito rápida
+Acúmulo de poeira
+Acúmulo de sujeira
+Adicionar resistor de freio
+Afundamento de tensão
+Afundamento de tensão na rede
+Ajustar
+Ajustar 14-20
+Ajustar A061 (torque boost)
+Ajustar A080
+Ajustar baudrate
+Ajustar baudrate (tbr)
+Ajustar baudrate P1801
+Ajustar boost de torque (n3)
+Ajustar campo
+Ajustar classe de trip I²T
+Ajustar classe de trip IT
+Ajustar corrente do motor (T062)
+Ajustar corrente motor
+Ajustar corrente nominal
+Ajustar corrente nominal (nCr)
+Ajustar corrente nominal (P0305)
+Ajustar corrente nominal do motor
+Ajustar corrente nominal do motor (b012)
+Ajustar F07
+Ajustar F09 (torque boost)
+Ajustar F14
+Ajustar ganhos do controle
+Ajustar ganhos do controle PID
+Ajustar ganhos do controle vetorial
+Ajustar limitador P301
+Ajustar limite de sobretensão
+Ajustar limite de UV
+Ajustar limites
+Ajustar limites de tensão
+Ajustar monitoramento
+Ajustar n3 (boost)
+Ajustar níveis de proteção
+Ajustar nível de proteção
+Ajustar nível de subtensão
+Ajustar nível de UV
+Ajustar nível UV
+Ajustar P031
+Ajustar P1.8.1
+Ajustar P11
+Ajustar P14
+Ajustar P35
+Ajustar P44
+Ajustar P884
+Ajustar par. 1-93
+Ajustar parametrização
+Ajustar parâmetro 14-20
+Ajustar parâmetro 1-90
+Ajustar parâmetro 1-93
+Ajustar parâmetro 2007
+Ajustar parâmetro A055
+Ajustar parâmetro A080
+Ajustar parâmetro de subtensão
+Ajustar parâmetro de subtensão (14-20)
+Ajustar parâmetro H11
+Ajustar parâmetro It
+Ajustar parâmetro PTC
+Ajustar parâmetro UV
+Ajustar parâmetro UVT
+Ajustar parâmetros
+Ajustar parâmetros de comunicação
+Ajustar parâmetros de frenagem
+Ajustar parâmetros de rede
+Ajustar parâmetros de subtensão
+Ajustar parâmetros de tensão
+Ajustar parâmetros frenagem
+Ajustar parâmetros GENIbus
+Ajustar parâmetros rede
+Ajustar parâmetros térmicos
+Ajustar Pr.01-01
+Ajustar Pr.06-02
+Ajustar Pr.12
+Ajustar Pr.71
+Ajustar Pr.9
+Ajustar Pr.9 (corrente nominal)
+Ajustar proteção
+Ajustar proteção térmica
+Ajustar proteção UV
+Ajustar PTC
+Ajustar rampa de desaceleração
+Ajustar resistores de terminação (120 ohms)
+Ajustar salto 4-20mA
+Ajustar sequencial
+Ajustar taxa de comunicação
+Ajustar taxa de transmissão
+Ajustar tempo de liberação (P173)
+Ajustar tempo de rampa de aceleração
+Ajustar tensão de frenagem
+Ajustar terminação (120 ohms)
+Ajustar threshold de subtensão
+Ajustar tipo de sensor (PT100/TC)
+Ajustar tipo de sensor (PTC/KTY)
+Ajustar tipo de sensor nos parâmetros
+Ajustar torque boost Pr.0
+Ajuste incorreto
+Alarme
+Alarme acústico
+Alarme ativo
+Alarme comunicação PROFIBUS
+Alarme corrente alta
+Alarme curto-circuito
+Alarme de comunicação
+Alarme de corrente elevada
+Alarme de sobrecarga do inversor
+Alarme de sobrecarga do motor
+Alarme de sobrecarga I²T imminent
+Alarme de sobretensão
+Alarme de sobretensão falso
+Alarme de sobretensão frequente
+Alarme de subtensão
+Alarme de temperatura
+Alarme de temperatura dissipador
+Alarme de temperatura do motor
+Alarme de temperatura falso
+Alarme de ventilação
+Alarme encoder
+Alarme falso de temperatura
+Alarme fase
+Alarme I²T ativo
+Alarme intermitente
+Alarme perda fase
+Alarme persistente
+Alarme preventivo
+Alarme sem desarme
+Alarme sobrecarga I²T
+Alarme temperatura
+Alarme temperatura dissipador
+Alarme temperatura falso
+Alarme temperatura motor
+Alarme térmico
+Alarme ventilador
+Alimentação instável
+Alimentação insuficiente
+Alta inércia
+Alta inércia da carga
+Alta temperatura ambiente
+Altas temperaturas
+Ambiente muito quente
+Ambiente quente
+Apertar bornes
+Apertar bornes do motor
+Apertar conexões dos bornes
+Aquecimento do motor
+Aterramento
+Aterramento correto
+Aterramento do cabo
+Aterramento do motor
+Aterramento no cabo do motor
+Aterramento no motor
+Ativar frenagem CC (A061)
+Ativar frenagem dinâmica
+Atuação da proteção externa
+Atuação da proteção térmica
+Atuação frequente da proteção
+Atuação frequente em regime
+Atualizar firmware
+Atualizar firmware do inversor
+Aumentar 3-10
+Aumentar 3-12
+Aumentar AC2 (rampa acel)
+Aumentar ACC
+Aumentar ACC/DEC
+Aumentar acel.
+Aumentar aceleração
+Aumentar C001
+Aumentar C002
+Aumentar C1-01
+Aumentar C1-02
+Aumentar capacidade do inversor
+Aumentar ciclo
+Aumentar ciclo de trabalho
+Aumentar ciclo trabalho
+Aumentar DEC
+Aumentar DEC (desaceleração)
+Aumentar DECEL
+Aumentar desacel.
+Aumentar desaceleração
+Aumentar F002
+Aumentar F002 (tempo aceleração)
+Aumentar F003
+Aumentar F003 (tempo desaceleração)
+Aumentar F07
+Aumentar F07 (tempo de aceleração)
+Aumentar F08
+Aumentar F08 (tempo de desaceleração)
+Aumentar L1-02
+Aumentar o tempo de aceleração (ACC)
+Aumentar o tempo de aceleração (P0100)
+Aumentar P001
+Aumentar P002
+Aumentar P0102
+Aumentar P031
+Aumentar P032
+Aumentar P033
+Aumentar P1.2.1
+Aumentar P102
+Aumentar P112
+Aumentar P1120
+Aumentar P1121
+Aumentar P1121 (desaceleração)
+Aumentar Pr.01-12
+Aumentar Pr.01-13
+Aumentar Pr.7
+Aumentar Pr.7 (tempo de aceleração)
+Aumentar Pr.8
+Aumentar Pr.8 (tempo de desaceleração)
+Aumentar rampa
+Aumentar rampa (3-10)
+Aumentar rampa (F002)
+Aumentar rampa (F003)
+Aumentar rampa (F08-08)
+Aumentar rampa (F08-09)
+Aumentar rampa (P0100)
+Aumentar rampa (P1120)
+Aumentar rampa (P1121)
+Aumentar rampa (P2202)
+Aumentar rampa (P2203)
+Aumentar rampa (USP-05)
+Aumentar rampa 2002
+Aumentar rampa 2003
+Aumentar rampa aceleração (USP-04)
+Aumentar rampa de aceleração
+Aumentar rampa de aceleração (ACC)
+Aumentar rampa de aceleração (ACCEL)
+Aumentar rampa de aceleração (C001)
+Aumentar rampa de aceleração (F08-08)
+Aumentar rampa de aceleração (L1-01)
+Aumentar rampa de aceleração (P031)
+Aumentar rampa de aceleração (P112)
+Aumentar rampa de aceleração (par. 3-10)
+Aumentar rampa de aceleração (Pr.00.001)
+Aumentar rampa de desaceleração
+Aumentar rampa de desaceleração (C002)
+Aumentar rampa de desaceleração (DEC)
+Aumentar rampa de desaceleração (F08-09)
+Aumentar rampa de desaceleração (L1-02)
+Aumentar rampa de desaceleração (par. 3-12)
+Aumentar rampa de desaceleração (Pr.00.002)
+Aumentar rampa DEC
+Aumentar rampa P031
+Aumentar rampa P100
+Aumentar rampa P112
+Aumentar tempo de aceleração
+Aumentar tempo de aceleração (C1-01)
+Aumentar tempo de aceleração (H07)
+Aumentar tempo de aceleração (P1.2.1)
+Aumentar tempo de aceleração (Pr.01-12)
+Aumentar tempo de aceleração (Pr.7)
+Aumentar tempo de desaceleração
+Aumentar tempo de desaceleração (C1-02)
+Aumentar tempo de desaceleração (DEC)
+Aumentar tempo de desaceleração (DECEL)
+Aumentar tempo de desaceleração (H08)
+Aumentar tempo de desaceleração (P0102)
+Aumentar tempo de desaceleração (P032)
+Aumentar tempo de desaceleração (P1.2.2)
+Aumentar tempo de desaceleração (P1121)
+Aumentar tempo de desaceleração (Pr.01-13)
+Aumentar tempo de desaceleração (Pr.8)
+Aumentar tempo de rampa
+Aumentar tempo de rampa de aceleração
+Aumentar tempo desaceleração
+Aumentar tempo entre ciclos
+Aumentar USP-04
+Aumento gradual da temperatura
+Aviso de sobrecarga do motor IT
+Aviso de subtensão
+Bateria do cartão fraca
+Baudrate incompatível
+Baudrate muito alto
+Blindagem cabo
+Blindar cabo
+Blindar cabo do encoder
+Bloqueio de ar
+Bobina campo aberta
+Bobina do freio danificada
+Bomba sobrecarregada
+Boost de torque excessivo
+Boost de torque muito alto
+Boost excessivo
+Boost torque excessivo
+Bornes 10/2/5 com defeito
+Bornes de controle sem função
+Bornes do motor soltos
+Bornes motor soltos
+Bornes soltos
+Botão de emergência
+Botão de emergência acionado
+Botão de emergência pressionado
+Botão emergência
+Botão emergência pressionado
+Cabo
+Cabo CAN danificado ou mal conectado
+Cabo com defeito
+Cabo com mau contato
+Cabo danificado
+Cabo de comunicação danificado
+Cabo de comunicação longo demais
+Cabo de conexão danificado
+Cabo de motor danificado
+Cabo de motor partido
+Cabo de potência danificado
+Cabo de rede danificado
+Cabo de rede rompido
+Cabo DeviceNet danificado
+Cabo do encoder com mau contato
+Cabo do encoder partido
+Cabo do encoder rompido
+Cabo do motor danificado
+Cabo do motor partido
+Cabo do PTC partido
+Cabo do sensor interrompido
+Cabo do sensor partido
+Cabo do sensor rompido
+Cabo do termistor rompido
+Cabo DPI danificado
+Cabo DRIVE-CLiQ danificado
+Cabo DRIVE-CLiQ desconectado
+Cabo DRIVE-CLiQ rompido
+Cabo encoder com mau contato
+Cabo encoder partido
+Cabo fieldbus danificado
+Cabo fieldbus rompido
+Cabo flat desconectado
+Cabo flat entre placas solto
+Cabo flat solto
+Cabo GENIbus danificado
+Cabo mal conectado
+Cabo motor danificado
+Cabo motor partido
+Cabo partido
+Cabo PROFIBUS danificado
+Cabo rede danificado
+Cabo rompido
+Cabo RS485 danificado
+Cabo RS-485 danificado
+Cabo sensor partido
+Cabo sensor rompido
+Cabo serial danificado
+Cabo submerso danificado
+Cabo termistor rompido
+Cabos de motor danificados
+Calibrar medição de corrente
+Calibrar medição de tensão
+Calor excessivo
+Calor excessivo no inversor
+Campo fraco
+Campo perdido
+Carga acima da corrente nominal
+Carga acima da nominal
+Carga acima do especificado
+Carga acima do nominal
+Carga acima do torque nominal
+Carga acima nominal
+Carga alta
+Carga com alta inércia
+Carga com inércia alta
+Carga demasiada
+Carga elevada
+Carga excessiva
+Carga excessiva contínua
+Carga excessiva na máquina
+Carga excessiva na rede
+Carga excessiva no eixo
+Carga excessiva no motor
+Carga excessiva prolongada
+Carga inércia alta
+Carga mecânica excessiva
+Carga mecânica travada
+Carga muito alta
+Carga pulsante
+Carga regenerativa
+Carga regenerativa alta
+Carga regenerativa contínua
+Carga regenerativa excessiva
+Carga regenerativa na partida
+Carga travada
+Cartão danificado
+Cartão de memória danificado
+Cartão mal inserido
+Cartão não reconhecido
+Cdigo de erro interno
+Chave boia nível
+Cheiro de queimado
+Cheiro de queimado no motor
+Chopper com defeito
+Chopper danificado
+Chopper de freio com defeito
+Chopper de freio danificado
+Chopper de freio defeituoso
+Chopper de freio não atua
+Chopper de freio não funciona
+Chopper de frenagem danificado
+Chopper em curto
+Chopper freio
+Chopper freio danificado
+Chopper freio não atua
+Chopper não atua
+Ciclo de frenagem excessivo
+Ciclo de frenagem muito frequente
+Ciclo de trabalho excessivo
+Ciclo de trabalho inadequado
+Ciclo de trabalho muito rápido
+Ciclo de trabalho muito severo
+Ciclo excessivo
+Ciclo frenagem excessivo
+Ciclo muito rápido
+Ciclo rápido
+Circuito de amostragem com defeito
+Circuito de disparo do tiristor aberto
+Circuito de disparo do tiristor falho
+Circuito de medição danificado
+Circuito de pré-carga danificado
+Circuito de segurança aberto
+Circuito frenagem defeituoso
+Circuito pré-carga danificado
+Código erro
+Código erro interno
+Comando local não funciona
+Comando remoto não funciona
+Componente danificado
+Componente eletrnico danificado
+Componente eletrônico queimado
+Componente interno danificado
+Componente não reconhecido
+Componente queimado
+Comunicação com periféricos falha
+Comunicação com unidade perdida
+Comunicação falha
+Comunicação MODBUS interrompida
+Comunicação MODBUS perdida
+Comutador sujo
+Condições de sobrecarga
+Conectar resistor de freio
+Conector do ventilador solto
+Conector RJ45 mal encaixado
+Conector serial oxidado
+Conector sujo
+Conexão do encoder interrompida
+Conexão do encoder solta
+Conexão do resistor solta
+Conexão do termistor solta
+Conexão do ventilador interrompida
+Conexão do ventilador solta
+Conexão flat solta
+Conexão sensor solta
+Conexão termistor solta
+Config
+Config baudrate errada
+Config comunicação errada
+Config errada
+Config perdida
+Config porta incorreta
+Config rede errada
+Configuração baudrate errada
+Configuração de baudrate incorreta
+Configuração de comunicação incorreta
+Configuração de corrente incorreta
+Configuração de parâmetros incorreta
+Configuração de porta incorreta
+Configuração de rede
+Configuração de rede incorreta
+Configuração de topologia incorreta
+Configuração do sensor incorreta
+Configuração do termistor incorreta
+Configuração do tipo de sensor incorreta
+Configuração errada
+Configuração fieldbus errada
+Configuração inadequada
+Configuração incorreta
+Configuração incorreta da corrente
+Configuração inválida
+Configuração limitador incorreta
+Configuração não é salva
+Configuração não salva
+Configuração perdida
+Configuração rede errada
+Configuração sink/source incorreta
+Configuração termistor incorreta
+Configurar frenagem dinâmica
+Configurar terminação de barramento
+Configurar tipo de motor correto
+Configurar tipo de sensor
+Configurar tipo motor correto
+Contato intermitente
+Contato NC aberto
+Contato NC de proteção aberto
+Contato(s) do contator principal com mau contato
+Contator
+Contator aberto
+Contator com defeito
+Contator com mau contato
+Contator da alimentação com mau contato
+Contator de linha aberto
+Contator de motor com defeito
+Contator de saída aberto
+Contator de saída com mau contato
+Contator mau contato
+Contator saída aberto
+Corrente acima da nominal
+Corrente acima do ajuste
+Corrente acima do limite
+Corrente acima do nominal
+Corrente acima nominal
+Corrente alta
+Corrente alta ão acelerar
+Corrente alta ão frear
+Corrente alta ão parar
+Corrente alta contínua
+Corrente alta durante operação normal
+Corrente alta em operação
+Corrente alta frenagem
+Corrente alta na frenagem
+Corrente alta na partida
+Corrente alta no start
+Corrente alta partida
+Corrente armadura alta
+Corrente campo zero
+Corrente constante alta
+Corrente de carga acima da nominal do inversor
+Corrente de curto muito alta
+Corrente de desaceleração excessiva
+Corrente de fuga
+Corrente de fuga à terra elevada
+Corrente de fuga elevada
+Corrente de pico
+Corrente de pico alta
+Corrente de pico alta ão acelerar
+Corrente de pico elevada
+Corrente de saída acima da nominal
+Corrente de saída acima do nominal
+Corrente de saída alta
+Corrente de saída elevada
+Corrente de saída excessiva
+Corrente de saída muito alta
+Corrente de saída zero
+Corrente de terra detectada
+Corrente de terra elevada
+Corrente desbalanceada
+Corrente do motor acima do limite
+Corrente do motor alta
+Corrente do motor elevada
+Corrente do motor excede limite
+Corrente do motor excessiva
+Corrente elevada
+Corrente elevada ao frear
+Corrente elevada ão frear
+Corrente elevada constante
+Corrente elevada durante operação
+Corrente elevada em velocidade constante
+Corrente elevada momentânea
+Corrente elevada na frenagem
+Corrente elevada por período prolongado
+Corrente elevada prolongada
+Corrente elevada sustentada
+Corrente excessiva
+Corrente excessiva ão acelerar
+Corrente excessiva na partida
+Corrente excessiva na saída
+Corrente excessiva no IGBT
+Corrente fuga
+Corrente fuga alta
+Corrente limitada
+Corrente motor alta
+Corrente nominal excedida
+Corrente nominal inadequada
+Corrente nominal incorreta
+Corrente regenerativa
+Corrente regenerativa alta
+Corrente saída alta
+Corrente saída excessiva
+Corrente saída nominal excedida
+Corrente zero
+CPU placa controle defeituosa
+Cristal oscilador danificado
+Curto
+Curto circuito
+Curto detectado
+Curto detectado na saída
+Curto detectado no resistor
+Curto entre fases
+Curto entre fases do motor
+Curto entre fases na saída
+Curto fase-terra
+Curto IGBT
+Curto intermitente
+Curto interno
+Curto motor
+Curto na saída
+Curto no borne de entrada
+Curto no motor
+Curto no motor ou cabo
+Curto no motor ou cabos
+Curto saída
+Curto-circuito
+Curto-circuito detectado
+Curto-circuito entre fases
+Curto-circuito entre fases do motor
+Curto-circuito na saída
+Curto-circuito no braço do inversor
+Curto-circuito no IGBT
+Curto-circuito no motor
+Curto-circuito no motor ou cabo
+Curto-circuito saída
+Curto-circuito suspeito
+Dados da placa do motor incorretos
+Dados placa motor errados
+Dados placa motor incorretos
+DEC curta
+Desacel.
+Desacel. rápida
+Desaceleração abrupta
+Desaceleração muito rápida
+Desaceleração rápida
+Desacionar botão de emergência
+Desarme
+Desarme abrupto
+Desarme acelerar
+Desarme aleatório
+Desarme ao acelerar
+Desarme ao desacelerar
+Desarme ao parar
+Desarme ao reduzir velocidade
+Desarme carga
+Desarme carga alta
+Desarme com sobretensão
+Desarme com subtensão/sobretensão
+Desarme da conversora
+Desarme DEC
+Desarme desaceleração
+Desarme do inversor
+Desarme durante desaceleração
+Desarme durante operação
+Desarme durante partida
+Desarme em alta carga
+Desarme em carga
+Desarme em carga elevada
+Desarme em desaceleração
+Desarme em operação
+Desarme em partidas
+Desarme em regime
+Desarme em regime permanente
+Desarme em velocidade constante
+Desarme esporádico
+Desarme frenagem
+Desarme frequente
+Desarme GF
+Desarme imediato
+Desarme imediato ao partir
+Desarme instantâneo
+Desarme instantâneo ão partir
+Desarme intermitente
+Desarme na aceleração
+Desarme na desaceleração
+Desarme na frenagem
+Desarme na parada
+Desarme na partida
+Desarme no freio
+Desarme operação
+Desarme parada
+Desarme parar
+Desarme partida
+Desarme por calor
+Desarme por falha de terra
+Desarme por fuga à terra
+Desarme por GF
+Desarme por GFCI
+Desarme por IT
+Desarme por OH
+Desarme por OL2
+Desarme por PTC
+Desarme por rel térmico externo
+Desarme por sinal externo
+Desarme por sobrecarga
+Desarme por subtensão
+Desarme por temperatura
+Desarme por temperatura do motor
+Desarme por temperatura externa
+Desarme por terra
+Desarme repentino
+Desarme sem causa aparente
+Desarme súbito em velocidade constante
+Desarme temperatura
+Desarme térmico
+Desarme terra
+Desarme via entrada digital
+Descarga eletrostática
+Desgaste
+Desgaste natural
+Desligamento
+Desligar e religar o inversor
+Dimensionar alimentação corretamente
+Disjuntor diferencial atuado
+Display apagado
+Display apagado intermitente
+Display código erro
+Display com código de erro interno
+Display com erro de comunicação
+Display com erro interno
+Display com falha
+Display erro
+Display escuro intermitente
+Display fraco
+Display piscando
+Display sem função
+Display sem funcionamento
+Display sem informação
+Display sem sinal
+Display trava
+Dissipador excessivamente quente
+Dissipador muito quente
+Dissipador obstruído
+Dissipador obstruído por sujeira
+Dissipador quente
+Dissipador sujo
+Dissipador térmico sujo
+Divisor resistivo danificado
+Drive bloqueado
+Drive desliga
+Drive desliga sozinho
+Drive inoperante
+Drive muito quente
+Drive muito quente ao toque
+Drive não energiza
+Drive não funciona
+Drive não inicializa
+Drive não liga
+Drive não opera
+Drive não parte
+Drive não responde
+Drive não responde a comandos
+Drive offline
+Drive para de funcionar
+Drive quente
+Driver gate com defeito
+EEPROM com defeito
+EEPROM corrompida
+EEPROM defeituosa
+Elevador para
+EMC
+Encoder com defeito
+Encoder danificado
+Encoder defeituoso
+Encoder incremental com defeito
+Encoder sujo
+Encoder sujo ou danificado
+Encoder sujo/danificado
+Endereço de comunicação errado
+Endereço de comunicação incorreto
+Endereço de escravo incorreto
+Endereço duplicado
+Endereço MODBUS duplicado
+Endereço Modbus incorreto
+Energia regenerativa excessiva
+Entradas digitais não funcionam
+Entradas digitais não respondem
+Enviar assistência
+Enviar assistência autorizada
+Enviar para assistência
+Enviar para assistência autorizada
+Enviar para assistência técnica
+Enviar para assistência técnica autorizada
+Erro ão salvar
+Erro após alteração de parâmetros
+Erro barramento
+Erro COM
+Erro comunicação
+Erro comunicação interna
+Erro config
+Erro configuração
+Erro CRC
+Erro de comunicação
+Erro de comunicação interna
+Erro de comunicação serial
+Erro de configuração
+Erro de configuração de rede
+Erro de CRC
+Erro de hardware
+Erro de hardwaré
+Erro de hardware detectado
+Erro de identificação do motor
+Erro de inicialização
+Erro de link
+Erro de link DPI
+Erro de link MODBUS
+Erro de link PROFIBUS
+Erro de MAC ID
+Erro de memória
+Erro de parametrização
+Erro de posição
+Erro de posicionamento
+Erro de protocolo
+Erro de seguimento
+Erro de sincronismo
+Erro de terra
+Erro de time-out
+Erro de topologia
+Erro hardware
+Erro hardware detectado
+Erro inicialização
+Erro interno
+Erro interno de software
+Erro link
+Erro link DPI
+Erro MODBUS
+Erro na placa
+Erro no barramento
+Erro no IGBT
+Erro posição
+Erro salvar
+Erro seguimento
+Erro velocidade
+Escorregamento acima do limite
+ESD
+Estabilizar alimentação
+Estabilizar alimentação elétrica
+Estabilizar carga
+Estabilizar rede
+Estabilizar tensão de alimentação
+Estalo audível
+Estalo audível no inversor
+Estouro de IGBT
+ETR atuou
+Falha
+Falha ao carregar configuração
+Falha ao energizar
+Falha ao inicializar
+Falha ao partir
+Falha ao salvar configuração
+Falha após alteração de parâmetros
+Falha aterramento
+Falha aterramento saída
+Falha braço de frenagem
+Falha brake
+Falha campo
+Falha cartão memória
+Falha circuito frenagem
+Falha comunicacão
+Falha comunicação
+Falha comunicação DPI
+Falha comunicação entre placas
+Falha comunicação fieldbus
+Falha comunicação MEMOBUS
+Falha comunicação MODBUS
+Falha comunicação opcional
+Falha comunicação option
+Falha comunicação PROFIBUS
+Falha comunicação serial
+Falha configuração motor
+Falha CPU
+Falha de alimentação principal
+Falha de aterramento
+Falha de aterramento (terra)
+Falha de aterramento na saída
+Falha de carga (perda de fase)
+Falha de comunicação
+Falha de comunicação (DPI)
+Falha de comunicação (timeout)
+Falha de comunicação CAN
+Falha de comunicação CPU
+Falha de comunicação DeviceNet
+Falha de comunicação DPI
+Falha de comunicação entre placas
+Falha de comunicação externa
+Falha de comunicação fieldbus
+Falha de comunicação intermitente
+Falha de comunicação interna
+Falha de comunicação interno
+Falha de comunicação MEMOBUS
+Falha de comunicação MODBUS
+Falha de comunicação option board
+Falha de comunicação PROFIBUS
+Falha de comunicação Profibus DP
+Falha de comunicação RS485
+Falha de comunicação serial
+Falha de configuração do motor
+Falha de curto no resistor de freio
+Falha de excesso de escorregamento
+Falha de falta de fase na saída
+Falha de fase na saída
+Falha de firmware
+Falha de hardware
+Falha de hardwaré
+Falha de hardware interno
+Falha de hardware na placa de controle
+Falha de inicialização
+Falha de link
+Falha de link entre placas
+Falha de parametrização
+Falha de partida
+Falha de saturação do IGBT
+Falha de sobrecarga do motor
+Falha de sobretemperatura no motor
+Falha de sobretemperatura no motor (NTC)
+Falha de subtensão
+Falha de subtensão crítica
+Falha de subtensão momentânea
+Falha de subtensão no barramento
+Falha de telegrama
+Falha de temperatura do motor
+Falha de temperatura no motor
+Falha DRIVE-CLiQ
+Falha EEPROM
+Falha em parada
+Falha em parada rápida
+Falha encoder
+Falha encoder (perda sinal)
+Falha encoder servomotor
+Falha entrada analógica
+Falha externa
+Falha externa (THR)
+Falha firmware
+Falha fonte 24V
+Falha frenagem
+Falha I/O
+Falha ID run
+Falha IGBT
+Falha IGBT temperatura
+Falha iminente do ventilador
+Falha inicializar
+Falha interface
+Falha intermitente
+Falha intermitente sem padrão
+Falha interna
+Falha limitador corrente
+Falha na alimentação
+Falha na comunicação HMI
+Falha na comunicação interna
+Falha na conexão da IHM remota
+Falha na EEPROM
+Falha na gravação da memória
+Falha na inicialização
+Falha na medição de corrente
+Falha na medição de tensão
+Falha na memória
+Falha na memória do cartão
+Falha na memória EEPROM
+Falha na memória RAM
+Falha na parada
+Falha na placa de controle
+Falha na placa de E/S
+Falha na placa de potência
+Falha na placa principal
+Falha na potência (power card)
+Falha na saída
+Falha na unidade de frenagem
+Falha no aterramento
+Falha no barramento CC
+Falha no circuito de frenagem
+Falha no circuito de frenagem (excesso)
+Falha no circuito de frenagem CC
+Falha no circuito de gate-drive
+Falha no circuito de pré-carga
+Falha no circuito de sink/source
+Falha no clock da CPU
+Falha no conector
+Falha no controle vetorial
+Falha no dissipador térmico
+Falha no encoder
+Falha no encoder (perda de sinal)
+Falha no encoder digital
+Falha no encoder incremental
+Falha no freio do motor
+Falha no hardware interno
+Falha no IGBT
+Falha no motor (falta fase)
+Falha no motor (sensor PTC)
+Falha no motor (sobrecarga)
+Falha no motor (temp. sensor)
+Falha no motor do ventilador
+Falha no power module
+Falha no power stack
+Falha no resistor de freio
+Falha no resistor de pré-carga
+Falha no retificador
+Falha no seguimento
+Falha no sensor de pressão
+Falha no sensor de temperatura
+Falha no sensor de temperatura dissipador
+Falha no sensor PTC do motor
+Falha no termistor do dissipador
+Falha no termistor do motor
+Falha no transdutor de temperatura
+Falha no ventilador
+Falha no ventilador do dissipador
+Falha no ventilador do inversor
+Falha no ventilador do motor
+Falha operacão
+Falha parametrizacão
+Falha partida
+Falha perda fase saída
+Falha placa
+Falha placa controle
+Falha placa opcional
+Falha placa potência
+Falha placa principal
+Falha PTC do motor
+Falha PTC motor
+Falha RAM
+Falha rede
+Falha temperatura motor
+Falha temperatura motor (PTC)
+Falha terra
+Falha ventilador
+Falha ventilador inversor
+Falha ventoinha
+Falha watchdog
+Falta carga
+Falta de energia momentânea
+Falta de fase
+Falta de fase na alimentação
+Falta de fase na entrada
+Falta de fase na rede
+Falta de fase na saída
+Falta de fase prolongada
+Falta de fase temporária
+Falta de resistência de freio
+Falta de ventilação
+Falta de ventilação no motor
+Falta fase
+Falta fase saída
+Fase
+Fase da rede aberta
+Fase da rede ausente
+Fase faltando
+Fase intermitente
+Fase rede ausente
+Fator de serviço excedido
+Fiação de rede solta
+Fiação entrada analógica rompida
+Fim de vida
+Fim de vida do rolamento
+Fim de vida do ventilador
+Fim de vida útil
+Fim de vida útil da memória
+Fim de vida útil do módulo
+Fim de vida útil do ventilador
+Fim de vida úútil
+Fio do sensor partido
+Firmware corrompido
+Flutuacão
+Flutuação
+Flutuação da rede
+Flutuação de rede
+Flutuação de tensão
+Flutuação de tensão na rede
+Flutuação na tensão da rede
+Flutuações na rede
+Fonte 24V auxiliar com defeito
+Fonte 5V instável
+Fonte auxiliar com defeito
+Fonte auxiliar de 5V instável
+Fonte campo defeituosa
+Fonte de 24V com defeito
+Fonte de 5V instável
+Fonte de alimentação dos periféricos insuficiente
+Fonte de alimentação gate-drive instável
+Fonte de alimentação instável
+Fonte do PM queimada
+Fonte do power card queimada
+Fonte do power module queimada
+Fonte instável
+Fonte interna instável
+Formatação errada
+Formatação incorreta
+Freio
+Freio não abre
+Freio não liberou
+Freio regenerativo inadequado
+Frenagem
+Frenagem excessiva
+Frenagem ineficaz
+Frenagem insuficiente
+Frenagem muito frequente
+Frenagem regenerativa
+Frenagem regenerativa excessiva
+Frenagem regenerativa falha
+Frequência de chaveamento elevada
+Frequência de chaveamento muito alta
+Fuga à terra
+Fuga à terra detectada
+Fuga à terra na saída
+Fuga detectada
+Fuga terra
+Fuga terra detectada
+Fuga terra elevada
+Função especial indisponível
+Fusíveis
+Fusíveis queimados
+Fusível
+Fusível campo queimado
+Fusível de entrada queimado
+Fusível de potência queimado
+Fusível interno queimado
+Fusível parcial
+Fusível principal queimado
+Fusível queimado
+Ganho do controle muito alto
+GF
+GF atuado
+HIM desconectado
+HIM remoto sem resposta
+Horas operação alta
+I²T
+I²T atuado
+ID do escravo duplicado
+ID duplicado
+ID escravo duplicado
+ID run falhou
+ID run não realizado
+IGBT
+IGBT danificado
+IGBT em curto
+IGBT em saturação
+IGBT muito quente
+IGBT protegido
+IGBT queimado
+IHM com defeito
+IHM remota sem comunicação
+IHM remota sem resposta
+Inércia
+Inércia alta
+Inércia bomba
+Inércia da carga alta
+Inércia da carga muito alta
+Inércia muito alta
+Inicialização falha
+Inspecionar cabos
+Inspecionar cabos de motor
+Inspecionar cabos de saída
+Inspecionar cabos do motor
+Inspecionar circuito de disparo
+Inspecionar circuito de pré-carga
+Inspecionar circuito frenagem
+Inspecionar circuito pré-carga
+Inspecionar contator principal
+Inspecionar máquina
+Inspecionar parte mecânica
+Inspecionar placa de potência
+Inspecionar placa potência
+Inspecionar pré-carga
+Inspecionar sensores
+Inspecionar sensores externos
+Instabilidade
+Instalar contator adequado
+Instalar contator de força adequado
+Instalar estabilizador
+Instalar estabilizador de tensão
+Instalar inversor de maior potência
+Instalar reator
+Instalar reator de linha
+Instalar reator linha
+Instalar resistor de freio
+Instalar resistor de freio (CHO)
+Instalar resistor de freio (DBR)
+Instalar resistor de freio (L8-01)
+Instalar resistor de freio (MT-BR5)
+Instalar resistor de freio (P1240)
+Instalar resistor de freio (P3.5.1)
+Instalar resistor de freio adequado
+Instalar resistor de freio dinmico
+Instalar resistor de frenagem
+Instalar resistor freio
+Instalar terminação
+Instalar terminação adequada
+Instalar terminação correta
+Instalar terminador
+Instalar terminador de barramento
+Instalar terminadores
+Instalar unidade regenerativa
+Instalar ventilação auxiliar
+Instalar ventilação forçada
+Instalar ventoinha auxiliar
+Instalar ventoinha de refrigeração auxiliar
+Interface com defeito
+Interferência
+Interferência eletromagnética
+Interferência eletromagnética no cabo
+Interferência EMC
+Interno
+Inversor bloqueado
+Inversor congela
+Inversor desarma
+Inversor desarma ão partir
+Inversor desliga
+Inversor inoperante
+Inversor muito quente
+Inversor não acelera
+Inversor não energiza
+Inversor não funciona
+Inversor não inicializa
+Inversor não liga
+Inversor não opera conforme esperado
+Inversor não operacional
+Inversor não parte
+Inversor não responde
+Inversor não responde a comandos
+Inversor não troca dados
+Inversor offline
+Inversor opera com capacidade reduzida
+Inversor opera com limitação
+Inversor opera instável
+Inversor parado inesperadamente
+Inversor parado por emergência
+Inversor quente
+Inversor quente ao toque
+Inversor quente demais
+Inversor reinicia
+Inversor reinicia sozinho
+Inversor sem résposta
+Inversor subdimensionado
+Inversor subdimensionado para a carga
+Inversor superaquecendo
+Inversor superaquecido
+Isolação baixa
+Isolação baixa motor
+Isolação do cabo danificada
+Isolação do motor baixa
+Isolação do motor comprometida
+Isolação do motor danificada
+Isolação do motor degradada
+Isolação motor baixa
+IT atuou
+LED apagado
+LED da placa opcional apagado
+LED de comunicação apagado
+LED de erro aceso
+LED de falha no power card
+LED erro no PM
+LED placa apagado
+LEDs apagados
+LEDs de status apagados
+Leitura de corrente incorreta
+Leitura de pressão incorreta
+Leitura de temperatura incorreta
+Leitura de temperatura inválida
+Leitura de tensão incorreta
+Leitura inválida
+Leitura temperatura incorreta
+Liberar carga
+Liberar carga mecânica
+Liberar ventilação
+Limite térmico próximo
+Limite térmico prximo
+Limpar
+Limpar comutador
+Limpar conectores
+Limpar contatos
+Limpar dissipador
+Limpar dissipador de calor
+Limpar dissipador e ventilador
+Limpar dissipador e ventoinhas
+Limpar dissipadores
+Limpar e secar bornes do motor
+Limpar encoder
+Limpar inversor
+Limpar o inversor
+Limpar o ventilador e dissipadores
+Limpar obstruções
+Limpar ou substituir ventilador
+Limpar passagem ar
+Limpar passagens de ar
+Limpar sistema de ventilação do motor
+Limpar tubo de impulso
+Limpar ventilação do motor
+Limpar ventilador
+Limpar ventilador do motor
+Limpar ventilador e dissipador
+Limpar/substituir encoder
+Limpar/substituir ventilador
+Limpar/trocar encoder
+Link perdido
+MAC ID duplicado
+Magnetização insuficiente
+Mal funcionamento do PID
+Mal inserido
+Medição instável do barramento
+Medição temperatura incorreta
+Medir isolação
+Medir isolação do motor
+Medir isolação motor
+Medir tensão de entrada
+Medir tensão de fase
+Medir tensão de linha
+Medir tensão em todas as fases
+Medir tensão nas 3 fases
+Medir tensão nas três fases
+Medir tensão trifásica
+Meghmetro motor
+Megôhmetro motor
+Melhorar a ventilação do motor
+Melhorar aterramento
+Melhorar aterramento do sistema
+Melhorar blindagem
+Melhorar blindagem dos cabos
+Melhorar refrigeração
+Melhorar refrigeração do motor
+Melhorar refrigeração do painel
+Melhorar ventilação
+Melhorar ventilação do armário
+Melhorar ventilação do módulo
+Melhorar ventilação do motor
+Melhorar ventilação do painel
+Melhorar ventilação motor
+Melhorar ventilação painel
+Memória
+Modelo motor selecionado errado
+Módulo danificado
+Módulo de potência com defeito
+Módulo de potência danificado
+Módulo de potência não responde
+Módulo de potência sem resposta
+Módulo desconectado
+Módulo IGBT danificado
+Módulo IGBT muito quente
+Módulo potência danificado
+Motor aquecendo
+Motor aquecendo excessivamente
+Motor aquecendo gradualmente
+Motor CC com defeito
+Motor com defeito
+Motor com isolação baixa
+Motor curto
+Motor desconectado
+Motor dispara
+Motor em curto
+Motor esquenta
+Motor esquenta acima do normal
+Motor excessivamente quente
+Motor instável
+Motor molhado
+Motor muito quente
+Motor não acelera
+Motor não atinge velocidade
+Motor não desenvolve torque
+Motor não desenvolve torque nominal
+Motor não mantém velocidade
+Motor não mantm rotação
+Motor não parte
+Motor opera com apenas 2 fases
+Motor operando sem sensor
+Motor oscila
+Motor para
+Motor para abruptamente
+Motor quente
+Motor quente demais
+Motor sobrecarregado
+Motor subdimensionado
+Motor subdimensionado para aplicação
+Motor superaquecendo
+Motor superaquecido
+Motor travado
+Motor vibra
+Motor vibrando
+Motor vibrando em baixa rotação
+Motor vibrando excessivamente
+Muito quente
+Não liga
+Não opera
+Não parte
+Não religa após emergência
+Não sai do modo configuração
+NTC dissipador danificado
+Obstrução
+Obstrução do fluxo de ar
+Obstrução do ventilador
+Obstrução leve
+Obstrução mecânica
+Obstrução mecânica do ventilador
+Ondulação
+Ondulação no barramento
+Ondulação no barramento CC
+Ondulação no torque
+Ondulação torque
+Operação com capacidade reduzida
+Operação crítica
+Operação em sobrecarga
+Operação inibida
+Operação instável
+Operação prolongada em baixa rotação
+Ordem emergência
+Oscilação
+Oscilação de velocidade
+Oscilação do motor
+Oscilação eixo
+Oscilação em baixa velocidade
+Oscilação motor
+Oscilação na desaceleração
+Oscilação velocidade
+Painel remoto sem comunicação
+Par. 3-10 (aumentar rampa)
+Para
+Parada
+Parada brusca
+Parada com falha
+Parada com sobretensão
+Parada de emergência
+Parada de segurança
+Parada imediata
+Parada por segurança
+Parada por sinal externo
+Parada segurança
+Parada súbita do inversor
+Parâmetro
+Parâmetros conflitantes configurados
+Parâmetros corrompidos
+Parâmetros de frenagem inadequados
+Parâmetros de rede incorretos
+Parâmetros do motor incorretos
+Parâmetros incompatíveis
+Parâmetros incompatíveis configurados
+Parâmetros incorretos
+Parâmetros incorretos na tela
+Parâmetros invalidos
+Parâmetros motor incompatíveis
+Parâmetros não salvam
+Parâmetros perdidos
+Parâmetros perdidos ao desligar
+Parâmetros perdidos ão desligar
+Parâmetros perdidos ão religar
+Paridade errada
+Paridade/configuração errada
+Partida de motor grande na mesma rede
+Partida de motores grandes na mesma rede
+Perda comunicação
+Perda comunicação HIM
+Perda comunicação serial
+Perda de comunicação
+Perda de comunicação com CLP
+Perda de comunicação com HIM
+Perda de comunicação com periféricos
+Perda de comunicação com rede
+Perda de comunicação entre módulos
+Perda de comunicação MODBUS
+Perda de comunicação serial
+Perda de dados
+Perda de dados com CLP
+Perda de fase na carga
+Perda de fase na entrada
+Perda de fase na rede
+Perda de fase na saída
+Perda de link de comunicação
+Perda de link Modbus
+Perda de realimentação de velocidade
+Perda de referência
+Perda de referência de posição
+Perda de referência de velocidade
+Perda fase
+Perda fase entrada
+Perda link
+Perda link GENIbus
+Perda link temporária
+Perda posição
+Perda realimentação
+Perda realimentação velocidade
+Perda referência
+Perda total de energia
+Pico corrente
+Pico corrente ao acelerar
+Pico corrente ao frear
+Pico corrente partida
+Pico corrente saída
+Pico de corrente
+Pico de corrente ao acelerar
+Pico de corrente ao desacelerar
+Pico de corrente de curta duração
+Pico de corrente de saída
+Pico de corrente elevado
+Pico de corrente instantâneo
+Pico de corrente na frenagem
+Pico de corrente na partida
+Pico de corrente na saída
+Pico de corrente no start
+Pico de corrente regenerativa
+Pico de corrente súbito
+Pico súbito
+PID de temperatura instável
+Placa com defeito
+Placa comunicação com defeito
+Placa comunicação defeituosa
+Placa controle danificada
+Placa controle defeituosa
+Placa de aquisição com falha
+Placa de comunicação com defeito
+Placa de controle com defeito
+Placa de controle danificada
+Placa de controle queimada
+Placa de interface com defeito
+Placa de medição avariada
+Placa de potência danificada
+Placa de potência defeituosa
+Placa fieldbus com defeito
+Placa fieldbus defeituosa
+Placa fieldbus falha
+Placa gate-drive danificada
+Placa I/O danificada
+Placa opcional com defeito
+Placa opcional defeituosa
+Placa opcional mal encaixada
+Placa opcional não detectada
+Placa opcional não reconhecida
+Placa opcional sem comunicação
+Placa potência defeituosa
+Placa principal defeituosa
+Placa principal queimada
+Placa rede defeituosa
+Ponte tiristor quente
+Potenciômetro não funciona
+Power card danificado
+Power module danificado
+Pré-carga incompleta
+Pré-carga não completa
+Pressão não estabiliza
+Pressostato atuado
+Preventivo
+Problema mecânico
+Problema mecânico na carga
+Programar troca ventilador
+Proteção atuada
+Proteção de frenagem
+Proteção de frenagem atuada
+Proteção de sobrecorrente falsa
+Proteção eletrônica atuada
+Proteção eletrônica atuou
+Proteção E-Thermal atuada
+Proteção ETR
+Proteção ETR atuando
+Proteção IT atuada
+Proteção PTC atuada
+Proteção térmica
+Proteção térmica atuada
+Proteção térmica atuando
+Proteção térmica atuou
+Proteção térmica eletrônica atuada
+Proteção térmica externa
+Proteção térmica não atua
+Proteção térmica não funciona
+PTC mal ajustado
+PTC motor
+Queda de energia rápida
+Queda de rede
+Queda de tensão
+Queda de tensão breve
+Queda de tensão momentânea
+Queda de tensão na rede
+Queda de tensão prolongada
+Quente
+RAM da placa de controle defeituosa
+RAM placa controle defeituosa
+Rampa aceleração curta
+Rampa aceleração muito curta
+Rampa C002 curta
+Rampa curta
+Rampa de aceleração curta
+Rampa de aceleração inadequada
+Rampa de aceleração insuficiente
+Rampa de aceleração muito curta
+Rampa de aceleração muito longa
+Rampa de desaceleração curta
+Rampa de desaceleração muito curta
+Rampa de desaceleração muito rápida
+Rampa DEC curta
+Rampa desaceleração curta
+Rampa muito curta
+Rampa Pr.7 curta
+Rampa Pr.8 curta
+Realizar ID run
+Realizar nova parametrização
+Realizar reparo em assistência técnica autorizada
+Reapertar conectores
+Reapertar conexões
+Reconectar cabo DRIVE-CLiQ
+Reconectar cabo flat
+Reconectar cabos internos
+Reconectar flat
+Reconectar HIM
+Reconectar IHM remota
+Reconectar módulo
+Reconectar placa I/O
+Reconectar sensor
+Reconectar termistor
+Reconexão automática
+Reconfigurar
+Reconfigurar fieldbus
+Reconfigurar parâmetros
+Reconfigurar parâmetros frenagem
+Reconfigurar parâmetros rede
+Reconfigurar placa fieldbus
+Reconfigurar rede
+Rede
+Rede alta
+Rede baixa
+Rede com flutuações
+Rede de alimentação instável
+Rede DeviceNet offline
+Rede elétrica instável
+Rede elevada
+Rede fieldbus offline
+Rede industrial offline
+Rede instável
+Rede MODBUS offline
+Rede monofsica em inversor trifásico
+Rede offline
+Rede Profibus offline
+Rede regenerativa
+Redimensionar
+Redimensionar inversor
+Redimensionar inversor para corrente maior
+Redimensionar motor
+Redimensionar o inversor
+Redimensionar resistor
+Redimensionar resistor de freio
+Redução automática de frequência
+Redução de frequência
+Redução de frequência automática
+Redução de potência
+Redução de potência automática
+Redução frequência
+Redução potência
+Redução potência automática
+Reduzir
+Reduzir a carga
+Reduzir a carga do motor
+Reduzir A061
+Reduzir aceleração
+Reduzir baudrate
+Reduzir boost
+Reduzir boost de torque
+Reduzir carga
+Reduzir carga acoplada
+Reduzir carga aplicada
+Reduzir carga ciclo
+Reduzir carga contínua
+Reduzir carga do inversor
+Reduzir carga do motor
+Reduzir carga durante picos
+Reduzir carga motor
+Reduzir ciclo de trabalho
+Reduzir ciclo trabalho
+Reduzir comprimento do cabo
+Reduzir corrente
+Reduzir corrente de saída
+Reduzir frequência de chaveamento
+Reduzir frequência de frenagem
+Reduzir frequência de operação
+Reduzir frequência de PWM
+Reduzir frequência frenagem
+Reduzir ganho do controle vetorial
+Reduzir inércia
+Reduzir inércia carga
+Reduzir inércia da carga
+Reduzir Pr.0 boost
+Reduzir regime de carga
+Reduzir regime de trabalho
+Reduzir solicitação de carga
+Reduzir temp ambiente
+Reduzir temperatura
+Reduzir temperatura ambiente
+Reduzir temperatura do painel
+Reduzir temperatura painel
+Reduzir tensão de frenagem
+Reduzir torque boost
+Reduzir torque boost (Pr.01-25)
+Reduzir torque de partida
+Reduzir velocidade de parada
+Reencaixar placa opcional
+Refazer configuração de topologia
+Refazer parametrização
+Referência velocidade falha
+Regeneracão
+Regeneração
+Regeneração da carga
+Regeneração esporádica
+Regeneração excessiva
+Reiniciar drive
+Reiniciar inversor
+Reinserir
+Reinserir cartão corretamente
+Relé de pré-carga com defeito
+Relé de pré-carga não atua
+Relé de pré-carga soldado
+Relé pré-carga não atua
+Relé pré-carga soldado
+Relé térmico atuado
+Relé térmico do motor atuado
+Relé térmico externo atuado
+Remover obstruções
+Reparar cabo
+Reparar inversor
+Reparar ou substituir motor
+Reparar placa de comunicação
+Reparar power stack
+Reparar/repor cabo
+Reset
+Reset aleatório
+Reset automático
+Reset cclico
+Reset contínuo
+Reset do drive
+Reset do inversor
+Reset do microprocessador
+Reset fábrica
+Reset inversor
+Resetar botão de emergência
+Resetar botão emergência
+Resetar inversor (desligar/ligar)
+Resetar rel térmico
+Resetar relé térmico
+Resetar segurança
+Resetar sensores de segurança
+Resistor
+Resistor danificado
+Resistor de freio
+Resistor de freio aberto
+Resistor de freio ausente
+Resistor de freio danificado
+Resistor de freio desconectado
+Resistor de freio em curto
+Resistor de freio incorreto
+Resistor de freio insuficiente
+Resistor de freio não conectado
+Resistor de freio quente
+Resistor de freio subdimensionado
+Resistor de freio superaquecido
+Resistor de pré-carga aberto
+Resistor de pré-carga danificado
+Resistor freio
+Resistor freio aberto
+Resistor freio ausente
+Resistor freio dinmico
+Resistor freio FR-BU2
+Resistor freio insuficiente
+Resistor freio quente
+Resistor freio subdimensionado
+Resistor freio superaquecido
+Resistor pré-carga aberto
+Resistor quente
+Resistor sub
+Resistor subdimensionado
+Ressonância mecânica
+Restaurar configuração de fábrica
+Restaurar padrão
+Restaurar padrão de fábrica
+Restaurar padrão fábrica
+Restaurar parâmetros de fábrica
+Restaurar parâmetros de fábrica (P0204)
+Retificador do freio queimado
+Revisar configuração da rede
+Revisar dados placa motor
+Revisar parâmetros
+Revisar parâmetros de rede
+Ripple barramento
+Rotor bomba travado
+Ruído
+Ruído anormal
+Ruído anormal do ventilador
+Ruído anormal no inversor
+Ruído anormal no motor
+Ruído anormal no ventilador
+Ruído do ventilador
+Ruído do ventilador anormal
+Ruído elétrico
+Ruído elétrico excessivo
+Ruído elétrico no cabo do encoder
+Ruído eletromagnético
+Ruído EMC
+Ruído na rede
+Ruído no encoder
+Saídas relé sem comando
+Secar motor
+Secar motor bomba
+Secar o motor
+Secar/estufar motor
+Segurança
+Selecionar tipo controle
+Selecionar tipo controle (escalar/vetorial)
+Sem comunicação
+Sem comunicação RS485
+Sem dados
+Sem link
+Sem link Modbus
+Sem resposta
+Sensor com defeito
+Sensor de corrente Hall defeituoso
+Sensor de pressão danificado
+Sensor de segurança
+Sensor de segurança atuado
+Sensor de temperatura com defeito
+Sensor de temperatura com falha
+Sensor de temperatura danificado
+Sensor KTY/PTC com defeito
+Sensor NTC danificado
+Sensor NTC/termistor danificado
+Sensor proteção
+Sensor PTC acusando falha
+Sensor PTC atuado
+Sensor PTC atuado erroneamente
+Sensor PTC com defeito
+Sensor PTC danificado
+Sensor PTC defeituoso
+Sensor PTC mal ajustado
+Sensor PTC próximo limite
+Sensor PTC/KTY com defeito
+Sensor segurança
+Sensor segurança atuado
+Sensor temperatura atuado
+Sensor térmico atuado
+Servo não energiza
+Servomotor quente
+Sinal 4-20mA não lido
+Sinal de emergência ativo
+Sinal de falha externa
+Sinal de falha externa ativado
+Sinal externo
+Sinal falha externa
+Sinal falha externa ativado
+Sinal força faixa
+Sink/source configurado incorretamente
+Sobrecarga
+Sobrecarga contínua
+Sobrecarga do inversor
+Sobrecarga do motor
+Sobrecarga do motor (IT)
+Sobrecarga do motor (PTC)
+Sobrecarga do motor I²T
+Sobrecarga do motor IT
+Sobrecarga ETR motor
+Sobrecarga I²T
+Sobrecarga IGBT
+Sobrecarga iminente
+Sobrecarga inversor
+Sobrecarga IT
+Sobrecarga IT do motor
+Sobrecarga IT motor
+Sobrecarga mecânica
+Sobrecarga moderada
+Sobrecarga momentânea
+Sobrecarga motor
+Sobrecarga motor (I²T)
+Sobrecarga motor bomba
+Sobrecarga motor ETR
+Sobrecarga motor I²T
+Sobrecarga motor IT
+Sobrecarga motor servomotor
+Sobrecarga na rede
+Sobrecarga prolongada
+Sobrecarga prolongada do motor
+Sobrecarga próxima do limite
+Sobrecarga térmica do motor
+Sobrecorrente
+Sobrecorrente (aceleração)
+Sobrecorrente (desaceleração)
+Sobrecorrente (regime)
+Sobrecorrente (transiente)
+Sobrecorrente acel.
+Sobrecorrente aceleração
+Sobrecorrente armadura
+Sobrecorrente desacel.
+Sobrecorrente desaceleração
+Sobrecorrente durante aceleração
+Sobrecorrente durante desaceleração
+Sobrecorrente em regime
+Sobrecorrente momentânea
+Sobrecorrente na aceleração
+Sobrecorrente na desaceleração
+Sobrecorrente na saída
+Sobrecorrente no módulo IGBT
+Sobrecorrente no motor
+Sobrecorrente regime
+Sobrecorrente saída
+Sobretensão
+Sobretensão aceleração
+Sobretensão armadura
+Sobretensão barramento
+Sobretensão barramento CC
+Sobretensão bornes
+Sobretensão desacel.
+Sobretensão desaceleração
+Sobretensão durante aceleração
+Sobretensão durante desaceleração
+Sobretensão interna
+Sobretensão link CC
+Sobretensão momentânea
+Sobretensão na aceleração
+Sobretensão na desaceleração
+Sobretensão na frenagem
+Sobretensão na placa
+Sobretensão no barramento CC
+Sobretensão no barramento DC
+Sobretensão no link CC
+Sobretensão no módulo
+Sobretensão placa
+Sobretensão por regeneração
+Sobretensão regime
+Software incompatível
+Suavizar rampa de desaceleração
+Substituição da placa de controle
+Substituir
+Substituir cabo
+Substituir cabo danificado
+Substituir cabo de comunicação
+Substituir cabo de potência
+Substituir cabo do encoder
+Substituir cabo do motor
+Substituir cabo DPI
+Substituir cabo fieldbus
+Substituir cabo serial
+Substituir cabos
+Substituir cartão
+Substituir cartão de memória
+Substituir chopper
+Substituir chopper de freio
+Substituir chopper de frenagem
+Substituir contator
+Substituir drive
+Substituir encoder
+Substituir encoder incremental
+Substituir fusíveis
+Substituir IHM
+Substituir interface
+Substituir inversor
+Substituir inversor se necessário
+Substituir módulo
+Substituir módulo de potência
+Substituir módulo IGBT
+Substituir motor se necessário
+Substituir o inversor
+Substituir o ventilador
+Substituir o ventilador danificado
+Substituir placa
+Substituir placa controle
+Substituir placa danificada
+Substituir placa de aquisição
+Substituir placa de controle
+Substituir placa de potência
+Substituir placa fieldbus
+Substituir placa gate-drive
+Substituir placa I/O
+Substituir placa opcional
+Substituir placa potência
+Substituir placa principal
+Substituir PM
+Substituir power card
+Substituir Power Module
+Substituir resistor
+Substituir resistor de freio
+Substituir resistor de pré-carga
+Substituir resistor pré-carga
+Substituir retificador do freio
+Substituir sensor
+Substituir sensor de corrente
+Substituir sensor de pressão
+Substituir sensor de temperatura
+Substituir sensor NTC
+Substituir sensor PTC
+Substituir termistor
+Substituir termistor dissipador
+Substituir transdutor
+Substituir transistor de frenagem
+Substituir transistor frenagem
+Substituir unidade frenagem
+Substituir ventilador
+Substituir ventilador do dissipador
+Substituir ventilador do motor
+Substituir ventilador preventivamente
+Subtensão
+Subtensão barramento
+Subtensão barramento CC
+Subtensão link CC
+Subtensão na alimentação
+Subtensão no barramento CC
+Subtensão no barramento DC
+Subtensão no link CC
+Sujeira
+Sujeira acumulada
+Sujeira acumulada no ventilador
+Sujeira dissipador
+Sujeira no dissipador
+Sujeira no ventilador
+Sujeira parcial
+Superaquecimento
+Superaquecimento diss.
+Superaquecimento dissipador
+Superaquecimento do dissipador
+Superaquecimento do drive
+Superaquecimento do IGBT
+Superaquecimento do inversor
+Superaquecimento gradua
+Superaquecimento gradual
+Superaquecimento IGBT
+Superaquecimento inversor
+Superaquecimento não detectado
+Superaquecimento progressivo
+Superaquecimento tiristor
+Superfície do inversor quente
+Teclas da IHM sem resposta
+Temp ambiente alta
+Temperatura alta
+Temperatura ambiente > 45°C
+Temperatura ambiente > 50C
+Temperatura ambiente acima do limite
+Temperatura ambiente alta
+Temperatura ambiente elevada
+Temperatura ambiente muito alta
+Temperatura dissipador alta
+Temperatura dissipador elevada
+Temperatura do dissipador alta
+Temperatura do dissipador elevada
+Temperatura do dissipador excessiva
+Temperatura do IGBT elevada
+Temperatura do inversor elevada
+Temperatura do motor (PTC)
+Temperatura do motor elevada
+Temperatura do motor elevada (PTC)
+Temperatura elevada no inversor
+Temperatura excessiva
+Temperatura externa (motor PTC)
+Temperatura interna alta
+Temperatura interna elevada
+Temperatura próxima limite
+Tempo de aceleração curto
+Tempo de aceleração insuficiente
+Tempo de aceleração muito curto
+Tempo de ciclo muito curto
+Tempo de desaceleração curto
+Tempo de desaceleração muito curto
+Tempo de liberação do freio insuficiente
+Tempo de rampa de aceleração curto
+Tempo de sobrecarga prolongado
+Tensão acima do limite
+Tensão alta
+Tensão alta no barramento CC
+Tensão armadura alta
+Tensão baixa
+Tensão CC abaixo do mínimo
+Tensão CC abaixo do nominal
+Tensão CC abaixo do normal
+Tensão CC acima do limite
+Tensão CC alta
+Tensão CC alta na parada
+Tensão CC baixa
+Tensão CC baixa momentânea
+Tensão CC elevada
+Tensão CC elevada ão acelerar
+Tensão CC elevada ão desacelerar
+Tensão CC elevada ao partir
+Tensão CC elevada em regime
+Tensão CC elevada na parada
+Tensão CC elevada na partida
+Tensão CC elevada operação
+Tensão CC elevada transitória
+Tensão CC excessiva
+Tensão CC excessiva ão frear
+Tensão CC força da faixa
+Tensão CC instável
+Tensão CC insuficiente
+Tensão CC muito alta
+Tensão CC muito alta ao parar
+Tensão CC muito baixa
+Tensão CC não controlada
+Tensão CC não estabiliza
+Tensão da rede muito alta
+Tensão de alimentação acima do nominal
+Tensão de alimentação alta
+Tensão de alimentação alta demais
+Tensão de alimentação baixa
+Tensão de alimentação elevada
+Tensão de alimentação instável
+Tensão de alimentação insuficiente
+Tensão de alimentação muito alta
+Tensão de alimentação muito baixa
+Tensão de entrada alta
+Tensão de rede abaixo do mínimo
+Tensão de rede acima do nominal
+Tensão de rede alta
+Tensão de rede baixa
+Tensão de rede elevada
+Tensão de rede flutuante
+Tensão de rede instável
+Tensão de rede insuficiente
+Tensão de rede muito alta
+Tensão do barramento CC acima do limite
+Tensão do barramento CC alta
+Tensão do barramento CC não estabiliza
+Tensão do barramento instável
+Tensão insuficiente
+Tensão muito baixa
+Tensão rede alta
+Tensão rede baixa
+Tensão rede flutuante
+Terminação ausente
+Terminação da rede ausente
+Terminação de barramento faltando
+Terminação de rede ausente
+Terminação de rede incorreta
+Terminação deficiente
+Terminação incorreta
+Terminal multifuncional disparado
+Terminal THR ativado
+Termistor danificado
+Termistor dissipador danificado
+Termistor do dissipador danificado
+Terra
+Testar cabos
+Testar cabos de saída
+Testar continuidade do enrolamento
+Testar continuidade dos cabos
+Testar fonte 24V CC
+Testar IGBTs do módulo
+Testar isolação
+Testar isolação com megôhmetro
+Testar isolação do motor
+Testar isolação do motor com megôhmetro
+Testar isolação motor
+Testar isolamento do motor
+Testar módulo de potência
+Testar motor
+Testar motor (megôhmetro)
+Testar motor com megôhmetro
+Time-out
+Time-out de comunicação
+Timeout de resposta
+Time-out de resposta
+Time-out resposta
+Tipo controle errado
+Tipo de motor configurado errado
+Tipo motor configurado errado
+Torque boost excessivo
+Torque boost muito alto
+Torque carga alto
+Torque insuficiente
+Torque insuficiente na partida
+Torque reduzido
+Transdutor danificado
+Transistor de frenagem danificado
+Transistor frenagem danificado
+Transitório
+Transitório na rede
+Transitório rede
+Travamento
+Travou
+Trip
+Trip imediato
+Troca de dados falha
+Trocar cabo
+Trocar cabos
+Trocar chopper
+Trocar encoder
+Trocar fusíveis
+Trocar fusível
+Trocar fusível campo
+Trocar ventilador
+Tubo de impulso obstruído
+Uma fase da rede de alimentação aberta
+Uma fase da rede interrompida
+Uma fase do motor interrompida
+Umidade
+Umidade excessiva
+Umidade motor
+Umidade motor bomba
+Umidade na caixa de bornes
+Umidade na placa eletrônica
+Umidade no motor
+Unidade frenagem danificada
+Unidade frenagem não responde
+Usar BCbrake
+Usar cabo blindado
+Usar frenagem CC
+Usar frenagem dinâmica
+Usar limitador de tensão
+Usar módulo de frenagem
+Usar unidade regenerativa
+Usar unidade regenerativa (FR-RC)
+Utilizar cabo blindado
+Utilizar cabo blindado para encoder
+Utilizar frenagem dinâmica
+Utilizar módulo de frenagem regenerativa
+Utilizar módulo regenerativo
+Utilizar partida com pré-magnetização
+Utilizar unidade regenerativa
+Variação abrupta de carga
+Variação brusca carga
+Variação brusca de carga
+Variação brusca de corrente
+Variação carga
+Variação de velocidade
+Velocidade instável
+Ventilação
+Ventilação auxiliar
+Ventilação bloqueada
+Ventilação deficiente
+Ventilação do motor bloqueada
+Ventilação do motor inadequada
+Ventilação do motor insuficiente
+Ventilação do motor obstruída
+Ventilação do motor prejudicada
+Ventilação do motor reduzida
+Ventilação externa insuficiente
+Ventilação forçada
+Ventilação insuficiente
+Ventilação insuficiente do painel
+Ventilação motor
+Ventilação motor insuficiente
+Ventilação obstruída
+Ventilação reduzida
+Ventilação ruim
+Ventilador alto
+Ventilador com defeito
+Ventilador com desgaste
+Ventilador com fim de vida
+Ventilador com fim de vida útil
+Ventilador danificado
+Ventilador defeituoso
+Ventilador do dissipador parado
+Ventilador do drive não gira
+Ventilador do inversor não gira
+Ventilador do inversor parado
+Ventilador do inversor parou
+Ventilador do inversor sujo ou parado
+Ventilador do motor com defeito
+Ventilador do motor parado
+Ventilador em alta
+Ventilador em velocidade máxima
+Ventilador girando lento
+Ventilador girando máximo
+Ventilador girando no máximo
+Ventilador girando rápido
+Ventilador lento
+Ventilador max
+Ventilador máximo
+Ventilador na velocidade máxima
+Ventilador não funciona
+Ventilador não gira
+Ventilador obstruído
+Ventilador operando em máxima
+Ventilador operando em velocidade máxima
+Ventilador operando máximo
+Ventilador para
+Ventilador parado
+Ventilador parado ou lento
+Ventilador queimado
+Ventilador ruídoso
+Ventilador sujo
+Ventilador sujo ou queimado
+Ventilador sujo/parado
+Ventiladores em máxima rotação
+Ventiladores em velocidade máxima
+Ventiladores girando em alta rotação
+Ventiladores na velocidade máxima
+Ventoinha
+Verificar 24V
+Verificar ajuste do PTC
+Verificar alimentação
+Verificar alimentação de rede
+Verificar alimentação elétrica
+Verificar alimentação principal
+Verificar alimentação trifásica
+Verificar aterramento
+Verificar aterramento do cabo
+Verificar bobina campo
+Verificar bobina do freio
+Verificar bornes de entrada
+Verificar cabo
+Verificar cabo blindado
+Verificar cabo comunicação
+Verificar cabo de comunicação
+Verificar cabo de conexão
+Verificar cabo DeviceNet
+Verificar cabo do encoder
+Verificar cabo do encoder e conectores
+Verificar cabo do sensor
+Verificar cabo flat entre placas
+Verificar cabo Modbus
+Verificar cabo motor
+Verificar cabo PROFIBUS
+Verificar cabo RS-485
+Verificar cabo serial
+Verificar cabos
+Verificar cabos de potência
+Verificar cabos de saída
+Verificar cabos do motor
+Verificar cabos DRIVE-CLiQ
+Verificar cabos e conectores
+Verificar cabos motor
+Verificar cabos saída
+Verificar carga
+Verificar carga da máquina
+Verificar carga do motor
+Verificar carga mecânica
+Verificar chopper
+Verificar chopper de freio
+Verificar circuito de emergência
+Verificar circuito de medição
+Verificar circuito de pré-carga
+Verificar circuito de segurança
+Verificar circuito emergência
+Verificar circuito segurança
+Verificar condição fluido
+Verificar condições
+Verificar condições ambientais
+Verificar condições da carga
+Verificar conector
+Verificar conector do ventilador
+Verificar conector encoder
+Verificar conexão
+Verificar conexão do cabo CAN
+Verificar conexão do encoder
+Verificar conexão do motor
+Verificar conexão do resistor
+Verificar conexão elétrica
+Verificar conexões
+Verificar conexões do barramento
+Verificar conexões do encoder
+Verificar conexões e contatos do contator
+Verificar conexões elétricas
+Verificar conexões internas
+Verificar conexões nos bornes
+Verificar config porta DPI
+Verificar configuração
+Verificar configuração da porta DPI
+Verificar configuração de rede
+Verificar contator
+Verificar contator de linha
+Verificar contator de saída
+Verificar contator do motor
+Verificar contator e fusíveis
+Verificar contator principal
+Verificar contator saída
+Verificar continuidade cabos
+Verificar continuidade dos cabos
+Verificar corrente nominal do inversor
+Verificar dados da placa do motor
+Verificar dados placa motor
+Verificar dimensionamento do inversor
+Verificar dimensionamento do motor
+Verificar encoder e cabos
+Verificar endereçamento
+Verificar endereçamento (AdC)
+Verificar endereçamento da rede
+Verificar endereçamento dos dispositivos
+Verificar endereço do painel
+Verificar entrada
+Verificar entrada digital
+Verificar estabilidade da carga
+Verificar estabilidade da rede
+Verificar fator de serviço do motor
+Verificar fiação
+Verificar fiação do PTC
+Verificar fiação do sensor
+Verificar fiação entrada analógica
+Verificar fiação sensor
+Verificar fonte
+Verificar fonte 24V
+Verificar fonte 5V
+Verificar fonte auxiliar
+Verificar fonte campo
+Verificar fonte de alimentação
+Verificar fonte interna
+Verificar freio
+Verificar freio do motor
+Verificar frenagem dinâmica
+Verificar funcionamento do termostato
+Verificar funcionamento dos ventiladores
+Verificar fusíveis
+Verificar fusíveis da rede
+Verificar fusíveis de entrada
+Verificar fusível interno
+Verificar horas
+Verificar horas de funcionamento
+Verificar horas de operação
+Verificar horas funcionamento
+Verificar IDs dispositivos
+Verificar IDs dos dispositivos
+Verificar inércia da carga
+Verificar isolacão
+Verificar isolação
+Verificar isolação do motor
+Verificar isolação do motor com megôhmetro
+Verificar isolação entre fases
+Verificar isolação motor
+Verificar jumper sink/source
+Verificar MAC ID
+Verificar módulo de potência
+Verificar motor
+Verificar motor CC
+Verificar motor e cabo
+Verificar motor e cabos
+Verificar nível
+Verificar obstruções
+Verificar obstruções de ar
+Verificar parâmetros comunicação
+Verificar parâmetros de comunicação
+Verificar parâmetros de frenagem
+Verificar parâmetros de rede
+Verificar parâmetros P311/P312
+Verificar paridade (P1801/P1802)
+Verificar paridade P1802
+Verificar placa de aquisição
+Verificar placa gate-drive
+Verificar ponte retificadora
+Verificar pré-carga do motor
+Verificar pressostato
+Verificar processo
+Verificar rede
+Verificar réde
+Verificar rede elétrica
+Verificar rel térmico do motor
+Verificar relé de pré-carga
+Verificar relé pré-carga
+Verificar relé térmico externo
+Verificar resistor
+Verificar resistor de freio
+Verificar resistor freio
+Verificar rotação
+Verificar rotor bomba
+Verificar se a carga est livre
+Verificar segurança
+Verificar sensores
+Verificar sensores de segurança
+Verificar temperatura ambiente
+Verificar tensão
+Verificar tensão alimentação
+Verificar tensão borne 10
+Verificar tensão bornes
+Verificar tensão da rede
+Verificar tensão de alimentação
+Verificar tensão de alimentação (par. 14-20)
+Verificar tensão de alimentação trifásica
+Verificar tensão de linha
+Verificar tensão de rede
+Verificar tensão rede
+Verificar tensão trifásica
+Verificar terminação
+Verificar terminação RS-485
+Verificar unidade frenagem
+Verificar ventilação
+Verificar ventilação do motor
+Verificar ventilação externa
+Verificar ventilação motor
+Verificar ventilador
+Verificar ventoinha
+Vibração do motor
+Vibração no motor
+Viscosidade fluido alta
+Watchdog timeout
+Watchdog timer estourado

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="correia.title">Calculadora Industrial Avançada</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="floating-menu" id="floatingMenu">
+        <div class="menu-title"><i class="fas fa-cog"></i> <span data-i18n="correia.title">Calculadora de Correias</span></div>
+        <div class="calc-item active" data-calc="calc-direto">
+            <span class="calc-item-icon"><i class="fas fa-arrow-right"></i></span>
+            <div class="calc-item-content">
+                <h4 data-i18n="correia.direct">Cálculo Direto</h4>
+                <p data-i18n="correia.menu_direct_desc">Velocidade e comprimento sem polias</p>
+            </div>
+        </div>
+        <div class="calc-item" data-calc="calc-indireto">
+            <span class="calc-item-icon"><i class="fas fa-cogs"></i></span>
+            <div class="calc-item-content">
+                <h4 data-i18n="correia.indirect">Cálculo c/ Polias</h4>
+                <p data-i18n="correia.menu_indirect_desc">Velocidade e comprimento com transmissão por polias</p>
+            </div>
+        </div>
+        <div class="calc-item" data-calc="calc-bobina">
+            <span class="calc-item-icon"><i class="fas fa-scroll"></i></span>
+            <div class="calc-item-content">
+                <h4 data-i18n="correia.coil">Bobina</h4>
+                <p data-i18n="correia.menu_coil_desc">Comprimento de correia em bobina</p>
+            </div>
+        </div>
+        <div class="calc-item" data-calc="calc-inverso-direto">
+            <span class="calc-item-icon"><i class="fas fa-search"></i></span>
+            <div class="calc-item-content">
+                <h4 data-i18n="correia.inverse_direct">Descobrir Redutor (Direto)</h4>
+                <p data-i18n="correia.menu_inverse_direct_desc">Relação de redução para acionamento direto</p>
+            </div>
+        </div>
+        <div class="calc-item" data-calc="calc-inverso-polias">
+            <span class="calc-item-icon"><i class="fas fa-search-plus"></i></span>
+            <div class="calc-item-content">
+                <h4 data-i18n="correia.inverse_pulleys">Descobrir Redutor (c/ Polias)</h4>
+                <p data-i18n="correia.menu_inverse_pulleys_desc">Relação de redução para acionamento com polias</p>
+            </div>
+        </div>
+    </div>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <button class="menu-button" id="menuBtn" aria-label="Menu"><i class="fas fa-bars"></i></button>
+                <h1><i class="fas fa-cog"></i> <span data-i18n="correia.title">Calculadora Industrial Avançada</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="app-main">
+            <div id="calc-direto" class="calculadora" role="tabpanel">
+                <h2><i class="fas fa-arrow-right"></i> <span data-i18n="correia.speed_length">Cálculo de Velocidade e Comprimento</span></h2>
+                <div class="input-group">
+                    <label for="direto-n-motor"><i class="fas fa-tachometer-alt"></i> <span data-i18n="correia.motor_rpm">Rotação do Motor (RPM)</span></label>
+                    <input type="number" id="direto-n-motor" placeholder="Ex: 1750" class="campo-calculo" data-i18n-placeholder="correia.rpm_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="direto-i-redutor"><i class="fas fa-ratio"></i> <span data-i18n="correia.reduction_ratio">Relação de Redução do Redutor</span></label>
+                    <input type="number" id="direto-i-redutor" placeholder="Ex: 30 (para 30:1)" class="campo-calculo" data-i18n-placeholder="correia.reduction_ratio_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="direto-d-rolo"><i class="fas fa-circle"></i> <span data-i18n="correia.drive_drum">Diâmetro do Rolo de Tração (mm)</span></label>
+                    <input type="number" id="direto-d-rolo" placeholder="Ex: 250" class="campo-calculo" data-i18n-placeholder="correia.diameter_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="direto-t-volta"><i class="fas fa-stopwatch"></i> <span data-i18n="correia.lap_time">Tempo de uma volta completa (segundos)</span></label>
+                    <input type="number" id="direto-t-volta" placeholder="Ex: 45" class="campo-calculo" data-i18n-placeholder="correia.lap_time_placeholder">
+                </div>
+                <button class="main-button" onclick="calcularVelocidadeDireta()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                <div id="resultado-direto" class="resultado"></div>
+            </div>
+            <div id="calc-indireto" class="calculadora hidden" role="tabpanel">
+                <h2><i class="fas fa-cogs"></i> <span data-i18n="correia.with_pulleys">Cálculo de Velocidade e Comprimento (com Polias)</span></h2>
+                <div class="input-group">
+                    <label for="indireto-n-motor"><i class="fas fa-tachometer-alt"></i> <span data-i18n="correia.motor_rpm">Rotação do Motor (RPM)</span></label>
+                    <input type="number" id="indireto-n-motor" placeholder="Ex: 1750" class="campo-calculo" data-i18n-placeholder="correia.rpm_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="indireto-d-polia-motora"><i class="fas fa-circle"></i> <span data-i18n="correia.motor_pulley">Diâmetro da Polia do Motor (mm)</span></label>
+                    <input type="number" id="indireto-d-polia-motora" placeholder="Ex: 150" class="campo-calculo" data-i18n-placeholder="correia.pulley_diameter_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="indireto-d-polia-movida"><i class="fas fa-circle"></i> <span data-i18n="correia.driven_pulley">Diâmetro da Polia no Redutor (mm)</span></label>
+                    <input type="number" id="indireto-d-polia-movida" placeholder="Ex: 300" class="campo-calculo" data-i18n-placeholder="correia.pulley_diameter_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="indireto-i-redutor"><i class="fas fa-ratio"></i> <span data-i18n="correia.reduction_ratio">Relação de Redução do Redutor</span></label>
+                    <input type="number" id="indireto-i-redutor" placeholder="Ex: 20 (para 20:1)" class="campo-calculo" data-i18n-placeholder="correia.reduction_ratio_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="indireto-d-rolo"><i class="fas fa-circle"></i> <span data-i18n="correia.drive_drum">Diâmetro do Rolo de Tração (mm)</span></label>
+                    <input type="number" id="indireto-d-rolo" placeholder="Ex: 250" class="campo-calculo" data-i18n-placeholder="correia.diameter_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="indireto-t-volta"><i class="fas fa-stopwatch"></i> <span data-i18n="correia.lap_time">Tempo de uma volta completa (segundos)</span></label>
+                    <input type="number" id="indireto-t-volta" placeholder="Ex: 55" class="campo-calculo" data-i18n-placeholder="correia.lap_time_placeholder">
+                </div>
+                <button class="main-button" onclick="calcularVelocidadeIndireta()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                <div id="resultado-indireto" class="resultado"></div>
+            </div>
+            <div id="calc-bobina" class="calculadora hidden" role="tabpanel">
+                <h2><i class="fas fa-scroll"></i> <span data-i18n="correia.coil_length">Cálculo de Comprimento de Correia em Bobina</span></h2>
+                <div class="input-group">
+                    <label for="bobina-d-externo"><i class="fas fa-arrows-alt-h"></i> <span data-i18n="correia.ext_dia">Diâmetro Externo da Bobina (mm)</span></label>
+                    <input type="number" id="bobina-d-externo" placeholder="Ex: 1200" class="campo-calculo" data-i18n-placeholder="correia.ext_dia_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="bobina-d-interno"><i class="fas fa-arrows-alt-h"></i> <span data-i18n="correia.int_dia">Diâmetro Interno da Bobina (furo) (mm)</span></label>
+                    <input type="number" id="bobina-d-interno" placeholder="Ex: 300" class="campo-calculo" data-i18n-placeholder="correia.int_dia_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="bobina-e-correia"><i class="fas fa-arrows-alt-v"></i> <span data-i18n="correia.belt_thickness">Espessura da Correia (mm)</span></label>
+                    <input type="number" id="bobina-e-correia" placeholder="Ex: 12" class="campo-calculo" data-i18n-placeholder="correia.belt_thickness_placeholder">
+                </div>
+                <button class="main-button" onclick="calcularComprimentoBobina()"><i class="fas fa-calculator"></i> <span data-i18n="calc.btn">Calcular</span></button>
+                <div id="resultado-bobina" class="resultado"></div>
+            </div>
+            <div id="calc-inverso-direto" class="calculadora hidden" role="tabpanel">
+                <h2><i class="fas fa-search"></i> <span data-i18n="correia.find_reducer">Descobrir Relação do Redutor (Acionamento Direto)</span></h2>
+                <div class="input-group">
+                    <label for="inv-direto-velocidade"><i class="fas fa-tachometer-alt"></i> <span data-i18n="correia.belt_speed">Velocidade da Correia (m/min)</span></label>
+                    <input type="number" id="inv-direto-velocidade" placeholder="Ex: 22.9" class="campo-calculo" data-i18n-placeholder="correia.speed_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="inv-direto-n-motor"><i class="fas fa-tachometer-alt"></i> <span data-i18n="correia.motor_rpm">Rotação do Motor (RPM)</span></label>
+                    <input type="number" id="inv-direto-n-motor" placeholder="Ex: 1750" class="campo-calculo" data-i18n-placeholder="correia.rpm_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="inv-direto-d-rolo"><i class="fas fa-circle"></i> <span data-i18n="correia.drive_drum">Diâmetro do Rolo de Tração (mm)</span></label>
+                    <input type="number" id="inv-direto-d-rolo" placeholder="Ex: 250" class="campo-calculo" data-i18n-placeholder="correia.diameter_placeholder">
+                </div>
+                <button class="main-button" onclick="calcularRedutorDireto()"><i class="fas fa-calculator"></i> <span data-i18n="correia.calculate_ratio">Calcular Relação</span></button>
+                <div id="resultado-inverso-direto" class="resultado"></div>
+            </div>
+            <div id="calc-inverso-polias" class="calculadora hidden" role="tabpanel">
+                <h2><i class="fas fa-search-plus"></i> <span data-i18n="correia.find_reducer_pulleys">Descobrir Relação do Redutor (Acionamento com Polias)</span></h2>
+                <div class="input-group">
+                    <label for="inv-polias-velocidade"><i class="fas fa-tachometer-alt"></i> <span data-i18n="correia.belt_speed">Velocidade da Correia (m/min)</span></label>
+                    <input type="number" id="inv-polias-velocidade" placeholder="Ex: 21.8" class="campo-calculo" data-i18n-placeholder="correia.speed_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="inv-polias-n-motor"><i class="fas fa-tachometer-alt"></i> <span data-i18n="correia.motor_rpm">Rotação do Motor (RPM)</span></label>
+                    <input type="number" id="inv-polias-n-motor" placeholder="Ex: 1750" class="campo-calculo" data-i18n-placeholder="correia.rpm_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="inv-polias-d-polia-motora"><i class="fas fa-circle"></i> <span data-i18n="correia.motor_pulley">Diâmetro da Polia do Motor (mm)</span></label>
+                    <input type="number" id="inv-polias-d-polia-motora" placeholder="Ex: 150" class="campo-calculo" data-i18n-placeholder="correia.pulley_diameter_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="inv-polias-d-polia-movida"><i class="fas fa-circle"></i> <span data-i18n="correia.driven_pulley">Diâmetro da Polia no Redutor (mm)</span></label>
+                    <input type="number" id="inv-polias-d-polia-movida" placeholder="Ex: 300" class="campo-calculo" data-i18n-placeholder="correia.pulley_diameter_placeholder">
+                </div>
+                <div class="input-group">
+                    <label for="inv-polias-d-rolo"><i class="fas fa-circle"></i> <span data-i18n="correia.drive_drum">Diâmetro do Rolo de Tração (mm)</span></label>
+                    <input type="number" id="inv-polias-d-rolo" placeholder="Ex: 250" class="campo-calculo" data-i18n-placeholder="correia.diameter_placeholder">
+                </div>
+                <button class="main-button" onclick="calcularRedutorComPolias()"><i class="fas fa-calculator"></i> <span data-i18n="correia.calculate_ratio">Calcular Relação</span></button>
+                <div id="resultado-inverso-polias" class="resultado"></div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js" defer></script>
+    <script src="../shared/i18n.js"></script>
+</body>
+</html>

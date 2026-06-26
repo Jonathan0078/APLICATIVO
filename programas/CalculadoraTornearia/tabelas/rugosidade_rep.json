@@ -1,0 +1,13 @@
+{
+  "title": "Representação de Rugosidade (Símbolos)",
+  "headers": ["Símbolo", "Significado", "Exemplo de Aplicação"],
+  "rows": [
+    ["Ra", "Rugosidade média aritmética", "Ra = 1,6 µm"],
+    ["Rz", "Altura máxima do perfil", "Rz = 6,3 µm"],
+    ["N", "Classe de rugosidade", "N6, N7, N8"],
+    ["", "Sem exigência de acabamento", "Superfície bruta"],
+    ["", "Exigência de acabamento", "Superfície usinada"],
+    ["", "Símbolo com orientação", "Ra = 3,2 µm //"],
+    ["", "Símbolo com tratamento", "Ra = 0,4 µm após polimento"]
+  ]
+}

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title data-i18n="eletrica.curto.title">Curto-Circuito (IEC 60909)</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+<style>
+.curto-badge {
+  font-size: 1.8rem; font-weight: 800; padding: .5rem;
+  text-align: center;
+}
+.curto-badge.kA { color: var(--cor-erro); }
+.curto-badge .unit { font-size: 1rem; font-weight: 600; color: var(--text-secondary); }
+.diagrama-impedancia {
+  background: var(--bg); border-radius: var(--radius-sm); padding: 1rem;
+  margin-bottom: .75rem; font-family: monospace; font-size: .85rem; line-height: 1.8;
+}
+.diagrama-impedancia .fonte { color: var(--primary); }
+.diagrama-impedancia .trafo { color: var(--cor-destaque); }
+.diagrama-impedancia .cabo { color: var(--cor-sucesso); }
+.diagrama-impedancia .motor { color: var(--cor-erro); }
+.diagrama-impedancia .total { color: var(--text); font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-content">
+      <h1 data-i18n="eletrica.curto.title"><i class="fa-solid fa-bolt"></i> Curto-Circuito (IEC 60909)</h1>
+      <div class="theme-switcher">
+        <i class="fa-solid fa-sun"></i>
+        <label class="switch"><input type="checkbox" id="themeToggle"><span class="slider"></span></label>
+        <i class="fa-solid fa-moon"></i>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="card">
+      <h2 data-i18n="eletrica.curto.dados_rede"><i class="fa-solid fa-bolt"></i> Dados da Rede</h2>
+      <div class="input-grid">
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.tensao">Tensão Nominal (V)</label>
+          <select id="tensao">
+            <option value="220" data-i18n="eletrica.curto.tensao_220v">220 V</option>
+            <option value="380" selected data-i18n="eletrica.curto.tensao_380v">380 V</option>
+            <option value="440" data-i18n="eletrica.curto.tensao_440v">440 V</option>
+            <option value="760" data-i18n="eletrica.curto.tensao_760v">760 V</option>
+            <option value="13800" data-i18n="eletrica.curto.tensao_13800">13.8 kV</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.mvasc">Potência de Curto da Concessionária (MVAsc)</label>
+          <select id="mvasc">
+            <option value="100" data-i18n="eletrica.curto.mvasc_100">100 MVA (rede fraca)</option>
+            <option value="250" data-i18n="eletrica.curto.mvasc_250">250 MVA</option>
+            <option value="500" selected data-i18n="eletrica.curto.mvasc_500">500 MVA (típico)</option>
+            <option value="1000" data-i18n="eletrica.curto.mvasc_1000">1000 MVA (rede forte)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 data-i18n="eletrica.curto.trafo_title"><i class="fa-solid fa-industry"></i> Transformador</h2>
+      <div class="input-grid">
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.trafo_potencia">Potência (kVA)</label>
+          <select id="potTrafo">
+            <option value="30" data-i18n="eletrica.curto.potencia_30">30 kVA</option>
+            <option value="45" data-i18n="eletrica.curto.potencia_45">45 kVA</option>
+            <option value="75" data-i18n="eletrica.curto.potencia_75">75 kVA</option>
+            <option value="100" data-i18n="eletrica.curto.potencia_100">100 kVA</option>
+            <option value="150" data-i18n="eletrica.curto.potencia_150">150 kVA</option>
+            <option value="225" data-i18n="eletrica.curto.potencia_225">225 kVA</option>
+            <option value="300" selected data-i18n="eletrica.curto.potencia_300">300 kVA</option>
+            <option value="500" data-i18n="eletrica.curto.potencia_500">500 kVA</option>
+            <option value="750" data-i18n="eletrica.curto.potencia_750">750 kVA</option>
+            <option value="1000" data-i18n="eletrica.curto.potencia_1000">1000 kVA</option>
+            <option value="1500" data-i18n="eletrica.curto.potencia_1500">1500 kVA</option>
+            <option value="2500" data-i18n="eletrica.curto.potencia_2500">2500 kVA</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.trafo_uk">Tensão de Curto (uk%)</label>
+          <select id="uk">
+            <option value="3.5" data-i18n="eletrica.curto.uk_3_5">3.5% (até 25 kVA)</option>
+            <option value="4.0" selected data-i18n="eletrica.curto.uk_4_0">4.0% (30-500 kVA)</option>
+            <option value="5.0" data-i18n="eletrica.curto.uk_5_0">5.0% (500-1000 kVA)</option>
+            <option value="6.0" data-i18n="eletrica.curto.uk_6_0">6.0% (acima 1000 kVA)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.trafo_relacao">Relação X/R do Transformador</label>
+          <select id="xrTrafo">
+            <option value="3" data-i18n="eletrica.curto.xr_3">3 (pequeno)</option>
+            <option value="5" data-i18n="eletrica.curto.xr_5">5</option>
+            <option value="7" selected data-i18n="eletrica.curto.xr_7">7 (típico)</option>
+            <option value="10" data-i18n="eletrica.curto.xr_10">10 (grande)</option>
+            <option value="15" data-i18n="eletrica.curto.xr_15">15 (muito grande)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 data-i18n="eletrica.curto.cabo_title"><i class="fa-solid fa-ruler"></i> Cabo / Alimentador</h2>
+      <div class="input-grid">
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.cabo_secao">Seção (mm²)</label>
+          <select id="secaoCabo">
+            <option value="16" data-i18n="eletrica.curto.secao_16">16 mm²</option>
+            <option value="25" data-i18n="eletrica.curto.secao_25">25 mm²</option>
+            <option value="35" data-i18n="eletrica.curto.secao_35">35 mm²</option>
+            <option value="50" data-i18n="eletrica.curto.secao_50">50 mm²</option>
+            <option value="70" data-i18n="eletrica.curto.secao_70">70 mm²</option>
+            <option value="95" data-i18n="eletrica.curto.secao_95">95 mm²</option>
+            <option value="120" data-i18n="eletrica.curto.secao_120">120 mm²</option>
+            <option value="150" selected data-i18n="eletrica.curto.secao_150">150 mm²</option>
+            <option value="185" data-i18n="eletrica.curto.secao_185">185 mm²</option>
+            <option value="240" data-i18n="eletrica.curto.secao_240">240 mm²</option>
+            <option value="300" data-i18n="eletrica.curto.secao_300">300 mm²</option>
+            <option value="400" data-i18n="eletrica.curto.secao_400">400 mm²</option>
+            <option value="500" data-i18n="eletrica.curto.secao_500">500 mm²</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.cabo_comprimento">Comprimento (m)</label>
+          <input type="number" id="compCabo" value="50" step="5" min="0">
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.cabo_paralelo">Nº de Cabos em Paralelo</label>
+          <select id="nParalelo">
+            <option value="1" selected data-i18n="eletrica.curto.paralelo_1">1 cabo</option>
+            <option value="2" data-i18n="eletrica.curto.paralelo_2">2 cabos</option>
+            <option value="3" data-i18n="eletrica.curto.paralelo_3">3 cabos</option>
+            <option value="4" data-i18n="eletrica.curto.paralelo_4">4 cabos</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.cabo_material">Material</label>
+          <select id="matCabo">
+            <option value="cu" selected data-i18n="eletrica.curto.material_cobre">Cobre</option>
+            <option value="al" data-i18n="eletrica.curto.material_aluminio">Alumínio</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 data-i18n="eletrica.curto.motores_title"><i class="fa-solid fa-motor"></i> Motores (contribuição opcional)</h2>
+      <div class="input-grid">
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.motor_potencia">Potência Total de Motores (kW)</label>
+          <input type="number" id="potMotores" value="0" step="10" min="0" placeholder="0 = ignorar" data-i18n-placeholder="eletrica.curto.motor_placeholder">
+        </div>
+        <div class="input-group">
+          <label data-i18n="eletrica.curto.motor_info"><span style="opacity:.6">A contribuição de motores é estimada em 4× a corrente nominal</span></label>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button class="main-button" onclick="calcular()" data-i18n="eletrica.curto.calcular"><i class="fa-solid fa-bolt"></i> Calcular Curto</button>
+      </div>
+    </div>
+
+    <div class="result-section" id="resultSection" style="display:none">
+      <div class="card">
+        <h2 data-i18n="eletrica.curto.correntes_cc"><i class="fa-solid fa-chart-bar"></i> Correntes de Curto-Circuito</h2>
+        <div class="result-grid">
+          <div class="result-item highlight full">
+            <div class="label" data-i18n="eletrica.curto.ik_simetrico">Corrente de Curto Simétrica (I"k)</div>
+            <div class="value" id="resIk" style="font-size:2rem">—</div>
+          </div>
+          <div class="result-item">
+            <div class="label" data-i18n="eletrica.curto.ip_pico">Corrente de Pico (Ip)</div>
+            <div class="value warning" id="resIp">—</div>
+          </div>
+          <div class="result-item">
+            <div class="label" data-i18n="eletrica.curto.ik_permanente">Corrente Permanente (Ik)</div>
+            <div class="value" id="resIkPerm">—</div>
+          </div>
+          <div class="result-item">
+            <div class="label" data-i18n="eletrica.curto.kappa">Fator κ (kappa)</div>
+            <div class="value" id="resKappa">—</div>
+          </div>
+          <div class="result-item">
+            <div class="label" data-i18n="eletrica.curto.xr_eq">Relação X/R Equivalente</div>
+            <div class="value" id="resXR">—</div>
+          </div>
+          <div class="result-item">
+            <div class="label" data-i18n="eletrica.curto.potencia_curto">Potência de Curto (MVA)</div>
+            <div class="value" id="resMVA">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 data-i18n="eletrica.curto.diagrama"><i class="fa-solid fa-sitemap"></i> Diagrama de Impedâncias</h2>
+        <div class="diagrama-impedancia" id="diagrama"></div>
+      </div>
+
+      <div class="card">
+        <h2 data-i18n="eletrica.curto.contrib_elemento"><i class="fa-solid fa-table"></i> Contribuições por Elemento</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th data-i18n="eletrica.curto.th_elemento">Elemento</th><th data-i18n="eletrica.curto.th_r">R (mΩ)</th><th data-i18n="eletrica.curto.th_x">X (mΩ)</th><th data-i18n="eletrica.curto.th_z">Z (mΩ)</th><th data-i18n="eletrica.curto.th_ik">I"k (kA)</th></tr>
+            </thead>
+            <tbody id="contribBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/i18n.js"></script>
+<script src="shared.js"></script>
+<script>
+function fmt(v) { return v != null ? v.toFixed(2) : '—'; }
+function fmt3(v) { return v != null ? v.toFixed(3) : '—'; }
+function fmt1(v) { return v != null ? v.toFixed(1) : '—'; }
+
+function calcular() {
+  var Un = parseFloat(document.getElementById('tensao').value);
+  var MVAsc = parseFloat(document.getElementById('mvasc').value);
+  var SrT = parseFloat(document.getElementById('potTrafo').value);
+  var uk = parseFloat(document.getElementById('uk').value);
+  var XR_T = parseFloat(document.getElementById('xrTrafo').value);
+  var S_cabo = parseFloat(document.getElementById('secaoCabo').value);
+  var L_cabo = parseFloat(document.getElementById('compCabo').value);
+  var nPar = parseInt(document.getElementById('nParalelo').value);
+  var mat = document.getElementById('matCabo').value;
+  var P_mot = parseFloat(document.getElementById('potMotores').value) || 0;
+
+  var c = 1.1; // fator de tensão IEC 60909 para curto máximo
+
+  // --- 1. Impedância da Rede (concessionária) ---
+  var Z_net = c * (Un * Un) / (MVAsc * 1e6); // em ohms
+  // Relação X/R típica para rede: 15 (alta tensão)
+  var XR_net = 15;
+  var R_net = Z_net / Math.sqrt(1 + XR_net * XR_net);
+  var X_net = R_net * XR_net;
+  Z_net = Math.sqrt(R_net * R_net + X_net * X_net);
+
+  // Converter para mΩ
+  var R_net_m = R_net * 1000;
+  var X_net_m = X_net * 1000;
+  var Z_net_m = Z_net * 1000;
+
+  // --- 2. Impedância do Transformador ---
+  var Z_t = (uk / 100) * (Un * Un) / (SrT * 1000); // em ohms
+  var R_t = Z_t / Math.sqrt(1 + XR_T * XR_T);
+  var X_t = R_t * XR_T;
+  Z_t = Math.sqrt(R_t * R_t + X_t * X_t);
+
+  var R_t_m = R_t * 1000;
+  var X_t_m = X_t * 1000;
+  var Z_t_m = Z_t * 1000;
+
+  // --- 3. Impedância do Cabo ---
+  // Resistência CC a 20°C
+  var r20 = mat === 'cu' ?
+    {16:1.15, 25:0.727, 35:0.524, 50:0.387, 70:0.268, 95:0.193, 120:0.153, 150:0.124, 185:0.0991, 240:0.0754, 300:0.0601, 400:0.0470, 500:0.0366} :
+    {16:1.73, 25:1.09, 35:0.786, 50:0.581, 70:0.402, 95:0.290, 120:0.229, 150:0.186, 185:0.149, 240:0.113, 300:0.0901, 400:0.0705, 500:0.0549};
+  var R20 = r20[S_cabo] || 0.1;
+  // Temperatura do condutor em curto: 145°C (PVC) ou 250°C (EPR) — usar 80°C como aproximação
+  var alpha = mat === 'cu' ? 0.0039 : 0.0040;
+  var R_cabo_80 = R20 * (1 + alpha * (80 - 20)); // Ω/km a 80°C
+  var R_cabo_total = R_cabo_80 * L_cabo / 1000 / nPar; // Ω
+
+  // Reatância aproximada
+  var x_cabo = (S_cabo <= 95) ? 0.08 : 0.07; // mΩ/m
+  var X_cabo_total = x_cabo * L_cabo / 1000 / nPar; // mΩ... wait, no
+  // x_cabo is in mΩ/m, so X = x_cabo * L / nPar in mΩ
+  var X_cabo_mΩ = x_cabo * L_cabo / nPar;
+  var R_cabo_mΩ = R_cabo_total * 1000;
+
+  var Z_cabo_mΩ = Math.sqrt(R_cabo_mΩ * R_cabo_mΩ + X_cabo_mΩ * X_cabo_mΩ);
+
+  // --- 4. Impedância Total até o ponto de falta ---
+  var R_total = R_net_m + R_t_m + R_cabo_mΩ;
+  var X_total = X_net_m + X_t_m + X_cabo_mΩ;
+  var Z_total = Math.sqrt(R_total * R_total + X_total * X_total);
+
+  // --- 5. Corrente de Curto Simétrica (I"k) ---
+  // I"k = c * Un / (√3 * Z_total)  — Z_total em mΩ, Un em V
+  var Ik_sim = (c * Un * 1000) / (Math.sqrt(3) * Z_total); // em A
+  var Ik_sim_kA = Ik_sim / 1000;
+
+  // --- 6. Corrente de Pico (Ip) ---
+  var XR_eq = X_total / R_total;
+  var kappa = 1.02 + 0.98 * Math.exp(-3 * R_total / X_total);
+  var Ip_kA = Math.sqrt(2) * kappa * Ik_sim_kA;
+
+  // --- 7. Contribuição de Motores ---
+  var Ik_mot_kA = 0;
+  var R_mot_m = 0, X_mot_m = 0;
+  if (P_mot > 0) {
+    // Estimar corrente nominal dos motores (rendimento 90%, FP 0.85)
+    var eta = 0.90, fp = 0.85;
+    var In_mot = P_mot * 1000 / (Math.sqrt(3) * Un * eta * fp);
+    // Contribuição típica: 4× In (IEC 60909)
+    Ik_mot_kA = 4 * In_mot / 1000;
+    // Impedância do motor para o curto
+    var Z_mot = (Un / Math.sqrt(3)) / (Ik_mot_kA * 1000) * 1000; // mΩ
+    var XR_mot = 6.5; // típico
+    R_mot_m = Z_mot / Math.sqrt(1 + XR_mot * XR_mot);
+    X_mot_m = R_mot_m * XR_mot;
+  }
+
+  // --- 8. Corrente total com contribuição de motores ---
+  var Ik_total_kA = Ik_sim_kA + Ik_mot_kA;
+
+  // --- 9. Corrente permanente Ik (para curto distante do gerador, Ik ≈ I"k) ---
+  var Ik_perm_kA = Ik_sim_kA; // aproximação para redes supridas por concessionária
+
+  // --- 10. Potência de Curto ---
+  var S_k = Math.sqrt(3) * Un * Ik_total_kA / 1000; // MVA
+
+  // --- Exibir resultados ---
+  document.getElementById('resultSection').style.display = 'block';
+
+  document.getElementById('resIk').textContent = fmt(Ik_total_kA) + ' kA';
+  document.getElementById('resIp').textContent = fmt(Ip_kA) + ' kA';
+  document.getElementById('resIkPerm').textContent = fmt(Ik_perm_kA) + ' kA';
+  document.getElementById('resKappa').textContent = fmt3(kappa);
+  document.getElementById('resXR').textContent = fmt1(XR_eq);
+  document.getElementById('resMVA').textContent = fmt(S_k) + ' MVA';
+
+  // --- Diagrama ---
+  var _t = window.i18n ? window.i18n.t.bind(window.i18n) : function(k){return k;};
+  var diag = document.getElementById('diagrama');
+  diag.innerHTML =
+    '<div class="fonte">▶ ' + _t('eletrica.curto.diag_rede') + ': Z = ' + fmt3(Z_net_m) + ' mΩ  (R=' + fmt3(R_net_m) + ', X=' + fmt3(X_net_m) + ')</div>' +
+    '<div class="trafo">◈ ' + _t('eletrica.curto.diag_trafo') + ' ' + SrT + ' kVA: Z = ' + fmt3(Z_t_m) + ' mΩ  (R=' + fmt3(R_t_m) + ', X=' + fmt3(X_t_m) + ')</div>' +
+    '<div class="cabo">═ ' + _t('eletrica.curto.diag_cabo') + ' ' + S_cabo + ' mm²×' + L_cabo + 'm: Z = ' + fmt3(Z_cabo_mΩ) + ' mΩ  (R=' + fmt3(R_cabo_mΩ) + ', X=' + fmt3(X_cabo_mΩ) + ')</div>' +
+    (P_mot > 0 ? '<div class="motor">⚙ ' + _t('eletrica.curto.diag_motores') + ': I"k = ' + fmt(Ik_mot_kA) + ' kA</div>' : '') +
+    '<hr style="border-color:var(--border);margin:.35rem 0">' +
+    '<div class="total">● ' + _t('eletrica.curto.diag_total') + ' até o ponto de falta: Z = ' + fmt3(Z_total) + ' mΩ  (R=' + fmt3(R_total) + ', X=' + fmt3(X_total) + ')</div>' +
+    '<div class="total" style="color:var(--cor-erro)">● ' + _t('eletrica.curto.diag_curto') + ' I"k = ' + fmt(Ik_total_kA) + ' kA</div>';
+
+  // --- Tabela de contribuições ---
+  var tbody = document.getElementById('contribBody');
+  tbody.innerHTML = '';
+  function addLinha(label, R, X, Z, Ik) {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + label + '</td><td>' + fmt3(R) + '</td><td>' + fmt3(X) + '</td><td>' + fmt3(Z) + '</td><td>' + (Ik ? fmt(Ik) + ' kA' : '—') + '</td>';
+    tbody.appendChild(tr);
+  }
+  addLinha(_t('eletrica.curto.por_rede'), R_net_m, X_net_m, Z_net_m, null);
+  addLinha(_t('eletrica.curto.trafo_title') + ' ' + SrT + ' kVA', R_t_m, X_t_m, Z_t_m, null);
+  addLinha(_t('eletrica.curto.diag_cabo') + ' ' + S_cabo + ' mm²', R_cabo_mΩ, X_cabo_mΩ, Z_cabo_mΩ, null);
+  if (P_mot > 0) addLinha(_t('eletrica.curto.diag_motores') + ' (' + P_mot + ' kW)', R_mot_m, X_mot_m, Math.sqrt(R_mot_m*R_mot_m+X_mot_m*X_mot_m), Ik_mot_kA);
+  addLinha('<strong>' + _t('eletrica.curto.diag_total') + '</strong>', R_total, X_total, Z_total, Ik_total_kA);
+
+  window.scrollTo({ top: document.getElementById('resultSection').offsetTop - 100, behavior: 'smooth' });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+});
+</script>
+</body>
+</html>

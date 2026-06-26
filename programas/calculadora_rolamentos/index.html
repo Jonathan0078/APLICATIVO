@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<script>function start(){}function onHasParentDirectory(){}function addRow(){}</script>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="calc.title">EspecCalc Rolamentos Pro</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+    <script src="../shared/i18n.js"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-gears"></i> <span data-i18n="calc.title">EspecCalc Rolamentos Pro</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-keyboard"></i> <span data-i18n="calc.search_designation">Busca por Designação</span></h2>
+                    <div class="input-group autocomplete-container">
+                        <label for="bearing-spec" data-i18n="calc.type_designation">Digite a designação do rolamento</label>
+                        <input type="text" id="bearing-spec" data-i18n-placeholder="calc.placeholder_designation" placeholder="Ex: 6205-2RS, NU210, 22312 EK..." autocomplete="off">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" id="direct-search-btn"><i class="fa-solid fa-search"></i> <span data-i18n="btn.consult">Consultar</span></button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-ruler-horizontal"></i> <span data-i18n="calc.search_measures">Busca por Medidas (mm)</span></h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="bore-diameter-search" data-i18n="calc.bore">Furo (d)</label>
+                            <input type="number" id="bore-diameter-search" data-i18n-placeholder="calc.placeholder_ex25" placeholder="Ex: 25">
+                        </div>
+                        <div class="input-group">
+                            <label for="outer-diameter-search" data-i18n="calc.outer">Externo (D)</label>
+                            <input type="number" id="outer-diameter-search" data-i18n-placeholder="calc.placeholder_ex52" placeholder="Ex: 52">
+                        </div>
+                        <div class="input-group">
+                            <label for="width-search" data-i18n="calc.width">Largura (B/T)</label>
+                            <input type="number" id="width-search" data-i18n-placeholder="calc.placeholder_ex15" placeholder="Ex: 15">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" id="advanced-search-btn"><i class="fa-solid fa-filter"></i> <span data-i18n="btn.filter">Filtrar</span></button>
+                        <button class="secondary-button" id="clear-btn"><i class="fa-solid fa-eraser"></i> <span data-i18n="btn.clear_all">Limpar Tudo</span></button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-calculator"></i> <span data-i18n="calc.iso_calculator">Calculadora de Furo (ISO 15)</span></h2>
+                     <div class="input-group">
+                        <label for="iso-spec-input" data-i18n="calc.type_iso">Digite a designação (ex: 6204)</label>
+                        <input type="text" id="iso-spec-input" data-i18n-placeholder="calc.placeholder_iso_fast" placeholder="Apenas para cálculo rápido do furo">
+                    </div>
+                    <div class="button-group">
+                        <button class="main-button" id="iso-calculate-btn"><i class="fa-solid fa-bolt"></i> <span data-i18n="btn.calc_bore">Calcular Furo</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="calc.query_result">Resultado da Consulta</span></h2>
+                        <button class="icon-button" id="copy-btn" data-i18n-title="btn.copy_designation" title="Copiar Designação" style="display: none;">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="result-display">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <p data-i18n="calc.waiting_query">Aguardando sua consulta...</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card" id="history-card">
+                    <h2><i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="calc.search_history">Histórico de Buscas</span></h2>
+                    <ul id="history-list">
+                        <li class="history-placeholder" data-i18n="calc.no_history">Nenhuma busca recente.</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

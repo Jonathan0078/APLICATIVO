@@ -1,0 +1,25 @@
+{
+  "name": "Manutenção Industrial Arquivos",
+  "short_name": "MI Arquivos",
+  "description": "Aplicativo mobile para ferramentas de manutenção industrial",
+  "start_url": "/APLICATIVO/",
+  "scope": "/APLICATIVO/",
+  "display": "standalone",
+  "background_color": "#f1f5f9",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/Manutencao_Industrial_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/Manutencao_Industrial_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

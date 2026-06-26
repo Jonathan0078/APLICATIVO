@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="lms.calc_title">SGL - Calculadora de Viscosidade Pro</title>
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#003366">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <button id="menu-toggle-btn" class="icon-button" style="color: white; font-size: 1.5rem;"><i class="fa-solid fa-bars"></i></button>
+                <h1 data-i18n="lms.header"><i class="fa-solid fa-layer-group"></i> SGL Pro</h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i><label class="switch"><input type="checkbox" id="theme-toggle-checkbox"><span class="slider"></span></label><i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <div id="fullscreen-menu" class="fullscreen-menu">
+            <button id="close-menu-btn" class="icon-button close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <nav class="overlay-nav">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-search"></i> Buscador</a>
+                <a href="calculadora.html" class="nav-link"><i class="fa-solid fa-calculator"></i> Calculadora VG</a>
+                <a href="plano.html" class="nav-link"><i class="fa-solid fa-calendar-check"></i> Plano de Lubrificação</a>
+                <a href="mistura.html" class="nav-link"><i class="fa-solid fa-vial"></i> Calculador de Mistura</a>
+                <a href="configuracoes.html" class="nav-link"><i class="fa-solid fa-cogs"></i> Configurações</a>
+            </nav>
+        </div>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card calculator-section">
+                    <h2 data-i18n="lms.calc_section_title"><i class="fas fa-calculator"></i> Configuração Ideal</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="temp-operacao" data-i18n="lms.op_temp">Temp. Operação (°C)</label>
+                            <input type="number" id="temp-operacao" placeholder="Ex: 60" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="tipo-equipamento" data-i18n="lms.equip_type">Tipo de Equipamento</label>
+                            <select id="tipo-equipamento" required>
+                                <option value="" data-i18n="lms.select_type">-- Selecione o tipo --</option>
+                                <option value="redutor_paralelo" data-i18n="lms.eq_redutor_paral">Redutor de Eixos Paralelos</option>
+                                <option value="redutor_semfim" data-i18n="lms.eq_redutor_semfim">Redutor Coroa e Sem-Fim</option>
+                                <option value="hidraulico_palhetas" data-i18n="lms.eq_hid_palhetas">Bomba Hidráulica Palhetas</option>
+                                <option value="hidraulico_pistoes" data-i18n="lms.eq_hid_pistoes">Bomba Hidráulica Pistões</option>
+                                <option value="mancal_deslizamento" data-i18n="lms.eq_mancal">Mancal de Deslizamento</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button id="calculate-button" class="main-button"><i class="fas fa-calculator"></i> <span data-i18n="lms.calc_visc_btn">Calcular Viscosidade</span></button>
+                    </div>
+                </div>
+
+                <div class="card saved-projects-section" style="margin-top: 1.5rem;">
+                    <h2><i class="fas fa-save"></i> <span data-i18n="lms.saved_projects">Projetos Salvos</span></h2>
+                    <div class="input-group">
+                        <label for="project-name" data-i18n="lms.project_name_input">Salvar Cálculo Atual</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="project-name" placeholder="Nome do equipamento">
+                            <button id="save-project-btn" class="icon-button" style="color: var(--cor-sucesso);"><i class="fas fa-save"></i></button>
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                        <label for="saved-projects-select" data-i18n="lms.load_project">Carregar Projeto Salvo</label>
+                        <select id="saved-projects-select" style="margin-bottom: 0.5rem;"><option value="">-- Nenhum --</option></select>
+                        <div class="button-group" style="margin-top: 0;">
+                            <button id="load-project-btn" class="secondary-button" style="padding: 0.5rem;"><i class="fas fa-upload"></i></button>
+                            <button id="delete-project-btn" class="secondary-button" style="padding: 0.5rem; color: var(--cor-erro); border-color: var(--cor-erro);"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <h2><i class="fas fa-chart-line"></i> <span data-i18n="result.title">Recomendação</span></h2>
+                    
+                    <div id="calculator-result" class="hidden resultado-container" style="background-color: rgba(40,167,69,0.05); border-left: 4px solid var(--cor-sucesso); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+                        <h3 data-i18n="lms.recommended_visc" style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 0.5rem;">Viscosidade Recomendada:</h3>
+                        <p id="recommended-vg-text" class="recommended-vg" style="font-size: 2.5rem; font-weight: bold; color: var(--cor-sucesso); margin: 0;"></p>
+                        <p id="calculator-justification" style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);"></p>
+                        <button id="find-oils-button" class="secondary-button hidden" style="margin-top: 1rem; width: 100%;"><i class="fas fa-search"></i> Buscar Óleos com esta Viscosidade</button>
+                    </div>
+
+                    <div id="calculator-search-results-container"></div>
+                    
+                    <div class="result-placeholder" id="calcPlaceholder" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        <i class="fas fa-info-circle" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <p>Preencha os parâmetros e clique em Calcular para projetar o ISO VG ideal.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script type="module" src="js/calculadora.js"></script>
+    <script src="../shared/i18n.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle-btn'); const closeMenu = document.getElementById('close-menu-btn'); const fullscreenMenu = document.getElementById('fullscreen-menu');
+            if(menuToggle) { menuToggle.addEventListener('click', () => { fullscreenMenu.classList.add('active'); document.body.style.overflow = 'hidden'; }); closeMenu.addEventListener('click', () => { fullscreenMenu.classList.remove('active'); document.body.style.overflow = ''; }); }
+            document.querySelectorAll('.overlay-nav .nav-link').forEach(link => { if (link.getAttribute('href') === (window.location.pathname.split('/').pop() || 'calculadora.html')) link.classList.add('active'); });
+            const themeToggleCb = document.getElementById('theme-toggle-checkbox');
+            if (themeToggleCb) {
+                if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-theme'); themeToggleCb.checked = true; }
+                themeToggleCb.addEventListener('change', (e) => { document.body.classList.toggle('dark-theme', e.target.checked); localStorage.setItem('theme', e.target.checked ? 'dark' : 'light'); });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build - MI Arquivos</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    padding: 20px;
+    line-height: 1.6;
+}
+.container { max-width: 720px; margin: 0 auto; }
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+    background: linear-gradient(145deg,#0f172a,#1e3a5f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.sub { color: #64748b; font-size: .9rem; margin-bottom: 24px; }
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+label { display: block; font-weight: 600; font-size: .85rem; margin: 12px 0 4px; }
+label:first-child { margin-top: 0; }
+input, textarea, select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font: inherit;
+    font-size: .9rem;
+}
+input:focus, textarea:focus { outline: 2px solid #1e3a5f; border-color: transparent; }
+textarea { resize: vertical; min-height: 100px; font-family: monospace; }
+.row { display: flex; gap: 12px; }
+.row > * { flex: 1; }
+.check-row { display: flex; align-items: center; gap: 8px; margin: 12px 0; }
+.check-row input { width: auto; }
+.check-row label { margin: 0; }
+.btn {
+    background: linear-gradient(145deg,#0f172a,#1e3a5f);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+}
+.btn:hover { opacity: .9; }
+.btn-secondary {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+.output-section { display: none; }
+.output-section.visible { display: block; }
+pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: .8rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 8px 0;
+}
+.copy-btn {
+    background: #1e3a5f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: .75rem;
+    cursor: pointer;
+    float: right;
+}
+.copy-btn:hover { opacity: .8; }
+.download-btn {
+    display: inline-block;
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: .85rem;
+    text-decoration: none;
+    margin-top: 8px;
+}
+.download-btn:hover { opacity: .9; }
+.diff-line { font-family: monospace; font-size: .85rem; padding: 2px 0; }
+.diff-old { color: #dc2626; }
+.diff-new { color: #16a34a; }
+.hint { font-size: .8rem; color: #64748b; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Preparar Build</h1>
+<p class="sub">Preencha os dados da nova versão e gere os arquivos atualizados.</p>
+
+<form id="buildForm" onsubmit="generate(event)">
+<div class="card">
+    <div class="row">
+        <div>
+            <label>Versão</label>
+            <input type="text" id="version" value="1.0.7" placeholder="1.0.7">
+        </div>
+        <div>
+            <label>Version Code</label>
+            <input type="number" id="versionCode" value="11" placeholder="11">
+        </div>
+    </div>
+
+    <label>Mensagem da atualização (curta)</label>
+    <input type="text" id="updateMessage" value="Correções e melhorias" placeholder="Correções e melhorias">
+
+    <label>Changelog (um item por linha)</label>
+    <textarea id="changelog" placeholder="Item 1&#10;Item 2&#10;Item 3"></textarea>
+
+    <div class="check-row">
+        <input type="checkbox" id="forceUpdate">
+        <label for="forceUpdate">Atualização obrigatória</label>
+    </div>
+
+    <div class="row">
+        <div>
+            <label>Minimum Version</label>
+            <input type="text" id="minimumVersion" value="1.0.0">
+        </div>
+        <div>
+            <label>Minimum Version Code</label>
+            <input type="number" id="minimumVersionCode" value="4">
+        </div>
+    </div>
+</div>
+
+<button type="submit" class="btn">Gerar arquivos</button>
+</form>
+
+<div class="output-section" id="output">
+    <div class="card">
+        <h2 style="font-size:1rem;margin-bottom:8px">version.json</h2>
+        <button class="copy-btn" onclick="copy('versionJson')">Copiar</button>
+        <pre id="versionJson"></pre>
+        <button class="download-btn" onclick="downloadVersionJson()">Baixar version.json</button>
+    </div>
+
+    <div class="card">
+        <h2 style="font-size:1rem;margin-bottom:8px">script.js — alterar linhas 387-388</h2>
+        <pre id="scriptJsDiff"></pre>
+        <button class="copy-btn" onclick="copy('scriptJsDiff')">Copiar</button>
+    </div>
+
+    <div class="card">
+        <h2 style="font-size:1rem;margin-bottom:8px">sw.js — alterar linha 7</h2>
+        <pre id="swJsDiff"></pre>
+        <button class="copy-btn" onclick="copy('swJsDiff')">Copiar</button>
+    </div>
+
+    <div class="card" style="background:#fef9c3;border:1px solid #facc15">
+        <p style="font-size:.85rem">Depois de substituir os arquivos no repositório, faça commit e push. O Service Worker vai detectar a mudança e atualizar o cache dos usuários.</p>
+    </div>
+</div>
+</div>
+
+<script>
+function generate(e) {
+    e.preventDefault();
+    const version = document.getElementById('version').value.trim();
+    const versionCode = parseInt(document.getElementById('versionCode').value, 10);
+    const updateMessage = document.getElementById('updateMessage').value.trim();
+    const changelogRaw = document.getElementById('changelog').value.trim();
+    const forceUpdate = document.getElementById('forceUpdate').checked;
+    const minimumVersion = document.getElementById('minimumVersion').value.trim() || '1.0.0';
+    const minimumVersionCode = parseInt(document.getElementById('minimumVersionCode').value, 10) || 1;
+    const today = new Date().toISOString().slice(0,10);
+
+    const changelog = changelogRaw
+        .split('\n')
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+
+    const ver = {
+        version,
+        versionCode,
+        updateDate: today,
+        updateMessage,
+        forceUpdate,
+        minimumVersion,
+        minimumVersionCode,
+        changelog
+    };
+
+    document.getElementById('versionJson').textContent = JSON.stringify(ver, null, 2);
+    document.getElementById('scriptJsDiff').textContent =
+        `const APP_VERSION = '${version}';\nconst APP_VERSION_CODE = ${versionCode};`;
+    document.getElementById('swJsDiff').textContent =
+        `var SW_VERSION = ${versionCode};`;
+
+    document.getElementById('output').classList.add('visible');
+    document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copy(id) {
+    const el = document.getElementById(id);
+    navigator.clipboard.writeText(el.textContent).then(() => {
+        const btn = el.parentElement.querySelector('.copy-btn');
+        const orig = btn.textContent;
+        btn.textContent = 'Copiado!';
+        setTimeout(() => btn.textContent = orig, 1500);
+    });
+}
+
+function downloadVersionJson() {
+    const blob = new Blob([document.getElementById('versionJson').textContent], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'version.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>

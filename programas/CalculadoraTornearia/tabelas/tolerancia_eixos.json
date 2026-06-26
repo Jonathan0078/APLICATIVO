@@ -1,0 +1,14 @@
+{
+  "title": "Tolerância Dimensional - Eixos",
+  "headers": ["Classe", "Limite Superior (mm)", "Limite Inferior (mm)", "Aplicação"],
+  "rows": [
+    ["f7", "+0,025", "+0,004", "Ajuste deslizante"],
+    ["g6", "+0,014", "-0,006", "Ajuste de transição"],
+    ["h6", "0", "-0,011", "Ajuste justo"],
+    ["j6", "+0,006", "-0,019", "Ajuste de interferência leve"],
+    ["k6", "+0,014", "-0,025", "Ajuste de interferência"],
+    ["m6", "+0,025", "-0,040", "Ajuste de interferência forte"],
+    ["p6", "+0,040", "-0,060", "Ajuste especial"],
+    ["r6", "+0,060", "-0,080", "Ajuste para cargas elevadas"]
+  ]
+}
