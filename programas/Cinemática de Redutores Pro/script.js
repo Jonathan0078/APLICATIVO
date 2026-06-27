@@ -2,19 +2,61 @@ let currentTab = 'eixos';
 
 // Estado em memória do último cálculo (usado pelo botão "Copiar Resumo")
 let lastCalculo = null;
+// Mapa para busca rápida de rolamentos a partir da base de dados completa
+let rolamentosMap = {};
 
 // Base de referência aproximada de rolamentos comuns (N de elementos, Bd e Pd em mm)
 // Valores de catálogo padrão (tabelas usuais de análise de vibração). Para máxima
 // precisão, prefira inserir N / Bd / Pd manualmente a partir da folha de dados do fabricante.
-const BEARING_DB = {
-    '6204': { N: 8, Bd: 7.94,  Pd: 28.5 },
+const BEARING_EXTRA_DATA = {
+    // Série 60xx
+    '6000': { N: 7, Bd: 4.76, Pd: 18.0 },
+    '6001': { N: 8, Bd: 4.76, Pd: 20.0 },
+    '6002': { N: 8, Bd: 5.56, Pd: 23.5 },
+    '6003': { N: 8, Bd: 6.35, Pd: 26.0 },
+    '6004': { N: 7, Bd: 7.94, Pd: 31.0 },
+    '6005': { N: 8, Bd: 7.94, Pd: 36.0 },
+    '6006': { N: 8, Bd: 9.52, Pd: 42.5 },
+    '6007': { N: 8, Bd: 10.32, Pd: 48.5 },
+    '6008': { N: 8, Bd: 11.11, Pd: 54.0 },
+    '6009': { N: 8, Bd: 12.70, Pd: 60.0 },
+    '6010': { N: 8, Bd: 12.70, Pd: 65.0 },
+
+    // Série 62xx
+    '6200': { N: 7, Bd: 5.95, Pd: 20.0 },
+    '6201': { N: 8, Bd: 4.76, Pd: 22.0 },
+    '6202': { N: 8, Bd: 5.95, Pd: 25.0 },
+    '6203': { N: 8, Bd: 7.14, Pd: 28.5 },
+    '6204': { N: 8, Bd: 7.94,  Pd: 33.5 },
     '6205': { N: 9, Bd: 7.94,  Pd: 38.5 },
     '6206': { N: 9, Bd: 9.53,  Pd: 46.5 },
     '6207': { N: 9, Bd: 11.51, Pd: 53.5 },
     '6208': { N: 9, Bd: 12.70, Pd: 60.0 },
-    '6308': { N: 8, Bd: 14.29, Pd: 65.0 },
-    '6309': { N: 8, Bd: 15.08, Pd: 71.5 },
-    '6310': { N: 8, Bd: 17.46, Pd: 77.5 }
+    '6209': { N: 9, Bd: 13.49, Pd: 65.0 },
+    '6210': { N: 9, Bd: 14.29, Pd: 70.0 },
+    '6211': { N: 9, Bd: 15.88, Pd: 77.5 },
+    '6212': { N: 9, Bd: 17.46, Pd: 85.0 },
+    '6213': { N: 9, Bd: 19.05, Pd: 92.5 },
+    '6214': { N: 8, Bd: 20.64, Pd: 97.5 },
+    '6215': { N: 8, Bd: 22.22, Pd: 102.5 },
+
+    // Série 63xx
+    '6300': { N: 7, Bd: 7.14, Pd: 22.5 },
+    '6301': { N: 7, Bd: 7.94, Pd: 24.5 },
+    '6302': { N: 7, Bd: 9.52, Pd: 28.5 },
+    '6303': { N: 7, Bd: 10.32, Pd: 32.0 },
+    '6304': { N: 7, Bd: 11.11, Pd: 36.0 },
+    '6305': { N: 7, Bd: 13.49, Pd: 43.5 },
+    '6306': { N: 7, Bd: 15.88, Pd: 51.0 },
+    '6307': { N: 8, Bd: 15.88, Pd: 57.5 },
+    '6308': { N: 8, Bd: 17.46, Pd: 65.0 },
+    '6309': { N: 8, Bd: 19.05, Pd: 72.5 },
+    '6310': { N: 8, Bd: 20.64, Pd: 80.0 },
+    '6311': { N: 8, Bd: 22.22, Pd: 87.5 },
+    '6312': { N: 8, Bd: 23.81, Pd: 95.0 },
+    '6313': { N: 8, Bd: 25.40, Pd: 102.5 },
+    '6314': { N: 8, Bd: 26.99, Pd: 110.0 },
+    '6315': { N: 8, Bd: 28.57, Pd: 117.5 }
 };
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -26,6 +68,16 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.add('dark-theme');
             themeToggle.checked = true;
         }
+    }
+
+    // Constrói o mapa de rolamentos a partir da base de dados para busca rápida
+    if (typeof rolamentosDB_data !== 'undefined') {
+        rolamentosMap = rolamentosDB_data.reduce((map, bearing) => {
+            if (bearing.designacao) {
+                map[bearing.designacao.toUpperCase().trim()] = bearing;
+            }
+            return map;
+        }, {});
     }
 
     // Montagem inicial de campos vazios/padrão
@@ -453,17 +505,53 @@ function preencherDoDB(shaftIdx) {
     const refEl = document.getElementById(`bearingRef-${shaftIdx}`);
     if (!refEl) return;
 
-    const refRaw = refEl.value.toUpperCase().replace(/[^0-9]/g, '');
-    const dados = BEARING_DB[refRaw];
-    if (!dados) return;
+    const ref = refEl.value.toUpperCase().trim();
+    if (!ref) return;
 
     const nEl = document.getElementById(`bearingN-${shaftIdx}`);
     const bdEl = document.getElementById(`bearingBd-${shaftIdx}`);
     const pdEl = document.getElementById(`bearingPd-${shaftIdx}`);
+    const resultEl = document.getElementById(`bearingResult-${shaftIdx}`);
+    if (resultEl) resultEl.innerHTML = ''; // Limpa resultados/mensagens anteriores
 
-    if (nEl) nEl.value = dados.N;
-    if (bdEl) bdEl.value = dados.Bd;
-    if (pdEl) pdEl.value = dados.Pd;
+    // Limpa os campos antes de preencher para evitar dados antigos
+    if (nEl) nEl.value = '';
+    if (bdEl) bdEl.value = '';
+    if (pdEl) pdEl.value = '';
+
+    let n, bd, pd;
+    let foundInExtra = false;
+
+    // 1. Tenta encontrar na base de dados completa (rolamentosMap)
+    const dadosRolamento = rolamentosMap[ref];
+    if (dadosRolamento && dadosRolamento.d && dadosRolamento.D) {
+        // Calcula o diâmetro primitivo (Pd) aproximado
+        pd = (parseFloat(dadosRolamento.d) + parseFloat(dadosRolamento.D)) / 2;
+    }
+
+    // 2. Tenta encontrar na base de dados extra para dados mais precisos (N, Bd, Pd)
+    // A base extra usa chaves simplificadas (só números), então limpamos a referência
+    const refSimplificada = ref.replace(/[^0-9]/g, '');
+    const dadosExtra = BEARING_EXTRA_DATA[refSimplificada];
+    if (dadosExtra) {
+        n = dadosExtra.N;
+        bd = dadosExtra.Bd;
+        pd = dadosExtra.Pd; // Sobrescreve o Pd calculado se houver um mais preciso
+        foundInExtra = true;
+    }
+
+    // 3. Preenche os campos com os dados encontrados
+    if (n && nEl) nEl.value = n;
+    if (bd && bdEl) bdEl.value = bd;
+    if (pd && pdEl) pdEl.value = pd.toFixed(2); // Usar ponto decimal para consistência com parseFloat
+
+    // 4. Exibe mensagem se apenas dados parciais foram encontrados
+    if (pd && !foundInExtra && resultEl) {
+        resultEl.innerHTML = `<div class="resultado-container info" style="font-size: 0.85rem; padding: 0.6rem;">
+            Rolamento encontrado na base principal. <strong>Pd preenchido.</strong><br>
+            Para calcular as frequências, por favor, insira manualmente o <strong>Nº de Elementos (N)</strong> e o <strong>Diâmetro da Esfera (Bd)</strong>.
+        </div>`;
+    }
 }
 
 function calcularRolamento(shaftIdx) {
