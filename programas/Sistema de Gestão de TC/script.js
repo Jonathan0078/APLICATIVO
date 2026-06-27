@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         data.id = Date.now();
-        data.dateAdded = new Date().toLocaleDateString(i18n.currentLang === 'pt' ? 'pt-BR' : (i18n.currentLang === 'en' ? 'en-US' : 'es-ES'));
+        data.dateAdded = new Date().toLocaleDateString(i18n.current === 'pt' ? 'pt-BR' : (i18n.current === 'en' ? 'en-US' : 'es-ES'));
 
         if (storageKey === 'planos_RASP' || storageKey === 'planos_IMPACT') {
             const prefix = storageKey.split('_')[1];
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
         
         const items = JSON.parse(localStorage.getItem(storageKey)) || [];
-        let dateLocale = i18n.currentLang === 'pt' ? 'pt-BR' : (i18n.currentLang === 'en' ? 'en-US' : 'es-ES');
+        let dateLocale = i18n.current === 'pt' ? 'pt-BR' : (i18n.current === 'en' ? 'en-US' : 'es-ES');
         let html = `<h3>${i18n.t('tc.saved_records')} (${items.length})</h3>`;
         
         if (items.length === 0) {
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let itemContent = '';
                 switch(storageKey) {
                     case 'inspecoesGerais':
-                        itemContent = `<p><strong>${i18n.t('tc.tc_label')}:</strong> ${item.transportador} | <strong>${i18n.t('tc.inspector')}:</strong> ${item.inspetor}</p><p><strong>${i18n.t('tc.date')}:</strong> ${new Date(item.data).toLocaleDateString(dateLocale,{timeZone:'UTC'})} | <strong>${i18n.t('tc.saved_at')}:</strong> ${item.dateAdded}</p><p><strong>${i18n.t('tc.obs')}:</strong> ${item.observacoes || 'N/A'}</p>`;
+                        itemContent = `<p><strong>${i18n.t('tc.tc_label')}:</strong> ${item.transportador} | <strong>${i18n.t('tc.inspector')}:</strong> ${item.inspetor}</p><p><strong>${i18n.t('tc.date')}:</strong> ${new Date(item.data).toLocaleDateString(dateLocale,{timeZone:'UTC'})} | <strong>${i18n.t('tc.saved_at')}:</strong> ${item.dateAdded}</p><p><strong>${i18n.t('tc.obs')}:</strong> ${item.observacoes || i18n.t('common.na')}</p>`;
                         break;
                     case 'planosPreventivos':
                         itemContent = `<p><strong>${i18n.t('tc.tc_label')}:</strong> ${item.transportador} | <strong>${i18n.t('tc.frequency')}:</strong> ${item.frequencia}</p><p><strong>${i18n.t('tc.tasks')}:</strong> ${item.tarefas.replace(/\n/g, ', ')}</p>`;

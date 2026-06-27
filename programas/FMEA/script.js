@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${item.responsavel}</td>
                 <td>${prazoFormatado}</td>
                 <td><span class="status-cell ${getStatusClass(item.status)}">${item.status}</span></td>
-                <td class="${getRpnColorClass(item.novoRpn)}">${item.novoRpn || 'N/A'}</td>
+                <td class="${getRpnColorClass(item.novoRpn)}">${item.novoRpn || i18n.t('common.na')}</td>
                 <td class="action-buttons">
                     <button class="action-button button-secondary" data-action="edit" data-index="${originalIndex}">${i18n.t('fmea.edit')}</button>
                     <button class="action-button button-danger" data-action="delete" data-index="${originalIndex}">${i18n.t('fmea.delete')}</button>
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.controlesAtuais || '', String(item.s || ''), String(item.o || ''), String(item.d || ''),
             String(item.rpn || ''), item.acoesRecomendadas || '', item.responsavel || '',
             item.prazo ? new Date(item.prazo + 'T00:00:00').toLocaleDateString() : '',
-            item.status || '', item.novoRpn ? String(item.novoRpn) : 'N/A'
+            item.status || '', item.novoRpn ? String(item.novoRpn) : i18n.t('common.na')
         ]);
 
         const autoTableConfig = {
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast(i18n.t('fmea.table_empty_csv'), 'error');
             return;
         }
-        const headers = [i18n.t('fmea.item_function_col'), i18n.t('fmea.failure_mode_col'), i18n.t('fmea.failure_effect'), i18n.t('fmea.failure_cause'), i18n.t('fmea.current_controls'), 'S', 'O', 'D', 'RPN', i18n.t('fmea.recommended_actions'), i18n.t('fmea.responsible'), i18n.t('fmea.deadline'), i18n.t('fmea.status'), i18n.t('fmea.actions_taken'), 'Nova S', 'Nova O', 'Nova D', 'Novo RPN'];
+        const headers = [i18n.t('fmea.item_function_col'), i18n.t('fmea.failure_mode_col'), i18n.t('fmea.failure_effect'), i18n.t('fmea.failure_cause'), i18n.t('fmea.current_controls'), 'S', 'O', 'D', 'RPN', i18n.t('fmea.recommended_actions'), i18n.t('fmea.responsible'), i18n.t('fmea.deadline'), i18n.t('fmea.status'), i18n.t('fmea.actions_taken'), i18n.t('fmea.new_severity_short'), i18n.t('fmea.new_occurrence_short'), i18n.t('fmea.new_detection_short'), i18n.t('fmea.col_new_rpn')];
         const csvRows = [headers.join(',')];
         fmeaData.forEach(item => {
             const values = [item.itemFuncao, item.modoFalha, item.efeitoFalha, item.causaFalha, item.controlesAtuais, item.s, item.o, item.d, item.rpn, item.acoesRecomendadas, item.responsavel, item.prazo, item.status, item.acoesRealizadas, item.novaS, item.novaO, item.novaD, item.novoRpn].map(v => `"${String(v || '').replace(/"/g, '""')}"`);

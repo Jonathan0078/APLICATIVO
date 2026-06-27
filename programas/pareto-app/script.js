@@ -40,24 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const parts = line.split(',');
             if (parts.length < 2) {
-                throw new Error(`Formato inválido na linha ${index + 1}. Use 'Causa, Valor'.`);
+                throw new Error(i18n.t('pareto.error_format', { line: index + 1 }));
             }
             
             const cause = parts[0].trim();
             const value = parseFloat(parts.slice(1).join(',').trim()); // Permite vírgulas na causa
 
             if (isNaN(value)) {
-                throw new Error(`Valor não numérico na linha ${index + 1}.`);
+                throw new Error(i18n.t('pareto.error_non_numeric', { line: index + 1 }));
             }
              if (value < 0) {
-                throw new Error(`Valor não pode ser negativo na linha ${index + 1}.`);
+                throw new Error(i18n.t('pareto.error_negative', { line: index + 1 }));
             }
 
             return { cause, value };
         }).filter(item => item !== null); // Remove linhas vazias
 
         if (items.length === 0) {
-            throw new Error('Nenhum dado válido foi fornecido.');
+            throw new Error(i18n.t('pareto.error_no_data'));
         }
 
         // 2. Ordenar os itens em ordem decrescente de valor
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     yAxisID: 'y-axis-values',
                 }, {
                     type: 'line',
-                    label: '% Acumulada',
+                    label: i18n.t('pareto.cumulative'),
                     data: data.cumulativePercentages,
                     borderColor: 'rgba(255, 199, 44, 1)',
                     backgroundColor: 'rgba(255, 199, 44, 0.2)',
@@ -116,13 +116,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     'y-axis-values': {
                         beginAtZero: true,
                         position: 'left',
-                        title: { display: true, text: 'Frequência / Custo' }
+                        title: { display: true,                     text: i18n.t('pareto.frequency') }
                     },
                     'y-axis-percentage': {
                         min: 0,
                         max: 100,
                         position: 'right',
-                        title: { display: true, text: 'Percentual Acumulado (%)' },
+                        title: { display: true,                     text: i18n.t('pareto.cumulative_pct') },
                         ticks: { callback: value => value + '%' },
                         grid: { drawOnChartArea: false },
                     }

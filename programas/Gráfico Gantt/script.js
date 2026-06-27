@@ -78,8 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
             taskEl.style.backgroundColor = task.isMilestone ? 'var(--cor-destaque)' : task.color || 'var(--primary)';
             
             const progress = task.progress || 0;
-            const startDateFormatted = new Date(task.start).toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'});
-            const endDateFormatted = new Date(task.end).toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'});
+            const loc = i18n.current === 'pt' ? 'pt-BR' : (i18n.current === 'en' ? 'en-US' : 'es-ES');
+            const startDateFormatted = new Date(task.start).toLocaleDateString(loc, {day: '2-digit', month: '2-digit'});
+            const endDateFormatted = new Date(task.end).toLocaleDateString(loc, {day: '2-digit', month: '2-digit'});
 
             if (task.isMilestone) {
                 taskEl.innerHTML = `
@@ -156,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     exportXlsxButton.addEventListener('click', () => {
         const data = tasks.map(t => ({ 'ID': t.id, [i18n.t('gantt.xlsx_name')]: t.name, [i18n.t('gantt.xlsx_start')]: t.start, [i18n.t('gantt.xlsx_end')]: t.end, [i18n.t('gantt.xlsx_duration')]: getTaskDuration(t), [i18n.t('gantt.xlsx_progress')]: t.progress || 0, [i18n.t('gantt.xlsx_milestone')]: t.isMilestone ? i18n.t('gantt.xlsx_yes') : i18n.t('gantt.xlsx_no') }));
         const worksheet = XLSX.utils.json_to_sheet(data); const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Tarefas"); XLSX.writeFile(workbook, "tarefas.xlsx");
+        XLSX.utils.book_append_sheet(workbook, worksheet, i18n.t('gantt.xlsx_sheet')); XLSX.writeFile(workbook, "tarefas.xlsx");
     });
     
     // FUNÇÃO DE EXPORTAR PDF
