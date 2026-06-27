@@ -24,7 +24,21 @@ function populateBearingList(searchTerm) {
             item.addEventListener('click', function() {
                 onBearingSelect(parseInt(this.dataset.index));
             });
+            item.addEventListener('touchstart', function(e) {
+                this._touchStartX = e.changedTouches[0].clientX;
+                this._touchStartY = e.changedTouches[0].clientY;
+                this._touchMoved = false;
+            }, { passive: true });
+            item.addEventListener('touchmove', function(e) {
+                var t = e.changedTouches[0];
+                var dx = Math.abs(t.clientX - this._touchStartX);
+                var dy = Math.abs(t.clientY - this._touchStartY);
+                if (dx > 10 || dy > 10) {
+                    this._touchMoved = true;
+                }
+            }, { passive: true });
             item.addEventListener('touchend', function(e) {
+                if (this._touchMoved) return; // foi scroll, não toque - ignora seleção
                 e.preventDefault();
                 onBearingSelect(parseInt(this.dataset.index));
             });
