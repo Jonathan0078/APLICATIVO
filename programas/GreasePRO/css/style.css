@@ -503,6 +503,7 @@ body.dark-theme .modal-content { background: var(--surface); }
     font-family: var(--font);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
 }
 
 .bearing-list:focus {
