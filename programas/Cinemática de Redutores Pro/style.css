@@ -1,0 +1,442 @@
+/* --- FUNDACAO E IDENTIDADE VISUAL --- */
+@import url('../../shared/base.css');
+
+:root {
+    /* TEMA CLARO (PADRAO) */
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --text: #212529;
+    --text-secondary: #6c757d;
+    --border: #dee2e6;
+    --shadow: 0 2px 8px rgba(0,0,0,0.07);
+
+    /* Cores de destaque padrao do repositorio */
+    --primary: #2563eb;
+    --secondary: #003366;
+    --cor-destaque: #ffc107;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+    --accent-light: #fff3cd;
+
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --transition: 0.3s ease;
+}
+
+body.dark-theme {
+    /* TEMA ESCURO */
+    --bg: #0a1929;
+    --surface: #112233;
+    --text: #e9ecef;
+    --text-secondary: #8696a7;
+    --border: #334b61;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    --primary: #3b82f6;
+}
+
+/* --- ESTILOS GERAIS E LAYOUT --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
+body {
+    font-family: var(--font);
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background-color var(--transition), color var(--transition);
+    -webkit-text-size-adjust: 100%;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%; 
+}
+
+/* --- HEADER REFINADO --- */
+.app-header {
+    background: linear-gradient(145deg, #0f172a 0%, #1e3a5f 50%, #1a365d 100%);
+    color: white;
+    padding: 0.9rem 1rem;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    position: sticky;
+    top: 0;
+}
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+.header-content h1 {
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+}
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.25); transition: .4s; border-radius: 26px; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--cor-destaque); }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* --- LAYOUT PRINCIPAL (GRID) --- */
+.app-main {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+}
+.app-main > * { min-width: 0; }
+#guia-referencia-card,
+#comparacao-oleos-card {
+    grid-column: 1 / -1;
+}
+#inputs-column, #outputs-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* CONTENCAO CONTRA ESTOURO HORIZONTAL EM CONTAINERS FLEX */
+#inputs-column, 
+#outputs-column, 
+.card, 
+.tab-content {
+    min-width: 0 !important;
+    max-width: 100% !important;
+}
+
+/* --- CARDS E TITULOS --- */
+.card {
+    background-color: var(--surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: all var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+.card h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+body.dark-theme .card h2 { color: var(--text); }
+
+/* --- FORMULARIOS E INPUTS --- */
+.input-group { margin-bottom: 1rem; }
+.input-group label {
+    display: block;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: .4rem;
+}
+.input-group select,
+.input-group input[type="text"],
+.input-group input[type="number"] {
+    width: 100%;
+    padding: .7rem .85rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg);
+    color: var(--text);
+    font-size: .9rem;
+    transition: border-color .2s, box-shadow .2s;
+}
+.input-group select:focus, .input-group input:focus {
+    outline: none;
+    border-color: var(--cor-destaque);
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.15);
+}
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr));
+    gap: 1rem;
+}
+
+/* --- BOTOES --- */
+.button-group { display: flex; gap: .75rem; margin-top: auto; padding-top: 1rem; }
+.main-button, .secondary-button {
+    padding: .85rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: .9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1;
+}
+.main-button {
+    background-color: var(--primary);
+    color: white;
+}
+.secondary-button {
+    background-color: transparent;
+    color: var(--primary);
+    border: 2px solid var(--border);
+}
+body.dark-theme .secondary-button { color: var(--text); }
+.main-button:hover { opacity: 0.9; }
+.secondary-button:hover { background: var(--bg); }
+body.dark-theme .secondary-button:hover { background: var(--border); }
+.main-button:active, .secondary-button:active { transform: scale(.98); }
+
+/* --- RESULTADOS --- */
+.resultado-container { margin-top: 1.5rem; padding: 1rem; border-radius: var(--radius-sm); transition: all 0.3s ease; }
+.resultado-container h3 { margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.resultado-display { display: flex; flex-direction: column; gap: 0.5rem; }
+.result-main-text { font-size: 1.2rem; font-weight: bold; }
+.result-sub-text { color: var(--text-secondary); font-size: 0.9rem; }
+.resultado-container.success { border-left: 4px solid var(--cor-sucesso); background-color: rgba(40, 167, 69, 0.1); }
+.resultado-container.warning { border-left: 4px solid var(--cor-destaque); background-color: var(--accent-light); }
+.resultado-container.error { border-left: 4px solid var(--cor-erro); background-color: rgba(220, 53, 69, 0.1); }
+body.dark-theme .resultado-container.success { background-color: rgba(40, 167, 69, 0.2); }
+body.dark-theme .resultado-container.warning { background-color: rgba(255, 193, 7, 0.2); }
+body.dark-theme .resultado-container.error { background-color: rgba(220, 53, 69, 0.2); }
+.hidden { display: none !important; }
+
+#results-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+}
+#results-card .card-header h2 {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- ESTILOS PARA A TABELA DE MULTIPLOS RESULTADOS --- */
+.table-container,
+#comparisonTableContainer { overflow-x: auto; width: 100%; max-width: 100%; }
+.comparison-table { width: 100%; border-collapse: collapse; text-align: left; }
+.comparison-table th, .comparison-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+.comparison-table thead { background-color: var(--bg); }
+.comparison-table tbody tr:hover { background-color: var(--bg); }
+.remove-btn { background: transparent; border: 1px solid var(--cor-erro); color: var(--cor-erro); padding: .25rem .5rem; border-radius: var(--radius-sm); cursor: pointer; transition: all .2s; }
+.remove-btn:hover { background: var(--cor-erro); color: white; }
+
+/* --- TABS (ESPELHADAS NOS BOTOES DE ACAO DO SISTEMA) --- */
+.tabs { 
+    display: flex; 
+    gap: 0.75rem; 
+    padding-bottom: 1.2rem; 
+    border-bottom: 1px solid var(--border); 
+    margin-bottom: 1.2rem; 
+    width: 100%; 
+}
+
+.tab {
+    padding: 0.85rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1;
+    background-color: transparent;
+    color: var(--primary);
+    text-align: center;
+    line-height: 1.2;
+    user-select: none;
+}
+
+body.dark-theme .tab {
+    color: var(--text);
+}
+
+.tab:hover:not(.active) {
+    background: var(--bg);
+}
+
+body.dark-theme .tab:hover:not(.active) {
+    background: var(--border);
+}
+
+.tab:active {
+    transform: scale(0.98);
+}
+
+.tab.active { 
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.chart-container { position: relative; height: 300px; width: 100%; }
+.info-box { background: var(--bg); padding: 1rem; border-radius: var(--radius-sm); margin-top: 1rem; font-size: 0.9rem; }
+
+/* --- RESPONSIVIDADE DESKTOP --- */
+@media (min-width: 1024px) {
+    .app-main {
+        grid-template-columns: 1fr 1fr; 
+        gap: 1.5rem;
+        padding: 1.5rem;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+    #inputs-column, #outputs-column {
+        gap: 1.5rem;
+    }
+}
+
+/* --- ADAPTACAO DE TABELAS PARA MOBILE (SEM SCROLL HORIZONTAL) --- */
+@media (max-width: 768px) {
+    .no-scroll-mobile {
+        overflow-x: hidden !important;
+        padding-bottom: 0;
+    }
+    
+    .responsive-table, 
+    .responsive-table tbody, 
+    .responsive-table tr, 
+    .responsive-table td {
+        display: block;
+        width: 100%;
+    }
+    
+    .responsive-table thead {
+        display: none; 
+    }
+    
+    .responsive-table tr {
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background-color: var(--surface);
+        overflow: hidden;
+    }
+    
+    body.dark-theme .responsive-table tr {
+        background-color: rgba(0, 0, 0, 0.2); 
+    }
+
+    .responsive-table td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid var(--border);
+        border-top: none; 
+    }
+    
+    .responsive-table td:last-child {
+        border-bottom: none;
+    }
+    
+    .responsive-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--primary);
+        margin-bottom: 0.4rem;
+        display: block;
+    }
+
+    body.dark-theme .responsive-table td::before {
+        color: var(--text-secondary);
+    }
+
+    /* ESPECIFICO DO CELULAR: FORCA CABECALHO E CELULAS A QUEBRAREM LINHA */
+    .comparison-table {
+        table-layout: fixed !important;
+        width: 100% !important;
+    }
+    
+    .comparison-table th, 
+    .comparison-table td {
+        padding: 0.6rem 0.35rem !important;
+        font-size: 0.82rem !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+}
+
+/* --- COMPONENTES DINAMICOS DO MODULO REDUTORES --- */
+.stage-card {
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    transition: all var(--transition);
+}
+body.dark-theme .stage-card {
+    background-color: rgba(0, 0, 0, 0.18);
+}
+.stage-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px dashed var(--border);
+}
+.stage-card-header strong {
+    font-size: 0.92rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+body.dark-theme .stage-card-header strong {
+    color: var(--cor-destaque);
+}
+
+/* ESTADO AGUARDANDO CALCULO */
+.app-main.aguardando-calculo {
+    grid-template-columns: minmax(0, 850px) !important;
+    justify-content: center;
+}
+.app-main.aguardando-calculo #outputs-column {
+    display: none !important;
+}
