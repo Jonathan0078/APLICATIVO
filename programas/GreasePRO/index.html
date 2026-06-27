@@ -171,26 +171,26 @@
 
                     injectCalculatorStyles(doc);
 
-                    if (inputs) inputsColumn.innerHTML = inputs.innerHTML;
-
-                    if (outputs) {
-                        var calcResultsCard = outputs.querySelector('#results-card');
-                        if (calcResultsCard) {
-                            resultsCard.outerHTML = calcResultsCard.outerHTML;
-                            resultsCard = document.getElementById('results-card');
-                        }
-                    }
-
-                    var modal = doc.getElementById('catalog-modal');
-                    if (modal && !document.getElementById('catalog-modal')) {
-                        document.body.appendChild(modal.cloneNode(true));
-                    }
-
                     var headScripts = Array.from(doc.querySelectorAll('head script[src]')).filter(function(s) {
                         var src = s.getAttribute('src') || '';
                         return !SKIP_SRCS.some(function(skip) { return src.indexOf(skip) !== -1; });
                     });
-                    loadScriptsSequentially(headScripts);
+                    loadScriptsSequentially(headScripts, function() {
+                        if (inputs) inputsColumn.innerHTML = inputs.innerHTML;
+
+                        if (outputs) {
+                            var calcResultsCard = outputs.querySelector('#results-card');
+                            if (calcResultsCard) {
+                                resultsCard.outerHTML = calcResultsCard.outerHTML;
+                                resultsCard = document.getElementById('results-card');
+                            }
+                        }
+
+                        var modal = doc.getElementById('catalog-modal');
+                        if (modal && !document.getElementById('catalog-modal')) {
+                            document.body.appendChild(modal.cloneNode(true));
+                        }
+                    });
                 } else {
                     resultsCard.innerHTML = '<div class="card-header"><h2><i class="fas fa-chart-simple"></i> ' + i18n.t('greasepro.results') + '</h2></div><div class="result-placeholder"><i class="fas fa-triangle-exclamation" style="color:var(--cor-erro)"></i><span>' + i18n.t('greasepro.error_prefix') + 'Falha ao ler arquivo local</span></div>';
                 }
