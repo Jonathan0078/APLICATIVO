@@ -577,18 +577,15 @@ class UpdateManager {
         var overlay = document.createElement('div');
         overlay.className = 'update-notification-overlay';
         overlay.innerHTML = `
-            <div class="update-notification-card playstore-update${forceClass}">
-                <div class="update-icon" style="background:linear-gradient(135deg,#34a853,#1a8c3a)"><i class="fab fa-google-play"></i></div>
+            <div class="update-notification-card${forceClass}">
+                <div class="update-icon"><i class="fas fa-sync-alt"></i></div>
                 <h3>${forceUpdate ? _t('update.force') : _t('update.available')}</h3>
                 <p class="update-version">${_t('update.version').replace('{v}', data ? data.version : '')}</p>
-                <p class="update-message">${_t('update.store_message')}</p>
+                <p class="update-message">Uma nova versão dos códigos já está disponível no servidor.</p>
                 ${changelogHTML}
-                <div class="update-details">
-                    <p>${_t('update.how_to')}</p>
-                    <ol><li>${_t('update.step1')}</li><li>${_t('update.step2')}</li><li>${_t('update.step3')}</li></ol>
-                </div>
+                ${forceUpdate ? '<p class="update-warning">' + _t('update.force_message') + '</p>' : ''}
                 <div class="update-actions">
-                    <button class="update-btn update-playstore" onclick="UpdateManagerInstance.openPlayStore()"><i class="fab fa-google-play"></i> ${_t('update.go_store')}</button>
+                    <button class="update-btn update-now" onclick="UpdateManagerInstance.installWebUpdate()"><i class="fas fa-download"></i> Atualizar agora</button>
                     ${forceUpdate ? '' : '<button class="update-btn update-later" onclick="UpdateManagerInstance.dismissUpdate()">' + _t('common.mais_tarde') + '</button>'}
                 </div>
             </div>`;
@@ -729,36 +726,6 @@ async manualCheck() {
         if (!result) this.showNoUpdateNotification();
         return result;
     }
-
-    showApkStoreRedirect() {
-        var existingNotification = document.querySelector('.update-notification-overlay');
-        if (existingNotification) existingNotification.remove();
-
-        var overlay = document.createElement('div');
-        overlay.className = 'update-notification-overlay';
-        overlay.innerHTML = `
-            <div class="update-notification-card playstore-update">
-                <div class="update-icon" style="background:linear-gradient(135deg,#34a853,#1a8c3a)">
-                    <i class="fab fa-google-play"></i>
-                </div>
-                <h3>Verificar Atualização</h3>
-                <p class="update-message" style="margin-top: 8px;">
-                    Para verificar se há uma nova versão disponível, acesse a página oficial do aplicativo na Play Store.
-                </p>
-                <div class="update-actions" style="margin-top: 20px;">
-                    <button class="update-btn update-playstore" onclick="UpdateManagerInstance.openPlayStore()">
-                        <i class="fab fa-google-play"></i> Abrir Play Store
-                    </button>
-                    <button class="update-btn update-later" onclick="UpdateManagerInstance.dismissUpdate()">
-                        Fechar
-                    </button>
-                </div>
-            </div>`;
-
-        document.body.appendChild(overlay);
-        document.body.style.overflow = 'hidden';
-    }
-
 
     showNoUpdateNotification() {
         const existingToast = document.querySelector('.toast-notification');
