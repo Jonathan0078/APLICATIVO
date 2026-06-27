@@ -28,10 +28,10 @@ function renderCylinders() {
     var html = '';
     cylinders.forEach(function(c) {
         html += '<div class="cylinder-row" data-id="' + c.id + '">' +
-            '<div class="input-group"><label>' + i18n.t('consumo_ar.diam_mm') + '</label><input type="number" class="cyl-diam" value="63" step="0.1" min="1"></div>' +
-            '<div class="input-group"><label>' + i18n.t('consumo_ar.curso_mm') + '</label><input type="number" class="cyl-curso" value="200" step="1" min="1"></div>' +
-            '<div class="input-group"><label>' + i18n.t('consumo_ar.pressao_bar') + '</label><input type="number" class="cyl-pressao" value="6" step="0.1" min="0.1"></div>' +
-            '<div class="input-group"><label>' + i18n.t('consumo_ar.ciclos_min') + '</label><input type="number" class="cyl-ciclos" value="10" step="0.5" min="0.1"></div>' +
+            '<div class="input-group"><label>' + i18n.t('consumo_ar.diam_mm') + '</label><input type="number" class="cyl-diam" value="63" step="0.1" min="1" data-i18n-placeholder="consumo_ar.diam_ph"></div>' +
+            '<div class="input-group"><label>' + i18n.t('consumo_ar.curso_mm') + '</label><input type="number" class="cyl-curso" value="200" step="1" min="1" data-i18n-placeholder="consumo_ar.curso_ph"></div>' +
+            '<div class="input-group"><label>' + i18n.t('consumo_ar.pressao_bar') + '</label><input type="number" class="cyl-pressao" value="6" step="0.1" min="0.1" data-i18n-placeholder="consumo_ar.pressao_bar_ph"></div>' +
+            '<div class="input-group"><label>' + i18n.t('consumo_ar.ciclos_min') + '</label><input type="number" class="cyl-ciclos" value="10" step="0.5" min="0.1" data-i18n-placeholder="consumo_ar.ciclos_ph"></div>' +
             '<button class="btn-remove" onclick="removeCylinder(' + c.id + ')"><i class="fa-solid fa-trash"></i></button>' +
             '</div>';
     });
