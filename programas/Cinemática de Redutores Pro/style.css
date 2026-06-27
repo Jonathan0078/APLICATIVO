@@ -93,7 +93,7 @@ body {
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.25); transition: .4s; border-radius: 26px; }
 .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-input:checked + .slider { background-color: var(--cor-destaque); }
+input:checked + .slider { background-color: var(--primary); }
 input:checked + .slider:before { transform: translateX(24px); }
 
 /* --- LAYOUT PRINCIPAL (GRID) --- */
@@ -183,34 +183,60 @@ body.dark-theme .card h2 { color: var(--text); }
 
 /* --- BOTOES --- */
 .button-group { display: flex; gap: .75rem; margin-top: auto; padding-top: 1rem; }
+
 .main-button, .secondary-button {
-    padding: .85rem;
+    padding: .85rem 1.2rem;
     border: none;
     border-radius: var(--radius-sm);
     font-size: .9rem;
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
-    transition: all var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
     flex: 1;
+    user-select: none;
 }
+
 .main-button {
-    background-color: var(--primary);
-    color: white;
+    background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
 }
+
 .secondary-button {
     background-color: transparent;
     color: var(--primary);
     border: 2px solid var(--border);
 }
-body.dark-theme .secondary-button { color: var(--text); }
-.main-button:hover { opacity: 0.9; }
-.secondary-button:hover { background: var(--bg); }
-body.dark-theme .secondary-button:hover { background: var(--border); }
-.main-button:active, .secondary-button:active { transform: scale(.98); }
+
+body.dark-theme .secondary-button { 
+    color: var(--text);
+    border-color: #475569; 
+}
+
+.main-button:hover { 
+    transform: translateY(-1.5px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    opacity: 0.96;
+}
+
+.secondary-button:hover { 
+    background: rgba(37, 99, 235, 0.06); 
+    border-color: var(--primary);
+}
+
+body.dark-theme .secondary-button:hover { 
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #64748b;
+}
+
+.main-button:active, .secondary-button:active { 
+    transform: translateY(0); 
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
 
 /* --- RESULTADOS --- */
 .resultado-container { margin-top: 1.5rem; padding: 1rem; border-radius: var(--radius-sm); transition: all 0.3s ease; }
@@ -399,6 +425,53 @@ body.dark-theme .tab:hover:not(.active) {
         word-wrap: break-word !important;
         overflow-wrap: break-word !important;
     }
+
+    /* Oculta termo secundário no header mobile */
+    .hide-mobile { display: none; }
+
+    /* Preset Row: Força bruta de Grid 2x2 no Mobile */
+    .preset-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.6rem !important;
+    }
+    .preset-select {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+    }
+    .preset-btn {
+        width: 100% !important;
+        height: 46px !important;
+    }
+
+    /* Abas de navegação: Grid 2x2 ergonômico no celular */
+    .tabs {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.5rem !important;
+        border-bottom: none !important;
+        padding-bottom: 0.5rem !important;
+    }
+    .tab {
+        width: 100% !important;
+        padding: 0.75rem 0.25rem !important;
+        font-size: 0.82rem !important;
+    }
+
+    /* Empilha botões principais de processamento do redutor */
+    #inputs-column .button-group {
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+    #inputs-column .button-group button {
+        width: 100%;
+    }
+
+    /* Expande Touch Target da lixeira de estágios para uso com luva */
+    .stage-card-header .remove-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 1rem;
+    }
 }
 
 /* --- COMPONENTES DINAMICOS DO MODULO REDUTORES --- */
@@ -439,4 +512,123 @@ body.dark-theme .stage-card-header strong {
 }
 .app-main.aguardando-calculo #outputs-column {
     display: none !important;
+}
+
+/* --- PRESETS DE ATIVOS --- */
+.preset-row {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+.preset-select {
+    flex: 1;
+    padding: .7rem .85rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg);
+    color: var(--text);
+    font-size: .85rem;
+}
+.preset-btn {
+    flex: 0 0 auto;
+    width: 44px;
+    padding: 0;
+}
+.preset-btn-danger {
+    color: var(--cor-erro);
+    border-color: var(--cor-erro);
+}
+.preset-btn-danger:hover {
+    background: var(--cor-erro);
+    color: white;
+}
+
+/* --- BOTAO COPIAR RESUMO --- */
+.copy-resumo-btn {
+    flex: 0 0 auto;
+    padding: .5rem .85rem;
+    font-size: .8rem;
+    width: auto;
+}
+
+/* --- MODULO DE ROLAMENTOS --- */
+.bearing-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: .4rem .65rem;
+    border-radius: var(--radius-sm);
+    font-size: .78rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    transition: all .2s;
+    white-space: nowrap;
+}
+.bearing-toggle-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+body.dark-theme .bearing-toggle-btn {
+    color: var(--text);
+    border-color: var(--border);
+}
+body.dark-theme .bearing-toggle-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+.bearing-row td {
+    background-color: var(--bg);
+}
+.bearing-form {
+    padding: .9rem 0;
+}
+.bearing-result {
+    margin-top: .5rem;
+}
+
+/* --- BADGES (FATOR DE COBERTURA) --- */
+.badge {
+    display: inline-block;
+    padding: .3rem .65rem;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 700;
+}
+.badge-warning {
+    background-color: var(--accent-light);
+    color: #946200;
+}
+.badge-success {
+    background-color: rgba(40, 167, 69, 0.15);
+    color: var(--cor-sucesso);
+}
+body.dark-theme .badge-warning {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: var(--cor-destaque);
+}
+body.dark-theme .badge-success {
+    background-color: rgba(40, 167, 69, 0.25);
+}
+
+/* --- ALERTA DE RESSONANCIA --- */
+.resonance-alert {
+    margin-top: 0;
+    margin-bottom: 1.2rem;
+}
+.resonance-alert ul li {
+    margin-bottom: .3rem;
+}
+
+/* --- EFEITOS DE FEEDBACK SENSORIAL (UX) --- */
+@keyframes pulse-preset {
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); border-color: var(--cor-sucesso); }
+    70% { box-shadow: 0 0 0 8px rgba(40, 167, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+.preset-loaded-fx {
+    animation: pulse-preset 0.8s ease-out;
 }

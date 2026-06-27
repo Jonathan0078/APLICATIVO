@@ -6,14 +6,14 @@
     <title>Calculadora de Frequências de Redutores Pro</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon"> 
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
     <div class="app-container">
         <header class="app-header">
             <div class="header-content">
-                <h1><i class="fa-solid fa-gears"></i> <span>Cinemática de Redutores Pro</span></h1>
+                <h1><i class="fa-solid fa-gears"></i> <span>Cinemática de Redutores <span class="hide-mobile">Pro</span></span></h1>
                 <div class="theme-switcher">
                     <i class="fa-solid fa-sun"></i>
                     <label class="switch">
@@ -29,10 +29,27 @@
             <div id="inputs-column">
                 <div class="card">
                     <h2><i class="fa-solid fa-gauge-high"></i> <span>Parâmetros de Entrada</span></h2>
-                    
+
+                    <div class="input-group">
+                        <label for="nomeAtivo">Nome do Equipamento (Tag)</label>
+                        <input type="text" id="nomeAtivo" placeholder="Ex: Redutor Forno 01">
+                    </div>
+
                     <div class="input-group">
                         <label for="rpmIn">Rotação do Motor / Eixo de Alta (RPM)</label>
                         <input type="number" id="rpmIn" placeholder="Ex: 1750" step="any" value="1750">
+                    </div>
+
+                    <div class="preset-row">
+                        <select id="presetSelect" class="preset-select">
+                            <option value="">-- Carregar Ativo Salvo --</option>
+                        </select>
+                        <button type="button" class="secondary-button preset-btn" onclick="salvarAtivoAtual()" title="Salvar Máquina Atual">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                        </button>
+                        <button type="button" class="secondary-button preset-btn preset-btn-danger" onclick="excluirAtivoSelecionado()" title="Excluir Ativo Selecionado">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
 
                     <h2 style="margin-top: 1rem;"><i class="fa-solid fa-cogs"></i> <span>Trem de Engrenamentos</span></h2>
@@ -52,25 +69,33 @@
                 <div class="card" id="results-card">
                     <div class="card-header">
                         <h2><i class="fa-solid fa-wave-square"></i> <span>Espectro Cinemático (Hz)</span></h2>
+                        <button type="button" class="secondary-button copy-resumo-btn" id="copyResumoBtn" onclick="copiarResumo()" title="Copiar Resumo para Laudo">
+                            <i class="fa-solid fa-copy"></i> <span>Copiar Resumo</span>
+                        </button>
                     </div>
+
+                    <div id="resonance-alert-container"></div>
                     
                     <div class="tabs">
-                        <div class="tab active" onclick="showTab('eixos', event)">Frequências dos Eixos (1X)</div>
+                        <div class="tab active" onclick="showTab('eixos', event)">Eixos (1X)</div>
                         <div class="tab" onclick="showTab('gmf', event)">Engrenamento (GMF)</div>
+                        <div class="tab" onclick="showTab('bandas', event)">Bandas Laterais</div>
+                        <div class="tab" onclick="showTab('diagnostico', event)">Diagnóstico</div>
                     </div>
                     
                     <div id="eixos-tab" class="tab-content active">
                         <div class="table-container">
-                            <table class="comparison-table">
+                            <table class="comparison-table responsive-table">
                                 <thead>
                                     <tr>
                                         <th>Eixo</th>
                                         <th>Rotação Calculada</th>
                                         <th>Fundamental (1X)</th>
+                                        <th>Rolamento</th>
                                     </tr>
                                 </thead>
                                 <tbody id="outEixos">
-                                    <tr><td colspan="3" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
+                                    <tr><td colspan="4" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -81,7 +106,7 @@
                     
                     <div id="gmf-tab" class="tab-content">
                         <div class="table-container">
-                            <table class="comparison-table">
+                            <table class="comparison-table responsive-table">
                                 <thead>
                                     <tr>
                                         <th>Estágio</th>
@@ -98,6 +123,52 @@
                         </div>
                         <div class="info-box">
                             <strong>Diagnóstico GMF:</strong> Altas amplitudes na frequência de engrenamento ou em suas harmônicas (2X, 3X) evidenciam desgaste nos dentes, folga excessiva (backlash) ou excentricidade da coroa.
+                        </div>
+                    </div>
+
+                    <div id="bandas-tab" class="tab-content">
+                        <div class="table-container">
+                            <table class="comparison-table responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th>Estágio</th>
+                                        <th>Eixo Modulador</th>
+                                        <th>GMF -2X</th>
+                                        <th>GMF -1X</th>
+                                        <th>GMF Central</th>
+                                        <th>GMF +1X</th>
+                                        <th>GMF +2X</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="outBandas">
+                                    <tr><td colspan="7" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="info-box">
+                            <strong>Diagnóstico de Bandas Laterais:</strong> Picos simétricos ao redor da GMF, espaçados pela rotação de um dos eixos, indicam modulação em amplitude — sinal de dente trincado, quebrado ou excentricidade severa da engrenagem daquele eixo.
+                        </div>
+                    </div>
+
+                    <div id="diagnostico-tab" class="tab-content">
+                        <div class="table-container">
+                            <table class="comparison-table responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th>Estágio</th>
+                                        <th>Dente Caçador (fHT)</th>
+                                        <th>MDC (Z/Z)</th>
+                                        <th>Fator de Cobertura</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="outDiagnostico">
+                                    <tr><td colspan="4" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="info-box">
+                            <strong>Dente Caçador:</strong> frequência muito baixa em que o mesmo par de dentes defeituosos volta a se encontrar — não aparece em 1X nem na GMF.<br>
+                            <strong>Fator de Cobertura:</strong> quando o MDC entre os dentes motor/movido é maior que 1, os mesmos pares de dente se tocam repetidamente, concentrando o desgaste.
                         </div>
                     </div>
                 </div>
@@ -139,6 +210,18 @@
                                 <td data-label="Fórmula Cinemática">GMF ± (n × 1X Eixo)</td>
                                 <td data-label="Origem Física">Modulação em amplitude por choque cíclico.</td>
                                 <td data-label="Modo de Falha Crítico">Dente trincado, quebrado ou excentricidade severa da engrenagem.</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Assinatura Espectral"><strong>Dente Caçador (Hunting Tooth)</strong></td>
+                                <td data-label="Fórmula Cinemática">GMF / MMC(Z_mot, Z_mov)</td>
+                                <td data-label="Origem Física">Reencontro periódico do mesmo par específico de dentes.</td>
+                                <td data-label="Modo de Falha Crítico">Marca de usinagem ou batida de transporte localizada em dois dentes específicos.</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Assinatura Espectral"><strong>Rolamento (BPFI/BPFO/BSF)</strong></td>
+                                <td data-label="Fórmula Cinemática">Função de N, Bd, Pd, ângulo de contato</td>
+                                <td data-label="Origem Física">Passagem dos elementos rolantes pelos defeitos das pistas.</td>
+                                <td data-label="Modo de Falha Crítico">Defeito na pista interna, externa ou nas esferas/rolos.</td>
                             </tr>
                         </tbody>
                     </table>
