@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Frequências de Redutores Pro</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-gears"></i> <span>Cinemática de Redutores Pro</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main aguardando-calculo">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-gauge-high"></i> <span>Parâmetros de Entrada</span></h2>
+                    
+                    <div class="input-group">
+                        <label for="rpmIn">Rotação do Motor / Eixo de Alta (RPM)</label>
+                        <input type="number" id="rpmIn" placeholder="Ex: 1750" step="any" value="1750">
+                    </div>
+
+                    <h2 style="margin-top: 1rem;"><i class="fa-solid fa-cogs"></i> <span>Trem de Engrenamentos</span></h2>
+                    
+                    <div id="stagesContainer"></div>
+
+                    <div class="button-group">
+                        <button class="main-button" onclick="calculateGearbox()"><i class="fa-solid fa-calculator"></i> <span>Calcular Espectro</span></button>
+                        <button class="secondary-button" onclick="addStage()"><i class="fa-solid fa-plus"></i> <span>Adicionar Estágio</span></button>
+                    </div>
+                    
+                    <div id="error-container" class="resultado-container error hidden"></div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="results-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-wave-square"></i> <span>Espectro Cinemático (Hz)</span></h2>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" onclick="showTab('eixos', event)">Frequências dos Eixos (1X)</div>
+                        <div class="tab" onclick="showTab('gmf', event)">Engrenamento (GMF)</div>
+                    </div>
+                    
+                    <div id="eixos-tab" class="tab-content active">
+                        <div class="table-container">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Eixo</th>
+                                        <th>Rotação Calculada</th>
+                                        <th>Fundamental (1X)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="outEixos">
+                                    <tr><td colspan="3" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="info-box">
+                            <strong>Diagnóstico 1X:</strong> Picos elevados coincidentes com a frequência fundamental de rotação de qualquer um dos eixos indicam desbalanceamento mássico, empenamento ou desalinhamento severo.
+                        </div>
+                    </div>
+                    
+                    <div id="gmf-tab" class="tab-content">
+                        <div class="table-container">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Estágio</th>
+                                        <th>Dentes (Mot/Mov)</th>
+                                        <th>GMF (1X)</th>
+                                        <th>2X GMF</th>
+                                        <th>3X GMF</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="outGmf">
+                                    <tr><td colspan="5" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="info-box">
+                            <strong>Diagnóstico GMF:</strong> Altas amplitudes na frequência de engrenamento ou em suas harmônicas (2X, 3X) evidenciam desgaste nos dentes, folga excessiva (backlash) ou excentricidade da coroa.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" id="guia-referencia-card">
+                <h2><i class="fa-solid fa-book-bookmark"></i> <span>Guia de Referência: Assinaturas Espectrais</span></h2>
+                <div class="table-container no-scroll-mobile">
+                    <table class="comparison-table responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Assinatura Espectral</th>
+                                <th>Fórmula Cinemática</th>
+                                <th>Origem Física</th>
+                                <th>Modo de Falha Crítico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Assinatura Espectral"><strong>1X do Eixo</strong></td>
+                                <td data-label="Fórmula Cinemática">RPM / 60</td>
+                                <td data-label="Origem Física">Giro excêntrico da massa do eixo.</td>
+                                <td data-label="Modo de Falha Crítico">Desbalanceamento, empenamento mecânico ou desalinhamento.</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Assinatura Espectral"><strong>GMF (Engrenamento)</strong></td>
+                                <td data-label="Fórmula Cinemática">1X Eixo × Z Dentes</td>
+                                <td data-label="Origem Física">Impacto elástico natural dos dentes sob carga.</td>
+                                <td data-label="Modo de Falha Crítico">Desgaste abrasivo do flanco ou sobrecarga operacional severa.</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Assinatura Espectral"><strong>Harmônicas (2X, 3X GMF)</strong></td>
+                                <td data-label="Fórmula Cinemática">N × GMF</td>
+                                <td data-label="Origem Física">Deformação não-linear do perfil de engrenamento.</td>
+                                <td data-label="Modo de Falha Crítico">Folga entre dentes fora de especificação (backlash) ou falha em rolamento.</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Assinatura Espectral"><strong>Bandas Laterais (±1X)</strong></td>
+                                <td data-label="Fórmula Cinemática">GMF ± (n × 1X Eixo)</td>
+                                <td data-label="Origem Física">Modulação em amplitude por choque cíclico.</td>
+                                <td data-label="Modo de Falha Crítico">Dente trincado, quebrado ou excentricidade severa da engrenagem.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
