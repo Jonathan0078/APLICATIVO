@@ -1539,4 +1539,3 @@ const rolamentosDB_data = [
     { "designacao": "214", "d": 252, "D": 20184, "B": 260, "tipo": "Rolo Esférico" }
 ];
 
-export default rolamentosDB_data;
