@@ -20,7 +20,11 @@ function populateBearingList(searchTerm) {
             item.className = 'bearing-list-item';
             item.setAttribute('role', 'option');
             item.dataset.index = i;
-            item.textContent = b.designacao + '  \u2022  \u00D8' + b.D + '\u00D7' + b.B + 'mm  \u2022  ' + b.tipo;
+            
+            // [Alteração Cirúrgica 1]: Resolve largura B ou T para exibição na lista
+            var w = b.B !== undefined ? b.B : (b.T !== undefined ? b.T : '-');
+            item.textContent = b.designacao + '  \u2022  \u00D8' + b.D + '\u00D7' + w + 'mm  \u2022  ' + b.tipo;
+            
             item.addEventListener('click', function() {
                 onBearingSelect(parseInt(this.dataset.index));
             });
@@ -64,14 +68,16 @@ function populateBearingList(searchTerm) {
     }
 }
 
+// [Alteração Cirúrgica 2]: Resolve largura B ou T no clique de preenchimento dos inputs
 function onBearingSelect(index) {
     if (isNaN(index)) return;
     var b = rolamentosDB_data[index];
+    var w = b.B !== undefined ? b.B : (b.T !== undefined ? b.T : '');
     document.getElementById('diametro').value = b.D;
-    document.getElementById('ancho').value = b.B;
+    document.getElementById('ancho').value = w;
     document.getElementById('bearingSearch').value = '';
     mmaIn(b.D);
-    mmaIn2(b.B);
+    mmaIn2(w);
     toggleBearingSelector();
 }
 
