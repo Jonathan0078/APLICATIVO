@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="task-details">
                             <div class="task-date-info">
                                 ${startDateFormatted} - ${endDateFormatted}<br>
-                                <small>${getTaskDuration(task)} dias</small>
+                                <small>${getTaskDuration(task)} ${window.i18n.t('gantt.days')}</small>
                             </div>
                             <div class="progress-input-wrapper">
                                 <input type="number" class="task-progress-input" value="${progress.toFixed(0)}" min="0" max="100" data-task-id="${task.id}"/>

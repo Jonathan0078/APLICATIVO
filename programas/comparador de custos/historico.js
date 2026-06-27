@@ -18,13 +18,13 @@ function limparHistoricoComparador() {
 
 // Explicações dos campos para ajuda interativa
 const explicacoesCampos = {
-  'custo-parada': 'Custo total de produção parada por falha, incluindo perdas de produção, atrasos e outros impactos financeiros.',
-  'custo-pecas': 'Custo médio das peças trocadas a cada falha, considerando componentes principais e acessórios.',
-  'custo-mao-obra': 'Custo médio de mão de obra por intervenção, incluindo horas extras, deslocamento e equipe.',
-  'falhas-ano': 'Quantas vezes, em média, ocorre falha por ano neste equipamento ou linha.',
-  'intervalo-prev': 'A cada quantos meses é feita a manutenção preventiva planejada.',
-  'custo-prev': 'Custo médio de cada manutenção preventiva, incluindo peças, mão de obra e insumos.',
-  'inflacao': 'Percentual médio de inflação anual para simular o aumento dos custos ao longo do tempo.'
+  'custo-parada': 'custos.help.custo-parada',
+  'custo-pecas': 'custos.help.custo-pecas',
+  'custo-mao-obra': 'custos.help.custo-mao-obra',
+  'falhas-ano': 'custos.help.falhas-ano',
+  'intervalo-prev': 'custos.help.intervalo-prev',
+  'custo-prev': 'custos.help.custo-prev',
+  'inflacao': 'custos.help.inflacao'
 };
 
 // Exibe explicação em popup próximo ao campo (mouse e toque)
@@ -34,10 +34,10 @@ function mostrarAjuda(id, texto, evento) {
     ajuda = document.createElement('div');
     ajuda.id = 'ajuda-' + id;
     ajuda.className = 'ajuda-popup';
-    ajuda.innerText = texto || explicacoesCampos[id] || '';
+    ajuda.innerText = texto || (window.i18n && window.i18n.t(explicacoesCampos[id])) || explicacoesCampos[id] || '';
     document.body.appendChild(ajuda);
   } else {
-    ajuda.innerText = texto || explicacoesCampos[id] || '';
+    ajuda.innerText = texto || (window.i18n && window.i18n.t(explicacoesCampos[id])) || explicacoesCampos[id] || '';
   }
   // Detecta evento de toque ou mouse
   let x = 0, y = 0;

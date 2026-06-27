@@ -386,7 +386,7 @@ tr:nth-child(even) { background: var(--bg); }
         </div>
         <div class="input-group">
             <label data-i18n="circunf.diam_furo">Diâmetro do Furo (opcional) <span class="unit-label">mm</span></label>
-            <input type="number" id="inputHoleDia" class="calc-input" value="" min="0.1" step="0.1" placeholder="Opcional">
+            <input type="number" id="inputHoleDia" class="calc-input" value="" min="0.1" step="0.1" data-i18n-placeholder="circunf.ph_opcional" placeholder="Opcional">
         </div>
     </div>
 
@@ -603,7 +603,7 @@ function drawSVG(pcd, n, holeDia, angleDeg) {
         txt.setAttribute('font-size', '14');
         txt.setAttribute('fill', '#64748b');
         txt.setAttribute('font-family', 'sans-serif');
-        txt.textContent = 'Insira os dados para gerar o gráfico';
+        txt.textContent = window.i18n.t('circunf.placeholder_graph');
         svg.appendChild(txt);
         return;
     }

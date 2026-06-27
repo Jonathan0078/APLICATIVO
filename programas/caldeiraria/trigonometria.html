@@ -1343,7 +1343,7 @@
         var svg = document.getElementById('arcSvg');
         var W = 260, H = 180;
         if (!data) {
-            svg.innerHTML = '<text x="130" y="95" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;">Calcule para ver o diagrama</text>';
+            svg.innerHTML = '<text x="130" y="95" style="fill:var(--text-secondary);font-size:13px;font-family:var(--font);text-anchor:middle;" data-i18n="calderaria.trigonometria.placeholder_diagrama">Calcule para ver o diagrama</text>';
             return;
         }
         var R = data.R, theta = data.theta, chord = data.chord, sagitta = data.sagitta;

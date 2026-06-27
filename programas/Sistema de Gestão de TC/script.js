@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         break;
                     case 'planos_RASP':
                     case 'planos_IMPACT':
-                        itemContent = `<p><strong>TAG:</strong> ${item.tag}</p><p><strong>${i18n.t('tc.tc_label')}:</strong> ${item.transportador}</p><p><strong>${i18n.t('tc.plan')}:</strong> ${item.planoAcao}</p>`;
+                        itemContent = `<p><strong>${i18n.t('tc.tag_label')}:</strong> ${item.tag}</p><p><strong>${i18n.t('tc.tc_label')}:</strong> ${item.transportador}</p><p><strong>${i18n.t('tc.plan')}:</strong> ${item.planoAcao}</p>`;
                         break;
                     case 'rolosCadastrados':
                          itemContent = `<p><strong>${i18n.t('tc.tc_label')}:</strong> ${item.tc} | <strong>${i18n.t('tc.position')}:</strong> ${item.posicao}</p><p><strong>${i18n.t('tc.type')}:</strong> ${item.tipo} | <strong>${i18n.t('tc.installed_at')}:</strong> ${new Date(item.dataInstalacao).toLocaleDateString(dateLocale,{timeZone:'UTC'})}</p>`;

@@ -671,7 +671,7 @@ function calcBocaDeLobo() {
     var N = parseInt(document.getElementById('bl-n').value);
 
     if (isNaN(Dm) || isNaN(Db) || isNaN(angle) || isNaN(N) || Dm <= 0 || Db <= 0 || angle < 1 || N < 4) {
-        document.getElementById('bl-results').innerHTML = '<p class="placeholder">Verifique os valores informados.</p>';
+        document.getElementById('bl-results').innerHTML = '<p class="placeholder">' + window.i18n.t('tracagem.placeholder_verificar') + '</p>';
         return;
     }
     if (N > 48) N = 48;
@@ -910,7 +910,7 @@ function calcCone() {
     var H = parseFloat(document.getElementById('cone-h').value);
 
     if (isNaN(Dbot) || Dbot <= 0 || isNaN(H) || H <= 0) {
-        document.getElementById('cone-results').innerHTML = '<p class="placeholder">Verifique os valores informados.</p>';
+        document.getElementById('cone-results').innerHTML = '<p class="placeholder">' + window.i18n.t('tracagem.placeholder_verificar') + '</p>';
         return;
     }
     if (isNaN(Dtop)) Dtop = 0;
