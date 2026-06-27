@@ -140,35 +140,35 @@ function i(label, id, unit, val) {
 }
 
 function inputsCilindro() {
-    return i('Diâmetro interno da camisa', 'hid_dc', 'mm') +
-           i('Diâmetro da haste', 'hid_dh', 'mm') +
-           i('Curso', 'hid_curso', 'mm') +
-           i('Pressão', 'hid_pc', 'bar') +
-           i('Vazão', 'hid_qc', 'L/min') +
-           i('Tempo de avanço', 'hid_tc', 's');
+    return i(i18n.t('hidcalc.input_dc'), 'hid_dc', 'mm') +
+           i(i18n.t('hidcalc.input_dh'), 'hid_dh', 'mm') +
+           i(i18n.t('hidcalc.input_curso'), 'hid_curso', 'mm') +
+           i(i18n.t('hidcalc.input_pressao'), 'hid_pc', 'bar') +
+           i(i18n.t('hidcalc.input_vazao'), 'hid_qc', 'L/min') +
+           i(i18n.t('hidcalc.input_tc'), 'hid_tc', 's');
 }
 function inputsBomba() {
-    return i('Vazão', 'hid_qb', 'L/min') +
-           i('Pressão', 'hid_pb', 'bar') +
-           i('Rendimento', 'hid_etab', '0–1', '0.85');
+    return i(i18n.t('hidcalc.input_vazao'), 'hid_qb', 'L/min') +
+           i(i18n.t('hidcalc.input_pressao'), 'hid_pb', 'bar') +
+           i(i18n.t('hidcalc.input_rendimento'), 'hid_etab', '0–1', '0.85');
 }
 function inputsMotor() {
-    return i('Cilindrada', 'hid_vd', 'cm³/rot') +
-           i('Pressão', 'hid_pm', 'bar') +
-           i('Vazão', 'hid_qm', 'L/min') +
-           i('Rendimento mecânico', 'hid_etam', '', '0.92');
+    return i(i18n.t('hidcalc.input_vd'), 'hid_vd', 'cm³/rot') +
+           i(i18n.t('hidcalc.input_pressao'), 'hid_pm', 'bar') +
+           i(i18n.t('hidcalc.input_vazao'), 'hid_qm', 'L/min') +
+           i(i18n.t('hidcalc.input_etam'), 'hid_etam', '', '0.92');
 }
 function inputsPerda() {
-    return i('Vazão', 'hid_qp', 'L/min') +
-           i('Diâmetro interno', 'hid_dp', 'mm') +
-           i('Comprimento', 'hid_lp', 'm', '10') +
-           i('Rugosidade', 'hid_rp', 'mm', '0.046') +
-           i('Viscosidade cinemática', 'hid_nup', 'cSt', '46');
+    return i(i18n.t('hidcalc.input_vazao'), 'hid_qp', 'L/min') +
+           i(i18n.t('hidcalc.input_dp'), 'hid_dp', 'mm') +
+           i(i18n.t('hidcalc.input_lp'), 'hid_lp', 'm', '10') +
+           i(i18n.t('hidcalc.input_rp'), 'hid_rp', 'mm', '0.046') +
+           i(i18n.t('hidcalc.input_nup'), 'hid_nup', 'cSt', '46');
 }
 function inputsTubulacao() {
-    return i('Vazão', 'hid_qt', 'L/min') +
-           i('Velocidade desejada', 'hid_vt', 'm/s', '4') +
-           i('Diâmetro interno (opcional)', 'hid_dt', 'mm');
+    return i(i18n.t('hidcalc.input_vazao'), 'hid_qt', 'L/min') +
+           i(i18n.t('hidcalc.input_vt'), 'hid_vt', 'm/s', '4') +
+           i(i18n.t('hidcalc.input_dt'), 'hid_dt', 'mm');
 }
 
 function calcCilindro() {
@@ -176,102 +176,102 @@ function calcCilindro() {
     var o = [];
     if (dc) {
         var Ac = Math.PI * (dc/10)*(dc/10)/4;
-        o.push('<p>Área camisa: <strong>' + Ac.toFixed(2) + ' cm²</strong></p>');
-        if (dh) { var Ad = Ac - Math.PI*(dh/10)*(dh/10)/4; o.push('<p>Área anelar: <strong>' + Ad.toFixed(2) + ' cm²</strong></p>'); }
-        if (p) o.push('<p>Força avanço: <strong>' + (p*Ac/10).toFixed(1) + ' kN</strong></p>');
-        if (dh && p) o.push('<p>Força retorno: <strong>' + (p*(Ac-Math.PI*(dh/10)*(dh/10)/4)/10).toFixed(1) + ' kN</strong></p>');
+        o.push('<p>' + i18n.t('hidcalc.res_area_camisa') + ' <strong>' + Ac.toFixed(2) + ' cm²</strong></p>');
+        if (dh) { var Ad = Ac - Math.PI*(dh/10)*(dh/10)/4; o.push('<p>' + i18n.t('hidcalc.res_area_anelar') + ' <strong>' + Ad.toFixed(2) + ' cm²</strong></p>'); }
+        if (p) o.push('<p>' + i18n.t('hidcalc.res_forca_avanco') + ' <strong>' + (p*Ac/10).toFixed(1) + ' kN</strong></p>');
+        if (dh && p) o.push('<p>' + i18n.t('hidcalc.res_forca_retorno') + ' <strong>' + (p*(Ac-Math.PI*(dh/10)*(dh/10)/4)/10).toFixed(1) + ' kN</strong></p>');
     }
-    if (dc && curso && t) { var Q = Math.PI*(dc/1000)*(dc/1000)/4 * (curso/1000)/t * 60000; o.push('<p>Vazão necessária: <strong>' + Q.toFixed(2) + ' L/min</strong></p>'); }
-    if (dc && q) { var v = q/60000/(Math.PI*(dc/1000)*(dc/1000)/4); o.push('<p>Velocidade avanço: <strong>' + v.toFixed(2) + ' m/s</strong></p>'); }
-    $('resCilindro').innerHTML = o.length ? o.join('') : '<p>Preencha ao menos dois campos.</p>';
+    if (dc && curso && t) { var Q = Math.PI*(dc/1000)*(dc/1000)/4 * (curso/1000)/t * 60000; o.push('<p>' + i18n.t('hidcalc.res_vazao_nec') + ' <strong>' + Q.toFixed(2) + ' L/min</strong></p>'); }
+    if (dc && q) { var v = q/60000/(Math.PI*(dc/1000)*(dc/1000)/4); o.push('<p>' + i18n.t('hidcalc.res_vel_avanco') + ' <strong>' + v.toFixed(2) + ' m/s</strong></p>'); }
+    $('resCilindro').innerHTML = o.length ? o.join('') : '<p>' + i18n.t('hidcalc.err_min_two') + '</p>';
 }
 function calcBomba() {
     var q = val('hid_qb')/60000, p = val('hid_pb')*1e5, eta = val('hid_etab')||0.85;
     var pot = q*p/eta/1000;
-    $('resBomba').innerHTML = '<p>Potência: <strong>' + pot.toFixed(2) + ' kW</strong> (' + (pot/0.7457).toFixed(2) + ' cv)</p>';
+    $('resBomba').innerHTML = '<p>' + i18n.t('hidcalc.res_potencia') + ' <strong>' + pot.toFixed(2) + ' kW</strong> (' + (pot/0.7457).toFixed(2) + ' cv)</p>';
 }
 function calcMotor() {
     var vd = val('hid_vd')*1e-6, p = val('hid_pm')*1e5, q = val('hid_qm')/60000, eta = val('hid_etam')||0.92;
     var tq = vd*p/(2*Math.PI)*eta, rpm = q/vd*60, pot = tq*2*Math.PI*rpm/60/1000;
-    $('resMotor').innerHTML = '<p>Torque: <strong>' + tq.toFixed(1) + ' N·m</strong></p><p>Rotação: <strong>' + rpm.toFixed(0) + ' rpm</strong></p><p>Potência: <strong>' + pot.toFixed(2) + ' kW</strong> (' + (pot/0.7457).toFixed(2) + ' cv)</p>';
+    $('resMotor').innerHTML = '<p>' + i18n.t('hidcalc.res_torque') + ' <strong>' + tq.toFixed(1) + ' N·m</strong></p><p>' + i18n.t('hidcalc.res_rotacao') + ' <strong>' + rpm.toFixed(0) + ' rpm</strong></p><p>' + i18n.t('hidcalc.res_potencia') + ' <strong>' + pot.toFixed(2) + ' kW</strong> (' + (pot/0.7457).toFixed(2) + ' cv)</p>';
 }
 function calcPerda() {
     var q = val('hid_qp')/60000, d = val('hid_dp')/1000, L = val('hid_lp'), rug = val('hid_rp')/1000, nu = val('hid_nup')*1e-6;
-    if (!q||!d) { $('resPerda').innerHTML = '<p>Preencha Vazão e Diâmetro.</p>'; return; }
+    if (!q||!d) { $('resPerda').innerHTML = '<p>' + i18n.t('hidcalc.err_q_d') + '</p>'; return; }
     var v = q/(Math.PI*d*d/4), Re = v*d/nu;
     var f = Re < 2000 ? 64/Re : 0.25/Math.pow(Math.log10(rug/(3.7*d)+5.74/Math.pow(Re,0.9)),2);
     var hf = f*L/d*v*v/(2*9.80665);
-    $('resPerda').innerHTML = '<p>Velocidade: <strong>' + v.toFixed(2) + ' m/s</strong></p><p>Reynolds: <strong>' + Re.toFixed(0) + '</strong></p><p>f (Darcy): <strong>' + f.toFixed(4) + '</strong></p><p>Perda: <strong>' + hf.toFixed(2) + ' m.c.a.</strong></p><p>ΔP: <strong>' + (hf*0.088).toFixed(2) + ' bar</strong> (óleo 880 kg/m³)</p>';
+    $('resPerda').innerHTML = '<p>' + i18n.t('hidcalc.res_velocidade') + ' <strong>' + v.toFixed(2) + ' m/s</strong></p><p>' + i18n.t('hidcalc.res_reynolds') + ' <strong>' + Re.toFixed(0) + '</strong></p><p>' + i18n.t('hidcalc.res_f_darcy') + ' <strong>' + f.toFixed(4) + '</strong></p><p>' + i18n.t('hidcalc.res_perda') + ' <strong>' + hf.toFixed(2) + ' m.c.a.</strong></p><p>' + i18n.t('hidcalc.res_dp') + ' <strong>' + (hf*0.088).toFixed(2) + ' bar</strong> ' + i18n.t('hidcalc.res_dp_note') + '</p>';
 }
 function calcTubulacao() {
     var q = val('hid_qt')/60000, v = val('hid_vt'), d = val('hid_dt');
     var o = [];
-    if (d&&q) { o.push('<p>Velocidade real: <strong>' + (q/(Math.PI*(d/1000)*(d/1000)/4)).toFixed(2) + ' m/s</strong></p>'); }
-    if (q&&v) { o.push('<p>Diâmetro necessário: <strong>' + (Math.sqrt(4*q/(Math.PI*v))*1000).toFixed(1) + ' mm</strong></p>'); }
-    $('resTubulacao').innerHTML = o.length ? o.join('') : '<p>Preencha Vazão e Velocidade ou Diâmetro.</p>';
+    if (d&&q) { o.push('<p>' + i18n.t('hidcalc.res_vel_real') + ' <strong>' + (q/(Math.PI*(d/1000)*(d/1000)/4)).toFixed(2) + ' m/s</strong></p>'); }
+    if (q&&v) { o.push('<p>' + i18n.t('hidcalc.res_diam_nec') + ' <strong>' + (Math.sqrt(4*q/(Math.PI*v))*1000).toFixed(1) + ' mm</strong></p>'); }
+    $('resTubulacao').innerHTML = o.length ? o.join('') : '<p>' + i18n.t('hidcalc.err_q_v') + '</p>';
 }
 
 function fml(camisa, haste) {
-    return '<div class="formula-grid"><div class="formula-card"><h4>Lado camisa</h4><div class="formula">' + camisa + '</div></div><div class="formula-card"><h4>Lado haste</h4><div class="formula">' + haste + '</div></div></div>';
+    return '<div class="formula-grid"><div class="formula-card"><h4>' + i18n.t('hidcalc.fml_lado_camisa') + '</h4><div class="formula">' + camisa + '</div></div><div class="formula-card"><h4>' + i18n.t('hidcalc.fml_lado_haste') + '</h4><div class="formula">' + haste + '</div></div></div>';
 }
 function formulasCilindro() {
-    return fml('A = π · R²', 'A = π · (R² − r²)') + '<div class="formula-card" style="margin-top:0.5rem"><h4>Força</h4><div class="formula">F = P · A</div></div>';
+    return fml('A = π · R²', 'A = π · (R² − r²)') + '<div class="formula-card" style="margin-top:0.5rem"><h4>' + i18n.t('hidcalc.fml_forca') + '</h4><div class="formula">F = P · A</div></div>';
 }
 function formulasBomba() {
-    return '<div class="formula-card"><h4>Potência</h4><div class="formula">Pot (kW) = (Q · P) / (600 · η)</div><div style="font-size:0.8rem;color:var(--text-secondary);margin-top:4px">Q = vazão (L/min), P = pressão (bar), η = rendimento</div></div>';
+    return '<div class="formula-card"><h4>' + i18n.t('hidcalc.fml_potencia_sub') + '</h4><div class="formula">Pot (kW) = (Q · P) / (600 · η)</div><div style="font-size:0.8rem;color:var(--text-secondary);margin-top:4px">' + i18n.t('hidcalc.fml_legend_bomba') + '</div></div>';
 }
 function formulasMotor() {
-    return '<div class="formula-card"><h4>Torque</h4><div class="formula">T (N·m) = (Vd · ΔP) / (2π) · η<sub>m</sub></div><div style="margin-top:0.75rem"><h4>Rotação</h4><div class="formula">n (rpm) = (Q · 1000) / Vd</div></div></div>';
+    return '<div class="formula-card"><h4>' + i18n.t('hidcalc.fml_torque_sub') + '</h4><div class="formula">T (N·m) = (Vd · ΔP) / (2π) · η<sub>m</sub></div><div style="margin-top:0.75rem"><h4>' + i18n.t('hidcalc.fml_rotacao_sub') + '</h4><div class="formula">n (rpm) = (Q · 1000) / Vd</div></div></div>';
 }
 function formulasPerda() {
-    return '<div class="formula-card"><h4>Darcy–Weisbach</h4><div class="formula">ΔP = f · (L/D) · ρ · v²/2</div><div style="margin-top:0.75rem"><h4>Reynolds</h4><div class="formula">Re = v · D / ν</div></div></div>';
+    return '<div class="formula-card"><h4>' + i18n.t('hidcalc.fml_darcy') + '</h4><div class="formula">ΔP = f · (L/D) · ρ · v²/2</div><div style="margin-top:0.75rem"><h4>' + i18n.t('hidcalc.fml_reynolds') + '</h4><div class="formula">Re = v · D / ν</div></div></div>';
 }
 function formulasTubulacao() {
-    return '<div class="formula-card"><h4>Velocidade</h4><div class="formula">v = Q / A</div><div style="margin-top:0.75rem"><h4>Diâmetro</h4><div class="formula">D = √(4Q / πv)</div></div></div>';
+    return '<div class="formula-card"><h4>' + i18n.t('hidcalc.fml_velocidade_sub') + '</h4><div class="formula">v = Q / A</div><div style="margin-top:0.75rem"><h4>' + i18n.t('hidcalc.fml_diametro_sub') + '</h4><div class="formula">D = √(4Q / πv)</div></div></div>';
 }
 
 function exemplo(dados, passos) {
     var d = dados.map(function(x) { return '<span>' + x + '</span>'; }).join('');
-    return '<div class="example-box"><div class="example-label"><i class="fas fa-table"></i> Dados</div><div class="example-data">' + d + '</div>' + passos + '</div>';
+    return '<div class="example-box"><div class="example-label"><i class="fas fa-table"></i> ' + i18n.t('hidcalc.exemplo_dados') + '</div><div class="example-data">' + d + '</div>' + passos + '</div>';
 }
 
 function exemplosCilindro() {
     return exemplo(
-        ['Diâmetro camisa = 160 mm', 'Diâmetro haste = 70 mm', 'Curso = 320 mm', 'Pressão = 160 bar', 'Vazão = 120 L/min'],
-        '<div class="example-step"><strong>1. Área camisa:</strong> A₁ = π × 80² = <strong>20106 mm² ≈ 201 cm²</strong></div>' +
-        '<div class="example-step"><strong>2. Área anelar:</strong> A₂ = π × (80² − 35²) = <strong>176 cm²</strong></div>' +
-        '<div class="example-step"><strong>3. Força avanço:</strong> F₁ = 160 × 201 / 10 = <strong>3216 kN</strong></div>' +
-        '<div class="example-step"><strong>4. Força retorno:</strong> F₂ = 160 × 176 / 10 = <strong>2816 kN</strong></div>'
+        [i18n.t('hidcalc.ex_cil_d1'), i18n.t('hidcalc.ex_cil_d2'), i18n.t('hidcalc.ex_cil_d3'), i18n.t('hidcalc.ex_cil_d4'), i18n.t('hidcalc.ex_cil_d5')],
+        '<div class="example-step"><strong>1. ' + i18n.t('hidcalc.res_area_camisa') + '</strong> A₁ = π × 80² = <strong>20106 mm² ≈ 201 cm²</strong></div>' +
+        '<div class="example-step"><strong>2. ' + i18n.t('hidcalc.res_area_anelar') + '</strong> A₂ = π × (80² − 35²) = <strong>176 cm²</strong></div>' +
+        '<div class="example-step"><strong>3. ' + i18n.t('hidcalc.res_forca_avanco') + '</strong> F₁ = 160 × 201 / 10 = <strong>3216 kN</strong></div>' +
+        '<div class="example-step"><strong>4. ' + i18n.t('hidcalc.res_forca_retorno') + '</strong> F₂ = 160 × 176 / 10 = <strong>2816 kN</strong></div>'
     );
 }
 function exemplosBomba() {
     return exemplo(
-        ['Vazão = 80 L/min', 'Pressão = 200 bar', 'Rendimento = 0,85'],
-        '<div class="example-step"><strong>1. Potência:</strong> Pot = (80 × 200) / (600 × 0,85) = <strong>31,4 kW</strong></div>' +
-        '<div class="example-step">Equivalente: <strong>42,1 cv</strong></div>'
+        [i18n.t('hidcalc.ex_bomba_d1'), i18n.t('hidcalc.ex_bomba_d2'), i18n.t('hidcalc.ex_bomba_d3')],
+        '<div class="example-step"><strong>1. ' + i18n.t('hidcalc.res_potencia') + '</strong> Pot = (80 × 200) / (600 × 0,85) = <strong>31,4 kW</strong></div>' +
+        '<div class="example-step">' + i18n.t('hidcalc.ex_bomba_s2') + ' <strong>42,1 cv</strong></div>'
     );
 }
 function exemplosMotor() {
     return exemplo(
-        ['Cilindrada = 50 cm³/rot', 'Pressão = 200 bar', 'Vazão = 80 L/min', 'Rend. mec. = 0,92'],
-        '<div class="example-step"><strong>1. Torque:</strong> T = (50 × 200) / (2π) × 0,92 = <strong>146,4 N·m</strong></div>' +
-        '<div class="example-step"><strong>2. Rotação:</strong> n = (80 × 1000) / 50 = <strong>1600 rpm</strong></div>' +
-        '<div class="example-step"><strong>3. Potência:</strong> Pot = 146,4 × 2π × 1600 / 60 / 1000 = <strong>24,5 kW</strong></div>'
+        [i18n.t('hidcalc.ex_motor_d1'), i18n.t('hidcalc.ex_motor_d2'), i18n.t('hidcalc.ex_motor_d3'), i18n.t('hidcalc.ex_motor_d4')],
+        '<div class="example-step"><strong>1. ' + i18n.t('hidcalc.res_torque') + '</strong> T = (50 × 200) / (2π) × 0,92 = <strong>146,4 N·m</strong></div>' +
+        '<div class="example-step"><strong>2. ' + i18n.t('hidcalc.res_rotacao') + '</strong> n = (80 × 1000) / 50 = <strong>1600 rpm</strong></div>' +
+        '<div class="example-step"><strong>3. ' + i18n.t('hidcalc.res_potencia') + '</strong> Pot = 146,4 × 2π × 1600 / 60 / 1000 = <strong>24,5 kW</strong></div>'
     );
 }
 function exemplosPerda() {
     return exemplo(
-        ['Vazão = 100 L/min', 'Diâmetro = 50 mm', 'Comprimento = 50 m', 'Rugosidade = 0,046 mm', 'Viscosidade = 46 cSt'],
-        '<div class="example-step"><strong>1. Velocidade:</strong> v = 0,00167 / 0,00196 = <strong>0,85 m/s</strong></div>' +
-        '<div class="example-step"><strong>2. Reynolds:</strong> Re = 0,85 × 0,05 / 46×10⁻⁶ = <strong>924</strong> (laminar)</div>' +
-        '<div class="example-step"><strong>3. Perda:</strong> hf = f × L/D × v²/2g </div>'
+        [i18n.t('hidcalc.ex_perda_d1'), i18n.t('hidcalc.ex_perda_d2'), i18n.t('hidcalc.ex_perda_d3'), i18n.t('hidcalc.ex_perda_d4'), i18n.t('hidcalc.ex_perda_d5')],
+        '<div class="example-step"><strong>1. ' + i18n.t('hidcalc.res_velocidade') + '</strong> v = 0,00167 / 0,00196 = <strong>0,85 m/s</strong></div>' +
+        '<div class="example-step"><strong>2. ' + i18n.t('hidcalc.res_reynolds') + '</strong> Re = 0,85 × 0,05 / 46×10⁻⁶ = <strong>924</strong> (laminar)</div>' +
+        '<div class="example-step"><strong>3. ' + i18n.t('hidcalc.res_perda') + '</strong> hf = f × L/D × v²/2g </div>'
     );
 }
 function exemplosTubulacao() {
     return exemplo(
-        ['Vazão = 200 L/min', 'Velocidade máx. = 4 m/s'],
-        '<div class="example-step"><strong>1. Diâmetro necessário:</strong> D = √(4 × 0,00333 / π × 4) × 1000 = <strong>32,6 mm</strong></div>' +
-        '<div class="example-step">Recomenda-se tubo com DN 32 ou 1 ¼".</div>'
+        [i18n.t('hidcalc.ex_tub_d1'), i18n.t('hidcalc.ex_tub_d2')],
+        '<div class="example-step"><strong>1. ' + i18n.t('hidcalc.res_diam_nec') + '</strong> D = √(4 × 0,00333 / π × 4) × 1000 = <strong>32,6 mm</strong></div>' +
+        '<div class="example-step">' + i18n.t('hidcalc.ex_tub_s2') + '</div>'
     );
 }
 
@@ -298,24 +298,24 @@ function renderMecanica() {
 
 function formulasMecanica() {
     var items = [
-        { n: 'Redonda', f: 'V = π × D²/4 × L' },
-        { n: 'Quadrada', f: 'V = a² × L' },
-        { n: 'Sextavada', f: 'V = (3√3/2) × a² × L' },
-        { n: 'Chata', f: 'V = w × t × L' },
-        { n: 'T. Redondo', f: 'V = π × (D² − d²)/4 × L' },
-        { n: 'T. Quadrado', f: 'V = (a² − b²) × L' },
-        { n: 'T. Retangular', f: 'V = (A×B − a×b) × L' },
+        { n: i18n.t('hidcalc.shape_redonda'), f: 'V = π × D²/4 × L' },
+        { n: i18n.t('hidcalc.shape_quadrada'), f: 'V = a² × L' },
+        { n: i18n.t('hidcalc.shape_sextavada'), f: 'V = (3√3/2) × a² × L' },
+        { n: i18n.t('hidcalc.shape_chata'), f: 'V = w × t × L' },
+        { n: i18n.t('hidcalc.shape_tredondo'), f: 'V = π × (D² − d²)/4 × L' },
+        { n: i18n.t('hidcalc.shape_tquadrado'), f: 'V = (a² − b²) × L' },
+        { n: i18n.t('hidcalc.shape_tretangular'), f: 'V = (A×B − a×b) × L' },
     ];
     return '<div class="formula-grid">' + items.map(function(i) {
-        return '<div class="formula-card"><h4>' + i.n + '</h4><div class="formula">' + i.f + '</div><div style="font-size:0.75rem;color:var(--text-secondary);margin-top:4px">Peso = V × ρ</div></div>';
+        return '<div class="formula-card"><h4>' + i.n + '</h4><div class="formula">' + i.f + '</div><div style="font-size:0.75rem;color:var(--text-secondary);margin-top:4px">' + i18n.t('hidcalc.mec_peso_total') + ' = V × ρ</div></div>';
     }).join('') + '</div>';
 }
 
 function exemploMecanica() {
     return exemplo(
-        ['Material: Aço Carbono (ρ = 7850 kg/m³)', 'Perfil: Barra Redonda', 'Diâmetro = 50 mm', 'Comprimento = 1000 mm'],
-        '<div class="example-step"><strong>1. Volume:</strong> V = π × 25² × 1000 = <strong>1.963.495 mm³ ≈ 1963 cm³</strong></div>' +
-        '<div class="example-step"><strong>2. Peso:</strong> m = 0,001963 × 7850 = <strong>15,4 kg</strong></div>'
+        [i18n.t('hidcalc.ex_mec_d1'), i18n.t('hidcalc.ex_mec_d2'), i18n.t('hidcalc.ex_mec_d3'), i18n.t('hidcalc.ex_mec_d4')],
+        '<div class="example-step"><strong>1. ' + i18n.t('hidcalc.ex_mec_s1') + '</strong> V = π × 25² × 1000 = <strong>1.963.495 mm³ ≈ 1963 cm³</strong></div>' +
+        '<div class="example-step"><strong>2. ' + i18n.t('hidcalc.ex_mec_s2') + '</strong> m = 0,001963 × 7850 = <strong>15,4 kg</strong></div>'
     );
 }
 
@@ -356,10 +356,10 @@ function updateMecInputs() {
 
 function calcMecanica() {
     var rho = val('matDens'), comp = val('mec_comp')/1000, qtd = val('mec_qtd')||1;
-    if (!comp||!rho) { $('resMecanica').innerHTML = '<p>Preencha densidade e comprimento.</p>'; return; }
+    if (!comp||!rho) { $('resMecanica').innerHTML = '<p>' + i18n.t('hidcalc.err_dens_comp') + '</p>'; return; }
     var vol = 0, label = '', s = mecanicaShape;
     var a = val('mec_a')/1000, b = val('mec_b')/1000, c = val('mec_c')/1000, d = val('mec_d')/1000;
-    function no() { $('resMecanica').innerHTML = '<p>Preencha as dimensões.</p>'; }
+    function no() { $('resMecanica').innerHTML = '<p>' + i18n.t('hidcalc.err_dimensoes') + '</p>'; }
     switch (s) {
         case 'redonda':   if (!a) { no(); return; } vol = Math.PI*a*a/4*comp; label = i18n.t('hidcalc.tab_redonda'); break;
         case 'quadrada':  if (!a) { no(); return; } vol = a*a*comp; label = i18n.t('hidcalc.tab_quadrada'); break;

@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data: {
                 labels: data.labels,
                 datasets: [{
-                    label: 'Frequência / Custo',
+                    label: i18n.t('pareto.frequency'),
                     data: data.values,
                     backgroundColor: 'rgba(0, 90, 156, 0.8)',
                     borderColor: 'rgba(0, 90, 156, 1)',
