@@ -21,44 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let sortDirection = 'desc';
 
     // === CRITÉRIOS DE AVALIAÇÃO S-O-D ===
-    const CRITERIA = {
-        severidade: [
-            { nota: 1, texto: 'Nenhum efeito perceptível no processo ou no usuário' },
-            { nota: 2, texto: 'Efeito mínimo, praticamente imperceptível' },
-            { nota: 3, texto: 'Efeito leve, pequeno incômodo operacional' },
-            { nota: 4, texto: 'Efeito leve, perda menor de desempenho' },
-            { nota: 5, texto: 'Efeito moderado, degradação perceptível de desempenho' },
-            { nota: 6, texto: 'Efeito moderado, insatisfação do operador/cliente' },
-            { nota: 7, texto: 'Efeito significativo, perda parcial da função principal' },
-            { nota: 8, texto: 'Efeito alto, parada do equipamento/linha sem risco às pessoas' },
-            { nota: 9, texto: 'Risco à segurança ou ao meio ambiente, com aviso prévio' },
-            { nota: 10, texto: 'Risco extremo à segurança ou ao meio ambiente, sem aviso prévio' }
-        ],
-        ocorrencia: [
-            { nota: 1, texto: 'Remota: falha improvável, sem histórico (<1 em 1.500.000)' },
-            { nota: 2, texto: 'Muito baixa: falhas isoladas (1 em 150.000)' },
-            { nota: 3, texto: 'Baixa: falhas ocasionais (1 em 15.000)' },
-            { nota: 4, texto: 'Baixa a moderada (1 em 2.000)' },
-            { nota: 5, texto: 'Moderada: falhas associadas a processos similares (1 em 400)' },
-            { nota: 6, texto: 'Moderada a alta (1 em 80)' },
-            { nota: 7, texto: 'Alta: falhas recorrentes (1 em 20)' },
-            { nota: 8, texto: 'Alta: falhas frequentes (1 em 8)' },
-            { nota: 9, texto: 'Muito alta: falha quase certa (1 em 3)' },
-            { nota: 10, texto: 'Muito alta: falha quase inevitável (>1 em 2)' }
-        ],
-        deteccao: [
-            { nota: 1, texto: 'Detecção quase certa, controle praticamente 100% eficaz' },
-            { nota: 2, texto: 'Muito alta chance de detecção pelos controles atuais' },
-            { nota: 3, texto: 'Alta chance de detecção' },
-            { nota: 4, texto: 'Moderadamente alta chance de detecção' },
-            { nota: 5, texto: 'Chance moderada de detecção' },
-            { nota: 6, texto: 'Baixa chance, controles pouco confiáveis' },
-            { nota: 7, texto: 'Muito baixa chance de detecção' },
-            { nota: 8, texto: 'Remota chance, controle quase não detecta' },
-            { nota: 9, texto: 'Muito remota chance de detecção' },
-            { nota: 10, texto: 'Detecção impossível: nenhum controle existe' }
-        ]
-    };
+    const CRITERIA_TYPES = ['severidade', 'ocorrencia', 'deteccao'];
+
+    function getCriteriaKey(tipo, nota) {
+        return 'fmea.criteria.' + tipo + '.' + nota;
+    }
 
     function populateRatingSelect(selectEl, tipo, optional = false) {
         selectEl.innerHTML = '';
@@ -68,22 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
             emptyOpt.textContent = '—';
             selectEl.appendChild(emptyOpt);
         }
-        CRITERIA[tipo].forEach(item => {
+        for (var n = 1; n <= 10; n++) {
             const opt = document.createElement('option');
-            opt.value = item.nota;
-            opt.textContent = `${item.nota} - ${item.texto}`;
+            opt.value = n;
+            opt.textContent = n + ' - ' + window.i18n.t(getCriteriaKey(tipo, n));
             selectEl.appendChild(opt);
-        });
+        }
         if (!optional) selectEl.value = '5';
     }
 
     function renderCriteriaTable(tipo) {
         const tbody = document.getElementById('criteriaTableBody');
         tbody.innerHTML = '';
-        [...CRITERIA[tipo]].reverse().forEach(item => {
+        for (var n = 10; n >= 1; n--) {
             const row = tbody.insertRow();
-            row.innerHTML = `<td>${item.nota}</td><td>${item.texto}</td>`;
-        });
+            row.innerHTML = '<td>' + n + '</td><td>' + window.i18n.t(getCriteriaKey(tipo, n)) + '</td>';
+        }
     }
 
     // === FUNÇÕES PRINCIPAIS ===
@@ -129,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${item.acoesRecomendadas}</td>
                 <td>${item.responsavel}</td>
                 <td>${prazoFormatado}</td>
-                <td><span class="status-cell ${getStatusClass(item.status)}">${item.status}</span></td>
+                <td><span class="status-cell ${getStatusClass(item.status)}">${getStatusText(item.status)}</span></td>
                 <td class="${getRpnColorClass(item.novoRpn)}">${item.novoRpn || i18n.t('common.na')}</td>
                 <td class="action-buttons">
                     <button class="action-button button-secondary" data-action="edit" data-index="${originalIndex}">${i18n.t('fmea.edit')}</button>
@@ -334,7 +301,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getStatusClass(status) {
-        return { 'Pendente': 'status-pendente', 'Em Andamento': 'status-andamento', 'Concluído': 'status-concluido' }[status] || '';
+        var map = { 'Pendente': 'status-pendente', 'Em Andamento': 'status-andamento', 'Concluído': 'status-concluido', 'pending': 'status-pendente', 'in_progress': 'status-andamento', 'completed': 'status-concluido' };
+        return map[status] || '';
+    }
+
+    function getStatusText(status) {
+        var legacyMap = { 'Pendente': 'pending', 'Em Andamento': 'in_progress', 'Concluído': 'completed' };
+        var key = legacyMap[status] || status;
+        return window.i18n.t('fmea.' + key);
     }
 
     function updateSortIndicators() {
