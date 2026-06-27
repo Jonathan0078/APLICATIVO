@@ -24,43 +24,60 @@ const motorRpmText = document.getElementById('motor-rpm');
 const reductionRatioText = document.getElementById('reduction-ratio');
 const outputRpmText = document.getElementById('output-rpm');
 const historyList = document.getElementById('history-list');
+const calculateBtn = document.getElementById('calculate-btn');
 
 // Tema
-const themeToggle = document.getElementById('theme-toggle-checkbox');
+const themeToggle = document.getElementById('theme-toggle');
+
+function setTheme(theme) {
+    document.body.classList.toggle('dark-theme', theme === 'dark');
+    themeToggle.checked = theme === 'dark';
+    localStorage.setItem('rpm-redutor-theme', theme);
+}
+
 themeToggle.addEventListener('change', () => {
-    document.body.classList.toggle('dark-theme');
+    setTheme(themeToggle.checked ? 'dark' : 'light');
 });
 
-// Tooltips
-document.querySelectorAll('.help-btn').forEach(btn => {
+// Abas (Parâmetros / Resultados)
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+function switchTab(targetId) {
+    tabBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === targetId);
+    });
+    tabContents.forEach(content => {
+        content.classList.toggle('active', content.id === targetId);
+    });
+}
+
+tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        const tooltipId = btn.getAttribute('data-tooltip');
-        const tooltip = document.getElementById(tooltipId);
-        tooltip.classList.toggle('show');
-        // Ocultar outros tooltips
-        document.querySelectorAll('.tooltip').forEach(t => {
-            if (t !== tooltip) t.classList.remove('show');
-        });
+        switchTab(btn.dataset.tab);
     });
 });
 
-// Ocultar tooltips ao clicar fora
+// Tooltips (toque/clique no ícone "?")
+document.querySelectorAll('.info-icon').forEach(icon => {
+    icon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const container = icon.closest('.tooltip-container');
+        const isOpen = container.classList.contains('show');
+        document.querySelectorAll('.tooltip-container').forEach(c => c.classList.remove('show'));
+        if (!isOpen) container.classList.add('show');
+    });
+});
+
 document.addEventListener('click', (e) => {
-    if (!e.target.classList.contains('help-btn')) {
-        document.querySelectorAll('.tooltip').forEach(t => t.classList.remove('show'));
+    if (!e.target.classList.contains('info-icon')) {
+        document.querySelectorAll('.tooltip-container').forEach(c => c.classList.remove('show'));
     }
 });
 
 // Mostrar/ocultar campo personalizado
 motorSelect.addEventListener('change', () => {
     customRpmDiv.style.display = motorSelect.value === 'Personalizado' ? 'block' : 'none';
-    calculate();
-});
-
-// Eventos para cálculo em tempo real
-[motorSelect, customRpmInput, reductionInput, powerInput, efficiencyInput].forEach(el => {
-    el.addEventListener('input', calculate);
-    el.addEventListener('change', calculate);
 });
 
 // Função de cálculo principal
@@ -71,7 +88,7 @@ function calculate() {
     const power = parseFloat(powerInput.value) || 0;
     const efficiency = parseFloat(efficiencyInput.value) / 100 || 0.95;
 
-    if (!validateInputs(rpmMotor, i)) return;
+    if (!validateInputs(rpmMotor, i)) return false;
 
     const rpmFinal = rpmMotor / i;
     rpmFinalSpan.textContent = rpmFinal.toFixed(2);
@@ -94,6 +111,8 @@ function calculate() {
 
     resultDiv.style.display = 'block';
     addToHistory(rpmMotor, i, rpmFinal, power, efficiency);
+
+    return true;
 }
 
 // Obter RPM do motor
@@ -157,6 +176,14 @@ function renderHistory() {
     });
 }
 
+// Calcular -> mostra resultados na aba "Resultados"
+calculateBtn.addEventListener('click', () => {
+    if (calculate()) {
+        switchTab('tab-results');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+});
+
 // Reset
 document.getElementById('reset-btn').addEventListener('click', () => {
     motorSelect.value = '2 Polos';
@@ -171,6 +198,7 @@ document.getElementById('reset-btn').addEventListener('click', () => {
     motorRpmText.textContent = 'RPM: -';
     reductionRatioText.textContent = 'i: -';
     outputRpmText.textContent = 'RPM: -';
+    switchTab('tab-params');
 });
 
 // Exportar
@@ -184,4 +212,7 @@ document.getElementById('copy-btn').addEventListener('click', () => {
 });
 
 // Inicializar
-renderHistory();
+document.addEventListener('DOMContentLoaded', () => {
+    setTheme(localStorage.getItem('rpm-redutor-theme') || 'light');
+    renderHistory();
+});
