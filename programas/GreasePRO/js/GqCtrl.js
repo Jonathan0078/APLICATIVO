@@ -9,29 +9,36 @@ function toggleBearingSelector() {
 }
 
 function populateBearingList(searchTerm) {
-    var select = document.getElementById('bearingSelect');
+    var list = document.getElementById('bearingList');
     var term = (searchTerm || '').toLowerCase();
-    select.innerHTML = '';
+    list.innerHTML = '';
     var found = 0;
     for (var i = 0; i < rolamentosDB_data.length; i++) {
         var b = rolamentosDB_data[i];
         if (term === '' || b.designacao.toLowerCase().indexOf(term) !== -1 || b.tipo.toLowerCase().indexOf(term) !== -1) {
-            var opt = document.createElement('option');
-            opt.value = i;
-            opt.textContent = b.designacao + '  •  Ø' + b.D + '×' + b.B + 'mm  •  ' + b.tipo;
-            select.appendChild(opt);
+            var item = document.createElement('div');
+            item.className = 'bearing-list-item';
+            item.setAttribute('role', 'option');
+            item.dataset.index = i;
+            item.textContent = b.designacao + '  \u2022  \u00D8' + b.D + '\u00D7' + b.B + 'mm  \u2022  ' + b.tipo;
+            item.addEventListener('click', function() {
+                onBearingSelect(parseInt(this.dataset.index));
+            });
+            item.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                onBearingSelect(parseInt(this.dataset.index));
+            });
+            list.appendChild(item);
             found++;
         }
     }
     if (found === 0) {
-        var opt = document.createElement('option');
-        opt.value = '';
-        opt.disabled = true;
-        opt.textContent = t('grease.gq.no_bearings', 'Nenhum rolamento encontrado');
-        select.appendChild(opt);
+        var empty = document.createElement('div');
+        empty.className = 'bearing-list-empty';
+        empty.textContent = t('grease.gq.no_bearings', 'Nenhum rolamento encontrado');
+        list.appendChild(empty);
     }
-    // Atualizar contador de resultados
-    var label = select.previousElementSibling;
+    var label = list.previousElementSibling;
     if (label && found > 0) {
         var countSpan = label.querySelector('.result-count');
         if (!countSpan) {
@@ -43,10 +50,9 @@ function populateBearingList(searchTerm) {
     }
 }
 
-function onBearingSelect() {
-    var idx = document.getElementById('bearingSelect').value;
-    if (idx === '') return;
-    var b = rolamentosDB_data[parseInt(idx)];
+function onBearingSelect(index) {
+    if (isNaN(index)) return;
+    var b = rolamentosDB_data[index];
     document.getElementById('diametro').value = b.D;
     document.getElementById('ancho').value = b.B;
     document.getElementById('bearingSearch').value = '';

@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
         stopAnimation();
 
         // Reset rotation indicators
-        gear1RotationIndicator.textContent = 'Rotação: --';
-        gear2RotationIndicator.textContent = 'Rotação: --';
+        gear1RotationIndicator.textContent = i18n.t('engrenagens.rotation_none');
+        gear2RotationIndicator.textContent = i18n.t('engrenagens.rotation_none');
 
         // Validate inputs to disable the button
         validateInputs();
@@ -108,11 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const rpmSaida = rpmEntrada / relacao;
         const torqueSaida = torqueEntrada * relacao * eficiencia;
 
-        let tipoTransmissao = "1:1";
+        let tipoTransmissao = i18n.t('engrenagens.ratio_equal');
         if (relacao > 1) {
-            tipoTransmissao = "Redutor";
+            tipoTransmissao = i18n.t('engrenagens.reducer');
         } else if (relacao < 1) {
-            tipoTransmissao = "Multiplicador";
+            tipoTransmissao = i18n.t('engrenagens.multiplier');
         }
 
         // 4. Update result display
@@ -123,8 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if(resultadoContainer) resultadoContainer.classList.remove('hidden');
 
         // 5. Update rotation indicators
-        gear1RotationIndicator.textContent = `Rotação: ${rpmEntrada.toFixed(0)} RPM`;
-        gear2RotationIndicator.textContent = `Rotação: ${rpmSaida.toFixed(2)} RPM`;
+        gear1RotationIndicator.textContent = i18n.t('engrenagens.rotation_value').replace('{rpm}', rpmEntrada.toFixed(0));
+        gear2RotationIndicator.textContent = i18n.t('engrenagens.rotation_value').replace('{rpm}', rpmSaida.toFixed(2));
 
         // 6. Set and start animations
         // Only animate if RPM > 0

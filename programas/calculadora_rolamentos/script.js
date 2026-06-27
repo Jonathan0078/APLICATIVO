@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             displayInfo(i18n.t('msg.iso_bore_for').replace('{spec}', spec), result);
         } catch (e) {
-            showError(i18n.t('msg.calc_error').replace('{error}', 'Código não numérico'));
+            showError(i18n.t('msg.calc_error').replace('{error}', i18n.t('msg.calc_error_non_numeric')));
         }
     }
 
