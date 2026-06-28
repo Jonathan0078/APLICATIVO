@@ -242,6 +242,26 @@
     color: var(--accent);
 }
 
+.result-value.angle-dual {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.45;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.angle-dual .angle-main {
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.angle-dual .angle-secondary {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
 .result-label {
     font-size: 0.7rem;
     color: var(--text-secondary);

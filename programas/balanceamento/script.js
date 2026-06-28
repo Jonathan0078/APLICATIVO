@@ -71,11 +71,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return isNaN(v) ? 0 : v;
     }
 
-    function showSingleResult(mass, angle, residual, quality) {
+    function showSingleResult(mass, angle, angleRelative, residual, quality) {
         sResultDisplay.style.display = 'none';
         sResultContainer.style.display = 'block';
         sCorrMass.textContent = mass.toFixed(1) + ' g';
-        sCorrAngle.textContent = angle.toFixed(1) + '°';
+        sCorrAngle.classList.add('angle-dual');
+        sCorrAngle.innerHTML =
+            '<span class="angle-main">' + angle.toFixed(1) + '° <small style="font-size:0.6em;font-weight:600;">abs.</small></span>' +
+            '<span class="angle-secondary">' + angleRelative.toFixed(1) + '° rel. ao peso de teste</span>';
         sResidual.textContent = residual.toFixed(2) + ' mm/s (|E|)';
         sQualityBadge.textContent = quality;
         var qClass = quality === i18n.t('balanceamento.balancing_ok') ? 'quality-ok'
@@ -84,13 +87,19 @@ document.addEventListener('DOMContentLoaded', function () {
         sQualityBadge.className = 'result-value ' + qClass;
     }
 
-    function showDualResult(p1mass, p1angle, p2mass, p2angle) {
+    function showDualResult(p1mass, p1angle, p1angleRelative, p2mass, p2angle, p2angleRelative) {
         dResultDisplay.style.display = 'none';
         dResultContainer.style.display = 'block';
         d1CorrMass.textContent = p1mass.toFixed(1) + ' g';
-        d1CorrAngle.textContent = p1angle.toFixed(1) + '°';
+        d1CorrAngle.classList.add('angle-dual');
+        d1CorrAngle.innerHTML =
+            '<span class="angle-main">' + p1angle.toFixed(1) + '° <small style="font-size:0.6em;font-weight:600;">abs.</small></span>' +
+            '<span class="angle-secondary">' + p1angleRelative.toFixed(1) + '° rel. ao peso de teste</span>';
         d2CorrMass.textContent = p2mass.toFixed(1) + ' g';
-        d2CorrAngle.textContent = p2angle.toFixed(1) + '°';
+        d2CorrAngle.classList.add('angle-dual');
+        d2CorrAngle.innerHTML =
+            '<span class="angle-main">' + p2angle.toFixed(1) + '° <small style="font-size:0.6em;font-weight:600;">abs.</small></span>' +
+            '<span class="angle-secondary">' + p2angleRelative.toFixed(1) + '° rel. ao peso de teste</span>';
     }
 
     function calcSingle() {
@@ -141,9 +150,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         var corrMag = twm * v0Mag / eMag;
-        var corrAngle = Math.atan2(Ey, Ex) * 180 / Math.PI + 180;
-        if (corrAngle >= 360) corrAngle -= 360;
-        if (corrAngle < 0) corrAngle += 360;
+        // Ângulo absoluto: C = -V0 × TW / E  →  ang(C) = v0p + 180 + twa - ang(E)
+        var corrAngle = v0p + 180 + twa - (Math.atan2(Ey, Ex) * 180 / Math.PI);
+        corrAngle = ((corrAngle % 360) + 360) % 360;
+
+        // Ângulo relativo à posição do peso de teste (convenção usada pelo balanceador KNIKAO):
+        // "gire X° a partir de onde o peso de teste foi instalado"
+        var corrAngleRelative = ((corrAngle - twa) % 360 + 360) % 360;
 
         // effectRatio = |E| / |V0|: mede a sensibilidade do rotor ao peso de teste.
         // Valores ideais: 0.4 a 3.0. Abaixo de 0.2 indica peso insuficiente ou erro de medição.
@@ -158,13 +171,14 @@ document.addEventListener('DOMContentLoaded', function () {
             quality = i18n.t('balanceamento.balancing_poor');
         }
 
-        showSingleResult(corrMag, corrAngle, eMag, quality);
+        showSingleResult(corrMag, corrAngle, corrAngleRelative, eMag, quality);
 
         addToHistory({
             type: 'single',
             corrMass: corrMag,
             corrAngle: corrAngle,
-            residual: residual,
+            corrAngleRelative: corrAngleRelative,
+            residual: eMag,
             quality: quality
         });
     }
@@ -223,25 +237,35 @@ document.addEventListener('DOMContentLoaded', function () {
         var p1V0mag = Math.sqrt(P1_V0.x * P1_V0.x + P1_V0.y * P1_V0.y);
         var p1Emag = P1_E.mag;
         var p1CorrMag = p1Emag > 0.0001 ? d1twm * p1V0mag / p1Emag : 0;
-        var p1CorrAngle = p1Emag > 0.0001 ? Math.atan2(P1_Ey, P1_Ex) * 180 / Math.PI + 180 : 0;
-        if (p1CorrAngle >= 360) p1CorrAngle -= 360;
-        if (p1CorrAngle < 0) p1CorrAngle += 360;
+        var p1CorrAngle = 0;
+        var p1CorrAngleRelative = 0;
+        if (p1Emag > 0.0001) {
+            p1CorrAngle = d1v0p + 180 + d1twa - (Math.atan2(P1_Ey, P1_Ex) * 180 / Math.PI);
+            p1CorrAngle = ((p1CorrAngle % 360) + 360) % 360;
+            p1CorrAngleRelative = ((p1CorrAngle - d1twa) % 360 + 360) % 360;
+        }
 
         var p2V0mag = Math.sqrt(P2_V0.x * P2_V0.x + P2_V0.y * P2_V0.y);
         var p2Emag = P2_E.mag;
         var p2CorrMag = p2Emag > 0.0001 ? d2twm * p2V0mag / p2Emag : 0;
-        var p2CorrAngle = p2Emag > 0.0001 ? Math.atan2(P2_Ey, P2_Ex) * 180 / Math.PI + 180 : 0;
-        if (p2CorrAngle >= 360) p2CorrAngle -= 360;
-        if (p2CorrAngle < 0) p2CorrAngle += 360;
+        var p2CorrAngle = 0;
+        var p2CorrAngleRelative = 0;
+        if (p2Emag > 0.0001) {
+            p2CorrAngle = d2v0p + 180 + d2twa - (Math.atan2(P2_Ey, P2_Ex) * 180 / Math.PI);
+            p2CorrAngle = ((p2CorrAngle % 360) + 360) % 360;
+            p2CorrAngleRelative = ((p2CorrAngle - d2twa) % 360 + 360) % 360;
+        }
 
-        showDualResult(p1CorrMag, p1CorrAngle, p2CorrMag, p2CorrAngle);
+        showDualResult(p1CorrMag, p1CorrAngle, p1CorrAngleRelative, p2CorrMag, p2CorrAngle, p2CorrAngleRelative);
 
         addToHistory({
             type: 'dual',
             p1mass: p1CorrMag,
             p1angle: p1CorrAngle,
+            p1angleRelative: p1CorrAngleRelative,
             p2mass: p2CorrMag,
-            p2angle: p2CorrAngle
+            p2angle: p2CorrAngle,
+            p2angleRelative: p2CorrAngleRelative
         });
     }
 
