@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
         sResultContainer.style.display = 'block';
         sCorrMass.textContent = mass.toFixed(1) + ' g';
         sCorrAngle.textContent = angle.toFixed(1) + '°';
-        sResidual.textContent = residual.toFixed(2) + ' mm/s';
+        sResidual.textContent = residual.toFixed(2) + ' mm/s (|E|)';
         sQualityBadge.textContent = quality;
         var qClass = quality === i18n.t('balanceamento.balancing_ok') ? 'quality-ok'
             : quality === i18n.t('balanceamento.balancing_fair') ? 'quality-fair'
@@ -145,18 +145,20 @@ document.addEventListener('DOMContentLoaded', function () {
         if (corrAngle >= 360) corrAngle -= 360;
         if (corrAngle < 0) corrAngle += 360;
 
-        var residual = v0Mag * Math.abs(1 - (twm * v0Mag) / (eMag * corrMag));
+        // effectRatio = |E| / |V0|: mede a sensibilidade do rotor ao peso de teste.
+        // Valores ideais: 0.4 a 3.0. Abaixo de 0.2 indica peso insuficiente ou erro de medição.
+        var effectRatio = eMag / v0Mag;
 
         var quality;
-        if (residual < v0a * 0.3) {
+        if (effectRatio >= 0.4) {
             quality = i18n.t('balanceamento.balancing_ok');
-        } else if (residual < v0a * 0.7) {
+        } else if (effectRatio >= 0.2) {
             quality = i18n.t('balanceamento.balancing_fair');
         } else {
             quality = i18n.t('balanceamento.balancing_poor');
         }
 
-        showSingleResult(corrMag, corrAngle, residual, quality);
+        showSingleResult(corrMag, corrAngle, eMag, quality);
 
         addToHistory({
             type: 'single',
@@ -217,14 +219,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var P2_Ex = P2_V1.x - P2_V0.x;
         var P2_Ey = P2_V1.y - P2_V0.y;
         var P2_E = rectToPolar(P2_Ex, P2_Ey);
-
-        var v0Static_x = (P1_V0.x + P2_V0.x) / 2;
-        var v0Static_y = (P1_V0.y + P2_V0.y) / 2;
-        var v0Static = rectToPolar(v0Static_x, v0Static_y);
-
-        var v0Couple_x = (P1_V0.x - P2_V0.x) / 2;
-        var v0Couple_y = (P1_V0.y - P2_V0.y) / 2;
-        var v0Couple = rectToPolar(v0Couple_x, v0Couple_y);
 
         var p1V0mag = Math.sqrt(P1_V0.x * P1_V0.x + P1_V0.y * P1_V0.y);
         var p1Emag = P1_E.mag;
