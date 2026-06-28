@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title data-i18n="analise_oleo.title">Interpretador de Análise de Óleo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-oil-can"></i> <span data-i18n="analise_oleo.title">Interpretador de Análise de Óleo</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fa-solid fa-vial"></i> <span data-i18n="analise_oleo.subtitle">Parâmetros da Análise</span></h2>
+
+                    <div class="form-group">
+                        <label for="oil-type" data-i18n="analise_oleo.oil_type_label">Tipo de Óleo</label>
+                        <select id="oil-type">
+                            <option value="hidraulico" data-i18n="analise_oleo.hydraulic">Óleo Hidráulico</option>
+                            <option value="engrenagem" data-i18n="analise_oleo.gear">Óleo de Engrenagens</option>
+                            <option value="motor" data-i18n="analise_oleo.engine">Óleo de Motor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="iso-vg" data-i18n="analise_oleo.iso_vg_label">Viscosidade Alvo (ISO VG)</label>
+                        <select id="iso-vg">
+                            <option value="10">ISO VG 10</option>
+                            <option value="15">ISO VG 15</option>
+                            <option value="22">ISO VG 22</option>
+                            <option value="32" selected>ISO VG 32</option>
+                            <option value="46">ISO VG 46</option>
+                            <option value="68">ISO VG 68</option>
+                            <option value="100">ISO VG 100</option>
+                            <option value="150">ISO VG 150</option>
+                            <option value="220">ISO VG 220</option>
+                            <option value="320">ISO VG 320</option>
+                            <option value="460">ISO VG 460</option>
+                            <option value="680">ISO VG 680</option>
+                        </select>
+                    </div>
+
+                    <div class="input-grid">
+                        <div class="form-group">
+                            <label for="visc40" data-i18n="analise_oleo.visc40_label">Viscosidade a 40°C (cSt)</label>
+                            <input type="number" id="visc40" step="any" placeholder="Ex: 44.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="visc100" data-i18n="analise_oleo.visc100_label">Viscosidade a 100°C (cSt)</label>
+                            <input type="number" id="visc100" step="any" placeholder="Ex: 6.8">
+                        </div>
+                        <div class="form-group">
+                            <label for="water" data-i18n="analise_oleo.water_label">Teor de Água (ppm)</label>
+                            <input type="number" id="water" step="any" placeholder="Ex: 150">
+                        </div>
+                        <div class="form-group">
+                            <label for="particles" data-i18n="analise_oleo.particle_label">Contagem de Partículas (ISO 4406)</label>
+                            <input type="text" id="particles" placeholder="Ex: 17/15">
+                        </div>
+                        <div class="form-group">
+                            <label for="tan" data-i18n="analise_oleo.tan_label">TAN (mg KOH/g)</label>
+                            <input type="number" id="tan" step="any" placeholder="Ex: 1.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="tbn" data-i18n="analise_oleo.tbn_label">TBN (mg KOH/g)</label>
+                            <input type="number" id="tbn" step="any" placeholder="Ex: 12">
+                        </div>
+                        <div class="form-group">
+                            <label for="fe" data-i18n="analise_oleo.fe_label">Ferro Fe (ppm)</label>
+                            <input type="number" id="fe" step="any" placeholder="Ex: 25">
+                        </div>
+                        <div class="form-group">
+                            <label for="cu" data-i18n="analise_oleo.cu_label">Cobre Cu (ppm)</label>
+                            <input type="number" id="cu" step="any" placeholder="Ex: 10">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="pb" data-i18n="analise_oleo.pb_label">Chumbo Pb (ppm)</label>
+                            <input type="number" id="pb" step="any" placeholder="Ex: 5">
+                        </div>
+                    </div>
+
+                    <button id="calc-btn" class="btn"><i class="fa-solid fa-calculator"></i> <span data-i18n="analise_oleo.calc_btn">Interpretar Análise</span></button>
+                </div>
+
+                <div class="card" id="history-card">
+                    <h2><i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="analise_oleo.history_title">Histórico</span></h2>
+                    <div id="history-list"></div>
+                </div>
+            </div>
+
+            <div id="outputs-column">
+                <div class="card" id="result-card">
+                    <h2><i class="fa-solid fa-chart-simple"></i> <span data-i18n="analise_oleo.result_title">Resultado da Interpretação</span></h2>
+                    <div id="result-content">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-oil-can"></i>
+                            <span data-i18n="analise_oleo.note_text">Preencha os parâmetros e clique em "Interpretar Análise".</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-table"></i> <span data-i18n="analise_oleo.reference_title">Tabela de Referência</span></h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-i18n="analise_oleo.ref_param">Parâmetro</th>
+                                    <th data-i18n="analise_oleo.status_good">Bom</th>
+                                    <th data-i18n="analise_oleo.status_fair">Regular</th>
+                                    <th data-i18n="analise_oleo.status_poor">Ruim</th>
+                                    <th data-i18n="analise_oleo.status_critical">Crítico</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-i18n="analise_oleo.visc40_label">Visc. 40°C</td>
+                                    <td>±10% do alvo</td>
+                                    <td>±10-20%</td>
+                                    <td>>±20%</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="analise_oleo.water_label">Teor de Água</td>
+                                    <td>&lt;200 ppm</td>
+                                    <td>200-500</td>
+                                    <td>500-1000</td>
+                                    <td>&gt;1000</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="analise_oleo.particle_label">Partículas</td>
+                                    <td>&lt;16/14</td>
+                                    <td>16/14-18/16</td>
+                                    <td>18/16-20/18</td>
+                                    <td>&gt;20/18</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="analise_oleo.tan_label">TAN</td>
+                                    <td>&lt;2 / &lt;4*</td>
+                                    <td>2-4 / 4-8*</td>
+                                    <td>&gt;4 / &gt;8*</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="analise_oleo.tbn_label">TBN</td>
+                                    <td>&gt;10</td>
+                                    <td>5-10</td>
+                                    <td>&lt;5</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="analise_oleo.fe_label">Ferro (Fe)</td>
+                                    <td>&lt;30 ppm</td>
+                                    <td>30-60</td>
+                                    <td>60-100</td>
+                                    <td>&gt;100</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="analise_oleo.cu_label">Cobre (Cu)</td>
+                                    <td>&lt;15 ppm</td>
+                                    <td>15-30</td>
+                                    <td>30-50</td>
+                                    <td>&gt;50</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="analise_oleo.pb_label">Chumbo (Pb)</td>
+                                    <td>&lt;20 ppm</td>
+                                    <td>20-40</td>
+                                    <td>40-60</td>
+                                    <td>&gt;60</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="ref-note"><small data-i18n="analise_oleo.ref_note">* Hidráulico/Engrenagem / Motor</small></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
