@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const thresholds = {
         motor_peq: { normal: 10, alerta: 25 },
-        motor_grd: { normal: 15, alerta: 40 },
+        motor_grd: { normal: 15, alerta: 30 },
         painel: { normal: 5, alerta: 15 },
-        transformador: { normal: 20, alerta: 55 },
+        transformador: { normal: 15, alerta: 35 },
         tubulacao: { normal: 10, alerta: 30 }
     };
 
