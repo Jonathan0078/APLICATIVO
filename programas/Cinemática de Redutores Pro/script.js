@@ -1,3 +1,5 @@
+const _t = (k, r) => (typeof i18n !== 'undefined' ? i18n.t(k, r) : k);
+
 let currentTab = 'eixos';
 
 // Estado em memória do último cálculo (usado pelo botão "Copiar Resumo")
@@ -60,6 +62,12 @@ const BEARING_EXTRA_DATA = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
+    if (typeof i18n !== 'undefined') {
+        i18n.translatePage();
+        document.querySelectorAll('[data-i18n-label]').forEach(el => {
+            el.setAttribute('data-label', i18n.t(el.getAttribute('data-i18n-label')));
+        });
+    }
     const themeToggle = document.getElementById('theme-toggle-checkbox');
     if (themeToggle) {
         themeToggle.addEventListener('change', toggleTheme);
@@ -149,19 +157,19 @@ function addStage(zMot = '', zMov = '') {
     div.className = 'stage-card';
     div.innerHTML = `
         <div class="stage-card-header">
-            <strong><i class="fa-solid fa-gear"></i> Estágio <span class="stage-num">${stageNum}</span></strong>
-            <button type="button" class="remove-btn" onclick="removeStage(this)" title="Remover Estágio">
+            <strong><i class="fa-solid fa-gear"></i> ${_t('cin.stage_label')} <span class="stage-num">${stageNum}</span></strong>
+            <button type="button" class="remove-btn" onclick="removeStage(this)" title="${_t('cin.remove_stage')}">
                 <i class="fa-solid fa-trash"></i>
             </button>
         </div>
         <div class="input-grid">
             <div class="input-group" style="margin-bottom: 0;">
-                <label>Z Motora (Dentes)</label>
-                <input type="number" class="z-mot" placeholder="Ex: 25" value="${zMot}" min="1" step="1">
+                <label>${_t('cin.z_mot_label')}</label>
+                <input type="number" class="z-mot" placeholder="${_t('cin.z_mot_ph')}" value="${zMot}" min="1" step="1">
             </div>
             <div class="input-group" style="margin-bottom: 0;">
-                <label>Z Movida (Dentes)</label>
-                <input type="number" class="z-mov" placeholder="Ex: 75" value="${zMov}" min="1" step="1">
+                <label>${_t('cin.z_mov_label')}</label>
+                <input type="number" class="z-mov" placeholder="${_t('cin.z_mov_ph')}" value="${zMov}" min="1" step="1">
             </div>
         </div>
     `;
@@ -187,7 +195,7 @@ function removeStage(btn) {
             calculateGearbox();
         }
     } else {
-        showError('Atenção: O redutor precisa manter pelo menos um estágio configurado.');
+        showError(_t('cin.error_one_stage'));
     }
 }
 
@@ -228,7 +236,7 @@ function calculateGearbox() {
     const rpmIn = parseFloat(rpmInEl.value);
 
     if (isNaN(rpmIn) || rpmIn <= 0) {
-        showError('Atenção: Informe uma rotação de entrada (RPM) válida e maior que zero.');
+        showError(_t('cin.error_invalid_rpm'));
         return;
     }
 
@@ -268,7 +276,7 @@ function calculateGearbox() {
     });
 
     if (validationError) {
-        showError('Erro de Validação: Verifique o preenchimento do número de dentes em todos os cards.');
+        showError(_t('cin.error_validation'));
         return;
     }
 
@@ -288,18 +296,18 @@ function renderEixos(shaftHz, shaftRpm) {
     let html = '';
     shaftHz.forEach((hz, idx) => {
         let nomeEixo;
-        if (idx === 0) nomeEixo = 'Eixo 1 (Entrada)';
-        else if (idx === shaftHz.length - 1) nomeEixo = `Eixo ${idx + 1} (Saída)`;
-        else nomeEixo = `Eixo ${idx + 1} (Intermediário)`;
+        if (idx === 0) nomeEixo = _t('cin.shaft_input');
+        else if (idx === shaftHz.length - 1) nomeEixo = _t('cin.shaft_output', { n: idx + 1 });
+        else nomeEixo = _t('cin.shaft_intermediate', { n: idx + 1 });
 
         html += `
             <tr>
-                <td data-label="Eixo"><strong>${nomeEixo}</strong></td>
-                <td data-label="Rotação Calculada">${shaftRpm[idx].toFixed(1)} RPM</td>
-                <td data-label="Fundamental (1X)"><strong style="color: var(--primary); font-family: monospace; font-size: 1.05rem;">${hz.toFixed(3)} Hz</strong></td>
-                <td data-label="Rolamento">
+                <td data-label="${_t('cin.th_shaft')}"><strong>${nomeEixo}</strong></td>
+                <td data-label="${_t('cin.th_calc_rpm')}">${shaftRpm[idx].toFixed(1)} ${_t('cin.rpm_unit')}</td>
+                <td data-label="${_t('cin.th_fundamental')}"><strong style="color: var(--primary); font-family: monospace; font-size: 1.05rem;">${hz.toFixed(3)} ${_t('cin.hz_unit')}</strong></td>
+                <td data-label="${_t('cin.th_bearing')}">
                     <button type="button" class="bearing-toggle-btn" onclick="toggleBearingForm(${idx})">
-                        <i class="fa-solid fa-circle-notch"></i> <span>Rolamento</span>
+                        <i class="fa-solid fa-circle-notch"></i> <span>${_t('cin.bearing_btn')}</span>
                     </button>
                 </td>
             </tr>
@@ -320,11 +328,11 @@ function renderGmf(stages) {
     stages.forEach((s, idx) => {
         html += `
             <tr>
-                <td data-label="Estágio"><strong>Estágio ${idx + 1}</strong><br><small style="color: var(--text-secondary);">Transmissão Eixo ${idx + 1} para Eixo ${idx + 2}</small></td>
-                <td data-label="Dentes (Mot/Mov)">${s.zMot} dentes / ${s.zMov} dentes</td>
-                <td data-label="GMF (1X)"><strong style="color: var(--primary); font-family: monospace; font-size: 1.05rem;">${s.gmfHz.toFixed(2)} Hz</strong></td>
-                <td data-label="2X GMF" style="font-family: monospace;">${(s.gmfHz * 2).toFixed(2)} Hz</td>
-                <td data-label="3X GMF" style="font-family: monospace;">${(s.gmfHz * 3).toFixed(2)} Hz</td>
+                <td data-label="${_t('cin.th_stage')}"><strong>${_t('cin.stage_label')} ${idx + 1}</strong><br><small style="color: var(--text-secondary);">${_t('cin.transmission', { i1: idx + 1, i2: idx + 2 })}</small></td>
+                <td data-label="${_t('cin.th_teeth')}">${_t('cin.teeth_count', { zmot: s.zMot, zmov: s.zMov })}</td>
+                <td data-label="${_t('cin.th_gmf_1x')}"><strong style="color: var(--primary); font-family: monospace; font-size: 1.05rem;">${s.gmfHz.toFixed(2)} ${_t('cin.hz_unit')}</strong></td>
+                <td data-label="${_t('cin.th_2x_gmf')}" style="font-family: monospace;">${(s.gmfHz * 2).toFixed(2)} ${_t('cin.hz_unit')}</td>
+                <td data-label="${_t('cin.th_3x_gmf')}" style="font-family: monospace;">${(s.gmfHz * 3).toFixed(2)} ${_t('cin.hz_unit')}</td>
             </tr>
         `;
     });
@@ -341,8 +349,8 @@ function renderBandasLaterais(stages) {
 
     let html = '';
     stages.forEach((s, idx) => {
-        html += linhaBanda(idx, 'Eixo Motora (entrada)', s.hzIn, s.gmfHz);
-        html += linhaBanda(idx, 'Eixo Movida (saída)', s.hzOut, s.gmfHz);
+        html += linhaBanda(idx, _t('cin.banda_input'), s.hzIn, s.gmfHz);
+        html += linhaBanda(idx, _t('cin.banda_output'), s.hzOut, s.gmfHz);
     });
 
     outBandasEl.innerHTML = html;
@@ -351,13 +359,13 @@ function renderBandasLaterais(stages) {
 function linhaBanda(idxStage, label, modHz, gmfHz) {
     return `
         <tr>
-            <td data-label="Estágio"><strong>Estágio ${idxStage + 1}</strong></td>
-            <td data-label="Eixo Modulador">${label}<br><small style="color: var(--text-secondary);">(${modHz.toFixed(3)} Hz)</small></td>
-            <td data-label="GMF -2X" style="font-family: monospace;">${(gmfHz - 2 * modHz).toFixed(2)} Hz</td>
-            <td data-label="GMF -1X" style="font-family: monospace;">${(gmfHz - modHz).toFixed(2)} Hz</td>
-            <td data-label="GMF Central"><strong style="color: var(--primary); font-family: monospace;">${gmfHz.toFixed(2)} Hz</strong></td>
-            <td data-label="GMF +1X" style="font-family: monospace;">${(gmfHz + modHz).toFixed(2)} Hz</td>
-            <td data-label="GMF +2X" style="font-family: monospace;">${(gmfHz + 2 * modHz).toFixed(2)} Hz</td>
+            <td data-label="${_t('cin.th_stage')}"><strong>${_t('cin.stage_label')} ${idxStage + 1}</strong></td>
+            <td data-label="${_t('cin.th_mod_shaft')}">${label}<br><small style="color: var(--text-secondary);">(${modHz.toFixed(3)} ${_t('cin.hz_unit')})</small></td>
+            <td data-label="${_t('cin.th_gmf_m2x')}" style="font-family: monospace;">${(gmfHz - 2 * modHz).toFixed(2)} ${_t('cin.hz_unit')}</td>
+            <td data-label="${_t('cin.th_gmf_m1x')}" style="font-family: monospace;">${(gmfHz - modHz).toFixed(2)} ${_t('cin.hz_unit')}</td>
+            <td data-label="${_t('cin.th_gmf_central')}"><strong style="color: var(--primary); font-family: monospace;">${gmfHz.toFixed(2)} ${_t('cin.hz_unit')}</strong></td>
+            <td data-label="${_t('cin.th_gmf_p1x')}" style="font-family: monospace;">${(gmfHz + modHz).toFixed(2)} ${_t('cin.hz_unit')}</td>
+            <td data-label="${_t('cin.th_gmf_p2x')}" style="font-family: monospace;">${(gmfHz + 2 * modHz).toFixed(2)} ${_t('cin.hz_unit')}</td>
         </tr>
     `;
 }
@@ -381,26 +389,26 @@ function renderDiagnostico(stages) {
         let fatorHtml;
         if (g > 1) {
             fatorHtml = `
-                <span class="badge badge-warning">Relação ${aSimpl}:${bSimpl} (MDC=${g})</span>
+                <span class="badge badge-warning">${_t('cin.coverage_bad', { a: aSimpl, b: bSimpl, g })}</span>
                 <div style="margin-top:.4rem; font-size:.82rem; color: var(--text-secondary);">
-                    Baixa redistribuição de desgaste: os mesmos pares de dente se tocam repetidamente.
+                    ${_t('cin.coverage_bad_desc')}
                 </div>
             `;
         } else {
             fatorHtml = `
-                <span class="badge badge-success">Relação coprima (MDC=1)</span>
+                <span class="badge badge-success">${_t('cin.coverage_good')}</span>
                 <div style="margin-top:.4rem; font-size:.82rem; color: var(--text-secondary);">
-                    Desgaste bem distribuído entre todos os dentes do par.
+                    ${_t('cin.coverage_good_desc')}
                 </div>
             `;
         }
 
         html += `
             <tr>
-                <td data-label="Estágio"><strong>Estágio ${idx + 1}</strong></td>
-                <td data-label="Dente Caçador (fHT)"><strong style="font-family: monospace;">${fHT.toFixed(4)} Hz</strong><br><small style="color: var(--text-secondary);">MMC(${s.zMot},${s.zMov}) = ${mmcVal}</small></td>
-                <td data-label="MDC (Z/Z)" style="font-family: monospace;">${g}</td>
-                <td data-label="Fator de Cobertura">${fatorHtml}</td>
+                <td data-label="${_t('cin.th_stage')}"><strong>${_t('cin.stage_label')} ${idx + 1}</strong></td>
+                <td data-label="${_t('cin.th_hunting')}"><strong style="font-family: monospace;">${fHT.toFixed(4)} ${_t('cin.hz_unit')}</strong><br><small style="color: var(--text-secondary);">${_t('cin.mmc', { a: s.zMot, b: s.zMov, v: mmcVal })}</small></td>
+                <td data-label="${_t('cin.th_mdc')}" style="font-family: monospace;">${g}</td>
+                <td data-label="${_t('cin.th_coverage')}">${fatorHtml}</td>
             </tr>
         `;
     });
@@ -422,8 +430,8 @@ function renderAlertaRessonancia(stages, shaftHz) {
     shaftHz.forEach((hz, idx) => {
         gridFreqs.forEach(g => {
             if (Math.abs(hz - g) <= tolerancia) {
-                const nomeEixo = idx === 0 ? 'Eixo 1 (Entrada)' : (idx === shaftHz.length - 1 ? `Eixo ${idx + 1} (Saída)` : `Eixo ${idx + 1}`);
-                alertas.push(`<strong>${nomeEixo}</strong> (1X = ${hz.toFixed(2)} Hz) está próximo de ${g} Hz da rede elétrica local.`);
+                const nomeEixo = idx === 0 ? _t('cin.shaft_input') : (idx === shaftHz.length - 1 ? _t('cin.shaft_output', { n: idx + 1 }) : _t('cin.shaft_intermediate', { n: idx + 1 }));
+                alertas.push(_t('cin.resonance_near', { shaft: nomeEixo, hz: hz.toFixed(2), grid: g }));
             }
         });
     });
@@ -432,8 +440,8 @@ function renderAlertaRessonancia(stages, shaftHz) {
         [s.gmfHz, s.gmfHz * 2, s.gmfHz * 3].forEach((freq, n) => {
             gridFreqs.forEach(g => {
                 if (Math.abs(freq - g) <= tolerancia) {
-                    const harm = n === 0 ? 'GMF' : `${n + 1}X GMF`;
-                    alertas.push(`<strong>${harm} do Estágio ${idx + 1}</strong> (${freq.toFixed(2)} Hz) está próxima de ${g} Hz da rede elétrica local.`);
+                    const harm = n === 0 ? _t('cin.tab_gmf').replace(' (GMF)', '') : `${n + 1}X GMF`;
+                    alertas.push(_t('cin.resonance_harm', { harm, stage: idx + 1, hz: freq.toFixed(2), grid: g }));
                 }
             });
         });
@@ -446,7 +454,7 @@ function renderAlertaRessonancia(stages, shaftHz) {
 
     container.innerHTML = `
         <div class="resultado-container warning resonance-alert">
-            <strong><i class="fa-solid fa-triangle-exclamation"></i> Atenção: Risco de Falso Positivo Elétrico</strong>
+            <strong><i class="fa-solid fa-triangle-exclamation"></i> ${_t('cin.resonance_alert')}</strong>
             <ul style="margin: .6rem 0 0 1.1rem; padding: 0;">
                 ${alertas.map(a => `<li>${a}</li>`).join('')}
             </ul>
@@ -462,34 +470,34 @@ function bearingFormHtml(shaftIdx) {
         <div class="bearing-form">
             <div class="input-grid">
                 <div class="input-group" style="margin-bottom:0;">
-                    <label>Referência (ex: SKF 6205)</label>
-                    <input type="text" id="bearingRef-${shaftIdx}" placeholder="6205" onchange="preencherDoDB(${shaftIdx})">
+                    <label>${_t('cin.bearing_form_ref')}</label>
+                    <input type="text" id="bearingRef-${shaftIdx}" placeholder="${_t('cin.bearing_form_ref_ph')}" onchange="preencherDoDB(${shaftIdx})">
                 </div>
                 <div class="input-group" style="margin-bottom:0;">
-                    <label>N° de Elementos (N)</label>
-                    <input type="number" id="bearingN-${shaftIdx}" min="1" step="1" placeholder="Ex: 9">
+                    <label>${_t('cin.bearing_form_n')}</label>
+                    <input type="number" id="bearingN-${shaftIdx}" min="1" step="1" placeholder="${_t('cin.bearing_form_n_ph')}">
                 </div>
                 <div class="input-group" style="margin-bottom:0;">
-                    <label>Diâmetro da Esfera Bd (mm)</label>
-                    <input type="number" id="bearingBd-${shaftIdx}" min="0" step="any" placeholder="Ex: 7.94">
+                    <label>${_t('cin.bearing_form_bd')}</label>
+                    <input type="number" id="bearingBd-${shaftIdx}" min="0" step="any" placeholder="${_t('cin.bearing_form_bd_ph')}">
                 </div>
                 <div class="input-group" style="margin-bottom:0;">
-                    <label>Diâmetro Primitivo Pd (mm)</label>
-                    <input type="number" id="bearingPd-${shaftIdx}" min="0" step="any" placeholder="Ex: 38.5">
+                    <label>${_t('cin.bearing_form_pd')}</label>
+                    <input type="number" id="bearingPd-${shaftIdx}" min="0" step="any" placeholder="${_t('cin.bearing_form_pd_ph')}">
                 </div>
                 <div class="input-group" style="margin-bottom:0;">
-                    <label>Ângulo de Contato (°)</label>
+                    <label>${_t('cin.bearing_form_angle')}</label>
                     <input type="number" id="bearingAngle-${shaftIdx}" min="0" max="89" step="any" value="0">
                 </div>
             </div>
             <div class="button-group" style="margin-top:.85rem;">
                 <button type="button" class="main-button" onclick="calcularRolamento(${shaftIdx})">
-                    <i class="fa-solid fa-calculator"></i> <span>Calcular Frequências</span>
+                    <i class="fa-solid fa-calculator"></i> <span>${_t('cin.bearing_calc_btn')}</span>
                 </button>
             </div>
             <div id="bearingResult-${shaftIdx}" class="bearing-result"></div>
             <div class="info-box" style="margin-top:.85rem; font-size:.8rem;">
-                Valores de referência aproximados (catálogo padrão) para algumas referências comuns. Assume pista interna girando com o eixo e pista externa fixa. Para máxima precisão, confirme N / Bd / Pd / ângulo na folha de dados do fabricante.
+                ${_t('cin.bearing_info')}
             </div>
         </div>
     `;
@@ -548,8 +556,7 @@ function preencherDoDB(shaftIdx) {
     // 4. Exibe mensagem se apenas dados parciais foram encontrados
     if (pd && !foundInExtra && resultEl) {
         resultEl.innerHTML = `<div class="resultado-container info" style="font-size: 0.85rem; padding: 0.6rem;">
-            Rolamento encontrado na base principal. <strong>Pd preenchido.</strong><br>
-            Para calcular as frequências, por favor, insira manualmente o <strong>Nº de Elementos (N)</strong> e o <strong>Diâmetro da Esfera (Bd)</strong>.
+            ${_t('cin.bearing_db_found')}
         </div>`;
     }
 }
@@ -559,7 +566,7 @@ function calcularRolamento(shaftIdx) {
     if (!resultEl) return;
 
     if (!lastCalculo || !lastCalculo.shaftRpm[shaftIdx]) {
-        resultEl.innerHTML = '<div class="resultado-container error">Calcule o espectro do redutor antes de calcular o rolamento.</div>';
+        resultEl.innerHTML = '<div class="resultado-container error">' + _t('cin.bearing_calc_first') + '</div>';
         return;
     }
 
@@ -569,7 +576,7 @@ function calcularRolamento(shaftIdx) {
     const angleDeg = parseFloat(document.getElementById(`bearingAngle-${shaftIdx}`).value) || 0;
 
     if (isNaN(N) || isNaN(Bd) || isNaN(Pd) || N <= 0 || Bd <= 0 || Pd <= 0) {
-        resultEl.innerHTML = '<div class="resultado-container error">Informe N, Bd e Pd válidos (ou uma referência reconhecida) para calcular.</div>';
+        resultEl.innerHTML = '<div class="resultado-container error">' + _t('cin.bearing_invalid') + '</div>';
         return;
     }
 
@@ -587,14 +594,14 @@ function calcularRolamento(shaftIdx) {
         <div class="table-container" style="margin-top:.85rem;">
             <table class="comparison-table">
                 <thead>
-                    <tr><th>BPFO (pista externa)</th><th>BPFI (pista interna)</th><th>BSF (esferas)</th><th>FTF (gaiola)</th></tr>
+                    <tr><th>${_t('cin.bearing_result_bpfo')}</th><th>${_t('cin.bearing_result_bpfi')}</th><th>${_t('cin.bearing_result_bsf')}</th><th>${_t('cin.bearing_result_ftf')}</th></tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-family: monospace; color: var(--primary);"><strong>${bpfo.toFixed(2)} Hz</strong></td>
-                        <td style="font-family: monospace; color: var(--primary);"><strong>${bpfi.toFixed(2)} Hz</strong></td>
-                        <td style="font-family: monospace;">${bsf.toFixed(2)} Hz</td>
-                        <td style="font-family: monospace;">${ftf.toFixed(2)} Hz</td>
+                        <td style="font-family: monospace; color: var(--primary);"><strong>${bpfo.toFixed(2)} ${_t('cin.hz_unit')}</strong></td>
+                        <td style="font-family: monospace; color: var(--primary);"><strong>${bpfi.toFixed(2)} ${_t('cin.hz_unit')}</strong></td>
+                        <td style="font-family: monospace;">${bsf.toFixed(2)} ${_t('cin.hz_unit')}</td>
+                        <td style="font-family: monospace;">${ftf.toFixed(2)} ${_t('cin.hz_unit')}</td>
                     </tr>
                 </tbody>
             </table>
@@ -622,7 +629,7 @@ function carregarOpcoesPresets() {
     if (!select) return;
 
     const presets = getPresets();
-    select.innerHTML = '<option value="">-- Carregar Ativo Salvo --</option>';
+    select.innerHTML = '<option value="">' + _t('cin.load_preset') + '</option>';
     presets.forEach(p => {
         const opt = document.createElement('option');
         opt.value = p.nome;
@@ -638,13 +645,13 @@ function salvarAtivoAtual() {
 
     const nome = nomeEl.value.trim();
     if (!nome) {
-        showError('Atenção: Informe um nome para o equipamento antes de salvar o ativo.');
+        showError(_t('cin.error_save_name'));
         return;
     }
 
     const rpm = parseFloat(rpmEl.value);
     if (isNaN(rpm) || rpm <= 0) {
-        showError('Atenção: Informe uma rotação de entrada (RPM) válida antes de salvar.');
+        showError(_t('cin.error_save_rpm'));
         return;
     }
 
@@ -658,7 +665,7 @@ function salvarAtivoAtual() {
     });
 
     if (stagesData.length === 0) {
-        showError('Atenção: Preencha pelo menos um estágio válido antes de salvar o ativo.');
+        showError(_t('cin.error_save_stages'));
         return;
     }
 
@@ -718,13 +725,13 @@ function carregarAtivo(nome) {
 function excluirAtivoSelecionado() {
     const select = document.getElementById('presetSelect');
     if (!select || !select.value) {
-        showError('Atenção: Selecione um ativo salvo na lista para excluir.');
+        showError(_t('cin.error_select_delete'));
         return;
     }
 
     const nome = select.value;
     
-    const confirma = window.confirm(`Atenção: Confirma a exclusão definitiva da tag "${nome}" do banco de ativos?`);
+    const confirma = window.confirm(_t('cin.config_delete', { name: nome }));
     if (!confirma) return;
 
     let presets = getPresets();
@@ -738,17 +745,17 @@ function excluirAtivoSelecionado() {
 // ---------------------------------------------------------------------------
 function copiarResumo() {
     if (!lastCalculo) {
-        showError('Atenção: Calcule o espectro antes de copiar o resumo.');
+        showError(_t('cin.error_copy_calc'));
         return;
     }
 
     const nomeEl = document.getElementById('nomeAtivo');
-    const nome = (nomeEl && nomeEl.value.trim()) ? nomeEl.value.trim() : 'Redutor sem nome';
+    const nome = (nomeEl && nomeEl.value.trim()) ? nomeEl.value.trim() : _t('cin.empty_name');
 
     const eixoSaidaHz = lastCalculo.shaftHz[lastCalculo.shaftHz.length - 1];
-    const gmfList = lastCalculo.stages.map((s, i) => `GMF Estágio ${i + 1}: ${s.gmfHz.toFixed(1)} Hz`).join(' | ');
+    const gmfList = lastCalculo.stages.map((s, i) => `${_t('cin.tab_gmf').replace(' (GMF)', '')} ${_t('cin.stage_label')} ${i + 1}: ${s.gmfHz.toFixed(1)} ${_t('cin.hz_unit')}`).join(' | ');
 
-    const texto = `Equipamento: ${nome} | RPM Entrada: ${lastCalculo.rpmIn} | Eixo Saída: ${eixoSaidaHz.toFixed(2)} Hz | ${gmfList}`;
+    const texto = _t('cin.copy_summary', { name: nome, rpm: lastCalculo.rpmIn, hz: eixoSaidaHz.toFixed(2), gmf: gmfList });
 
     copiarTextoParaClipboard(texto);
 }
@@ -759,8 +766,8 @@ function copiarTextoParaClipboard(texto) {
         if (!btn) return;
         const original = btn.innerHTML;
         btn.innerHTML = ok
-            ? '<i class="fa-solid fa-check"></i> <span>Copiado!</span>'
-            : '<i class="fa-solid fa-xmark"></i> <span>Falhou</span>';
+            ? '<i class="fa-solid fa-check"></i> <span>' + _t('cin.copied') + '</span>'
+            : '<i class="fa-solid fa-xmark"></i> <span>' + _t('cin.failed') + '</span>';
         setTimeout(() => { btn.innerHTML = original; }, 1800);
     };
 

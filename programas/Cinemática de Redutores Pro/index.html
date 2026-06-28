@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Frequências de Redutores Pro</title>
+    <title data-i18n="cin.title">Calculadora de Frequências de Redutores Pro</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon"> 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="../shared/i18n.js"></script>
 </head>
 <body>
 
     <div class="app-container">
         <header class="app-header">
             <div class="header-content">
-                <h1><i class="fa-solid fa-gears"></i> <span>Cinemática de Redutores <span class="hide-mobile">Pro</span></span></h1>
+                <h1><i class="fa-solid fa-gears"></i> <span data-i18n="cin.header">Cinemática de Redutores Pro</span></h1>
                 <div class="theme-switcher">
                     <i class="fa-solid fa-sun"></i>
                     <label class="switch">
@@ -28,37 +29,37 @@
         <main class="app-main aguardando-calculo">
             <div id="inputs-column">
                 <div class="card">
-                    <h2><i class="fa-solid fa-gauge-high"></i> <span>Parâmetros de Entrada</span></h2>
+                    <h2><i class="fa-solid fa-gauge-high"></i> <span data-i18n="cin.params">Parâmetros de Entrada</span></h2>
 
                     <div class="input-group">
-                        <label for="nomeAtivo">Nome do Equipamento (Tag)</label>
-                        <input type="text" id="nomeAtivo" placeholder="Ex: Redutor Forno 01">
+                        <label for="nomeAtivo" data-i18n="cin.tag_label">Nome do Equipamento (Tag)</label>
+                        <input type="text" id="nomeAtivo" data-i18n-placeholder="cin.tag_ph" placeholder="Ex: Redutor Forno 01">
                     </div>
 
                     <div class="input-group">
-                        <label for="rpmIn">Rotação do Motor / Eixo de Alta (RPM)</label>
-                        <input type="number" id="rpmIn" placeholder="Ex: 1750" step="any" value="1750">
+                        <label for="rpmIn" data-i18n="cin.rpm_label">Rotação do Motor / Eixo de Alta (RPM)</label>
+                        <input type="number" id="rpmIn" data-i18n-placeholder="cin.rpm_ph" placeholder="Ex: 1750" step="any" value="1750">
                     </div>
 
                     <div class="preset-row">
                         <select id="presetSelect" class="preset-select">
-                            <option value="">-- Carregar Ativo Salvo --</option>
+                            <option value="" data-i18n="cin.load_preset">-- Carregar Ativo Salvo --</option>
                         </select>
-                        <button type="button" class="secondary-button preset-btn" onclick="salvarAtivoAtual()" title="Salvar Máquina Atual">
+                        <button type="button" class="secondary-button preset-btn" onclick="salvarAtivoAtual()" data-i18n-title="cin.save_asset" title="Salvar Máquina Atual">
                             <i class="fa-solid fa-floppy-disk"></i>
                         </button>
-                        <button type="button" class="secondary-button preset-btn preset-btn-danger" onclick="excluirAtivoSelecionado()" title="Excluir Ativo Selecionado">
+                        <button type="button" class="secondary-button preset-btn preset-btn-danger" onclick="excluirAtivoSelecionado()" data-i18n-title="cin.delete_asset" title="Excluir Ativo Selecionado">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
 
-                    <h2 style="margin-top: 1rem;"><i class="fa-solid fa-cogs"></i> <span>Trem de Engrenamentos</span></h2>
+                    <h2 style="margin-top: 1rem;"><i class="fa-solid fa-cogs"></i> <span data-i18n="cin.train_title">Trem de Engrenamentos</span></h2>
                     
                     <div id="stagesContainer"></div>
 
                     <div class="button-group">
-                        <button class="main-button" onclick="calculateGearbox()"><i class="fa-solid fa-calculator"></i> <span>Calcular Espectro</span></button>
-                        <button class="secondary-button" onclick="addStage()"><i class="fa-solid fa-plus"></i> <span>Adicionar Estágio</span></button>
+                        <button class="main-button" onclick="calculateGearbox()"><i class="fa-solid fa-calculator"></i> <span data-i18n="cin.calc_btn">Calcular Espectro</span></button>
+                        <button class="secondary-button" onclick="addStage()"><i class="fa-solid fa-plus"></i> <span data-i18n="cin.add_stage">Adicionar Estágio</span></button>
                     </div>
                     
                     <div id="error-container" class="resultado-container error hidden"></div>
@@ -68,19 +69,19 @@
             <div id="outputs-column">
                 <div class="card" id="results-card">
                     <div class="card-header">
-                        <h2><i class="fa-solid fa-wave-square"></i> <span>Espectro Cinemático (Hz)</span></h2>
-                        <button type="button" class="secondary-button copy-resumo-btn" id="copyResumoBtn" onclick="copiarResumo()" title="Copiar Resumo para Laudo">
-                            <i class="fa-solid fa-copy"></i> <span>Copiar Resumo</span>
+                        <h2><i class="fa-solid fa-wave-square"></i> <span data-i18n="cin.spectrum_title">Espectro Cinemático (Hz)</span></h2>
+                        <button type="button" class="secondary-button copy-resumo-btn" id="copyResumoBtn" onclick="copiarResumo()" data-i18n-title="cin.copy_report" title="Copiar Resumo para Laudo">
+                            <i class="fa-solid fa-copy"></i> <span data-i18n="cin.copy_btn">Copiar Resumo</span>
                         </button>
                     </div>
 
                     <div id="resonance-alert-container"></div>
                     
                     <div class="tabs">
-                        <div class="tab active" onclick="showTab('eixos', event)">Eixos (1X)</div>
-                        <div class="tab" onclick="showTab('gmf', event)">Engrenamento (GMF)</div>
-                        <div class="tab" onclick="showTab('bandas', event)">Bandas Laterais</div>
-                        <div class="tab" onclick="showTab('diagnostico', event)">Diagnóstico</div>
+                        <div class="tab active" data-i18n="cin.tab_shafts" onclick="showTab('eixos', event)">Eixos (1X)</div>
+                        <div class="tab" data-i18n="cin.tab_gmf" onclick="showTab('gmf', event)">Engrenamento (GMF)</div>
+                        <div class="tab" data-i18n="cin.tab_sidebands" onclick="showTab('bandas', event)">Bandas Laterais</div>
+                        <div class="tab" data-i18n="cin.tab_diag" onclick="showTab('diagnostico', event)">Diagnóstico</div>
                     </div>
                     
                     <div id="eixos-tab" class="tab-content active">
@@ -88,19 +89,19 @@
                             <table class="comparison-table responsive-table">
                                 <thead>
                                     <tr>
-                                        <th>Eixo</th>
-                                        <th>Rotação Calculada</th>
-                                        <th>Fundamental (1X)</th>
-                                        <th>Rolamento</th>
+                                        <th data-i18n="cin.th_shaft">Eixo</th>
+                                        <th data-i18n="cin.th_calc_rpm">Rotação Calculada</th>
+                                        <th data-i18n="cin.th_fundamental">Fundamental (1X)</th>
+                                        <th data-i18n="cin.th_bearing">Rolamento</th>
                                     </tr>
                                 </thead>
                                 <tbody id="outEixos">
-                                    <tr><td colspan="4" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
+                                    <tr><td colspan="4" data-i18n="cin.waiting" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="info-box">
-                            <strong>Diagnóstico 1X:</strong> Picos elevados coincidentes com a frequência fundamental de rotação de qualquer um dos eixos indicam desbalanceamento mássico, empenamento ou desalinhamento severo.
+                            <strong data-i18n="cin.diag_1x_label">Diagnóstico 1X</strong>: <span data-i18n="cin.diag_1x">Picos elevados coincidentes com a frequência fundamental de rotação de qualquer um dos eixos indicam desbalanceamento mássico, empenamento ou desalinhamento severo.</span>
                         </div>
                     </div>
                     
@@ -109,20 +110,20 @@
                             <table class="comparison-table responsive-table">
                                 <thead>
                                     <tr>
-                                        <th>Estágio</th>
-                                        <th>Dentes (Mot/Mov)</th>
-                                        <th>GMF (1X)</th>
-                                        <th>2X GMF</th>
-                                        <th>3X GMF</th>
+                                        <th data-i18n="cin.th_stage">Estágio</th>
+                                        <th data-i18n="cin.th_teeth">Dentes (Mot/Mov)</th>
+                                        <th data-i18n="cin.th_gmf_1x">GMF (1X)</th>
+                                        <th data-i18n="cin.th_2x_gmf">2X GMF</th>
+                                        <th data-i18n="cin.th_3x_gmf">3X GMF</th>
                                     </tr>
                                 </thead>
                                 <tbody id="outGmf">
-                                    <tr><td colspan="5" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
+                                    <tr><td colspan="5" data-i18n="cin.waiting" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="info-box">
-                            <strong>Diagnóstico GMF:</strong> Altas amplitudes na frequência de engrenamento ou em suas harmônicas (2X, 3X) evidenciam desgaste nos dentes, folga excessiva (backlash) ou excentricidade da coroa.
+                            <strong data-i18n="cin.diag_gmf_label">Diagnóstico GMF</strong>: <span data-i18n="cin.diag_gmf">Altas amplitudes na frequência de engrenamento ou em suas harmônicas (2X, 3X) evidenciam desgaste nos dentes, folga excessiva (backlash) ou excentricidade da coroa.</span>
                         </div>
                     </div>
 
@@ -131,22 +132,22 @@
                             <table class="comparison-table responsive-table">
                                 <thead>
                                     <tr>
-                                        <th>Estágio</th>
-                                        <th>Eixo Modulador</th>
-                                        <th>GMF -2X</th>
-                                        <th>GMF -1X</th>
-                                        <th>GMF Central</th>
-                                        <th>GMF +1X</th>
-                                        <th>GMF +2X</th>
+                                        <th data-i18n="cin.th_stage">Estágio</th>
+                                        <th data-i18n="cin.th_mod_shaft">Eixo Modulador</th>
+                                        <th data-i18n="cin.th_gmf_m2x">GMF -2X</th>
+                                        <th data-i18n="cin.th_gmf_m1x">GMF -1X</th>
+                                        <th data-i18n="cin.th_gmf_central">GMF Central</th>
+                                        <th data-i18n="cin.th_gmf_p1x">GMF +1X</th>
+                                        <th data-i18n="cin.th_gmf_p2x">GMF +2X</th>
                                     </tr>
                                 </thead>
                                 <tbody id="outBandas">
-                                    <tr><td colspan="7" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
+                                    <tr><td colspan="7" data-i18n="cin.waiting" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="info-box">
-                            <strong>Diagnóstico de Bandas Laterais:</strong> Picos simétricos ao redor da GMF, espaçados pela rotação de um dos eixos, indicam modulação em amplitude — sinal de dente trincado, quebrado ou excentricidade severa da engrenagem daquele eixo.
+                            <strong data-i18n="cin.diag_sidebands_label">Diagnóstico de Bandas Laterais</strong>: <span data-i18n="cin.diag_sidebands">Picos simétricos ao redor da GMF, espaçados pela rotação de um dos eixos, indicam modulação em amplitude — sinal de dente trincado, quebrado ou excentricidade severa da engrenagem daquele eixo.</span>
                         </div>
                     </div>
 
@@ -155,73 +156,73 @@
                             <table class="comparison-table responsive-table">
                                 <thead>
                                     <tr>
-                                        <th>Estágio</th>
-                                        <th>Dente Caçador (fHT)</th>
-                                        <th>MDC (Z/Z)</th>
-                                        <th>Fator de Cobertura</th>
+                                        <th data-i18n="cin.th_stage">Estágio</th>
+                                        <th data-i18n="cin.th_hunting">Dente Caçador (fHT)</th>
+                                        <th data-i18n="cin.th_mdc">MDC (Z/Z)</th>
+                                        <th data-i18n="cin.th_coverage">Fator de Cobertura</th>
                                     </tr>
                                 </thead>
                                 <tbody id="outDiagnostico">
-                                    <tr><td colspan="4" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
+                                    <tr><td colspan="4" data-i18n="cin.waiting" style="color: var(--text-secondary);">Aguardando processamento...</td></tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="info-box">
-                            <strong>Dente Caçador:</strong> frequência muito baixa em que o mesmo par de dentes defeituosos volta a se encontrar — não aparece em 1X nem na GMF.<br>
-                            <strong>Fator de Cobertura:</strong> quando o MDC entre os dentes motor/movido é maior que 1, os mesmos pares de dente se tocam repetidamente, concentrando o desgaste.
+                            <strong data-i18n="cin.diag_hunting_label">Dente Caçador</strong>: <span data-i18n="cin.diag_hunting">frequência muito baixa em que o mesmo par de dentes defeituosos volta a se encontrar — não aparece em 1X nem na GMF.</span><br>
+                            <strong data-i18n="cin.diag_coverage_label">Fator de Cobertura</strong>: <span data-i18n="cin.diag_coverage">quando o MDC entre os dentes motor/movido é maior que 1, os mesmos pares de dente se tocam repetidamente, concentrando o desgaste.</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card" id="guia-referencia-card">
-                <h2><i class="fa-solid fa-book-bookmark"></i> <span>Guia de Referência: Assinaturas Espectrais</span></h2>
+                <h2><i class="fa-solid fa-book-bookmark"></i> <span data-i18n="cin.ref_title">Guia de Referência: Assinaturas Espectrais</span></h2>
                 <div class="table-container no-scroll-mobile">
                     <table class="comparison-table responsive-table">
                         <thead>
                             <tr>
-                                <th>Assinatura Espectral</th>
-                                <th>Fórmula Cinemática</th>
-                                <th>Origem Física</th>
-                                <th>Modo de Falha Crítico</th>
+                                <th data-i18n="cin.ref_signature">Assinatura Espectral</th>
+                                <th data-i18n="cin.ref_formula">Fórmula Cinemática</th>
+                                <th data-i18n="cin.ref_origin">Origem Física</th>
+                                <th data-i18n="cin.ref_failure">Modo de Falha Crítico</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td data-label="Assinatura Espectral"><strong>1X do Eixo</strong></td>
-                                <td data-label="Fórmula Cinemática">RPM / 60</td>
-                                <td data-label="Origem Física">Giro excêntrico da massa do eixo.</td>
-                                <td data-label="Modo de Falha Crítico">Desbalanceamento, empenamento mecânico ou desalinhamento.</td>
+                                <td data-i18n-label="cin.ref_signature" data-label="Assinatura Espectral"><strong data-i18n="cin.ref_1x_name">1X do Eixo</strong></td>
+                                <td data-i18n-label="cin.ref_formula" data-label="Fórmula Cinemática" data-i18n="cin.ref_1x_formula">RPM / 60</td>
+                                <td data-i18n-label="cin.ref_origin" data-label="Origem Física" data-i18n="cin.ref_1x_origin">Giro excêntrico da massa do eixo.</td>
+                                <td data-i18n-label="cin.ref_failure" data-label="Modo de Falha Crítico" data-i18n="cin.ref_1x_failure">Desbalanceamento, empenamento mecânico ou desalinhamento.</td>
                             </tr>
                             <tr>
-                                <td data-label="Assinatura Espectral"><strong>GMF (Engrenamento)</strong></td>
-                                <td data-label="Fórmula Cinemática">1X Eixo × Z Dentes</td>
-                                <td data-label="Origem Física">Impacto elástico natural dos dentes sob carga.</td>
-                                <td data-label="Modo de Falha Crítico">Desgaste abrasivo do flanco ou sobrecarga operacional severa.</td>
+                                <td data-i18n-label="cin.ref_signature" data-label="Assinatura Espectral"><strong data-i18n="cin.ref_gmf_name">GMF (Engrenamento)</strong></td>
+                                <td data-i18n-label="cin.ref_formula" data-label="Fórmula Cinemática" data-i18n="cin.ref_gmf_formula">1X Eixo × Z Dentes</td>
+                                <td data-i18n-label="cin.ref_origin" data-label="Origem Física" data-i18n="cin.ref_gmf_origin">Impacto elástico natural dos dentes sob carga.</td>
+                                <td data-i18n-label="cin.ref_failure" data-label="Modo de Falha Crítico" data-i18n="cin.ref_gmf_failure">Desgaste abrasivo do flanco ou sobrecarga operacional severa.</td>
                             </tr>
                             <tr>
-                                <td data-label="Assinatura Espectral"><strong>Harmônicas (2X, 3X GMF)</strong></td>
-                                <td data-label="Fórmula Cinemática">N × GMF</td>
-                                <td data-label="Origem Física">Deformação não-linear do perfil de engrenamento.</td>
-                                <td data-label="Modo de Falha Crítico">Folga entre dentes fora de especificação (backlash) ou falha em rolamento.</td>
+                                <td data-i18n-label="cin.ref_signature" data-label="Assinatura Espectral"><strong data-i18n="cin.ref_harm_name">Harmônicas (2X, 3X GMF)</strong></td>
+                                <td data-i18n-label="cin.ref_formula" data-label="Fórmula Cinemática" data-i18n="cin.ref_harm_formula">N × GMF</td>
+                                <td data-i18n-label="cin.ref_origin" data-label="Origem Física" data-i18n="cin.ref_harm_origin">Deformação não-linear do perfil de engrenamento.</td>
+                                <td data-i18n-label="cin.ref_failure" data-label="Modo de Falha Crítico" data-i18n="cin.ref_harm_failure">Folga entre dentes fora de especificação (backlash) ou falha em rolamento.</td>
                             </tr>
                             <tr>
-                                <td data-label="Assinatura Espectral"><strong>Bandas Laterais (±1X)</strong></td>
-                                <td data-label="Fórmula Cinemática">GMF ± (n × 1X Eixo)</td>
-                                <td data-label="Origem Física">Modulação em amplitude por choque cíclico.</td>
-                                <td data-label="Modo de Falha Crítico">Dente trincado, quebrado ou excentricidade severa da engrenagem.</td>
+                                <td data-i18n-label="cin.ref_signature" data-label="Assinatura Espectral"><strong data-i18n="cin.ref_side_name">Bandas Laterais (±1X)</strong></td>
+                                <td data-i18n-label="cin.ref_formula" data-label="Fórmula Cinemática" data-i18n="cin.ref_side_formula">GMF ± (n × 1X Eixo)</td>
+                                <td data-i18n-label="cin.ref_origin" data-label="Origem Física" data-i18n="cin.ref_side_origin">Modulação em amplitude por choque cíclico.</td>
+                                <td data-i18n-label="cin.ref_failure" data-label="Modo de Falha Crítico" data-i18n="cin.ref_side_failure">Dente trincado, quebrado ou excentricidade severa da engrenagem.</td>
                             </tr>
                             <tr>
-                                <td data-label="Assinatura Espectral"><strong>Dente Caçador (Hunting Tooth)</strong></td>
-                                <td data-label="Fórmula Cinemática">GMF / MMC(Z_mot, Z_mov)</td>
-                                <td data-label="Origem Física">Reencontro periódico do mesmo par específico de dentes.</td>
-                                <td data-label="Modo de Falha Crítico">Marca de usinagem ou batida de transporte localizada em dois dentes específicos.</td>
+                                <td data-i18n-label="cin.ref_signature" data-label="Assinatura Espectral"><strong data-i18n="cin.ref_ht_name">Dente Caçador (Hunting Tooth)</strong></td>
+                                <td data-i18n-label="cin.ref_formula" data-label="Fórmula Cinemática" data-i18n="cin.ref_ht_formula">GMF / MMC(Z_mot, Z_mov)</td>
+                                <td data-i18n-label="cin.ref_origin" data-label="Origem Física" data-i18n="cin.ref_ht_origin">Reencontro periódico do mesmo par específico de dentes.</td>
+                                <td data-i18n-label="cin.ref_failure" data-label="Modo de Falha Crítico" data-i18n="cin.ref_ht_failure">Marca de usinagem ou batida de transporte localizada em dois dentes específicos.</td>
                             </tr>
                             <tr>
-                                <td data-label="Assinatura Espectral"><strong>Rolamento (BPFI/BPFO/BSF)</strong></td>
-                                <td data-label="Fórmula Cinemática">Função de N, Bd, Pd, ângulo de contato</td>
-                                <td data-label="Origem Física">Passagem dos elementos rolantes pelos defeitos das pistas.</td>
-                                <td data-label="Modo de Falha Crítico">Defeito na pista interna, externa ou nas esferas/rolos.</td>
+                                <td data-i18n-label="cin.ref_signature" data-label="Assinatura Espectral"><strong data-i18n="cin.ref_bearing_name">Rolamento (BPFI/BPFO/BSF)</strong></td>
+                                <td data-i18n-label="cin.ref_formula" data-label="Fórmula Cinemática" data-i18n="cin.ref_bearing_formula">Função de N, Bd, Pd, ângulo de contato</td>
+                                <td data-i18n-label="cin.ref_origin" data-label="Origem Física" data-i18n="cin.ref_bearing_origin">Passagem dos elementos rolantes pelos defeitos das pistas.</td>
+                                <td data-i18n-label="cin.ref_failure" data-label="Modo de Falha Crítico" data-i18n="cin.ref_bearing_failure">Defeito na pista interna, externa ou nas esferas/rolos.</td>
                             </tr>
                         </tbody>
                     </table>
