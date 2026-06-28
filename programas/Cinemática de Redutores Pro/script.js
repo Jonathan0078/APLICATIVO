@@ -533,31 +533,47 @@ function preencherDoDB(shaftIdx) {
     // 1. Tenta encontrar na base de dados completa (rolamentosMap)
     const dadosRolamento = rolamentosMap[ref];
     if (dadosRolamento && dadosRolamento.d && dadosRolamento.D) {
-        // Calcula o diâmetro primitivo (Pd) aproximado
-        pd = (parseFloat(dadosRolamento.d) + parseFloat(dadosRolamento.D)) / 2;
+        const dNum = parseFloat(dadosRolamento.d);
+        const DNum = parseFloat(dadosRolamento.D);
+        pd = (dNum + DNum) / 2;
     }
 
     // 2. Tenta encontrar na base de dados extra para dados mais precisos (N, Bd, Pd)
-    // A base extra usa chaves simplificadas (só números), então limpamos a referência
     const refSimplificada = ref.replace(/[^0-9]/g, '');
     const dadosExtra = BEARING_EXTRA_DATA[refSimplificada];
     if (dadosExtra) {
         n = dadosExtra.N;
         bd = dadosExtra.Bd;
-        pd = dadosExtra.Pd; // Sobrescreve o Pd calculado se houver um mais preciso
+        pd = dadosExtra.Pd;
         foundInExtra = true;
     }
 
-    // 3. Preenche os campos com os dados encontrados
+    // 3. Estima Bd e N quando só temos as dimensões básicas
+    if (!foundInExtra && dadosRolamento && dadosRolamento.d && dadosRolamento.D && !bd) {
+        const dNum = parseFloat(dadosRolamento.d);
+        const DNum = parseFloat(dadosRolamento.D);
+        const secao = DNum - dNum;
+        const serie = refSimplificada.slice(0, 2);
+        const fatores = { '60': 0.26, '62': 0.30, '63': 0.33, '64': 0.35 };
+        bd = parseFloat((secao * (fatores[serie] || 0.30)).toFixed(2));
+        if (bd < 1) bd = parseFloat((secao * 0.30).toFixed(2));
+        if (pd) n = Math.round(Math.PI * pd / bd);
+    }
+
+    // 4. Preenche os campos com os dados encontrados
     if (n && nEl) nEl.value = n;
     if (bd && bdEl) bdEl.value = bd;
-    if (pd && pdEl) pdEl.value = pd.toFixed(2); // Usar ponto decimal para consistência com parseFloat
+    if (pd && pdEl) pdEl.value = pd.toFixed(2);
 
-    // 4. Exibe mensagem se apenas dados parciais foram encontrados
+    // 5. Exibe mensagem se apenas dados parciais foram encontrados
     if (pd && !foundInExtra && resultEl) {
-        resultEl.innerHTML = `<div class="resultado-container info" style="font-size: 0.85rem; padding: 0.6rem;">
-            ${_t('cin.bearing_db_found')}
-        </div>`;
+        const temN = n && nEl && nEl.value;
+        const temBd = bd && bdEl && bdEl.value;
+        if (temN && temBd) {
+            resultEl.innerHTML = `<div class="resultado-container info" style="font-size: 0.85rem; padding: 0.6rem;">
+                ${_t('cin.bearing_db_found')}
+            </div>`;
+        }
     }
 }
 
