@@ -616,7 +616,7 @@ class UpdateManager {
                 <div class="update-icon"><i class="fas fa-sync-alt"></i></div>
                 <h3>${forceUpdate ? _t('update.force') : _t('update.title')}</h3>
                 <p class="update-version">${_t('update.version').replace('{v}', data ? data.version : '')}</p>
-                <p class="update-message">${_t('update.store_message')}</p>
+                <p class="update-message">${_t('update.web_message')}</p>
                 ${changelogHTML}
                 ${forceUpdate ? '<p class="update-warning">' + _t('update.force_message') + '</p>' : ''}
                 <div class="update-actions">
