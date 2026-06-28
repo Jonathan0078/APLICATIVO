@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="termografia.title">Termografia - Severidade Térmica</title>
+    <link rel="stylesheet" href="../../assets/icons/fontawesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-thermometer-half"></i> <span data-i18n="termografia.title">Termografia - Severidade Térmica</span></h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="app-main">
+            <div id="inputs-column">
+                <div class="card">
+                    <h2><i class="fas fa-sliders-h"></i> <span data-i18n="termografia.subtitle">Classificação de Severidade Térmica</span></h2>
+                    <form id="termografia-form">
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="delta-t"><i class="fas fa-temperature-high"></i> <span data-i18n="termografia.delta_t_label">ΔT (°C)</span></label>
+                                <input type="number" id="delta-t" step="0.1" min="0" required value="0" placeholder="0">
+                            </div>
+                            <div class="input-group">
+                                <label for="med-tipo"><i class="fas fa-ruler"></i> <span data-i18n="termografia.med_type_label">Tipo de Medição</span></label>
+                                <select id="med-tipo">
+                                    <option value="ponto" data-i18n="termografia.med_ponto">Ponto</option>
+                                    <option value="area" data-i18n="termografia.med_area">Área</option>
+                                    <option value="padrao" data-i18n="termografia.med_padrao">Padrão</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="equip-tipo"><i class="fas fa-cogs"></i> <span data-i18n="termografia.equip_type_label">Categoria do Equipamento</span></label>
+                                <select id="equip-tipo">
+                                    <option value="motor_peq" data-i18n="termografia.eq_motor_peq">Motor &lt; 1HP</option>
+                                    <option value="motor_grd" data-i18n="termografia.eq_motor_grd">Motor &gt; 1HP</option>
+                                    <option value="painel" data-i18n="termografia.eq_painel">Painel Elétrico</option>
+                                    <option value="transformador" data-i18n="termografia.eq_transformador">Transformador</option>
+                                    <option value="tubulacao" data-i18n="termografia.eq_tubulacao">Tubulação/Isolamento</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="amb-temp"><i class="fas fa-thermometer"></i> <span data-i18n="termografia.ambient_label">Temperatura Ambiente (°C)</span></label>
+                                <input type="number" id="amb-temp" step="0.1" min="-50" max="100" required value="25" placeholder="25">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="main-button"><i class="fas fa-calculator"></i> <span data-i18n="termografia.calc_btn">Calcular Severidade</span></button>
+                            <button type="button" id="clear-form-btn" class="secondary-button"><i class="fas fa-eraser"></i> <span data-i18n="reset.btn">Limpar</span></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="outputs-column">
+                <div id="results-card" class="card" style="display: none;">
+                    <h2><i class="fas fa-chart-pie"></i> <span data-i18n="termografia.result_title">Resultado da Classificação</span></h2>
+                    <div id="result-display" class="resultado-container">
+                        <div class="resultado-display">
+                            <span class="result-main-text" id="result-severity-text">-</span>
+                            <span class="result-sub-text" id="result-detail-text"></span>
+                            <span class="result-sub-text" id="result-action-text"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="history" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-history"></i> <span data-i18n="label.history">Histórico de Cálculos</span></h2>
+                        <button id="clear-history-btn" class="secondary-button"><i class="fas fa-trash-alt"></i> <span data-i18n="oee.clear_history">Limpar Histórico</span></button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-i18n="oee.date">Data</th>
+                                    <th data-i18n="termografia.table_header_class">Classe</th>
+                                    <th data-i18n="termografia.table_header_dt">ΔT (°C)</th>
+                                    <th data-i18n="termografia.table_header_equip">Equipamento</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="reference-card" class="card">
+                    <h2><i class="fas fa-book"></i> <span data-i18n="termografia.reference_title">Tabela de Referência - Limites de Severidade</span></h2>
+                    <div class="table-container">
+                        <table class="reference-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="termografia.table_header_class">Classe</th>
+                                    <th data-i18n="termografia.table_header_dt">ΔT (°C)</th>
+                                    <th data-i18n="termografia.table_header_action">Ação Recomendada</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row-ok">
+                                    <td><span class="badge badge-ok"><i class="fas fa-check-circle"></i> <span data-i18n="termografia.class_ok">Normal</span></span></td>
+                                    <td data-i18n="termografia.ref_ok_dt">Dentro dos limites</td>
+                                    <td data-i18n="termografia.ref_ok_action">Operação normal. Monitoramento de rotina.</td>
+                                </tr>
+                                <tr class="row-alert">
+                                    <td><span class="badge badge-alert"><i class="fas fa-exclamation-triangle"></i> <span data-i18n="termografia.class_alert">Alerta</span></span></td>
+                                    <td data-i18n="termografia.ref_alert_dt">Acima do normal</td>
+                                    <td data-i18n="termografia.ref_alert_action">Planejar intervenção. Monitorar frequentemente.</td>
+                                </tr>
+                                <tr class="row-critical">
+                                    <td><span class="badge badge-critical"><i class="fas fa-times-circle"></i> <span data-i18n="termografia.class_critical">Crítico</span></span></td>
+                                    <td data-i18n="termografia.ref_critical_dt">Muito acima do normal</td>
+                                    <td data-i18n="termografia.ref_critical_action">Parada imediata. Intervenção corretiva urgente.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-container" style="margin-top: 1rem;">
+                        <table class="reference-table thresholds-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="termografia.table_header_equip">Equipamento</th>
+                                    <th data-i18n="termografia.ref_normal">Normal (ΔT ≤)</th>
+                                    <th data-i18n="termografia.ref_alerta">Alerta (ΔT ≤)</th>
+                                    <th data-i18n="termografia.ref_critico">Crítico (ΔT >)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-i18n="termografia.eq_motor_peq">Motor &lt; 1HP</td>
+                                    <td>10 °C</td>
+                                    <td>25 °C</td>
+                                    <td>25 °C</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="termografia.eq_motor_grd">Motor &gt; 1HP</td>
+                                    <td>15 °C</td>
+                                    <td>40 °C</td>
+                                    <td>40 °C</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="termografia.eq_painel">Painel Elétrico</td>
+                                    <td>5 °C</td>
+                                    <td>15 °C</td>
+                                    <td>15 °C</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="termografia.eq_transformador">Transformador</td>
+                                    <td>20 °C</td>
+                                    <td>55 °C</td>
+                                    <td>55 °C</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="termografia.eq_tubulacao">Tubulação/Isolamento</td>
+                                    <td>10 °C</td>
+                                    <td>30 °C</td>
+                                    <td>30 °C</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../shared/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
