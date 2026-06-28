@@ -3862,6 +3862,7 @@ const i18n = (() => {
       'termografia.ref_alerta': 'Alerta (ΔT ≤)',
       'termografia.ref_critico': 'Crítico (ΔT >)',
       'termografia.reference_title': 'Tabela de Referência - Limites de Severidade',
+      'update.web_message': 'Uma nova versão do sistema está disponível. Clique em atualizar para aplicar as novidades.',
     },
     es: {
       'app.title': 'Central de Herramientas',
@@ -8215,6 +8216,7 @@ const i18n = (() => {
       'analise_oleo.lub_status_label': 'Estado de la Lubricación',
       'analise_oleo.wear_status_label': 'Estado de Desgaste',
       'analise_oleo.history_empty': 'Ningún historial guardado aún.',
+      'update.web_message': 'Hay una nueva versión del sistema disponible. Haz clic en actualizar para aplicar las novedades.',
     },
     en: {
       'app.title': 'Tool Center',
@@ -12811,6 +12813,7 @@ const i18n = (() => {
       'analise_oleo.lub_status_label': 'Lubrication Status',
       'analise_oleo.wear_status_label': 'Wear Status',
       'analise_oleo.history_empty': 'No saved history yet.',
+      'update.web_message': 'A new version of the system is available. Click update to apply the changes.',
     }
   };
 
