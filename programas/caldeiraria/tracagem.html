@@ -238,9 +238,15 @@ body.dark-theme .cone-type-tab.active {
                                 <div class="unit-suffix"><input type="number" id="cone-dbot" class="calc-input" value="300" min="1" step="0.1"><span class="suffix cone-unit">mm</span></div>
                             </div>
                         </div>
-                        <div class="input-group mt-1">
-                            <label data-i18n="tracagem.cone_label_h">Altura (H)</label>
-                            <div class="unit-suffix"><input type="number" id="cone-h" class="calc-input" value="200" min="1" step="0.1"><span class="suffix cone-unit">mm</span></div>
+                        <div class="input-grid mt-1">
+                            <div class="input-group">
+                                <label data-i18n="tracagem.cone_label_h">Altura (H)</label>
+                                <div class="unit-suffix"><input type="number" id="cone-h" class="calc-input" value="200" min="1" step="0.1"><span class="suffix cone-unit">mm</span></div>
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="tracagem.cone_label_espessura">Espessura (e)</label>
+                                <div class="unit-suffix"><input type="number" id="cone-esp" class="calc-input" value="3" min="0.1" step="0.1"><span class="suffix cone-unit">mm</span></div>
+                            </div>
                         </div>
                         <div class="button-group mt-1">
                             <button class="main-button" onclick="calcCone()"><i class="fa-solid fa-calculator"></i> <span data-i18n="tracagem.btn_calcular">Calcular</span></button>
@@ -908,44 +914,55 @@ function calcCone() {
     var Dtop = parseFloat(document.getElementById('cone-dtop').value);
     var Dbot = parseFloat(document.getElementById('cone-dbot').value);
     var H = parseFloat(document.getElementById('cone-h').value);
+    var esp = parseFloat(document.getElementById('cone-esp').value);
 
-    if (isNaN(Dbot) || Dbot <= 0 || isNaN(H) || H <= 0) {
+    if (isNaN(Dbot) || Dbot <= 0 || isNaN(H) || H <= 0 || isNaN(esp) || esp < 0) {
         document.getElementById('cone-results').innerHTML = '<p class="placeholder">' + window.i18n.t('tracagem.placeholder_verificar') + '</p>';
         return;
     }
     if (isNaN(Dtop)) Dtop = 0;
 
-    var Rtop = Dtop / 2, Rbot = Dbot / 2;
+    if (Dbot - esp <= 0 || (Dtop > 0 && Dtop - esp < 0)) {
+        document.getElementById('cone-results').innerHTML = '<p class="placeholder">A espessura não pode ser maior ou igual aos diâmetros.</p>';
+        return;
+    }
+
+    // Usa diâmetros da linha neutra para o cálculo da planificação
+    var Dtop_calc = Math.max(0, Dtop - esp);
+    var Dbot_calc = Dbot - esp;
+
+    var Rtop = Dtop_calc / 2, Rbot = Dbot_calc / 2;
     var L = Math.sqrt((Rbot - Rtop) * (Rbot - Rtop) + H * H);
 
     if (L < 0.001) return;
 
     var Rbig, Rsmall, sectorAngle, chord;
 
-    if (Dtop <= 0 || !coneIsTronco) {
+    if (Dtop_calc <= 0 || !coneIsTronco) {
         Rbig = L;
         Rsmall = 0;
         sectorAngle = 360 * Rbot / Rbig;
         if (sectorAngle > 360) sectorAngle = 360;
         chord = 2 * Rbig * Math.sin(rad(sectorAngle / 2));
     } else {
-        if (Math.abs(Rbot - Rtop) < 0.001) {
+        if (Math.abs(Rbot - Rtop) < 0.001) { // Cilindro
             Rbig = L; Rsmall = L; sectorAngle = 360 * Rbot / Rbig;
             chord = 2 * Rbig * Math.sin(rad(sectorAngle / 2));
         } else {
-            Rbig = L * Rbot / (Rbot - Rtop);
+            Rbig = L * Rbot / (Rbot - Rtop); // Raio maior do setor
             Rsmall = Rbig - L;
             if (Rsmall < 0) Rsmall = 0;
-            sectorAngle = 360 * Rbot / Rbig;
+            sectorAngle = 360 * Rbot / Rbig; // Ângulo do setor
             if (sectorAngle > 360) sectorAngle = 360;
             chord = 2 * Rbig * Math.sin(rad(sectorAngle / 2));
         }
     }
 
     coneResults = {
-        Dtop: Dtop, Dbot: Dbot, H: H, Rtop: Rtop, Rbot: Rbot,
+        Dtop: Dtop, Dbot: Dbot, H: H, esp: esp,
+        Rtop: Rtop, Rbot: Rbot, // Estes são os raios da linha neutra
         Rbig: Rbig, Rsmall: Rsmall, sectorAngle: sectorAngle,
-        chord: chord, slantHeight: L, isCone: Dtop <= 0 || !coneIsTronco
+        chord: chord, slantHeight: L, isCone: Dtop_calc <= 0 || !coneIsTronco
     };
 
     showConeResults();
@@ -959,12 +976,13 @@ function showConeResults() {
     var html = '<div class="result-grid">' +
         '<div class="result-item highlight full"><div class="label">Altura Inclinada (L)</div><div class="value">' + fl(r.slantHeight) + '</div></div>' +
         '<div class="result-item"><div class="label">Raio Maior (R)</div><div class="value">' + fl(r.Rbig) + '</div></div>' +
-        (r.isCone ? '' : '<div class="result-item"><div class="label">Raio Menor (r)</div><div class="value">' + fl(r.Rsmall) + '</div></div>') +
+        (!r.isCone ? '<div class="result-item"><div class="label">Raio Menor (r)</div><div class="value">' + fl(r.Rsmall) + '</div></div>' : '') +
         '<div class="result-item"><div class="label">Ângulo do Setor</div><div class="value">' + r.sectorAngle.toFixed(2) + '°</div></div>' +
         '<div class="result-item"><div class="label">Corda do Setor</div><div class="value">' + fl(r.chord) + '</div></div>' +
         '<div class="result-item"><div class="label">D. Inferior (D<sub>i</sub>)</div><div class="value">' + fl(r.Dbot) + '</div></div>' +
-        (r.isCone ? '' : '<div class="result-item"><div class="label">D. Superior (D<sub>s</sub>)</div><div class="value">' + fl(r.Dtop) + '</div></div>') +
+        (!r.isCone ? '<div class="result-item"><div class="label">D. Superior (D<sub>s</sub>)</div><div class="value">' + fl(r.Dtop) + '</div></div>' : '') +
         '<div class="result-item"><div class="label">Altura (H)</div><div class="value">' + fl(r.H) + '</div></div>' +
+        '<div class="result-item"><div class="label" data-i18n="tracagem.cone_label_espessura">Espessura (e)</div><div class="value">' + fl(r.esp) + '</div></div>' +
         '</div>';
     document.getElementById('cone-results').innerHTML = html;
 }
@@ -977,8 +995,11 @@ function drawConeSchematic() {
     var ns = svgNS();
     var cx = 150, cy = 40;
 
-    var scale = Math.min(120 / Math.max(r.Rbot, 1), 150 / (r.H || 1));
-    var hPx = r.H * scale, tPx = r.Rtop * scale, bPx = r.Rbot * scale;
+    // Usa os diâmetros originais para o desenho esquemático
+    var Rtop_orig = r.Dtop / 2;
+    var Rbot_orig = r.Dbot / 2;
+    var scale = Math.min(120 / Math.max(Rbot_orig, 1), 150 / (r.H || 1));
+    var hPx = r.H * scale, tPx = Rtop_orig * scale, bPx = Rbot_orig * scale;
 
     var x1 = cx - tPx, x2 = cx + tPx, y1 = cy;
     var x3 = cx - bPx, x4 = cx + bPx, y2 = cy + hPx;
