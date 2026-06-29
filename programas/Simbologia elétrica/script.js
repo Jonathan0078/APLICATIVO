@@ -28,12 +28,6 @@ var abaAtual = 'todos';
 var itemInspecionado = null;
 var favoritos = JSON.parse(localStorage.getItem('favs_iso_eletrica') || '[]');
 
-// Recupera o idioma salvo
-var savedLang = localStorage.getItem('selectedLanguage') || 'pt';
-if (typeof i18n !== 'undefined') {
-  i18n.current = savedLang;
-}
-
 var inputBusca = document.getElementById('input-busca');
 if (inputBusca) inputBusca.addEventListener('input', renderizar);
 
@@ -58,31 +52,20 @@ function simKey(id, campo) {
 }
 
 function tradSim(id, campo, fallback) {
-  var lang = typeof i18n !== 'undefined' && i18n.current ? i18n.current : 'pt';
-  if (lang !== 'pt') {
-    var item = BD.find(function(i) { return i.id === id; });
-    var langField = campo + '_' + lang;
-    if (item && item[langField]) return item[langField];
-  }
-  return fallback;
+  var k = simKey(id, campo);
+  var v = _t(k);
+  return v !== k ? v : fallback;
 }
 
 function renderizar() {
   document.getElementById('count-favs').innerText = favoritos.length;
   var termo = inputBusca.value.toLowerCase();
-  var lang = typeof i18n !== 'undefined' && i18n.current ? i18n.current : 'pt';
-  
   var filtrados = BD.filter(function(item) {
-    var titulo = item.titulo;
-    // Busca tradução se existir no banco
-    if (lang !== 'pt' && item['titulo_' + lang]) {
-      titulo = item['titulo_' + lang];
-    }
+    var titulo = tradSim(item.id, 'titulo', item.titulo);
     var combina = titulo.toLowerCase().indexOf(termo) !== -1 || item.arquivo.toLowerCase().indexOf(termo) !== -1;
     if (abaAtual === 'favs') return combina && favoritos.indexOf(item.id) !== -1;
     return combina;
   });
-  
   var grid = document.getElementById('grid');
   var estadoVazio = document.getElementById('vazio');
   if (filtrados.length === 0) {
@@ -92,10 +75,7 @@ function renderizar() {
     estadoVazio.classList.remove('visible');
     grid.innerHTML = filtrados.map(function(i) {
       var fav = favoritos.indexOf(i.id) !== -1;
-      var titulo = i.titulo;
-      if (lang !== 'pt' && i['titulo_' + lang]) {
-        titulo = i['titulo_' + lang];
-      }
+      var titulo = tradSim(i.id, 'titulo', i.titulo);
       return '<div class="card" data-id="' + i.id + '"><span class="fav-indicator">' + (fav ? '★' : '') + '</span><div class="canvas-box">' + normalizarSVG(i.svg) + '</div><span class="card-label">' + titulo + '</span></div>';
     }).join('');
     var cards = grid.querySelectorAll('.card');
@@ -117,21 +97,9 @@ function setAba(alvo) {
 function inspecionar(id) {
   itemInspecionado = BD.find(function(i) { return i.id === id; });
   if (!itemInspecionado) return;
-  
-  var lang = typeof i18n !== 'undefined' && i18n.current ? i18n.current : 'pt';
-  var titulo = itemInspecionado.titulo;
-  var descricao = itemInspecionado.descricao || _t('simbolos.fallback_desc_eletrica', 'Símbolo elétrico conforme norma IEC 60617.');
-  var funcionamento = itemInspecionado.funcionamento || _t('simbolos.fallback_func', 'Consulte a documentação técnica.');
-  
-  if (lang !== 'pt') {
-    if (itemInspecionado['titulo_' + lang]) titulo = itemInspecionado['titulo_' + lang];
-    if (itemInspecionado['descricao_' + lang]) descricao = itemInspecionado['descricao_' + lang];
-    if (itemInspecionado['funcionamento_' + lang]) funcionamento = itemInspecionado['funcionamento_' + lang];
-  }
-  
-  document.getElementById('m-title').innerText = titulo;
-  document.getElementById('m-descricao').innerText = descricao;
-  document.getElementById('m-funcionamento').innerText = funcionamento;
+  document.getElementById('m-title').innerText = tradSim(id, 'titulo', itemInspecionado.titulo);
+  document.getElementById('m-descricao').innerText = tradSim(id, 'descricao', itemInspecionado.descricao || _t('simbolos.fallback_desc_eletrica', 'Símbolo elétrico conforme norma IEC 60617.'));
+  document.getElementById('m-funcionamento').innerText = tradSim(id, 'funcionamento', itemInspecionado.funcionamento || _t('simbolos.fallback_func', 'Consulte a documentação técnica.'));
   document.getElementById('m-svg').innerHTML = normalizarSVG(itemInspecionado.svg);
   atualizarBotaoModal();
   modalBg.classList.add('active');
@@ -206,10 +174,8 @@ function aplicarTraducoes() {
     i18n.translatePage();
   }
   if (typeof i18n !== 'undefined' && i18n.t) {
-    if (tabTodos) tabTodos.textContent = i18n.t('simbolos.todos');
-    if (tabFavs && tabFavs.childNodes && tabFavs.childNodes[0]) {
-      tabFavs.childNodes[0].textContent = i18n.t('simbolos.favoritos');
-    }
+    tabTodos.textContent = i18n.t('simbolos.todos');
+    tabFavs.childNodes[0].textContent = i18n.t('simbolos.favoritos');
     if (itemInspecionado) atualizarBotaoModal();
     atualizarTotal();
     renderizar();
@@ -218,9 +184,10 @@ function aplicarTraducoes() {
 
 // Força a atualização do idioma quando a página carrega
 document.addEventListener('DOMContentLoaded', function() {
-  // Força a detecção do idioma
-  if (typeof i18n !== 'undefined' && i18n.current) {
-    // Idioma já está definido
+  // Recupera o idioma salvo
+  var savedLang = localStorage.getItem('selectedLanguage') || 'pt';
+  if (typeof i18n !== 'undefined') {
+    i18n.current = savedLang;
   }
   aplicarTraducoes();
   renderizar();
