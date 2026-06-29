@@ -2,35 +2,36 @@
 :root {
   --bg: #0a1929;
   --surface: #112233;
-  --text: #e9ecef;
-  --text-secondary: #8696a7;
+  --text: #ffffff;  /* ← Mudado para branco */
+  --text-secondary: rgba(255, 255, 255, 0.7);
   --border: #334b61;
   --shadow: 0 1px 3px rgba(0,0,0,0.4);
-  --accent: #f59e0b;
+  --accent: #3b82f6;
   --radius: 12px;
   --radius-sm: 8px;
   --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
 }
 
+/* ===== TEMA ESCURO ===== */
 body.dark-theme {
   --bg: #0a1929;
   --surface: #112233;
-  --text: #e9ecef;
-  --text-secondary: #8696a7;
+  --text: #ffffff;  /* ← Branco */
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --border: #334b61;
+  --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  --accent: #3b82f6;
+}
+
+/* ===== TEMA CLARO ===== */
+body:not(.dark-theme) {
+  --bg: #0a1929;  /* ← Mantém fundo escuro */
+  --surface: #112233;
+  --text: #ffffff;  /* ← Branco também! */
+  --text-secondary: rgba(255, 255, 255, 0.7);
   --border: #334b61;
   --shadow: 0 1px 3px rgba(0,0,0,0.4);
   --accent: #f59e0b;
-}
-
-/* Tema claro (padrão) */
-body:not(.dark-theme) {
-  --bg: #f0f4f8;
-  --surface: #ffffff;
-  --text: #1a2332;
-  --text-secondary: #64748b;
-  --border: #e2e8f0;
-  --shadow: 0 1px 3px rgba(0,0,0,0.08);
-  --accent: #d97706;
 }
 
 /* ===== RESET E BASE ===== */
@@ -49,6 +50,16 @@ body {
   overflow-x: hidden;
 }
 
+/* ===== PERSONALIZAÇÃO POR FERRAMENTA ===== */
+body.ferramenta-hidraulica {
+  --accent: #3b82f6;
+}
+
+body.ferramenta-eletrica {
+  --accent: #f59e0b;
+}
+
+/* ===== APP CONTAINER ===== */
 .app-container {
   max-width: 480px;
   margin: 0 auto;
@@ -77,27 +88,35 @@ body {
   align-items: center;
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--text);
+  color: #ffffff !important;
   margin: 0;
   flex: 1;
   min-width: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .header-content h1 i {
-  color: var(--accent);
   flex-shrink: 0;
+  transition: color 0.3s;
+}
+
+body.ferramenta-hidraulica .header-content h1 i {
+  color: #3b82f6;
+}
+
+body.ferramenta-eletrica .header-content h1 i {
+  color: #f59e0b;
 }
 
 .symbol-count {
   font-size: 0.65rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: #ffffff !important;
   margin-left: 0.5rem;
   white-space: nowrap;
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.15);
   padding: 1px 8px;
   border-radius: 10px;
-  opacity: 0.7;
 }
 
 /* ===== TEMA SWITCHER ===== */
@@ -105,7 +124,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.75rem;
   flex-shrink: 0;
 }
@@ -113,6 +132,7 @@ body {
 .theme-switcher i {
   opacity: 0.6;
   font-size: 0.85rem;
+  color: #ffffff;
 }
 
 .switch {
@@ -174,10 +194,9 @@ input:checked + .slider::before {
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 0.8rem;
   pointer-events: none;
-  opacity: 0.5;
 }
 
 .search-input {
@@ -186,7 +205,7 @@ input:checked + .slider::before {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 0.7rem 1rem 0.7rem 2.8rem;
-  color: var(--text);
+  color: #ffffff !important;
   font-size: 0.85rem;
   font-family: var(--font);
   outline: none;
@@ -194,8 +213,7 @@ input:checked + .slider::before {
 }
 
 .search-input::placeholder {
-  color: var(--text-secondary);
-  opacity: 0.5;
+  color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .search-input:focus {
@@ -223,19 +241,19 @@ input:checked + .slider::before {
   font-family: var(--font);
   -webkit-appearance: none;
   background: var(--surface);
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.7) !important;
   border: 1px solid var(--border);
 }
 
 .tab-btn.active {
   background: var(--accent);
-  color: #fff;
+  color: #ffffff !important;
   border-color: var(--accent);
 }
 
 .tab-btn.inactive {
   background: var(--surface);
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.7) !important;
   border: 1px solid var(--border);
 }
 
@@ -251,7 +269,7 @@ input:checked + .slider::before {
   min-height: 0;
 }
 
-/* ===== GRID - 2 COLUNAS FIXO ===== */
+/* ===== GRID ===== */
 .grid {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
@@ -333,7 +351,7 @@ input:checked + .slider::before {
 .card-label {
   font-size: 10px;
   font-weight: 700;
-  color: var(--text);
+  color: #ffffff !important;
   text-align: center;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -343,6 +361,7 @@ input:checked + .slider::before {
   width: 100%;
   word-break: break-word;
   min-height: 26px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* ===== EMPTY STATE ===== */
@@ -353,7 +372,6 @@ input:checked + .slider::before {
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
-  color: var(--text-secondary);
 }
 
 .empty-state.visible {
@@ -364,11 +382,13 @@ input:checked + .slider::before {
   font-size: 2.5rem;
   margin-bottom: 8px;
   opacity: 0.4;
+  color: #ffffff !important;
 }
 
 .empty-state p {
   font-size: 0.85rem;
   font-weight: 600;
+  color: #ffffff !important;
 }
 
 /* ===== MODAL ===== */
@@ -432,22 +452,31 @@ input:checked + .slider::before {
 .sheet-meta .tag {
   font-size: 9px;
   font-weight: 900;
-  color: var(--accent);
+  color: rgba(255, 255, 255, 0.8) !important;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+body.ferramenta-hidraulica .sheet-meta .tag {
+  color: #3b82f6 !important;
+}
+
+body.ferramenta-eletrica .sheet-meta .tag {
+  color: #f59e0b !important;
 }
 
 .sheet-meta h2 {
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--text);
+  color: #ffffff !important;
   margin-top: 2px;
   word-break: break-word;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .btn-close {
   background: var(--border);
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.7);
   border: none;
   width: 32px;
   height: 32px;
@@ -465,7 +494,7 @@ input:checked + .slider::before {
 
 .btn-close:hover {
   background: var(--text-secondary);
-  color: #fff;
+  color: #ffffff;
 }
 
 .sheet-body {
@@ -507,14 +536,14 @@ input:checked + .slider::before {
   font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.7) !important;
   letter-spacing: 0.05em;
   margin-bottom: 4px;
 }
 
 .sheet-descricao p {
   font-size: 0.85rem;
-  color: var(--text);
+  color: #ffffff !important;
   line-height: 1.5;
 }
 
@@ -547,19 +576,19 @@ input:checked + .slider::before {
 
 .btn-fav {
   background: var(--bg);
-  color: var(--text);
+  color: #ffffff !important;
   border: 1px solid var(--border);
 }
 
 .btn-fav.favourited {
-  background: rgba(225, 29, 72, 0.08);
-  color: #e11d48;
-  border-color: rgba(225, 29, 72, 0.2);
+  background: rgba(225, 29, 72, 0.15);
+  color: #e11d48 !important;
+  border-color: rgba(225, 29, 72, 0.3);
 }
 
 .btn-copy {
   background: var(--accent);
-  color: #fff;
+  color: #ffffff !important;
 }
 
 /* ===== TOAST ===== */
@@ -569,7 +598,7 @@ input:checked + .slider::before {
   left: 50%;
   transform: translateX(-50%) translateY(-60px);
   background: #10b981;
-  color: #fff;
+  color: #ffffff !important;
   font-size: 0.8rem;
   font-weight: 700;
   padding: 0.6rem 1.5rem;
@@ -696,7 +725,7 @@ input:checked + .slider::before {
 /* ===== SELECTION ===== */
 ::selection {
   background: var(--accent);
-  color: #fff;
+  color: #ffffff;
 }
 
 /* ===== UTILITÁRIOS ===== */
