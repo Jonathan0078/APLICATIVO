@@ -26,7 +26,7 @@ function _t(key, fallback) {
 
 var abaAtual = 'todos';
 var itemInspecionado = null;
-var favoritos = JSON.parse(localStorage.getItem('favs_iso_eletrica') || '[]');
+var favoritos = JSON.parse(localStorage.getItem('favs_iec_eletrica') || '[]');
 
 var inputBusca = document.getElementById('input-busca');
 if (inputBusca) inputBusca.addEventListener('input', renderizar);
@@ -47,14 +47,18 @@ if (modalBg) modalBg.addEventListener('click', function(e) {
 var btnFavModal = document.getElementById('btn-fav-modal');
 if (btnFavModal) btnFavModal.addEventListener('click', alternarFavorito);
 
-function simKey(id, campo) {
-  return 'simbolos.eletrica.' + id + '.' + campo;
-}
-
 function tradSim(id, campo, fallback) {
-  var k = simKey(id, campo);
+  var k = 'simbolos.eletrica.' + id + '.' + campo;
   var v = _t(k);
-  return v !== k ? v : fallback;
+  if (v !== k) return v;
+  var lang = 'pt';
+  try { lang = localStorage.getItem('site-lang') || navigator.language.slice(0, 2) || 'pt'; } catch(e) {}
+  if (['en','es'].indexOf(lang) >= 0) {
+    var langField = campo + '_' + lang;
+    var item = BD.find(function(i) { return i.id === id; });
+    if (item && item[langField]) return item[langField];
+  }
+  return fallback;
 }
 
 function renderizar() {
@@ -136,7 +140,7 @@ function alternarFavorito() {
     favoritos.splice(pos, 1);
     dispararToast(_t('simbolos.removido', 'Removido'));
   }
-  localStorage.setItem('favs_iso_eletrica', JSON.stringify(favoritos));
+  localStorage.setItem('favs_iec_eletrica', JSON.stringify(favoritos));
   atualizarBotaoModal();
   renderizar();
 }
@@ -182,28 +186,7 @@ function aplicarTraducoes() {
   }
 }
 
-// Força a atualização do idioma quando a página carrega
 document.addEventListener('DOMContentLoaded', function() {
-  // Recupera o idioma salvo
-  var savedLang = localStorage.getItem('selectedLanguage') || 'pt';
-  if (typeof i18n !== 'undefined') {
-    i18n.current = savedLang;
-  }
   aplicarTraducoes();
   renderizar();
-  
-  // Re-renderiza quando o idioma mudar
-  window.addEventListener('languageChanged', function() {
-    renderizar();
-  });
-});
-
-// Escuta mudanças no idioma via localStorage (para compatibilidade com o site principal)
-window.addEventListener('storage', function(e) {
-  if (e.key === 'selectedLanguage') {
-    if (typeof i18n !== 'undefined') {
-      i18n.current = e.newValue;
-    }
-    renderizar();
-  }
 });

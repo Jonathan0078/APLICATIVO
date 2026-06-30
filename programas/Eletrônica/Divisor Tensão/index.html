@@ -38,7 +38,7 @@
     <div class="app-container">
         <header class="app-header">
             <div class="header-content">
-                <h1><i class="fa-solid fa-circuit-board"></i> <span data-i18n="divider.header">Divisor de Tensão</span></h1>
+                <h1><i class="fa-solid fa-divide"></i> <span data-i18n="divider.header">Divisor de Tensão</span></h1>
                 <div class="theme-switcher">
                     <i class="fa-solid fa-sun"></i>
                     <label class="switch"><input type="checkbox" id="theme-toggle"><span class="slider"></span></label>
@@ -117,7 +117,7 @@
             let vout = parseFloat(document.getElementById('dvout').value) || 0;
             if (vin <= 0 || vout <= 0 || vout >= vin) { 
                 document.getElementById('design-result').style.display = 'block';
-                document.getElementById('ratio-result').textContent = 'Vout deve ser < Vin';
+                document.getElementById('ratio-result').textContent = i18n.t('divider.error_vout');
                 return;
             }
             let ratio = vout / (vin - vout);

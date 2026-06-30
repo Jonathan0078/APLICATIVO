@@ -74,9 +74,9 @@
                     </div>
                     <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:1rem" data-i18n="wheatstone.rx_hint">Rx = R3 &times; R2 / R1 (ponte em equilíbrio)</p>
                     <div class="four-col">
-                        <div class="form-group"><label>R1 (&Omega;)</label><input type="number" id="r1" value="1000" step="any"></div>
-                        <div class="form-group"><label>R2 (&Omega;)</label><input type="number" id="r2" value="1000" step="any"></div>
-                        <div class="form-group"><label>R3 (&Omega;)</label><input type="number" id="r3" value="1000" step="any"></div>
+                        <div class="form-group"><label data-i18n="wheatstone.r1">R1 (&Omega;)</label><input type="number" id="r1" value="1000" step="any"></div>
+                        <div class="form-group"><label data-i18n="wheatstone.r2">R2 (&Omega;)</label><input type="number" id="r2" value="1000" step="any"></div>
+                        <div class="form-group"><label data-i18n="wheatstone.r3">R3 (&Omega;)</label><input type="number" id="r3" value="1000" step="any"></div>
                         <div style="display:flex;align-items:flex-end"><button class="btn" onclick="calcRx()" style="margin:0"><i class="fa-solid fa-equals"></i> <span data-i18n="wheatstone.calc_rx">Calcular</span></button></div>
                     </div>
                     <div class="result-box"><div class="label" data-i18n="wheatstone.rx_result">Resistência Desconhecida (Rx)</div><div class="value" id="rx-result">1000.00 &Omega;</div></div>
@@ -89,10 +89,10 @@
                     <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:1rem" data-i18n="wheatstone.vout_hint">Quando a ponte NÃO está em equilíbrio, há uma tensão entre os pontos médios</p>
                     <div class="four-col">
                         <div class="form-group"><label data-i18n="wheatstone.vin">Vin (V)</label><input type="number" id="wvin" value="10" step="any"></div>
-                        <div class="form-group"><label>R1 (&Omega;)</label><input type="number" id="wr1" value="1000" step="any"></div>
-                        <div class="form-group"><label>R2 (&Omega;)</label><input type="number" id="wr2" value="1000" step="any"></div>
-                        <div class="form-group"><label>R3 (&Omega;)</label><input type="number" id="wr3" value="1000" step="any"></div>
-                        <div class="form-group"><label>Rx (&Omega;)</label><input type="number" id="wrx" value="1200" step="any"></div>
+                        <div class="form-group"><label data-i18n="wheatstone.r1">R1 (&Omega;)</label><input type="number" id="wr1" value="1000" step="any"></div>
+                        <div class="form-group"><label data-i18n="wheatstone.r2">R2 (&Omega;)</label><input type="number" id="wr2" value="1000" step="any"></div>
+                        <div class="form-group"><label data-i18n="wheatstone.r3">R3 (&Omega;)</label><input type="number" id="wr3" value="1000" step="any"></div>
+                        <div class="form-group"><label data-i18n="wheatstone.rx">Rx (&Omega;)</label><input type="number" id="wrx" value="1200" step="any"></div>
                         <div style="display:flex;align-items:flex-end"><button class="btn" onclick="calcVout()" style="margin:0"><i class="fa-solid fa-bolt"></i> <span data-i18n="wheatstone.calc_vout">Calcular Vout</span></button></div>
                     </div>
                     <div class="result-box" style="margin-top:1rem"><div class="label" data-i18n="wheatstone.vout_result">Tensão de Desequilíbrio (Vout)</div><div class="value" id="wvout-result">0.909 V</div></div>
@@ -107,7 +107,7 @@
             let r1 = parseFloat(document.getElementById('r1').value) || 0;
             let r2 = parseFloat(document.getElementById('r2').value) || 0;
             let r3 = parseFloat(document.getElementById('r3').value) || 0;
-            if (r1 <= 0) { document.getElementById('rx-result').textContent = 'R1 deve ser > 0'; return; }
+            if (r1 <= 0) { document.getElementById('rx-result').textContent = i18n.t('wheatstone.error_r1'); return; }
             let rx = r3 * r2 / r1;
             document.getElementById('rx-result').textContent = rx.toFixed(2) + ' \u03A9';
         }
