@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="resistor.title">Calculadora de Resistores</title>
+    <link rel="stylesheet" href="../../shared/base.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+    <style>
+        :root { --accent-eletronica: #10b981; }
+        body.dark-theme { --accent: #10b981; }
+        .app-header h1 i { color: var(--accent-eletronica); }
+        .grid { display: grid; gap: 1rem; }
+        .card { padding: 1.25rem; }
+        .card h2 { font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        .color-code { display: flex; align-items: center; justify-content: center; gap: 4px; margin: 1.5rem 0; flex-wrap: wrap; }
+        .band { width: 40px; height: 80px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer; transition: transform .15s; position: relative; }
+        .band:active { transform: scale(0.95); }
+        .band .val { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: 700; color: var(--text-secondary); white-space: nowrap; }
+        .band-select { margin-top: 1rem; }
+        .band-select label { font-size: .75rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 4px; }
+        .band-select select { width: 100%; padding: .5rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: .85rem; font-family: var(--font); }
+        .result-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+        .result-item { background: var(--bg); border-radius: var(--radius-sm); padding: 0.85rem; text-align: center; }
+        .result-item .label { font-size: .65rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+        .result-item .value { font-size: 1.3rem; font-weight: 800; color: var(--text); margin-top: 4px; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 1rem; }
+        .tab-btn { flex: 1; padding: .5rem; border-radius: var(--radius-sm); font-size: .78rem; font-weight: 700; border: none; cursor: pointer; font-family: var(--font); text-align: center; transition: all .2s; }
+        .tab-btn.active { background: var(--accent); color: #fff; }
+        .tab-btn.inactive { background: rgba(255,255,255,0.06); color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.08); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .form-group { margin-bottom: .85rem; }
+        .form-group label { display: block; font-size: .75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .04em; }
+        .form-group input { width: 100%; padding: .7rem .85rem; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: .9rem; font-family: var(--font); background: var(--surface); color: var(--text); outline: none; transition: border-color .2s; }
+        .form-group input:focus { border-color: var(--accent); }
+        .btn { width: 100%; padding: .85rem; background: linear-gradient(135deg, #1e3a5f, var(--accent)); color: #fff; border: none; border-radius: var(--radius-sm); font-size: .9rem; font-weight: 700; cursor: pointer; font-family: var(--font); }
+        .btn:active { transform: scale(.97); }
+        .btn-secondary { background: var(--bg); color: var(--text); }
+        @media (max-width: 480px) { .result-row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-microchip"></i> <span data-i18n="resistor.header">Calculadora de Resistores</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="theme-toggle"><span class="slider"></span></label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('cores')" data-i18n="resistor.tab_colors">Código de Cores</button>
+                <button class="tab-btn inactive" onclick="switchTab('assoc')" data-i18n="resistor.tab_assoc">Associação</button>
+            </div>
+
+            <div id="tab-cores" class="tab-content active">
+                <div class="card">
+                    <h2><i class="fa-solid fa-palette"></i> <span data-i18n="resistor.colors_title">Código de Cores</span></h2>
+                    <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:1rem" data-i18n="resistor.colors_hint">Clique nas faixas para alterar a cor</p>
+                    <div class="color-code" id="color-bands">
+                        <div class="band" style="background:#000" data-idx="0" onclick="cycleBand(0)"><span class="val" id="band-val-0">Preto</span></div>
+                        <div class="band" style="background:#000" data-idx="1" onclick="cycleBand(1)"><span class="val" id="band-val-1">Preto</span></div>
+                        <div class="band" style="background:#000" data-idx="2" onclick="cycleBand(2)"><span class="val" id="band-val-2">Preto</span></div>
+                        <div class="band" style="background:#ffd700" data-idx="3" onclick="cycleBand(3)"><span class="val" id="band-val-3">Dourado</span></div>
+                    </div>
+                    <div class="result-row">
+                        <div class="result-item"><div class="label" data-i18n="resistor.valor">Valor</div><div class="value" id="res-value">0 &Omega;</div></div>
+                        <div class="result-item"><div class="label" data-i18n="resistor.tolerance">Tolerância</div><div class="value" id="res-tolerance">&plusmn;5%</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-assoc" class="tab-content">
+                <div class="card">
+                    <h2><i class="fa-solid fa-link"></i> <span data-i18n="resistor.assoc_title">Associação de Resistores</span></h2>
+                    <div style="display:grid;gap:12px;grid-template-columns:1fr 1fr">
+                        <div class="form-group">
+                            <label data-i18n="resistor.r1">R1 (&Omega;)</label>
+                            <input type="number" id="r1" value="100" min="0" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="resistor.r2">R2 (&Omega;)</label>
+                            <input type="number" id="r2" value="100" min="0" step="any">
+                        </div>
+                    </div>
+                    <div style="display:grid;gap:8px;grid-template-columns:1fr 1fr;margin-bottom:1rem">
+                        <button class="btn" onclick="calcSerie()"><i class="fa-solid fa-layer-group"></i> <span data-i18n="resistor.series">Série</span></button>
+                        <button class="btn btn-secondary" onclick="calcParallel()"><i class="fa-solid fa-columns"></i> <span data-i18n="resistor.parallel">Paralelo</span></button>
+                    </div>
+                    <div id="assoc-result" style="text-align:center;font-size:1.3rem;font-weight:800;color:var(--text);min-height:2rem">&nbsp;</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../shared/i18n.js"></script>
+    <script>
+        const COLORS = [
+            { name: 'Preto', name_en: 'Black', name_es: 'Negro', hex: '#000', val: 0, mult: 1 },
+            { name: 'Marrom', name_en: 'Brown', name_es: 'Marrón', hex: '#8B4513', val: 1, mult: 10 },
+            { name: 'Vermelho', name_en: 'Red', name_es: 'Rojo', hex: '#dc2626', val: 2, mult: 100 },
+            { name: 'Laranja', name_en: 'Orange', name_es: 'Naranja', hex: '#ea580c', val: 3, mult: 1000 },
+            { name: 'Amarelo', name_en: 'Yellow', name_es: 'Amarillo', hex: '#fbbf24', val: 4, mult: 10000 },
+            { name: 'Verde', name_en: 'Green', name_es: 'Verde', hex: '#16a34a', val: 5, mult: 100000 },
+            { name: 'Azul', name_en: 'Blue', name_es: 'Azul', hex: '#2563eb', val: 6, mult: 1000000 },
+            { name: 'Violeta', name_en: 'Purple', name_es: 'Violeta', hex: '#7c3aed', val: 7, mult: 10000000 },
+            { name: 'Cinza', name_en: 'Gray', name_es: 'Gris', hex: '#6b7280', val: 8, mult: 100000000 },
+            { name: 'Branco', name_en: 'White', name_es: 'Blanco', hex: '#fff', val: 9, mult: 1000000000 },
+        ];
+        const TOLS = [
+            { name: 'Marrom', name_en: 'Brown', name_es: 'Marrón', hex: '#8B4513', tol: 1 },
+            { name: 'Vermelho', name_en: 'Red', name_es: 'Rojo', hex: '#dc2626', tol: 2 },
+            { name: 'Dourado', name_en: 'Gold', name_es: 'Dorado', hex: '#ffd700', tol: 5 },
+            { name: 'Prata', name_en: 'Silver', name_es: 'Plata', hex: '#c0c0c0', tol: 10 },
+        ];
+        let bandIdx = [0, 0, 0, 0];
+        const MULT_NAMES = ['', '', '', 'K', 'M', 'G'];
+
+        function cycleBand(idx) {
+            let max = idx < 3 ? COLORS.length : TOLS.length;
+            let arr = idx < 3 ? COLORS : TOLS;
+            bandIdx[idx] = (bandIdx[idx] + 1) % max;
+            let c = arr[bandIdx[idx]];
+            document.querySelectorAll('.band')[idx].style.background = c.hex;
+            let lang = typeof i18n !== 'undefined' && i18n.current === 'en' ? 'name_en' : i18n?.current === 'es' ? 'name_es' : 'name';
+            document.getElementById('band-val-' + idx).textContent = c[lang] || c.name;
+            updateResistor();
+        }
+
+        function updateResistor() {
+            let v = (COLORS[bandIdx[0]].val * 10 + COLORS[bandIdx[1]].val) * COLORS[bandIdx[2]].mult;
+            let t = TOLS[bandIdx[3]].tol;
+            let fmt = formatRes(v);
+            document.getElementById('res-value').textContent = fmt;
+            document.getElementById('res-tolerance').textContent = '\u00B1' + t + '%';
+        }
+
+        function formatRes(v) {
+            if (v >= 1000000) return (v / 1000000).toFixed(v%1000000?1:0) + ' M\u03A9';
+            if (v >= 1000) return (v / 1000).toFixed(v%1000?1:0) + ' K\u03A9';
+            return v + ' \u03A9';
+        }
+
+        function calcSerie() {
+            let r1 = parseFloat(document.getElementById('r1').value) || 0;
+            let r2 = parseFloat(document.getElementById('r2').value) || 0;
+            let total = r1 + r2;
+            document.getElementById('assoc-result').textContent = 'Req = ' + total.toFixed(2) + ' \u03A9';
+        }
+
+        function calcParallel() {
+            let r1 = parseFloat(document.getElementById('r1').value) || 0;
+            let r2 = parseFloat(document.getElementById('r2').value) || 0;
+            if (r1 === 0 || r2 === 0) { document.getElementById('assoc-result').textContent = 'Req = 0 \u03A9'; return; }
+            let total = 1 / (1/r1 + 1/r2);
+            document.getElementById('assoc-result').textContent = 'Req = ' + total.toFixed(2) + ' \u03A9';
+        }
+
+        let currentTab = 'cores';
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach((b,i) => {
+                b.className = 'tab-btn ' + ((i===0&&tab==='cores'||i===1&&tab==='assoc') ? 'active' : 'inactive');
+            });
+            document.getElementById('tab-cores').classList.toggle('active', tab === 'cores');
+            document.getElementById('tab-assoc').classList.toggle('active', tab === 'assoc');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const t = document.getElementById('theme-toggle');
+            if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-theme'); t.checked = true; }
+            t.addEventListener('change', function() {
+                document.body.classList.toggle('dark-theme');
+                localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+            });
+            if (typeof i18n !== 'undefined') { i18n.translatePage(); }
+            updateResistor();
+        });
+    </script>
+</body>
+</html>

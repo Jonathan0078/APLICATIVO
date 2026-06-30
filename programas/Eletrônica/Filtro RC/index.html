@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="rcfilter.title">Filtro RC</title>
+    <link rel="stylesheet" href="../../shared/base.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+    <style>
+        :root { --accent-eletronica: #10b981; }
+        body.dark-theme { --accent: #10b981; }
+        .app-header h1 i { color: var(--accent-eletronica); }
+        .grid { display: grid; gap: 1rem; }
+        .card { padding: 1.25rem; }
+        .card h2 { font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: .85rem; }
+        .form-group label { display: block; font-size: .75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .04em; }
+        .form-group input, .form-group select { width: 100%; padding: .7rem .85rem; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: .9rem; font-family: var(--font); background: var(--surface); color: var(--text); outline: none; transition: border-color .2s; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
+        .btn { width: 100%; padding: .85rem; background: linear-gradient(135deg, #1e3a5f, var(--accent)); color: #fff; border: none; border-radius: var(--radius-sm); font-size: .9rem; font-weight: 700; cursor: pointer; font-family: var(--font); transition: transform .15s; }
+        .btn:active { transform: scale(.97); }
+        .btn-secondary { background: var(--bg); color: var(--text); }
+        .tabs { display: flex; gap: 8px; margin-bottom: 1rem; }
+        .tab-btn { flex: 1; padding: .5rem; border-radius: var(--radius-sm); font-size: .78rem; font-weight: 700; border: none; cursor: pointer; font-family: var(--font); text-align: center; transition: all .2s; }
+        .tab-btn.active { background: var(--accent); color: #fff; }
+        .tab-btn.inactive { background: rgba(255,255,255,0.06); color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.08); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: 1rem; }
+        .result-item { background: var(--bg); border-radius: var(--radius-sm); padding: 1rem; text-align: center; }
+        .result-item .label { font-size: .65rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+        .result-item .value { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-top: 4px; }
+        .diagram { text-align: center; margin: 1rem 0; }
+        .diagram svg { max-width: 220px; height: auto; }
+        @media (max-width: 480px) { .result-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-wave-square"></i> <span data-i18n="rcfilter.header">Filtro RC</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="theme-toggle"><span class="slider"></span></label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('freq')" data-i18n="rcfilter.tab_freq">Frequência de Corte</button>
+                <button class="tab-btn inactive" onclick="switchTab('tau')" data-i18n="rcfilter.tab_tau">Constante de Tempo</button>
+            </div>
+
+            <div id="tab-freq" class="tab-content active">
+                <div class="card">
+                    <h2><i class="fa-solid fa-chart-line"></i> <span data-i18n="rcfilter.freq_title">Frequência de Corte (fc)</span></h2>
+                    <div class="diagram">
+                        <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="25" width="30" height="20" rx="3" fill="none" stroke="var(--text)" stroke-width="1.5"/>
+                            <text x="25" y="39" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="700">R</text>
+                            <line x1="40" y1="35" x2="55" y2="35" stroke="var(--text)" stroke-width="1.5"/>
+                            <line x1="55" y1="20" x2="55" y2="50" stroke="var(--text)" stroke-width="1.5"/>
+                            <line x1="55" y1="20" x2="85" y2="20" stroke="var(--text)" stroke-width="1.5"/>
+                            <line x1="55" y1="50" x2="85" y2="50" stroke="var(--text)" stroke-width="1.5"/>
+                            <text x="70" y="39" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="700">C</text>
+                            <line x1="85" y1="35" x2="105" y2="35" stroke="var(--text)" stroke-width="1.5"/>
+                            <text x="10" y="15" font-size="8" fill="var(--text-secondary)">Vin</text>
+                            <text x="105" y="15" font-size="8" fill="var(--text-secondary)">Vout</text>
+                        </svg>
+                    </div>
+                    <div style="display:grid;gap:12px;grid-template-columns:1fr 1fr">
+                        <div class="form-group"><label data-i18n="rcfilter.resistor">R (&Omega;)</label><input type="number" id="r" value="1000" step="any"></div>
+                        <div class="form-group"><label data-i18n="rcfilter.capacitor">C (&mu;F)</label><input type="number" id="c" value="1" step="any"></div>
+                    </div>
+                    <button class="btn" onclick="calcFreq()"><i class="fa-solid fa-equals"></i> <span data-i18n="rcfilter.calc_freq">Calcular fc</span></button>
+                    <div class="result-grid">
+                        <div class="result-item"><div class="label" data-i18n="rcfilter.fc_label">Frequência de Corte</div><div class="value" id="fc-result">159.15 Hz</div></div>
+                        <div class="result-item"><div class="label" data-i18n="rcfilter.tau_label">Constante de Tempo (&tau;)</div><div class="value" id="tau-result">1.00 ms</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-tau" class="tab-content">
+                <div class="card">
+                    <h2><i class="fa-solid fa-clock"></i> <span data-i18n="rcfilter.tau_title">Constante de Tempo (&tau; = R &times; C)</span></h2>
+                    <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:1rem" data-i18n="rcfilter.tau_hint">O tempo de carga/descarga de um capacitor é aproximadamente 5&tau;</p>
+                    <div style="display:grid;gap:12px;grid-template-columns:1fr 1fr">
+                        <div class="form-group"><label data-i18n="rcfilter.resistor">R (&Omega;)</label><input type="number" id="tr" value="10000" step="any"></div>
+                        <div class="form-group"><label data-i18n="rcfilter.capacitor">C (&mu;F)</label><input type="number" id="tc" value="100" step="any"></div>
+                    </div>
+                    <button class="btn" onclick="calcTau()"><i class="fa-solid fa-clock"></i> <span data-i18n="rcfilter.calc_tau">Calcular &tau;</span></button>
+                    <div class="result-grid">
+                        <div class="result-item"><div class="label">&tau; (R &times; C)</div><div class="value" id="tresult">1.00 s</div></div>
+                        <div class="result-item"><div class="label" data-i18n="rcfilter.full_charge">Carga total (5&tau;)</div><div class="value" id="tfull">5.00 s</div></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../shared/i18n.js"></script>
+    <script>
+        function calcFreq() {
+            let r = parseFloat(document.getElementById('r').value) || 0;
+            let c = parseFloat(document.getElementById('c').value) || 0;
+            if (r <= 0 || c <= 0) return;
+            let cf = c / 1e6;
+            let fc = 1 / (2 * Math.PI * r * cf);
+            let tau = r * cf;
+            document.getElementById('fc-result').textContent = formatFreq(fc);
+            document.getElementById('tau-result').textContent = formatTime(tau);
+        }
+
+        function calcTau() {
+            let r = parseFloat(document.getElementById('tr').value) || 0;
+            let c = parseFloat(document.getElementById('tc').value) || 0;
+            if (r <= 0 || c <= 0) return;
+            let cf = c / 1e6;
+            let tau = r * cf;
+            document.getElementById('tresult').textContent = formatTime(tau);
+            document.getElementById('tfull').textContent = formatTime(tau * 5);
+        }
+
+        function formatFreq(hz) {
+            if (hz >= 1e6) return (hz/1e6).toFixed(2) + ' MHz';
+            if (hz >= 1e3) return (hz/1e3).toFixed(2) + ' kHz';
+            return hz.toFixed(2) + ' Hz';
+        }
+
+        function formatTime(s) {
+            if (s >= 1) return s.toFixed(2) + ' s';
+            if (s >= 1e-3) return (s*1e3).toFixed(2) + ' ms';
+            if (s >= 1e-6) return (s*1e6).toFixed(2) + ' \u00B5s';
+            return (s*1e9).toFixed(2) + ' ns';
+        }
+
+        let currentTab = 'freq';
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach((b,i) => {
+                b.className = 'tab-btn ' + ((i===0&&tab==='freq'||i===1&&tab==='tau') ? 'active' : 'inactive');
+            });
+            document.getElementById('tab-freq').classList.toggle('active', tab === 'freq');
+            document.getElementById('tab-tau').classList.toggle('active', tab === 'tau');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const t = document.getElementById('theme-toggle');
+            if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-theme'); t.checked = true; }
+            t.addEventListener('change', function() {
+                document.body.classList.toggle('dark-theme');
+                localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+            });
+            if (typeof i18n !== 'undefined') i18n.translatePage();
+        });
+    </script>
+</body>
+</html>

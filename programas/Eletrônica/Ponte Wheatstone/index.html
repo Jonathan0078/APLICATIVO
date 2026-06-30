@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="wheatstone.title">Ponte de Wheatstone</title>
+    <link rel="stylesheet" href="../../shared/base.css">
+    <link rel="stylesheet" href="../../../assets/icons/fontawesome.css">
+    <style>
+        :root { --accent-eletronica: #10b981; }
+        body.dark-theme { --accent: #10b981; }
+        .app-header h1 i { color: var(--accent-eletronica); }
+        .grid { display: grid; gap: 1rem; }
+        .card { padding: 1.25rem; }
+        .card h2 { font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: .85rem; }
+        .form-group label { display: block; font-size: .75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .04em; }
+        .form-group input { width: 100%; padding: .7rem .85rem; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: .9rem; font-family: var(--font); background: var(--surface); color: var(--text); outline: none; transition: border-color .2s; }
+        .form-group input:focus { border-color: var(--accent); }
+        .btn { width: 100%; padding: .85rem; background: linear-gradient(135deg, #1e3a5f, var(--accent)); color: #fff; border: none; border-radius: var(--radius-sm); font-size: .9rem; font-weight: 700; cursor: pointer; font-family: var(--font); transition: transform .15s; }
+        .btn:active { transform: scale(.97); }
+        .btn-secondary { background: var(--bg); color: var(--text); }
+        .tabs { display: flex; gap: 8px; margin-bottom: 1rem; }
+        .tab-btn { flex: 1; padding: .5rem; border-radius: var(--radius-sm); font-size: .78rem; font-weight: 700; border: none; cursor: pointer; font-family: var(--font); text-align: center; transition: all .2s; }
+        .tab-btn.active { background: var(--accent); color: #fff; }
+        .tab-btn.inactive { background: rgba(255,255,255,0.06); color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.08); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .result-box { background: var(--bg); border-radius: var(--radius-sm); padding: 1rem; text-align: center; margin-top: 1rem; }
+        .result-box .value { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+        .result-box .label { font-size: .7rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
+        .diagram { text-align: center; margin: 1rem 0; }
+        .diagram svg { max-width: 220px; height: auto; }
+        .four-col { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+        @media (min-width: 600px) { .four-col { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fa-solid fa-diamond"></i> <span data-i18n="wheatstone.header">Ponte de Wheatstone</span></h1>
+                <div class="theme-switcher">
+                    <i class="fa-solid fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="theme-toggle"><span class="slider"></span></label>
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('rx')" data-i18n="wheatstone.tab_rx">Calcular Rx</button>
+                <button class="tab-btn inactive" onclick="switchTab('vout')" data-i18n="wheatstone.tab_vout">Tensão de Desequilíbrio</button>
+            </div>
+
+            <div id="tab-rx" class="tab-content active">
+                <div class="card">
+                    <h2><i class="fa-solid fa-diamond"></i> <span data-i18n="wheatstone.rx_title">Calcular Resistência Desconhecida (Rx)</span></h2>
+                    <div class="diagram">
+                        <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="80" y1="10" x2="80" y2="30" stroke="var(--text)" stroke-width="2"/>
+                            <polygon points="80,30 130,80 80,130 30,80" fill="none" stroke="var(--text)" stroke-width="2"/>
+                            <text x="105" y="45" text-anchor="middle" font-size="11" fill="var(--text)" font-weight="700">R1</text>
+                            <text x="105" y="115" text-anchor="middle" font-size="11" fill="var(--text)" font-weight="700">R2</text>
+                            <text x="55" y="45" text-anchor="middle" font-size="11" fill="var(--text)" font-weight="700">R3</text>
+                            <text x="55" y="115" text-anchor="middle" font-size="11" fill="var(--text)" font-weight="700">Rx</text>
+                            <text x="80" y="20" text-anchor="middle" font-size="10" fill="var(--text-secondary)">+</text>
+                            <text x="80" y="143" text-anchor="middle" font-size="10" fill="var(--text-secondary)">-</text>
+                            <circle cx="80" cy="30" r="2" fill="var(--text)"/>
+                            <circle cx="130" cy="80" r="2" fill="var(--text)"/>
+                            <circle cx="80" cy="130" r="2" fill="var(--text)"/>
+                            <circle cx="30" cy="80" r="2" fill="var(--text)"/>
+                        </svg>
+                    </div>
+                    <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:1rem" data-i18n="wheatstone.rx_hint">Rx = R3 &times; R2 / R1 (ponte em equilíbrio)</p>
+                    <div class="four-col">
+                        <div class="form-group"><label>R1 (&Omega;)</label><input type="number" id="r1" value="1000" step="any"></div>
+                        <div class="form-group"><label>R2 (&Omega;)</label><input type="number" id="r2" value="1000" step="any"></div>
+                        <div class="form-group"><label>R3 (&Omega;)</label><input type="number" id="r3" value="1000" step="any"></div>
+                        <div style="display:flex;align-items:flex-end"><button class="btn" onclick="calcRx()" style="margin:0"><i class="fa-solid fa-equals"></i> <span data-i18n="wheatstone.calc_rx">Calcular</span></button></div>
+                    </div>
+                    <div class="result-box"><div class="label" data-i18n="wheatstone.rx_result">Resistência Desconhecida (Rx)</div><div class="value" id="rx-result">1000.00 &Omega;</div></div>
+                </div>
+            </div>
+
+            <div id="tab-vout" class="tab-content">
+                <div class="card">
+                    <h2><i class="fa-solid fa-bolt"></i> <span data-i18n="wheatstone.vout_title">Tensão de Desequilíbrio (Vout)</span></h2>
+                    <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:1rem" data-i18n="wheatstone.vout_hint">Quando a ponte NÃO está em equilíbrio, há uma tensão entre os pontos médios</p>
+                    <div class="four-col">
+                        <div class="form-group"><label data-i18n="wheatstone.vin">Vin (V)</label><input type="number" id="wvin" value="10" step="any"></div>
+                        <div class="form-group"><label>R1 (&Omega;)</label><input type="number" id="wr1" value="1000" step="any"></div>
+                        <div class="form-group"><label>R2 (&Omega;)</label><input type="number" id="wr2" value="1000" step="any"></div>
+                        <div class="form-group"><label>R3 (&Omega;)</label><input type="number" id="wr3" value="1000" step="any"></div>
+                        <div class="form-group"><label>Rx (&Omega;)</label><input type="number" id="wrx" value="1200" step="any"></div>
+                        <div style="display:flex;align-items:flex-end"><button class="btn" onclick="calcVout()" style="margin:0"><i class="fa-solid fa-bolt"></i> <span data-i18n="wheatstone.calc_vout">Calcular Vout</span></button></div>
+                    </div>
+                    <div class="result-box" style="margin-top:1rem"><div class="label" data-i18n="wheatstone.vout_result">Tensão de Desequilíbrio (Vout)</div><div class="value" id="wvout-result">0.909 V</div></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../shared/i18n.js"></script>
+    <script>
+        function calcRx() {
+            let r1 = parseFloat(document.getElementById('r1').value) || 0;
+            let r2 = parseFloat(document.getElementById('r2').value) || 0;
+            let r3 = parseFloat(document.getElementById('r3').value) || 0;
+            if (r1 <= 0) { document.getElementById('rx-result').textContent = 'R1 deve ser > 0'; return; }
+            let rx = r3 * r2 / r1;
+            document.getElementById('rx-result').textContent = rx.toFixed(2) + ' \u03A9';
+        }
+
+        function calcVout() {
+            let vin = parseFloat(document.getElementById('wvin').value) || 0;
+            let r1 = parseFloat(document.getElementById('wr1').value) || 0;
+            let r2 = parseFloat(document.getElementById('wr2').value) || 0;
+            let r3 = parseFloat(document.getElementById('wr3').value) || 0;
+            let rx = parseFloat(document.getElementById('wrx').value) || 0;
+            if (r1+r2 === 0 || r3+rx === 0) { document.getElementById('wvout-result').textContent = '0 V'; return; }
+            let va = vin * r2 / (r1 + r2);
+            let vb = vin * rx / (r3 + rx);
+            let vout = va - vb;
+            document.getElementById('wvout-result').textContent = Math.abs(vout).toFixed(3) + ' V';
+        }
+
+        let currentTab = 'rx';
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach((b,i) => {
+                b.className = 'tab-btn ' + ((i===0&&tab==='rx'||i===1&&tab==='vout') ? 'active' : 'inactive');
+            });
+            document.getElementById('tab-rx').classList.toggle('active', tab === 'rx');
+            document.getElementById('tab-vout').classList.toggle('active', tab === 'vout');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const t = document.getElementById('theme-toggle');
+            if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-theme'); t.checked = true; }
+            t.addEventListener('change', function() {
+                document.body.classList.toggle('dark-theme');
+                localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+            });
+            if (typeof i18n !== 'undefined') i18n.translatePage();
+        });
+    </script>
+</body>
+</html>
