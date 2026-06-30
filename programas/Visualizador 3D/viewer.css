@@ -1,0 +1,274 @@
+/* Visualizador 3D/2D — estilos próprios (tema claro/escuro e cabeçalho ficam em base.css) */
+
+:root {
+    --accent-viewer: #8b5cf6;
+    --accent-viewer-dark: #6d28d9;
+    --accent-rgb: 139, 92, 246;
+}
+
+.app-header h1 i { color: var(--accent-viewer); }
+
+.main-content {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 60px);
+}
+
+/* ---------- Área de upload ---------- */
+.upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .25rem;
+    padding: 2.5rem 1.5rem;
+    margin: 1.25rem;
+    border: 2px dashed var(--border);
+    border-radius: calc(var(--radius) + 4px);
+    background: var(--surface);
+    transition: border-color .25s, background .25s, transform .15s;
+    cursor: pointer;
+    min-height: 220px;
+    text-align: center;
+}
+
+.upload-area:hover {
+    border-color: rgba(var(--accent-rgb), 0.5);
+}
+
+.upload-area.dragover {
+    border-color: var(--accent-viewer);
+    background: rgba(var(--accent-rgb), 0.08);
+    transform: scale(1.01);
+}
+
+.upload-area .upload-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: .5rem;
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent-viewer);
+    transition: transform .25s;
+}
+
+.upload-area.dragover .upload-icon { transform: translateY(-4px); }
+
+.upload-area .upload-icon i { font-size: 1.9rem; margin: 0; }
+
+.upload-area p {
+    color: var(--text-secondary);
+    font-size: .95rem;
+    margin-bottom: .2rem;
+}
+
+.upload-area .formats {
+    font-size: .72rem;
+    letter-spacing: .03em;
+    opacity: .6;
+    margin-bottom: 1.25rem;
+}
+
+.upload-area .btn {
+    max-width: 240px;
+    background: linear-gradient(135deg, var(--accent-viewer-dark), var(--accent-viewer));
+    box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.35);
+    border: none;
+}
+
+.upload-area .btn:hover { box-shadow: 0 6px 18px rgba(var(--accent-rgb), 0.45); }
+
+/* ---------- Viewport ---------- */
+.viewport-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+#three-container {
+    flex: 1;
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+    min-height: 0;
+}
+
+#three-container canvas { display: block; }
+
+/* Barra fina de informações do arquivo, sempre acima do viewport */
+.file-info-bar {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    padding: .4rem .75rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: .75rem;
+    color: var(--text-secondary);
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.file-info-bar .file-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--accent-rgb), 0.15);
+    color: var(--accent-viewer);
+    font-size: .7rem;
+}
+
+.file-info-bar .badge {
+    flex-shrink: 0;
+    padding: 2px 7px;
+    border-radius: 99px;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    background: rgba(var(--accent-rgb), 0.15);
+    color: var(--accent-viewer);
+}
+
+.file-info-bar .name {
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-info-bar #file-details {
+    flex-shrink: 0;
+    white-space: nowrap;
+    opacity: .85;
+}
+
+.file-info-bar .close-btn {
+    flex-shrink: 0;
+    margin-left: auto;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    transition: background .2s, color .2s;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-size: .9rem;
+}
+
+.file-info-bar .close-btn:hover {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+}
+
+/* ---------- Controles flutuantes do viewport ---------- */
+.viewport-overlay-controls {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.viewport-overlay-controls button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: .9rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    transition: color .2s, background .2s, transform .15s, border-color .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.viewport-overlay-controls button:hover {
+    color: var(--accent-viewer);
+    border-color: rgba(var(--accent-rgb), 0.4);
+    transform: translateY(-2px);
+}
+
+.viewport-overlay-controls button:active { transform: translateY(0); }
+
+.viewport-overlay-controls button.active {
+    color: #fff;
+    background: var(--accent-viewer);
+    border-color: var(--accent-viewer);
+}
+
+/* ---------- Indicadores ---------- */
+.stats-overlay {
+    position: absolute;
+    top: .6rem;
+    left: .6rem;
+    z-index: 10;
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 5px 11px;
+    border-radius: 99px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .25s, transform .25s;
+}
+
+.stats-overlay.visible { opacity: .92; transform: translateY(0); }
+
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    transition: opacity .3s;
+}
+
+.loading-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.loading-overlay .spinner {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent-viewer);
+    border-right-color: var(--accent-viewer);
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 600px) {
+    .upload-area { margin: .6rem; min-height: 170px; padding: 1.5rem 1rem; }
+    .upload-area .upload-icon { width: 60px; height: 60px; }
+    .upload-area .upload-icon i { font-size: 1.5rem; }
+    .viewport-overlay-controls { bottom: .75rem; right: .75rem; gap: 6px; }
+    .viewport-overlay-controls button { width: 36px; height: 36px; font-size: .8rem; }
+}
