@@ -100,6 +100,126 @@ function showLoading(show) {
     document.getElementById('loading-overlay').classList.toggle('hidden', !show);
 }
 
+function formatBytes(bytes) {
+    if (!bytes) return '0 B';
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let i = 0, val = bytes;
+    while (val >= 1024 && i < units.length - 1) { val /= 1024; i++; }
+    return `${val.toFixed(i > 0 && val < 10 ? 1 : 0)} ${units[i]}`;
+}
+
+// Soma vértices/triângulos e estima volume (teorema da divergência) e área de superfície
+function getGeometryStats(group) {
+    let vertexCount = 0, triangleCount = 0, volume = 0, area = 0, hasMesh = false;
+    group.updateMatrixWorld(true);
+    const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+    group.traverse(obj => {
+        if (obj.isMesh && obj.geometry && obj.geometry.attributes.position) {
+            hasMesh = true;
+            const geo = obj.geometry;
+            const pos = geo.attributes.position;
+            const index = geo.index;
+            vertexCount += pos.count;
+            const triCount = Math.floor((index ? index.count : pos.count) / 3);
+            triangleCount += triCount;
+            const m = obj.matrixWorld;
+            const getVertex = (i) => {
+                const idx = index ? index.getX(i) : i;
+                return new THREE.Vector3().fromBufferAttribute(pos, idx).applyMatrix4(m);
+            };
+            for (let i = 0; i < triCount; i++) {
+                a.copy(getVertex(i * 3));
+                b.copy(getVertex(i * 3 + 1));
+                c.copy(getVertex(i * 3 + 2));
+                volume += a.dot(b.clone().cross(c)) / 6;
+                area += 0.5 * b.clone().sub(a).cross(c.clone().sub(a)).length();
+            }
+        }
+    });
+    return { vertexCount, triangleCount, volume: Math.abs(volume), area, hasMesh };
+}
+
+function buildDetailChips(chips) {
+    const panel = document.getElementById('file-details-panel');
+    panel.innerHTML = '';
+    chips.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'stat-chip';
+        const label = document.createElement('span');
+        label.className = 'label';
+        label.textContent = c.label;
+        const value = document.createElement('span');
+        value.className = 'value';
+        value.textContent = c.value;
+        div.appendChild(label);
+        div.appendChild(value);
+        panel.appendChild(div);
+    });
+    document.getElementById('details-toggle').style.visibility = chips.length ? 'visible' : 'hidden';
+}
+
+function setDetailsPanelOpen(open) {
+    document.getElementById('file-details-panel').classList.toggle('collapsed', !open);
+    document.getElementById('details-toggle').classList.toggle('open', open);
+}
+
+function fmtNum(n) { return Math.round(n).toLocaleString('pt-BR'); }
+function fmtDec(n, d = 1) { return n.toLocaleString('pt-BR', { maximumFractionDigits: d, minimumFractionDigits: 0 }); }
+
+// Reúne as estatísticas de uma malha (STL/OBJ/GLTF/PLY) e atualiza a barra + painel
+function finalizeMeshModel(file) {
+    const box = new THREE.Box3().setFromObject(modelGroup);
+    const dims = box.getSize(new THREE.Vector3());
+    const stats = getGeometryStats(modelGroup);
+
+    document.getElementById('file-quick-info').textContent = `${fmtNum(stats.triangleCount)} tri`;
+
+    const chips = [
+        { label: 'Dimensões (mm)', value: `${fmtDec(dims.x)} × ${fmtDec(dims.y)} × ${fmtDec(dims.z)}` },
+        { label: 'Triângulos', value: fmtNum(stats.triangleCount) },
+        { label: 'Vértices', value: fmtNum(stats.vertexCount) },
+    ];
+    if (stats.volume > 0) chips.push({ label: 'Volume', value: `${fmtDec(stats.volume / 1000, 2)} cm³` });
+    if (stats.area > 0) chips.push({ label: 'Área de superfície', value: `${fmtDec(stats.area / 100, 2)} cm²` });
+    chips.push({ label: 'Tamanho do arquivo', value: formatBytes(file.size) });
+
+    buildDetailChips(chips);
+    setDetailsPanelOpen(true);
+    showStats('OK');
+    showLoading(false);
+    resetView();
+}
+
+function finalizeDXFModel(file, entities) {
+    const box = new THREE.Box3().setFromObject(modelGroup);
+    const dims = box.getSize(new THREE.Vector3());
+
+    document.getElementById('file-quick-info').textContent = `${fmtNum(entities.length)} entidades`;
+
+    const chips = [
+        { label: 'Dimensões (mm)', value: `${fmtDec(dims.x)} × ${fmtDec(dims.y)} × ${fmtDec(dims.z)}` },
+        { label: 'Entidades', value: fmtNum(entities.length) },
+        { label: 'Tamanho do arquivo', value: formatBytes(file.size) },
+    ];
+    buildDetailChips(chips);
+    setDetailsPanelOpen(true);
+    showStats('OK');
+    showLoading(false);
+    resetView();
+}
+
+function clearDetails() {
+    document.getElementById('file-quick-info').textContent = '';
+    buildDetailChips([]);
+    setDetailsPanelOpen(false);
+}
+
+function handleLoadError(e) {
+    showStats('Erro: ' + e.message);
+    showLoading(false);
+    clearDetails();
+}
+
 function showStats(text) {
     const el = document.getElementById('stats-overlay');
     el.textContent = text;
@@ -112,6 +232,7 @@ function closeFile() {
     document.getElementById('upload-area').style.display = '';
     currentFile = null;
     showStats('');
+    clearDetails();
 }
 
 function loadFile(file) {
@@ -119,7 +240,7 @@ function loadFile(file) {
     document.getElementById('upload-area').style.display = 'none';
     document.getElementById('viewport').style.display = '';
     document.getElementById('file-name').textContent = file.name;
-    document.getElementById('file-details').textContent = '';
+    clearDetails();
     showStats('Carregando...');
     showLoading(true);
 
@@ -152,15 +273,9 @@ async function loadSTL(file) {
         const mesh = new THREE.Mesh(geo, mat);
         while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
         modelGroup.add(mesh);
-        const verts = geo.attributes.position.count;
-        const faces = verts / 3;
-        document.getElementById('file-details').textContent = `${faces.toLocaleString()} triângulos`;
-        showStats('OK');
-        showLoading(false);
-        resetView();
+        finalizeMeshModel(file);
     } catch (e) {
-        showStats('Erro: ' + e.message);
-        showLoading(false);
+        handleLoadError(e);
     }
 }
 
@@ -177,15 +292,9 @@ async function loadOBJ(file) {
         });
         while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
         modelGroup.add(obj);
-        let faceCount = 0;
-        obj.traverse(c => { if (c.isMesh && c.geometry.attributes.position) faceCount += c.geometry.attributes.position.count / 3; });
-        document.getElementById('file-details').textContent = `${faceCount.toLocaleString()} triângulos`;
-        showStats('OK');
-        showLoading(false);
-        resetView();
+        finalizeMeshModel(file);
     } catch (e) {
-        showStats('Erro: ' + e.message);
-        showLoading(false);
+        handleLoadError(e);
     }
 }
 
@@ -204,15 +313,9 @@ async function loadGLTF(file) {
         });
         while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
         modelGroup.add(gltf.scene);
-        let faceCount = 0;
-        gltf.scene.traverse(c => { if (c.isMesh && c.geometry.attributes.position) faceCount += c.geometry.attributes.position.count / 3; });
-        document.getElementById('file-details').textContent = `${faceCount.toLocaleString()} triângulos`;
-        showStats('OK');
-        showLoading(false);
-        resetView();
+        finalizeMeshModel(file);
     } catch (e) {
-        showStats('Erro: ' + e.message);
-        showLoading(false);
+        handleLoadError(e);
     }
 }
 
@@ -228,15 +331,9 @@ async function loadPLY(file) {
         const mesh = new THREE.Mesh(geo, mat);
         while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
         modelGroup.add(mesh);
-        const verts = geo.attributes.position ? geo.attributes.position.count : 0;
-        const faces = verts / 3;
-        document.getElementById('file-details').textContent = `${faces.toLocaleString()} triângulos`;
-        showStats('OK');
-        showLoading(false);
-        resetView();
+        finalizeMeshModel(file);
     } catch (e) {
-        showStats('Erro: ' + e.message);
-        showLoading(false);
+        handleLoadError(e);
     }
 }
 
@@ -302,12 +399,9 @@ async function loadDXF(file) {
 
         while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
         modelGroup.add(group);
-        document.getElementById('file-details').textContent = `${entities.length} entidades`;
-        showStats('OK');
-        showLoading(false);
-        resetView();
+        finalizeDXFModel(file, entities);
     } catch (e) {
-        showStats('Erro: ' + e.message);
+        handleLoadError(e);
         showLoading(false);
     }
 }
@@ -427,6 +521,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     fileInput.addEventListener('change', () => {
         if (fileInput.files.length) loadFile(fileInput.files[0]);
+    });
+
+    document.getElementById('details-toggle').addEventListener('click', () => {
+        const panel = document.getElementById('file-details-panel');
+        setDetailsPanelOpen(panel.classList.contains('collapsed'));
     });
 
     document.addEventListener('keydown', e => {

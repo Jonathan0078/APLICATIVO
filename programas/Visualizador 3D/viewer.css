@@ -151,15 +151,39 @@
     white-space: nowrap;
 }
 
-.file-info-bar #file-details {
+.file-info-bar .quick-info {
     flex-shrink: 0;
     white-space: nowrap;
     opacity: .85;
 }
 
-.file-info-bar .close-btn {
+.file-info-bar .expand-btn {
     flex-shrink: 0;
     margin-left: auto;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    transition: background .2s, color .2s, transform .2s;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-size: .75rem;
+}
+
+.file-info-bar .expand-btn:hover {
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent-viewer);
+}
+
+.file-info-bar .expand-btn.open i { transform: rotate(180deg); }
+.file-info-bar .expand-btn i { display: inline-block; transition: transform .2s; }
+
+.file-info-bar .close-btn {
+    flex-shrink: 0;
     cursor: pointer;
     width: 26px;
     height: 26px;
@@ -177,6 +201,58 @@
 .file-info-bar .close-btn:hover {
     background: rgba(239, 68, 68, 0.12);
     color: #ef4444;
+}
+
+/* Painel expansível com as medidas e detalhes do modelo */
+.file-details-panel {
+    display: flex;
+    align-items: stretch;
+    gap: .5rem;
+    padding: .55rem .75rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    max-height: 70px;
+    transition: max-height .25s ease, padding .25s ease, opacity .2s ease;
+}
+
+.file-details-panel.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom-width: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.stat-chip {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: .35rem .65rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.stat-chip .label {
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--text-secondary);
+    opacity: .75;
+}
+
+.stat-chip .value {
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--text);
 }
 
 /* ---------- Controles flutuantes do viewport ---------- */

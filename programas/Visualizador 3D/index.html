@@ -33,9 +33,11 @@
                     <span class="file-icon"><i class="fa-solid fa-cube"></i></span>
                     <span class="badge" id="file-badge">STL</span>
                     <span class="name" id="file-name">arquivo.stl</span>
-                    <span id="file-details"></span>
+                    <span class="quick-info" id="file-quick-info"></span>
+                    <button class="expand-btn" id="details-toggle" title="Mais detalhes"><i class="fa-solid fa-chevron-down"></i></button>
                     <button class="close-btn" onclick="closeFile()" title="Fechar"><i class="fa-solid fa-xmark"></i></button>
                 </div>
+                <div class="file-details-panel collapsed" id="file-details-panel"></div>
                 <div id="three-container">
                     <div class="loading-overlay" id="loading-overlay"><div class="spinner"></div></div>
                     <div class="stats-overlay" id="stats-overlay"></div>
