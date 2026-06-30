@@ -187,6 +187,7 @@ function finalizeMeshModel(file) {
     setDetailsPanelOpen(true);
     showStats('OK');
     showLoading(false);
+    onResize();
     resetView();
 }
 
@@ -205,6 +206,7 @@ function finalizeDXFModel(file, entities) {
     setDetailsPanelOpen(true);
     showStats('OK');
     showLoading(false);
+    onResize();
     resetView();
 }
 
@@ -243,6 +245,7 @@ function loadFile(file) {
     clearDetails();
     showStats('Carregando...');
     showLoading(true);
+    onResize();
 
     const ext = file.name.split('.').pop().toLowerCase();
     document.getElementById('file-badge').textContent = ext.toUpperCase();
@@ -526,6 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('details-toggle').addEventListener('click', () => {
         const panel = document.getElementById('file-details-panel');
         setDetailsPanelOpen(panel.classList.contains('collapsed'));
+        panel.addEventListener('transitionend', onResize, { once: true });
     });
 
     document.addEventListener('keydown', e => {
