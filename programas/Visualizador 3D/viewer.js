@@ -12,6 +12,16 @@ let isWireframe = false;
 let isAxesVisible = true;
 let currentFile = null;
 
+// Variáveis para novas ferramentas industriais
+let originalPositions = new Map();
+let globalCenter = new THREE.Vector3();
+let clipPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), 200);
+let isMeasuring = false;
+let measurePoints = [];
+let measureLine = null;
+let raycaster = new THREE.Raycaster();
+let mouse = new THREE.Vector2();
+
 function initScene() {
     const container = document.getElementById('three-container');
     scene = new THREE.Scene();
@@ -24,6 +34,7 @@ function initScene() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
+    renderer.localClippingEnabled = true; // Habilita o plano de corte
     container.appendChild(renderer.domElement);
 
     controls = new OrbitControls(camera, renderer.domElement);
@@ -166,6 +177,53 @@ function setDetailsPanelOpen(open) {
 function fmtNum(n) { return Math.round(n).toLocaleString('pt-BR'); }
 function fmtDec(n, d = 1) { return n.toLocaleString('pt-BR', { maximumFractionDigits: d, minimumFractionDigits: 0 }); }
 
+// 1. Árvore de Componentes e Isolamento
+function buildComponentTree() {
+    const tree = document.getElementById('component-tree');
+    if (!tree) return; // Segurança caso o HTML ainda não tenha sido atualizado
+    
+    tree.innerHTML = '';
+    originalPositions.clear();
+    
+    // Atualiza centro global para a vista explodida
+    const box = new THREE.Box3().setFromObject(modelGroup);
+    box.getCenter(globalCenter);
+    
+    let partCount = 0;
+    document.querySelector('.viewport-container').classList.add('show-sidebar');
+
+    modelGroup.traverse(child => {
+        if (child.isMesh || child.isLine) {
+            partCount++;
+            originalPositions.set(child, child.position.clone());
+            
+            // Aplica plano de corte no material
+            if (child.material) {
+                child.material.clippingPlanes = [clipPlane];
+                child.material.clipShadows = true;
+                child.material.needsUpdate = true;
+            }
+
+            const item = document.createElement('div');
+            item.className = 'tree-item';
+            // Usa o nome do objeto, layer (DXF) ou gera um genérico
+            item.innerHTML = `<span>${child.name || child.userData.layer || 'Peça ' + partCount}</span> <i class="fa-solid fa-eye"></i>`;
+            
+            item.addEventListener('click', () => {
+                child.visible = !child.visible;
+                item.classList.toggle('hidden-part', !child.visible);
+            });
+            tree.appendChild(item);
+        }
+    });
+
+    // Habilita/Desabilita Vista Explodida dependendo da quantidade de partes
+    const explodeSlider = document.getElementById('explode-slider');
+    if (explodeSlider) {
+        explodeSlider.disabled = (partCount <= 1);
+    }
+}
+
 // Reúne as estatísticas de uma malha (STL/OBJ/GLTF/PLY) e atualiza a barra + painel
 function finalizeMeshModel(file) {
     const box = new THREE.Box3().setFromObject(modelGroup);
@@ -187,6 +245,7 @@ function finalizeMeshModel(file) {
     setDetailsPanelOpen(true);
     showStats('OK');
     showLoading(false);
+    buildComponentTree();
     onResize();
     resetView();
 }
@@ -206,6 +265,7 @@ function finalizeDXFModel(file, entities) {
     setDetailsPanelOpen(true);
     showStats('OK');
     showLoading(false);
+    buildComponentTree();
     onResize();
     resetView();
 }
@@ -232,16 +292,34 @@ function closeFile() {
     while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
     document.getElementById('viewport').style.display = 'none';
     document.getElementById('upload-area').style.display = '';
+    document.querySelector('.viewport-container').classList.remove('show-sidebar');
     currentFile = null;
     showStats('');
     clearDetails();
+    
+    // Limpa ferramentas de medição
+    if (measureLine) { scene.remove(measureLine); measureLine = null; }
+    measurePoints = [];
+    isMeasuring = false;
+    const btnMeasure = document.getElementById('btn-measure');
+    if (btnMeasure) btnMeasure.classList.remove('active');
+    const measureResult = document.getElementById('measure-result');
+    if (measureResult) measureResult.textContent = '';
 }
 
 function loadFile(file) {
     currentFile = file;
     document.getElementById('upload-area').style.display = 'none';
     document.getElementById('viewport').style.display = '';
-    document.getElementById('file-name').textContent = file.name;
+    
+    // Se já tiver arquivo carregado, altera a label para indicar montagem
+    const nameEl = document.getElementById('file-name');
+    if (modelGroup.children.length > 0) {
+        nameEl.textContent = nameEl.textContent + ' + ' + file.name;
+    } else {
+        nameEl.textContent = file.name;
+    }
+    
     clearDetails();
     showStats('Carregando...');
     showLoading(true);
@@ -274,7 +352,7 @@ async function loadSTL(file) {
             flatShading: true, side: THREE.DoubleSide
         });
         const mesh = new THREE.Mesh(geo, mat);
-        while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
+        mesh.name = file.name;
         modelGroup.add(mesh);
         finalizeMeshModel(file);
     } catch (e) {
@@ -291,9 +369,11 @@ async function loadOBJ(file) {
             color: 0x8b5cf6, metalness: 0.3, roughness: 0.6, side: THREE.DoubleSide
         });
         obj.traverse(child => {
-            if (child.isMesh) child.material = mat;
+            if (child.isMesh) {
+                child.material = mat;
+                if (!child.name) child.name = file.name;
+            }
         });
-        while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
         modelGroup.add(obj);
         finalizeMeshModel(file);
     } catch (e) {
@@ -308,13 +388,15 @@ async function loadGLTF(file) {
         const gltf = await new Promise((resolve, reject) => {
             loader.parse(buffer, '', resolve, reject);
         });
-        const mat = new THREE.MeshStandardMaterial({
-            color: 0x8b5cf6, metalness: 0.3, roughness: 0.6, side: THREE.DoubleSide
-        });
+        
+        // Mantém o material original, forçando apenas o DoubleSide para melhor visualização
         gltf.scene.traverse(child => {
-            if (child.isMesh) child.material = mat;
+            if (child.isMesh && child.material) {
+                child.material.side = THREE.DoubleSide;
+            }
         });
-        while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
+        
+        // Removemos o loop que limpava o modelGroup para permitir múltiplos arquivos
         modelGroup.add(gltf.scene);
         finalizeMeshModel(file);
     } catch (e) {
@@ -332,7 +414,7 @@ async function loadPLY(file) {
             flatShading: true, side: THREE.DoubleSide
         });
         const mesh = new THREE.Mesh(geo, mat);
-        while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
+        mesh.name = file.name;
         modelGroup.add(mesh);
         finalizeMeshModel(file);
     } catch (e) {
@@ -347,18 +429,20 @@ async function loadDXF(file) {
         if (entities.length === 0) { showStats('Nenhuma entidade encontrada'); showLoading(false); return; }
 
         const group = new THREE.Group();
+        group.name = file.name;
         const matLine = new THREE.LineBasicMaterial({ color: 0x8b5cf6 });
         const matPoint = new THREE.PointsMaterial({ color: 0x8b5cf6, size: 3 });
 
         const allPoints = [];
 
         for (const ent of entities) {
+            let meshEnt = null;
             if (ent.type === 'LINE') {
                 const geo = new THREE.BufferGeometry().setFromPoints([
                     new THREE.Vector3(ent.x1, ent.z1 || 0, ent.y1),
                     new THREE.Vector3(ent.x2, ent.z2 || 0, ent.y2)
                 ]);
-                group.add(new THREE.Line(geo, matLine));
+                meshEnt = new THREE.Line(geo, matLine);
             } else if (ent.type === 'CIRCLE') {
                 const segs = 48;
                 const pts = [];
@@ -368,7 +452,7 @@ async function loadDXF(file) {
                         ent.cx + ent.r * Math.cos(a), ent.cz || 0, ent.cy + ent.r * Math.sin(a)
                     ));
                 }
-                group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), matLine));
+                meshEnt = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), matLine);
             } else if (ent.type === 'ARC') {
                 const segs = 48;
                 const pts = [];
@@ -381,26 +465,32 @@ async function loadDXF(file) {
                         ent.cx + ent.r * Math.cos(a), ent.cz || 0, ent.cy + ent.r * Math.sin(a)
                     ));
                 }
-                group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), matLine));
+                meshEnt = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), matLine);
             } else if (ent.type === 'LWPOLYLINE' || ent.type === 'POLYLINE') {
                 if (ent.vertices && ent.vertices.length > 1) {
                     const pts = ent.vertices.map(v =>
                         new THREE.Vector3(v.x, v.z || 0, v.y)
                     );
                     if (ent.closed) pts.push(pts[0].clone());
-                    group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), matLine));
+                    meshEnt = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), matLine);
                 }
             } else if (ent.type === 'POINT') {
                 allPoints.push(new THREE.Vector3(ent.x, ent.z || 0, ent.y));
+            }
+            
+            if (meshEnt) {
+                meshEnt.userData = { layer: ent.layer };
+                group.add(meshEnt);
             }
         }
 
         if (allPoints.length > 0) {
             const geo = new THREE.BufferGeometry().setFromPoints(allPoints);
-            group.add(new THREE.Points(geo, matPoint));
+            const pointsMesh = new THREE.Points(geo, matPoint);
+            pointsMesh.userData = { layer: 'Pontos' };
+            group.add(pointsMesh);
         }
 
-        while (modelGroup.children.length) modelGroup.remove(modelGroup.children[0]);
         modelGroup.add(group);
         finalizeDXFModel(file, entities);
     } catch (e) {
@@ -520,10 +610,14 @@ document.addEventListener('DOMContentLoaded', () => {
     upload.addEventListener('dragleave', () => upload.classList.remove('dragover'));
     upload.addEventListener('drop', e => {
         e.preventDefault(); upload.classList.remove('dragover');
-        if (e.dataTransfer.files.length) loadFile(e.dataTransfer.files[0]);
+        if (e.dataTransfer.files.length) {
+            Array.from(e.dataTransfer.files).forEach(file => loadFile(file));
+        }
     });
     fileInput.addEventListener('change', () => {
-        if (fileInput.files.length) loadFile(fileInput.files[0]);
+        if (fileInput.files.length) {
+            Array.from(fileInput.files).forEach(file => loadFile(file));
+        }
     });
 
     document.getElementById('details-toggle').addEventListener('click', () => {
@@ -537,6 +631,88 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'w' || e.key === 'W') toggleWireframe();
         if (e.key === 'x' || e.key === 'X') toggleAxes();
     });
+
+    // Evento: Vista Explodida
+    const explodeSlider = document.getElementById('explode-slider');
+    if (explodeSlider) {
+        explodeSlider.addEventListener('input', (e) => {
+            const factor = parseFloat(e.target.value);
+            modelGroup.traverse(child => {
+                if (originalPositions.has(child)) {
+                    const orig = originalPositions.get(child);
+                    const childBox = new THREE.Box3().setFromObject(child);
+                    const childCenter = childBox.getCenter(new THREE.Vector3());
+                    
+                    // Vetor do centro geral apontando para a peça
+                    const dir = childCenter.clone().sub(globalCenter).normalize();
+                    
+                    // Aplica deslocamento (se a peça estiver no centro exato, move pra cima)
+                    if (dir.lengthSq() === 0) dir.set(0, 1, 0);
+                    
+                    const maxDim = new THREE.Box3().setFromObject(modelGroup).getSize(new THREE.Vector3()).length();
+                    child.position.copy(orig).add(dir.multiplyScalar(maxDim * factor * 0.5));
+                }
+            });
+        });
+    }
+
+    // Evento: Plano de Corte (Eixo X)
+    const clipSlider = document.getElementById('clip-slider');
+    if (clipSlider) {
+        clipSlider.addEventListener('input', (e) => {
+            clipPlane.constant = parseFloat(e.target.value);
+        });
+    }
+
+    // Evento: Ferramenta de Medição
+    const btnMeasure = document.getElementById('btn-measure');
+    const threeContainer = document.getElementById('three-container');
+    
+    if (btnMeasure && threeContainer) {
+        btnMeasure.addEventListener('click', () => {
+            isMeasuring = !isMeasuring;
+            btnMeasure.classList.toggle('active', isMeasuring);
+            measurePoints = [];
+            if (measureLine) { scene.remove(measureLine); measureLine = null; }
+            document.getElementById('measure-result').textContent = isMeasuring ? 'Clique em 2 pontos...' : '';
+        });
+
+        threeContainer.addEventListener('pointerdown', (e) => {
+            if (!isMeasuring) return;
+            
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObject(modelGroup, true);
+            
+            if (intersects.length > 0) {
+                measurePoints.push(intersects[0].point);
+                
+                // Desenha pequeno marcador
+                const marker = new THREE.Mesh(
+                    new THREE.SphereGeometry(1, 16, 16),
+                    new THREE.MeshBasicMaterial({color: 0xff0000})
+                );
+                marker.position.copy(intersects[0].point);
+                scene.add(marker);
+
+                if (measurePoints.length === 2) {
+                    const dist = measurePoints[0].distanceTo(measurePoints[1]);
+                    document.getElementById('measure-result').textContent = `Distância: ${fmtDec(dist, 2)} mm`;
+                    
+                    const mat = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 2 });
+                    const geo = new THREE.BufferGeometry().setFromPoints(measurePoints);
+                    measureLine = new THREE.Line(geo, mat);
+                    scene.add(measureLine);
+                    
+                    isMeasuring = false;
+                    btnMeasure.classList.remove('active');
+                }
+            }
+        });
+    }
 });
 
 window.closeFile = closeFile;
