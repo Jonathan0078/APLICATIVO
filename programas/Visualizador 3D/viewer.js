@@ -682,7 +682,19 @@ document.addEventListener('DOMContentLoaded', () => {
             btnMeasure.classList.toggle('active', isMeasuring);
             measurePoints = [];
             if (measureLine) { scene.remove(measureLine); measureLine = null; }
-            document.getElementById('measure-result').textContent = isMeasuring ? 'Clique em 2 pontos...' : '';
+            
+            const msg = isMeasuring ? 'Clique no 1º ponto...' : '';
+            document.getElementById('measure-result').textContent = msg;
+            
+            if (isMeasuring) {
+                showStats(msg);
+                // Recolhe a barra no mobile para liberar o canvas para o clique
+                if (window.innerWidth <= 768) {
+                    document.getElementById('industrial-sidebar').classList.add('collapsed');
+                }
+            } else {
+                showStats('');
+            }
         });
 
         threeContainer.addEventListener('pointerdown', (e) => {
@@ -698,20 +710,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (intersects.length > 0) {
                 measurePoints.push(intersects[0].point);
                 
-                const marker = new THREE.Mesh(
-                    new THREE.SphereGeometry(1, 16, 16),
-                    new THREE.MeshBasicMaterial({color: 0xff0000})
-                );
+                // depthTest: false faz o marcador aparecer SOBRE a peça, não escondido nela
+                const markerMat = new THREE.MeshBasicMaterial({color: 0xff0000, depthTest: false});
+                const marker = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), markerMat);
+                marker.renderOrder = 999;
                 marker.position.copy(intersects[0].point);
                 scene.add(marker);
 
-                if (measurePoints.length === 2) {
+                if (measurePoints.length === 1) {
+                    showStats('1º ponto marcado. Clique no 2º ponto...');
+                } else if (measurePoints.length === 2) {
                     const dist = measurePoints[0].distanceTo(measurePoints[1]);
-                    document.getElementById('measure-result').textContent = `Distância: ${fmtDec(dist, 2)} mm`;
+                    const resultText = `Distância: ${fmtDec(dist, 2)} mm`;
                     
-                    const mat = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 2 });
-                    const geo = new THREE.BufferGeometry().setFromPoints(measurePoints);
-                    measureLine = new THREE.Line(geo, mat);
+                    document.getElementById('measure-result').textContent = resultText;
+                    showStats(resultText); // Mostra o resultado visível na tela
+                    
+                    // Linha visível através da malha
+                    const matLine = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 2, depthTest: false });
+                    const geoLine = new THREE.BufferGeometry().setFromPoints(measurePoints);
+                    measureLine = new THREE.Line(geoLine, matLine);
+                    measureLine.renderOrder = 999;
                     scene.add(measureLine);
                     
                     isMeasuring = false;

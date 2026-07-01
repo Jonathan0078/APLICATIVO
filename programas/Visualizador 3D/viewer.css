@@ -206,6 +206,8 @@
 
 /* Painel expansível com as medidas e detalhes do modelo */
 .file-details-panel {
+    position: relative;
+    z-index: 16;
     display: flex;
     align-items: stretch;
     gap: .5rem;
@@ -260,7 +262,7 @@
 .industrial-sidebar {
     position: absolute;
     left: 0;
-    top: 36px; /* Ajuste para ficar logo abaixo da info-bar */
+    top: 0;
     bottom: 0;
     width: 250px;
     background: var(--surface);
@@ -515,7 +517,6 @@
     
     .viewport-container.show-sidebar #three-container {
         margin-left: 0;
-        /* margin-top removido para garantir que o canvas ocupe a tela toda e o painel flutue por cima */
     }
     
     .sidebar-content {
