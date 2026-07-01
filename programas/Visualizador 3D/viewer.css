@@ -624,16 +624,21 @@
         max-height: 35vh;
     }
     
-    /* Bottom toolbar visível no mobile, overlay escondido */
+    /* Bottom toolbar fixo na parte inferior no mobile */
     .viewport-bottom-bar {
         display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
     }
     
     .viewport-overlay-controls {
         display: none;
     }
     
-    #three-container {
+    .viewport-container {
         padding-bottom: 52px;
     }
 }

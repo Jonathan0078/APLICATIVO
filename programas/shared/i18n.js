@@ -4045,6 +4045,10 @@ const i18n = (() => {
       'viewer3d.drop_hint': 'Arraste arquivos aqui',
       'viewer3d.formats': 'STL, OBJ, DXF',
       'viewer3d.select_btn': 'Selecionar Arquivo',
+      'viewer3d.info': 'Informações',
+      'viewer3d.clear_btn': 'Limpar',
+      'viewer3d.bg_color': 'Cor de Fundo',
+      'viewer3d.bg_default': 'Padrão',
       'update.web_message': 'Uma nova versão do sistema está disponível. Clique em atualizar para aplicar as novidades.',
     },
     es: {
@@ -8582,6 +8586,10 @@ const i18n = (() => {
       'viewer3d.drop_hint': 'Arrastra archivos aquí',
       'viewer3d.formats': 'STL, OBJ, DXF',
       'viewer3d.select_btn': 'Seleccionar Archivo',
+      'viewer3d.info': 'Información',
+      'viewer3d.clear_btn': 'Limpiar',
+      'viewer3d.bg_color': 'Color de Fondo',
+      'viewer3d.bg_default': 'Por Defecto',
       'update.web_message': 'Hay una nueva versión del sistema disponible. Haz clic en actualizar para aplicar las novedades.',
     },
     en: {
@@ -13362,6 +13370,10 @@ const i18n = (() => {
       'viewer3d.drop_hint': 'Drag files here',
       'viewer3d.formats': 'STL, OBJ, DXF',
       'viewer3d.select_btn': 'Select File',
+      'viewer3d.info': 'Information',
+      'viewer3d.clear_btn': 'Clear',
+      'viewer3d.bg_color': 'Background Color',
+      'viewer3d.bg_default': 'Default',
       'update.web_message': 'A new version of the system is available. Click update to apply the changes.',
     }
   };
