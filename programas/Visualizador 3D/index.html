@@ -39,22 +39,28 @@
                 </div>
                 <div class="file-details-panel collapsed" id="file-details-panel"></div>
                 
-                <div class="industrial-sidebar" id="industrial-sidebar">
-                    <div class="sidebar-section">
-                        <h3><i class="fa-solid fa-list-tree"></i> Componentes</h3>
-                        <div id="component-tree" class="component-tree"></div>
+                <div class="industrial-sidebar collapsed" id="industrial-sidebar">
+                    <div class="sidebar-header" id="sidebar-toggle">
+                        <span><i class="fa-solid fa-toolbox"></i> Ferramentas</span>
+                        <i class="fa-solid fa-chevron-down toggle-icon"></i>
                     </div>
-                    <div class="sidebar-section">
-                        <h3><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Vista Explodida</h3>
-                        <input type="range" id="explode-slider" min="0" max="2" step="0.01" value="0" disabled>
-                    </div>
-                    <div class="sidebar-section">
-                        <h3><i class="fa-solid fa-scissors"></i> Plano de Corte (X)</h3>
-                        <input type="range" id="clip-slider" min="-200" max="200" step="1" value="200">
-                    </div>
-                    <div class="sidebar-section">
-                        <button id="btn-measure" class="tool-btn"><i class="fa-solid fa-ruler"></i> Medir Distância</button>
-                        <span id="measure-result" class="measure-result"></span>
+                    <div class="sidebar-content" id="sidebar-content">
+                        <div class="sidebar-section">
+                            <h3><i class="fa-solid fa-list-tree"></i> Componentes</h3>
+                            <div id="component-tree" class="component-tree"></div>
+                        </div>
+                        <div class="sidebar-section">
+                            <h3><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Vista Explodida</h3>
+                            <input type="range" id="explode-slider" min="0" max="2" step="0.01" value="0" disabled>
+                        </div>
+                        <div class="sidebar-section">
+                            <h3><i class="fa-solid fa-scissors"></i> Plano de Corte (X)</h3>
+                            <input type="range" id="clip-slider" min="-200" max="200" step="1" value="200">
+                        </div>
+                        <div class="sidebar-section">
+                            <button id="btn-measure" class="tool-btn"><i class="fa-solid fa-ruler"></i> Medir Distância</button>
+                            <span id="measure-result" class="measure-result"></span>
+                        </div>
                     </div>
                 </div>
 

@@ -180,7 +180,7 @@ function fmtDec(n, d = 1) { return n.toLocaleString('pt-BR', { maximumFractionDi
 // 1. Árvore de Componentes e Isolamento
 function buildComponentTree() {
     const tree = document.getElementById('component-tree');
-    if (!tree) return; // Segurança caso o HTML ainda não tenha sido atualizado
+    if (!tree) return;
     
     tree.innerHTML = '';
     originalPositions.clear();
@@ -191,6 +191,10 @@ function buildComponentTree() {
     
     let partCount = 0;
     document.querySelector('.viewport-container').classList.add('show-sidebar');
+
+    // Força o painel a iniciar recolhido toda vez que um arquivo carrega
+    const sidebar = document.getElementById('industrial-sidebar');
+    if (sidebar) sidebar.classList.add('collapsed');
 
     modelGroup.traverse(child => {
         if (child.isMesh || child.isLine) {
@@ -206,7 +210,6 @@ function buildComponentTree() {
 
             const item = document.createElement('div');
             item.className = 'tree-item';
-            // Usa o nome do objeto, layer (DXF) ou gera um genérico
             item.innerHTML = `<span>${child.name || child.userData.layer || 'Peça ' + partCount}</span> <i class="fa-solid fa-eye"></i>`;
             
             item.addEventListener('click', () => {
@@ -389,14 +392,13 @@ async function loadGLTF(file) {
             loader.parse(buffer, '', resolve, reject);
         });
         
-        // Mantém o material original, forçando apenas o DoubleSide para melhor visualização
+        // Mantém o material original, forçando apenas o DoubleSide
         gltf.scene.traverse(child => {
             if (child.isMesh && child.material) {
                 child.material.side = THREE.DoubleSide;
             }
         });
         
-        // Removemos o loop que limpava o modelGroup para permitir múltiplos arquivos
         modelGroup.add(gltf.scene);
         finalizeMeshModel(file);
     } catch (e) {
@@ -632,6 +634,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'x' || e.key === 'X') toggleAxes();
     });
 
+    // Evento: Abrir/Fechar painel industrial
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const industrialSidebar = document.getElementById('industrial-sidebar');
+    if (sidebarToggle && industrialSidebar) {
+        sidebarToggle.addEventListener('click', () => {
+            industrialSidebar.classList.toggle('collapsed');
+        });
+    }
+
     // Evento: Vista Explodida
     const explodeSlider = document.getElementById('explode-slider');
     if (explodeSlider) {
@@ -643,10 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const childBox = new THREE.Box3().setFromObject(child);
                     const childCenter = childBox.getCenter(new THREE.Vector3());
                     
-                    // Vetor do centro geral apontando para a peça
                     const dir = childCenter.clone().sub(globalCenter).normalize();
-                    
-                    // Aplica deslocamento (se a peça estiver no centro exato, move pra cima)
                     if (dir.lengthSq() === 0) dir.set(0, 1, 0);
                     
                     const maxDim = new THREE.Box3().setFromObject(modelGroup).getSize(new THREE.Vector3()).length();
@@ -690,7 +698,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (intersects.length > 0) {
                 measurePoints.push(intersects[0].point);
                 
-                // Desenha pequeno marcador
                 const marker = new THREE.Mesh(
                     new THREE.SphereGeometry(1, 16, 16),
                     new THREE.MeshBasicMaterial({color: 0xff0000})
