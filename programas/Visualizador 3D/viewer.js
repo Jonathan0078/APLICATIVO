@@ -10,6 +10,9 @@ let scene, camera, renderer, controls;
 let modelGroup, axesHelper, gridHelper;
 let isWireframe = false;
 let isAxesVisible = true;
+let isGridVisible = true;
+let isAutoRotate = false;
+let isFullscreen = false;
 let currentFile = null;
 
 // Variáveis para novas ferramentas industriais
@@ -98,13 +101,58 @@ function toggleWireframe() {
     modelGroup.traverse(child => {
         if (child.isMesh) child.material.wireframe = isWireframe;
     });
-    document.querySelector('[data-action="wireframe"]')?.classList.toggle('active', isWireframe);
+    document.querySelectorAll('[data-action="wireframe"]').forEach(el => el.classList.toggle('active', isWireframe));
 }
 
 function toggleAxes() {
     isAxesVisible = !isAxesVisible;
     if (axesHelper) axesHelper.visible = isAxesVisible;
-    document.querySelector('[data-action="axes"]')?.classList.toggle('active', isAxesVisible);
+    document.querySelectorAll('[data-action="axes"]').forEach(el => el.classList.toggle('active', isAxesVisible));
+}
+
+function toggleGrid() {
+    isGridVisible = !isGridVisible;
+    if (gridHelper) gridHelper.visible = isGridVisible;
+    document.querySelectorAll('[data-action="grid"]').forEach(el => el.classList.toggle('active', isGridVisible));
+}
+
+function toggleAutoRotate() {
+    isAutoRotate = !isAutoRotate;
+    controls.autoRotate = isAutoRotate;
+    controls.autoRotateSpeed = 4;
+    document.querySelectorAll('[data-action="autorotate"]').forEach(el => el.classList.toggle('active', isAutoRotate));
+}
+
+function takeScreenshot() {
+    renderer.render(scene, camera);
+    const link = document.createElement('a');
+    link.download = 'visualizacao-3d.png';
+    link.href = renderer.domElement.toDataURL('image/png');
+    link.click();
+}
+
+function toggleFullscreen() {
+    const container = document.getElementById('three-container');
+    if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(() => {});
+    } else {
+        document.exitFullscreen().catch(() => {});
+    }
+}
+
+function clearMeasurement() {
+    if (measureLine) { scene.remove(measureLine); measureLine = null; }
+    measurePoints = [];
+    isMeasuring = false;
+    const btn = document.getElementById('btn-measure');
+    if (btn) btn.classList.remove('active');
+    document.getElementById('measure-result').textContent = '';
+    showStats('');
+    document.getElementById('btn-clear-measure').style.display = 'none';
+}
+
+function changeBackground(colorHex) {
+    if (scene) scene.background = new THREE.Color(colorHex);
 }
 
 function showLoading(show) {
@@ -151,8 +199,12 @@ function getGeometryStats(group) {
 }
 
 function buildDetailChips(chips) {
-    const panel = document.getElementById('file-details-panel');
-    panel.innerHTML = '';
+    const section = document.getElementById('sidebar-stats-section');
+    const container = document.getElementById('sidebar-stats');
+    if (!section || !container) return;
+    container.innerHTML = '';
+    if (!chips.length) { section.style.display = 'none'; return; }
+    section.style.display = '';
     chips.forEach(c => {
         const div = document.createElement('div');
         div.className = 'stat-chip';
@@ -164,14 +216,8 @@ function buildDetailChips(chips) {
         value.textContent = c.value;
         div.appendChild(label);
         div.appendChild(value);
-        panel.appendChild(div);
+        container.appendChild(div);
     });
-    document.getElementById('details-toggle').style.visibility = chips.length ? 'visible' : 'hidden';
-}
-
-function setDetailsPanelOpen(open) {
-    document.getElementById('file-details-panel').classList.toggle('collapsed', !open);
-    document.getElementById('details-toggle').classList.toggle('open', open);
 }
 
 function fmtNum(n) { return Math.round(n).toLocaleString('pt-BR'); }
@@ -192,10 +238,17 @@ function buildComponentTree() {
     let partCount = 0;
     document.querySelector('.viewport-container').classList.add('show-sidebar');
 
-    // Força o painel a iniciar recolhido toda vez que um arquivo carrega
+    // No mobile o painel inicia recolhido; no desktop, expandido
     const sidebar = document.getElementById('industrial-sidebar');
-    if (sidebar) sidebar.classList.add('collapsed');
-
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (sidebar) {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
+            if (backdrop) backdrop.classList.add('backdrop-visible');
+        }
+    }
     modelGroup.traverse(child => {
         if (child.isMesh || child.isLine) {
             partCount++;
@@ -245,7 +298,6 @@ function finalizeMeshModel(file) {
     chips.push({ label: 'Tamanho do arquivo', value: formatBytes(file.size) });
 
     buildDetailChips(chips);
-    setDetailsPanelOpen(true);
     showStats('OK');
     showLoading(false);
     buildComponentTree();
@@ -265,7 +317,6 @@ function finalizeDXFModel(file, entities) {
         { label: 'Tamanho do arquivo', value: formatBytes(file.size) },
     ];
     buildDetailChips(chips);
-    setDetailsPanelOpen(true);
     showStats('OK');
     showLoading(false);
     buildComponentTree();
@@ -276,7 +327,6 @@ function finalizeDXFModel(file, entities) {
 function clearDetails() {
     document.getElementById('file-quick-info').textContent = '';
     buildDetailChips([]);
-    setDetailsPanelOpen(false);
 }
 
 function handleLoadError(e) {
@@ -296,9 +346,14 @@ function closeFile() {
     document.getElementById('viewport').style.display = 'none';
     document.getElementById('upload-area').style.display = '';
     document.querySelector('.viewport-container').classList.remove('show-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (backdrop) backdrop.classList.remove('backdrop-visible');
     currentFile = null;
     showStats('');
     clearDetails();
+    
+    // Desliga auto-rotação
+    if (isAutoRotate) toggleAutoRotate();
     
     // Limpa ferramentas de medição
     if (measureLine) { scene.remove(measureLine); measureLine = null; }
@@ -308,6 +363,7 @@ function closeFile() {
     if (btnMeasure) btnMeasure.classList.remove('active');
     const measureResult = document.getElementById('measure-result');
     if (measureResult) measureResult.textContent = '';
+    document.getElementById('btn-clear-measure').style.display = 'none';
 }
 
 function loadFile(file) {
@@ -622,26 +678,73 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('details-toggle').addEventListener('click', () => {
-        const panel = document.getElementById('file-details-panel');
-        setDetailsPanelOpen(panel.classList.contains('collapsed'));
-        panel.addEventListener('transitionend', onResize, { once: true });
-    });
-
     document.addEventListener('keydown', e => {
         if (e.key === 'f' || e.key === 'F') resetView();
         if (e.key === 'w' || e.key === 'W') toggleWireframe();
         if (e.key === 'x' || e.key === 'X') toggleAxes();
+        if (e.key === 'g' || e.key === 'G') toggleGrid();
+        if (e.key === 'r' || e.key === 'R') toggleAutoRotate();
+        if (e.key === 'c' || e.key === 'C') takeScreenshot();
     });
 
     // Evento: Abrir/Fechar painel industrial
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const industrialSidebar = document.getElementById('industrial-sidebar');
+    const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+    const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+    
+    function updateToggleBtn() {
+        if (!sidebarToggleBtn || !industrialSidebar) return;
+        const isDesktop = window.innerWidth > 768;
+        const show = isDesktop && industrialSidebar.classList.contains('collapsed');
+        sidebarToggleBtn.classList.toggle('visible', show);
+    }
+    
+    function expandSidebar() {
+        if (!industrialSidebar) return;
+        industrialSidebar.classList.remove('collapsed');
+        if (sidebarBackdrop && window.innerWidth > 768) {
+            sidebarBackdrop.classList.add('backdrop-visible');
+        }
+        updateToggleBtn();
+    }
+    
+    function collapseSidebar() {
+        if (!industrialSidebar) return;
+        industrialSidebar.classList.add('collapsed');
+        if (sidebarBackdrop) sidebarBackdrop.classList.remove('backdrop-visible');
+        updateToggleBtn();
+    }
+    
     if (sidebarToggle && industrialSidebar) {
         sidebarToggle.addEventListener('click', () => {
-            industrialSidebar.classList.toggle('collapsed');
+            const wasCollapsed = industrialSidebar.classList.toggle('collapsed');
+            if (sidebarBackdrop && window.innerWidth > 768) {
+                sidebarBackdrop.classList.toggle('backdrop-visible', !wasCollapsed);
+            }
+            updateToggleBtn();
         });
     }
+    // Botão flutuante para reabrir
+    if (sidebarToggleBtn) {
+        sidebarToggleBtn.addEventListener('click', expandSidebar);
+    }
+    // Fechar sidebar ao clicar no backdrop (apenas desktop)
+    if (sidebarBackdrop) {
+        sidebarBackdrop.addEventListener('click', collapseSidebar);
+    }
+    // Fechar ao pressionar Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && industrialSidebar && !industrialSidebar.classList.contains('collapsed') && window.innerWidth > 768) {
+            collapseSidebar();
+        }
+    });
+    
+    // Atualiza botão ao redimensionar
+    window.addEventListener('resize', updateToggleBtn);
+    
+    // Atualiza botão após carregar modelo
+    updateToggleBtn();
 
     // Evento: Vista Explodida
     const explodeSlider = document.getElementById('explode-slider');
@@ -724,6 +827,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const resultText = `Distância: ${fmtDec(dist, 2)} mm`;
                     
                     document.getElementById('measure-result').textContent = resultText;
+                    document.getElementById('btn-clear-measure').style.display = 'inline-flex';
                     showStats(resultText); // Mostra o resultado visível na tela
                     
                     // Linha visível através da malha
@@ -739,9 +843,42 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Evento: Cor de Fundo
+    const bgPicker = document.getElementById('bg-color-picker');
+    if (bgPicker) {
+        bgPicker.addEventListener('input', (e) => {
+            changeBackground(e.target.value);
+        });
+    }
+    const resetBg = document.getElementById('btn-reset-bg');
+    if (resetBg) {
+        resetBg.addEventListener('click', () => {
+            const defaultBg = getComputedStyle(document.body).getPropertyValue('--bg').trim() || '#0f0f0f';
+            document.getElementById('bg-color-picker').value = defaultBg;
+            changeBackground(defaultBg);
+        });
+    }
+
+    // Evento: Limpar Medição
+    const clearMeasureBtn = document.getElementById('btn-clear-measure');
+    if (clearMeasureBtn) {
+        clearMeasureBtn.addEventListener('click', clearMeasurement);
+    }
+
+    // Sincroniza ícone de fullscreen
+    document.addEventListener('fullscreenchange', () => {
+        isFullscreen = !!document.fullscreenElement;
+    });
 });
 
 window.closeFile = closeFile;
 window.resetView = resetView;
 window.toggleWireframe = toggleWireframe;
 window.toggleAxes = toggleAxes;
+window.toggleGrid = toggleGrid;
+window.toggleAutoRotate = toggleAutoRotate;
+window.takeScreenshot = takeScreenshot;
+window.toggleFullscreen = toggleFullscreen;
+window.clearMeasurement = clearMeasurement;
+window.changeBackground = changeBackground;

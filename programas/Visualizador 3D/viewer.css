@@ -4,6 +4,12 @@
     --accent-viewer: #8b5cf6;
     --accent-viewer-dark: #6d28d9;
     --accent-rgb: 139, 92, 246;
+    --sidebar-width: 250px;
+}
+
+.app-container {
+    max-width: 100%;
+    margin: 0;
 }
 
 .app-header h1 i { color: var(--accent-viewer); }
@@ -158,31 +164,6 @@
     opacity: .85;
 }
 
-.file-info-bar .expand-btn {
-    flex-shrink: 0;
-    margin-left: auto;
-    cursor: pointer;
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    transition: background .2s, color .2s, transform .2s;
-    border: none;
-    background: none;
-    color: var(--text-secondary);
-    font-size: .75rem;
-}
-
-.file-info-bar .expand-btn:hover {
-    background: rgba(var(--accent-rgb), 0.12);
-    color: var(--accent-viewer);
-}
-
-.file-info-bar .expand-btn.open i { transform: rotate(180deg); }
-.file-info-bar .expand-btn i { display: inline-block; transition: transform .2s; }
-
 .file-info-bar .close-btn {
     flex-shrink: 0;
     cursor: pointer;
@@ -204,67 +185,68 @@
     color: #ef4444;
 }
 
-/* Painel expansível com as medidas e detalhes do modelo */
-.file-details-panel {
-    position: relative;
-    z-index: 16;
+/* Stats na sidebar */
+.sidebar-stats {
     display: flex;
-    align-items: stretch;
-    gap: .5rem;
-    padding: .55rem .75rem;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    max-height: 70px;
-    transition: max-height .25s ease, padding .25s ease, opacity .2s ease;
-}
-
-.file-details-panel.collapsed {
-    max-height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    border-bottom-width: 0;
-    opacity: 0;
-    overflow: hidden;
+    flex-wrap: wrap;
+    gap: .35rem;
 }
 
 .stat-chip {
-    flex-shrink: 0;
+    flex: 0 0 calc(50% - 0.2rem);
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 2px;
-    padding: .35rem .65rem;
+    padding: .25rem .5rem;
     border-radius: var(--radius-sm);
-    background: var(--surface);
+    background: var(--bg);
     border: 1px solid var(--border);
-    white-space: nowrap;
+    min-width: 0;
 }
 
 .stat-chip .label {
-    font-size: .6rem;
+    font-size: .55rem;
     text-transform: uppercase;
     letter-spacing: .04em;
     color: var(--text-secondary);
     opacity: .75;
+    line-height: 1.2;
 }
 
 .stat-chip .value {
-    font-size: .8rem;
+    font-size: .75rem;
     font-weight: 700;
     color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* ---------- Barra Lateral Industrial ---------- */
+
+/* Backdrop escuro atrás da sidebar quando expandida */
+.sidebar-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 14;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.viewport-container.show-sidebar .sidebar-backdrop.backdrop-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .industrial-sidebar {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 250px;
+    width: var(--sidebar-width);
     background: var(--surface);
     border-right: 1px solid var(--border);
     z-index: 15;
@@ -272,15 +254,55 @@
     flex-direction: column;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+}
+
+/* Botão flutuante para reabrir a sidebar (desktop) */
+.sidebar-toggle-btn {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 13;
+    width: 28px;
+    height: 52px;
+    border-radius: 0 8px 8px 0;
+    border: 1px solid var(--border);
+    border-left: none;
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: .8rem;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    transition: color .2s, background .2s, left 0.3s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-toggle-btn:hover {
+    color: var(--accent-viewer);
+    background: rgba(var(--accent-rgb), 0.08);
+}
+
+/* Sidebar recolhida desliza totalmente para fora no desktop */
+@media (min-width: 769px) {
+    .viewport-container.show-sidebar .industrial-sidebar.collapsed {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar-toggle-btn.visible {
+        display: flex;
+    }
 }
 
 .viewport-container.show-sidebar .industrial-sidebar {
     transform: translateX(0);
 }
 
+/* Sidebar sobrepõe o canvas em vez de empurrar */
 .viewport-container.show-sidebar #three-container {
-    margin-left: 250px;
+    margin-left: 0;
 }
 
 /* Cabeçalho do painel de ferramentas */
@@ -424,38 +446,121 @@
     bottom: 1rem;
     right: 1rem;
     display: flex;
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: 6px;
     z-index: 10;
+    padding: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 4px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    max-width: 108px;
 }
 
 .viewport-overlay-controls button {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 1px solid var(--border);
-    background: var(--surface);
+    background: transparent;
     color: var(--text-secondary);
     cursor: pointer;
-    font-size: .9rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    font-size: .95rem;
     transition: color .2s, background .2s, transform .15s, border-color .2s;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Botão pequeno (para ações secundárias na sidebar) */
+.tool-btn.small-btn {
+    width: auto;
+    padding: 4px 10px;
+    font-size: .72rem;
+    margin-top: 6px;
+    display: inline-flex;
+}
+
+/* Seletor de cor de fundo */
+.bg-color-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.bg-color-row input[type="color"] {
+    width: 40px;
+    height: 36px;
+    padding: 2px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    cursor: pointer;
+}
+
+.bg-color-row .tool-btn.small-btn {
+    margin-top: 0;
+    flex: 1;
+}
+
+/* ---------- Bottom toolbar (mobile) ---------- */
+.viewport-bottom-bar {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 12;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 6px 12px;
+    justify-content: space-around;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+}
+
+.viewport-bottom-bar button {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: .85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color .2s, background .2s;
+}
+
+.viewport-bottom-bar button:hover {
+    color: var(--accent-viewer);
+    background: rgba(var(--accent-rgb), 0.08);
+}
+
+.viewport-bottom-bar button.active {
+    color: #fff;
+    background: var(--accent-viewer);
+    border-color: var(--accent-viewer);
+}
+
 .viewport-overlay-controls button:hover {
     color: var(--accent-viewer);
+    background: rgba(var(--accent-rgb), 0.08);
     border-color: rgba(var(--accent-rgb), 0.4);
     transform: translateY(-2px);
 }
 
-.viewport-overlay-controls button:active { transform: translateY(0); }
+.viewport-overlay-controls button:active { transform: scale(0.92) translateY(0); }
 
 .viewport-overlay-controls button.active {
     color: #fff;
     background: var(--accent-viewer);
     border-color: var(--accent-viewer);
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.3);
 }
 
 /* ---------- Indicadores ---------- */
@@ -511,16 +616,25 @@
         border-right: none;
         border-bottom: 1px solid var(--border);
         height: auto;
-        bottom: auto; /* O painel cresce de cima para baixo */
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Sombra para separar do canvas 3D */
-    }
-    
-    .viewport-container.show-sidebar #three-container {
-        margin-left: 0;
+        bottom: auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     
     .sidebar-content {
-        max-height: 35vh; /* Ocupa bem menos espaço na tela para deixar o 3D visível */
+        max-height: 35vh;
+    }
+    
+    /* Bottom toolbar visível no mobile, overlay escondido */
+    .viewport-bottom-bar {
+        display: flex;
+    }
+    
+    .viewport-overlay-controls {
+        display: none;
+    }
+    
+    #three-container {
+        padding-bottom: 52px;
     }
 }
 
@@ -530,4 +644,74 @@
     .upload-area .upload-icon i { font-size: 1.5rem; }
     .viewport-overlay-controls { bottom: .75rem; right: .75rem; gap: 6px; }
     .viewport-overlay-controls button { width: 36px; height: 36px; font-size: .8rem; }
+}
+
+/* ---------- Desktop refinements ---------- */
+@media (min-width: 1024px) {
+    :root {
+        --sidebar-width: 320px;
+    }
+
+    .component-tree {
+        max-height: 380px;
+    }
+
+    .sidebar-section {
+        padding: 1.15rem 1rem;
+    }
+
+    .sidebar-section h3 {
+        font-size: .78rem;
+    }
+
+    .sidebar-content {
+        font-size: .85rem;
+    }
+
+    .tree-item span {
+        max-width: 240px;
+    }
+
+    .file-info-bar {
+        padding: .5rem .85rem;
+        font-size: .8rem;
+    }
+
+    .stat-chip {
+        flex: 0 0 calc(33.33% - 0.25rem);
+        padding: .35rem .6rem;
+    }
+
+    .stat-chip .value {
+        font-size: .8rem;
+    }
+
+    .upload-area {
+        min-height: 280px;
+        padding: 3rem 2.5rem;
+        margin: 2rem 3rem;
+    }
+
+    .upload-area .upload-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .upload-area .upload-icon i {
+        font-size: 2.2rem;
+    }
+
+    .viewport-overlay-controls {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        padding: 10px;
+        gap: 8px;
+        max-width: 120px;
+    }
+
+    .viewport-overlay-controls button {
+        width: 48px;
+        height: 48px;
+        font-size: 1rem;
+    }
 }

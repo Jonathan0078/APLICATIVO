@@ -34,18 +34,22 @@
                     <span class="badge" id="file-badge">STL</span>
                     <span class="name" id="file-name">arquivo.stl</span>
                     <span class="quick-info" id="file-quick-info"></span>
-                    <button class="expand-btn" id="details-toggle" title="Mais detalhes"><i class="fa-solid fa-chevron-down"></i></button>
                     <button class="close-btn" onclick="closeFile()" title="Fechar"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <div class="file-details-panel collapsed" id="file-details-panel"></div>
                 
                 <div id="three-container">
+                    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+                    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" title="Abrir ferramentas"><i class="fa-solid fa-chevron-right"></i></button>
                     <div class="industrial-sidebar collapsed" id="industrial-sidebar">
                         <div class="sidebar-header" id="sidebar-toggle">
                             <span><i class="fa-solid fa-toolbox"></i> Ferramentas</span>
                             <i class="fa-solid fa-chevron-down toggle-icon"></i>
                         </div>
                         <div class="sidebar-content" id="sidebar-content">
+                            <div class="sidebar-section" id="sidebar-stats-section" style="display:none">
+                                <h3><i class="fa-solid fa-chart-simple"></i> Informações</h3>
+                                <div id="sidebar-stats" class="sidebar-stats"></div>
+                            </div>
                             <div class="sidebar-section">
                                 <h3><i class="fa-solid fa-list-tree"></i> Componentes</h3>
                                 <div id="component-tree" class="component-tree"></div>
@@ -60,7 +64,15 @@
                             </div>
                             <div class="sidebar-section">
                                 <button id="btn-measure" class="tool-btn"><i class="fa-solid fa-ruler"></i> Medir Distância</button>
+                                <button id="btn-clear-measure" class="tool-btn small-btn" style="display:none"><i class="fa-solid fa-eraser"></i> Limpar</button>
                                 <span id="measure-result" class="measure-result"></span>
+                            </div>
+                            <div class="sidebar-section">
+                                <h3><i class="fa-solid fa-palette"></i> Cor de Fundo</h3>
+                                <div class="bg-color-row">
+                                    <input type="color" id="bg-color-picker" value="#0f0f0f">
+                                    <button id="btn-reset-bg" class="tool-btn small-btn" title="Restaurar padrão">Padrão</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -71,6 +83,19 @@
                         <button onclick="resetView()" title="Centralizar (F)"><i class="fa-solid fa-expand"></i></button>
                         <button data-action="wireframe" onclick="toggleWireframe()" title="Wireframe (W)"><i class="fa-solid fa-border-all"></i></button>
                         <button data-action="axes" class="active" onclick="toggleAxes()" title="Eixos (X)"><i class="fa-solid fa-arrows-up-down-left-right"></i></button>
+                        <button data-action="grid" class="active" onclick="toggleGrid()" title="Grade (G)"><i class="fa-solid fa-th"></i></button>
+                        <button data-action="autorotate" onclick="toggleAutoRotate()" title="Rotação Auto (R)"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button onclick="takeScreenshot()" title="Capturar Tela (C)"><i class="fa-solid fa-camera"></i></button>
+                        <button onclick="toggleFullscreen()" title="Tela Cheia (F11)"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
+                    </div>
+                    <div class="viewport-bottom-bar" id="bottom-bar">
+                        <button data-action="axes" class="active" onclick="toggleAxes()" title="Eixos"><i class="fa-solid fa-arrows-up-down-left-right"></i></button>
+                        <button data-action="grid" class="active" onclick="toggleGrid()" title="Grade"><i class="fa-solid fa-th"></i></button>
+                        <button data-action="wireframe" onclick="toggleWireframe()" title="Wireframe"><i class="fa-solid fa-border-all"></i></button>
+                        <button onclick="resetView()" title="Centralizar"><i class="fa-solid fa-expand"></i></button>
+                        <button data-action="autorotate" onclick="toggleAutoRotate()" title="Rotação"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button onclick="takeScreenshot()" title="Capturar"><i class="fa-solid fa-camera"></i></button>
+                        <button onclick="toggleFullscreen()" title="Tela Cheia"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
                     </div>
                 </div>
             </div>
